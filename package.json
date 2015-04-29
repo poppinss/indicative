@@ -1,0 +1,33 @@
+{
+  "name": "indicative",
+  "version": "1.0.0",
+  "description": "Expressive schema and raw validator for nodejs/web",
+  "main": "lib/validator.js",
+  "homepage": "http://indicative.adonisjs.com",
+  "dependencies": {
+    "async": "^0.9.0",
+    "bluebird": "^2.9.14",
+    "coffee-script": "^1.9.2",
+    "dot-object": "^0.11.0",
+    "is_js": "^0.7.1",
+    "lodash": "^3.5.0",
+    "moment": "^2.9.0"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "mocha": "^2.2.4"
+  },
+  "scripts": {
+    "test": "node ./node_modules/mocha/bin/mocha test --reporter spec --check-leaks --bail",
+    "install": "./node_modules/coffee-script/bin/coffee -c ."
+  },
+  "keywords": [
+    "schema-validator",
+    "raw-validator",
+    "node-validator",
+    "nodejs-validations",
+    "nodejs-simple-validations"
+  ],
+  "author": "amanvirk <virk.officials@gmail.com>",
+  "license": "MIT"
+}
