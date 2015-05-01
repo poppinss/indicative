@@ -1,6 +1,6 @@
 {
   "name": "indicative",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Expressive schema and raw validator for nodejs/web",
   "main": "lib/validator.js",
   "homepage": "http://indicative.adonisjs.com",
@@ -22,6 +22,10 @@
   "scripts": {
     "test": "node ./node_modules/gulp/bin/gulp lint && node ./node_modules/mocha/bin/mocha test --reporter spec --check-leaks --bail",
     "install": "./node_modules/coffee-script/bin/coffee -c ."
+  },
+  "repository":{
+    "type" : "git",
+    "url"  : "https://github.com/AdonisJs/indicative"
   },
   "keywords": [
     "schema-validator",
