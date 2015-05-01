@@ -1,4 +1,4 @@
-module.exports = 
+module.exports =
   messagesList =
     required    : '%field% is required'
     required_if : '%field% is required'

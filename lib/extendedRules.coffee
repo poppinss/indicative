@@ -9,10 +9,10 @@
  * @requires IS,LODASH,BLUEBIRD,MOMENT=>(Date library)
 ###
 
-IS           = require 'is_js'
-_            = require 'lodash'
-PROMISE      = require 'bluebird'
-MOMENT       = require 'moment'
+IS           = require "is_js"
+_            = require "lodash"
+PROMISE      = require "bluebird"
+MOMENT       = require "moment"
 
 
 ###*
@@ -37,7 +37,7 @@ class ExtendedRules
       new PROMISE (resolve,reject) ->
         if        (_.has data,field) \
         and       IS.truthy data[field]
-        then      resolve 'is boolean'
+        then      resolve "is boolean"
         else      reject message
 
 
@@ -54,7 +54,7 @@ class ExtendedRules
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        MOMENT(data[field]).isAfter date
-        then      resolve 'is after date'
+        then      resolve "is after date"
         else      reject message
 
 
@@ -67,13 +67,13 @@ class ExtendedRules
      * @param  {[string]}   args    [arguments passed along with validator]
      * @return {[promise]}  returns final promise
     ###
-    
+
     day : (data,field,message,args) ->
       [day] = args.toString().split ","
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        IS.day(new Date(data[field]),day)
-        then      resolve 'is a valid day'
+        then      resolve "is a valid day"
         else      reject message
 
 
@@ -86,13 +86,13 @@ class ExtendedRules
      * @param  {[string]}   args    [arguments passed along with validator]
      * @return {[promise]}  returns final promise
     ###
-    
+
     month : (data,field,message,args) ->
       [month] = args.toString().split ","
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        IS.month(new Date(data[field]),month)
-        then      resolve 'is a valid month'
+        then      resolve "is a valid month"
         else      reject message
 
 
@@ -105,13 +105,13 @@ class ExtendedRules
      * @param  {[string]}   args    [arguments passed along with validator]
      * @return {[promise]}  returns final promise
     ###
-    
+
     year : (data,field,message,args) ->
       [year] = args.toString().split ","
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        IS.year(new Date(data[field]),parseInt(year))
-        then      resolve 'is a valid year'
+        then      resolve "is a valid year"
         else      reject message
 
 
@@ -128,8 +128,8 @@ class ExtendedRules
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        letters.test data[field]
-        then      resolve 'is alpha'
-        else      reject message        
+        then      resolve "is alpha"
+        else      reject message
 
 
     ###*
@@ -145,7 +145,7 @@ class ExtendedRules
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        MOMENT(data[field]).isBefore date
-        then      resolve 'is after date'
+        then      resolve "is after date"
         else      reject message
 
 
@@ -161,12 +161,13 @@ class ExtendedRules
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        (MOMENT data[field],formats,true).isValid()
-        then      resolve 'is valid date'
+        then      resolve "is valid date"
         else      reject message
 
 
     ###*
-     * Make sure field under validation must be a valid date with specified format
+     * Make sure field under validation must be a valid date
+     * with specified format
      * @param  {[object]}   data    [global data object]
      * @param  {[string]}   field   [field to be validated]
      * @param  {[string]}   message [message to be printed]
@@ -178,7 +179,7 @@ class ExtendedRules
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        (MOMENT data[field],format,true).isValid()
-        then      resolve 'is valid date'
+        then      resolve "is valid date"
         else      reject message
 
 
@@ -190,12 +191,12 @@ class ExtendedRules
      * @param  {[string]}   args    [arguments passed along with validator]
      * @return {[promise]}  returns final promise
     ###
-    in : (data,field,message,args) -> 
+    in : (data,field,message,args) ->
       with_in = args.split ","
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        IS.inArray data[field],with_in
-        then      resolve 'is in array'
+        then      resolve "is in array"
         else      reject message
 
 
@@ -207,12 +208,12 @@ class ExtendedRules
      * @param  {[string]}   args    [arguments passed along with validator]
      * @return {[promise]}  returns final promise
     ###
-    notIn : (data,field,message,args) -> 
+    notIn : (data,field,message,args) ->
       with_not_in = args.split ","
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        IS.not.inArray data[field],with_not_in
-        then      resolve 'is in array'
+        then      resolve "is in array"
         else      reject message
 
 
@@ -225,11 +226,11 @@ class ExtendedRules
     ###
     required : (data,field,message) ->
       new PROMISE (resolve,reject) ->
-        if        (_.has data,field) \ 
+        if        (_.has data,field) \
         and       IS.truthy data[field] \
         and       IS.existy data[field] \
         and       IS.not.empty data[field]
-        then      resolve 'is present'
+        then      resolve "is present"
         else      reject message
 
 
@@ -247,8 +248,10 @@ class ExtendedRules
         if        (not _.has data,with_field) \
         or        (IS.not.equal data[with_field],value) \
         or        (_.has data,field) \
+        and       IS.truthy data[field] \
+        and       IS.existy data[field] \
         and       IS.not.empty data[field]
-        then      resolve 'is equal'
+        then      resolve "is equal"
         else      reject message
 
 
@@ -266,13 +269,16 @@ class ExtendedRules
       new PROMISE (resolve,reject) ->
         if        (_.size intersection) is 0 \
         or        (_.has data,field) \
+        and       IS.truthy data[field] \
+        and       IS.existy data[field] \
         and       IS.not.empty data[field]
-        then      resolve 'is equal'
+        then      resolve "is equal"
         else      reject message
 
 
     ###*
-     * Make sure field under validation is required without any of the conditions
+     * Make sure field under validation is required without
+     * any of the conditions
      * @param  {[object]}   data    [global data object]
      * @param  {[string]}   field   [field to be validated]
      * @param  {[string]}   message [message to be printed]
@@ -285,8 +291,10 @@ class ExtendedRules
       new PROMISE (resolve,reject) ->
         if        (_.size intersection) is (_.size with_any_fields) \
         or        (_.has data,field) \
+        and       IS.truthy data[field] \
+        and       IS.existy data[field] \
         and       IS.not.empty data[field]
-        then      resolve 'is equal'
+        then      resolve "is equal"
         else      reject message
 
     ###*
@@ -303,13 +311,16 @@ class ExtendedRules
       new PROMISE (resolve,reject) ->
         if        (_.size intersection) isnt (_.size with_any_fields) \
         or        (_.has data,field) \
+        and       IS.truthy data[field] \
+        and       IS.existy data[field] \
         and       IS.not.empty data[field]
-        then      resolve 'is equal'
+        then      resolve "is equal"
         else      reject message
 
 
     ###*
-     * Make sure field under validation is required without all of the conditions
+     * Make sure field under validation is required without all
+     * of the conditions
      * @param  {[object]}   data    [global data object]
      * @param  {[string]}   field   [field to be validated]
      * @param  {[string]}   message [message to be printed]
@@ -322,8 +333,10 @@ class ExtendedRules
       new PROMISE (resolve,reject) ->
         if        (_.size intersection) isnt 0 \
         or        (_.has data,field) \
+        and       IS.truthy data[field] \
+        and       IS.existy data[field] \
         and       IS.not.empty data[field]
-        then      resolve 'is equal'
+        then      resolve "is equal"
         else      reject message
 
 
@@ -335,12 +348,12 @@ class ExtendedRules
      * @param  {[string]}   args    [arguments passed along with validator]
      * @return {[promise]}  returns final promise
     ###
-    same : (data,field,message,args) -> 
+    same : (data,field,message,args) ->
       [same_as] = args.split ","
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        IS.equal data[field],data[same_as]
-        then      resolve 'is same'
+        then      resolve "is same"
         else      reject message
 
 
@@ -352,12 +365,12 @@ class ExtendedRules
      * @param  {[string]}   args    [arguments passed along with validator]
      * @return {[promise]}  returns final promise
     ###
-    equals : (data,field,message,args) -> 
+    equals : (data,field,message,args) ->
       [same_as] = args.split ","
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        IS.equal data[field],same_as
-        then      resolve 'is equal'
+        then      resolve "is equal"
         else      reject message
 
     ###*
@@ -368,28 +381,29 @@ class ExtendedRules
      * @param  {[string]}   args    [arguments passed along with validator]
      * @return {[promise]}  returns final promise
     ###
-    notEquals : (data,field,message,args) -> 
+    notEquals : (data,field,message,args) ->
       [same_as] = args.split ","
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        IS.not.equal data[field],same_as
-        then      resolve 'is not equal'
+        then      resolve "is not equal"
         else      reject message
 
     ###*
-     * Make sure field under validation value is different from the given field value
+     * Make sure field under validation value is different
+     * from the given field value
      * @param  {[object]}   data    [global data object]
      * @param  {[string]}   field   [field to be validated]
      * @param  {[string]}   message [message to be printed]
      * @param  {[string]}   args    [arguments passed along with validator]
      * @return {[promise]}  returns final promise
     ###
-    different : (data,field,message,args) -> 
+    different : (data,field,message,args) ->
       [same_as] = args.split ","
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        IS.not.equal data[field],data[same_as]
-        then      resolve 'is different'
+        then      resolve "is different"
         else      reject message
 
 
@@ -401,12 +415,12 @@ class ExtendedRules
      * @param  {[string]}   args    [arguments passed along with validator]
      * @return {[promise]}  returns final promise
     ###
-    range : (data,field,message,args) -> 
+    range : (data,field,message,args) ->
       [start,end] = args.split ","
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        data[field] in [start..end]
-        then      resolve 'is different'
+        then      resolve "is different"
         else      reject message
 
     ###*
@@ -417,16 +431,16 @@ class ExtendedRules
      * @param  {[string]}   args    [arguments passed along with validator]
      * @return {[promise]}  returns final promise
     ###
-    min : (data,field,message,args) -> 
+    min : (data,field,message,args) ->
       [desired_length] = args.toString().split ","
 
       ## to calc integers length too
       data[field] = data[field].toString()
-      
+
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        (_.size data[field]) >= parseInt desired_length
-        then      resolve 'is different'
+        then      resolve "is different"
         else      reject message
 
     ###*
@@ -437,16 +451,16 @@ class ExtendedRules
      * @param  {[string]}   args    [arguments passed along with validator]
      * @return {[promise]}  returns final promise
     ###
-    max : (data,field,message,args) -> 
+    max : (data,field,message,args) ->
       [desired_length] = args.toString().split ","
-      
+
       ## to calc integers length too
       data[field] = data[field].toString()
-      
+
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        (_.size data[field]) <= parseInt desired_length
-        then      resolve 'is different'
+        then      resolve "is different"
         else      reject message
 
     ###*
@@ -462,8 +476,8 @@ class ExtendedRules
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        IS.above parseInt(data[field]),parseInt min
-        then      resolve 'is above'
-        else      reject message      
+        then      resolve "is above"
+        else      reject message
 
 
     ###*
@@ -479,8 +493,8 @@ class ExtendedRules
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        IS.under parseInt(data[field]),parseInt min
-        then      resolve 'is under'
-        else      reject message      
+        then      resolve "is under"
+        else      reject message
 
 
     ###*
@@ -496,8 +510,8 @@ class ExtendedRules
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        IS.include data[field],substring
-        then      resolve 'does include'
-        else      reject message      
+        then      resolve "does include"
+        else      reject message
 
 
     ###*
@@ -513,7 +527,7 @@ class ExtendedRules
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        IS.startWith data[field],substring
-        then      resolve 'does starts with'
+        then      resolve "does starts with"
         else      reject message
 
     ###*
@@ -529,7 +543,7 @@ class ExtendedRules
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
         or        IS.endWith data[field],substring
-        then      resolve 'does ends with'
+        then      resolve "does ends with"
         else      reject message
 
 module.exports = ExtendedRules

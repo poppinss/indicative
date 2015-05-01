@@ -3,9 +3,10 @@
 ###*
  * @author Harminder Virk
  * @since v0.6
- * @description Expressions to deep object parser, validator and message constructor
+ * @description Expressions to deep object parser, validator
+ * and message constructor
  * @example
- * somefield = required|min:8 will be parsed to 
+ * somefield = required|min:8 will be parsed to
  * { name:['required','min:8'] }
  * later each rule is validated using defined methods
 ###
@@ -27,10 +28,10 @@ DOT          = require 'dot-object'
 
 class Validator extends RULES
 
-  # Access to raw `IS` object , 
+  # Access to raw `IS` object ,
   # to run Manual validations
   IS: IS
-  
+
 
   # singleton instance holder
   instance = null
@@ -42,17 +43,17 @@ class Validator extends RULES
 
 
   # global private property
-  # to save list of messages to return 
+  # to save list of messages to return
   GE = []
-  
-  
-  constructor: () ->
+
+
+  constructor: ->
     if !instance then instance = this
     super()
     return instance
 
   # private method to parse hash of rules
-  _parseRules = (rules) -> 
+  _parseRules = (rules) ->
     _.transform rules, (result,rule,key) -> result[key] = rule.split "|"
 
 
@@ -61,10 +62,10 @@ class Validator extends RULES
   _parseRule = (rule,key) ->
     [defination,args]   = rule.split ":"
     message             = _messages defination,key
-    
+
     ## converting _ to camelcase
     defination          = defination.replace /_([a-z])/g , (g) -> g[1].toUpperCase()
-    
+
     {defination,args,message}
 
 
@@ -115,7 +116,7 @@ class Validator extends RULES
     CVM = messages || {}
     GE = []
     rH = _parseRules rulesHash
-    
+
     if _.size messages
       DOT.object messages
 
@@ -140,7 +141,7 @@ class Validator extends RULES
     CVM  = messages || {}
     GE   = []
     rH   = _parseRules rulesHash
-    
+
     if _.size messages
       DOT.object messages
 

@@ -1,0 +1,11 @@
+{
+	"folders":
+	[
+		{
+			"path": ".",
+      "file_exclude_patterns": [
+        "lib/*.js","test/*.js","benchmarks/*.js","example.js"
+      ]
+		}
+	]
+}

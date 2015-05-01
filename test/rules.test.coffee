@@ -2233,3 +2233,546 @@ describe "#Rules", () ->
           should.exist success
         .catch (err) ->
           should.not.exist err
+
+
+    context "required_if", () ->
+
+      field   = 'mustache'
+      message = 'required when user is gender is male'
+      ruleDefination = 'gender,male'
+
+      it "should work fine when field if field is not present", () ->
+
+        data = {}
+
+        rules.validations.requiredIf data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
+
+      it "should return an error when field if field is present and field under validation is not present", () ->
+
+        data = 
+          gender : 'male'
+
+        rules.validations.requiredIf data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+
+      it "should return an error when field if field is present and field under validation is null", () ->
+
+        data = 
+          gender   : 'male'
+          mustache : null
+
+        rules.validations.requiredIf data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+
+      it "should return an error when field if field is present and field under validation is undefined", () ->
+
+        data = 
+          gender   : 'male'
+          mustache : undefined
+
+        rules.validations.requiredIf data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+
+      it "should return an error when field if field is present and field under validation is set to false", () ->
+
+        data = 
+          gender   : 'male'
+          mustache : false
+
+        rules.validations.requiredIf data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+      it "should work fine when field under validation is present and value of field under if is also same", () ->
+
+        data = 
+          gender   : 'male'
+          mustache : true
+
+        rules.validations.requiredIf data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
+
+      it "should work fine when field under validation is present and value of field under if value is not equal to defined value", () ->
+
+        data = 
+          gender   : 'female'
+          mustache : false
+
+        rules.validations.requiredIf data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
+    context "required_with_all", () ->
+
+      field   = 'apple_freak'
+      message = 'apple freak should be true when user owns all apple devices'
+      ruleDefination = 'iphone,mac,imac,ipod,ipad'
+
+      it "should work fine when `with fields` are not present and field under validation is also not present", () ->
+
+        data = {}
+
+        rules.validations.requiredWithAll data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
+      it "should work fine when some of the `with fields` are present and field under validation is not present", () ->
+
+        data = 
+          imac : true
+          ipod : true
+
+        rules.validations.requiredWithAll data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
+      it "should return error when all of the `with fields` are present and field under validation is not present", () ->
+
+        data = 
+          imac   : true
+          ipod   : true
+          ipad   : true
+          mac    : true
+          iphone : true
+
+        rules.validations.requiredWithAll data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+      it "should return error when all of the `with fields` are present and field under validation is null", () ->
+
+        data = 
+          imac   : true
+          ipod   : true
+          ipad   : true
+          mac    : true
+          iphone : true
+          apple_freak : null
+
+        rules.validations.requiredWithAll data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+      it "should return error when all of the `with fields` are present and field under validation is undefined", () ->
+
+        data = 
+          imac   : true
+          ipod   : true
+          ipad   : true
+          mac    : true
+          iphone : true
+          apple_freak : undefined
+
+        rules.validations.requiredWithAll data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+      it "should return error when all of the `with fields` are present and field under validation is false", () ->
+
+        data = 
+          imac   : true
+          ipod   : true
+          ipad   : true
+          mac    : true
+          iphone : true
+          apple_freak : false
+
+
+        rules.validations.requiredWithAll data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+      it "should work fine when all of the `with fields` are present and field under validation is true or present", () ->
+
+        data = 
+          imac   : true
+          ipod   : true
+          ipad   : true
+          mac    : true
+          iphone : true
+          apple_freak : true
+
+
+        rules.validations.requiredWithAll data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
+    context "required_with_any", () ->
+
+      field   = 'social_login'
+      message = 'social login should be set true when user is logged in using social channels'
+      ruleDefination = 'twitter,facebook,gplus'
+
+      it "should work fine when `with any fields` are not present and field under validation is also not present", () ->
+
+        data = {}
+
+        rules.validations.requiredWithAny data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
+      it "should return error when field under validation is not present and any one with any fields are present", () ->
+
+        data =
+          twitter : true
+
+        rules.validations.requiredWithAny data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+
+      it "should return error when field under validation is null and any one with any fields are present", () ->
+
+        data =
+          twitter       : true
+          social_login  : null
+
+        rules.validations.requiredWithAny data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+
+      it "should return error when field under validation is undefined and any one with any fields are present", () ->
+
+        data =
+          twitter       : true
+          social_login  : undefined
+
+        rules.validations.requiredWithAny data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+      it "should return error when field under validation is false and any one with any fields are present", () ->
+
+        data =
+          twitter       : true
+          social_login  : false
+
+        rules.validations.requiredWithAny data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+
+      it "should work fine when `with any fields` are present and field under validation is also present and not false", () ->
+
+        data =
+          twitter       : true
+          social_login  : true
+
+        rules.validations.requiredWithAny data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
+
+
+
+
+    context "required_without_all", () ->
+
+      field   = 'phone_number'
+      message = 'phone number is required when you are not member or staff'
+      ruleDefination = 'member,staff'
+
+      it "should work fine when `without all fields` are present and field under validation is also not present", () ->
+
+        data =
+          member : true
+
+        rules.validations.requiredWithoutAll data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
+      it "should return error when `without all fields` are not present and field under validation is also not present", () ->
+
+        data = {}
+
+        rules.validations.requiredWithoutAll data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+      it "should return error when `without all fields` are not present and field under validation is null", () ->
+
+        data = 
+          phone_number : null
+
+        rules.validations.requiredWithoutAll data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+      it "should return error when `without all fields` are not present and field under validation is undefined", () ->
+
+        data = 
+          phone_number : undefined
+
+        rules.validations.requiredWithoutAll data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+      it "should return error when `without all fields` are not present and field under validation is false", () ->
+
+        data = 
+          phone_number : false
+
+        rules.validations.requiredWithoutAll data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+      it "should work fine when `without all fields` are not present and field under validation is true or present", () ->
+
+        data = 
+          phone_number : true
+
+        rules.validations.requiredWithoutAll data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
+
+
+    context "required_without_any", () ->
+
+      field   = 'email_address'
+      message = 'email address is required without twitter and phone number'
+      ruleDefination = 'twitter_token,phone_number'
+
+      it "should work fine when `without any fields` are present and field under validation is also not present", () ->
+
+        data =
+          twitter_token : 'sometoken'
+          phone_number  : '9102301021'
+
+        rules.validations.requiredWithoutAny data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
+
+      it "should return error when any of the `without any fields` are missing and field under validation is not present", () ->
+
+        data =
+          phone_number  : '9102301021'
+
+        rules.validations.requiredWithoutAny data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+      it "should return error when any of the `without any fields` are missing and field under validation is null", () ->
+
+        data =
+          phone_number  : '9102301021'
+          email_address : null
+
+        rules.validations.requiredWithoutAny data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+      it "should return error when any of the `without any fields` are missing and field under validation is false", () ->
+
+        data =
+          phone_number  : '9102301021'
+          email_address : false
+
+        rules.validations.requiredWithoutAny data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+      it "should return error when any of the `without any fields` are missing and field under validation is undefined", () ->
+
+        data =
+          twitter_token  : 'sometoken'
+          email_address : undefined
+
+        rules.validations.requiredWithoutAny data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+      it "should return error when any of the `without any fields` are missing and field under validation is present and is true", () ->
+
+        data =
+          twitter_token  : 'sometoken'
+          email_address : '@example.com'
+
+        rules.validations.requiredWithoutAny data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
+
+
+    context "same", () ->
+
+      field   = 'password_confirm'
+      message = 'Password should match'
+      ruleDefination = 'password'
+
+      it "should work fine with same field is not present", () ->
+
+        data = {}
+
+        rules.validations.same data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
+      it "should work fine with same field is present and field under validation is not present", () ->
+
+        data =
+          password : 'wuhooo'
+
+        rules.validations.same data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
+      it "should return error when same field value does not equals value of field under validation", () ->
+
+        data =
+          password : 'wuhooo'
+          password_confirm : 'wuooo'
+
+        rules.validations.same data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+      it "should work fine when field under validation value is same as `same field's value`", () ->
+
+        data =
+          password : 'wuhooo'
+          password_confirm : 'wuhooo'
+
+        rules.validations.same data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err

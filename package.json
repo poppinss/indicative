@@ -15,10 +15,12 @@
   },
   "devDependencies": {
     "chai": "^2.3.0",
+    "gulp": "^3.8.11",
+    "gulp-coffeelint": "^0.4.0",
     "mocha": "^2.2.4"
   },
   "scripts": {
-    "test": "node ./node_modules/mocha/bin/mocha test --reporter spec --check-leaks --bail",
+    "test": "node ./node_modules/gulp/bin/gulp lint && node ./node_modules/mocha/bin/mocha test --reporter spec --check-leaks --bail",
     "install": "./node_modules/coffee-script/bin/coffee -c ."
   },
   "keywords": [
