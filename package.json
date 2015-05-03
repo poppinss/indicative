@@ -21,7 +21,7 @@
   },
   "scripts": {
     "test": "node ./node_modules/gulp/bin/gulp lint && node ./node_modules/mocha/bin/mocha test --reporter spec --check-leaks --bail",
-    "install": "./node_modules/coffee-script/bin/coffee -c ."
+    "install": "node ./node_modules/coffee-script/bin/coffee -c ."
   },
   "repository":{
     "type" : "git",

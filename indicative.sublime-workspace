@@ -4,6 +4,38 @@
 		"selected_items":
 		[
 			[
+				"m",
+				"node_modules"
+			],
+			[
+				"passwr",
+				"password_confirm"
+			],
+			[
+				"some",
+				"sometoken"
+			],
+			[
+				"val",
+				"validation"
+			],
+			[
+				"phone",
+				"phone_number"
+			],
+			[
+				"pho",
+				"phone_number"
+			],
+			[
+				"fiel",
+				"fields"
+			],
+			[
+				"valid",
+				"validation"
+			],
+			[
 				"par",
 				"partials"
 			],
@@ -60,10 +92,6 @@
 				"metaObject"
 			],
 			[
-				"val",
-				"value"
-			],
-			[
 				"mark",
 				"markDownText"
 			],
@@ -90,10 +118,6 @@
 			[
 				"ma",
 				"mark"
-			],
-			[
-				"m",
-				"Methods"
 			],
 			[
 				"tr",
@@ -304,10 +328,6 @@
 				"LINEUPMODULE"
 			],
 			[
-				"phone",
-				"phone_no"
-			],
-			[
 				"res",
 				"resume"
 			],
@@ -484,10 +504,6 @@
 				"validating_password"
 			],
 			[
-				"fiel",
-				"fields_allowed"
-			],
-			[
 				"url",
 				"urlConfig"
 			],
@@ -498,22 +514,6 @@
 			[
 				"th",
 				"through"
-			],
-			[
-				"count",
-				"country_code"
-			],
-			[
-				"n",
-				"number_two_letters"
-			],
-			[
-				"ph",
-				"phone_no"
-			],
-			[
-				"e",
-				"exec"
 			]
 		]
 	},
@@ -596,18 +596,33 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative"
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/lib"
 	],
 	"file_history":
 	[
-		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/settings.sublime-project",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/package.json",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/npm-debug.log",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/lib/validator.coffee",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/readme.md",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/gulpfile.coffee",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/indicative.sublime-project",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/gulpfile.js",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/.gitignore",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/.travis.yml",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/coffeelint.json",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/.jshintrc",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/lib/messages.coffee",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/lib/extendedRules.coffee",
 		"/Users/harmindervirk/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/test/validate.test.coffee",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/test/rules.test.coffee",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/benchmarks/index.coffee",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/Cakefile",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/example.coffee",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/settings.sublime-project",
 		"/Users/harmindervirk/Library/Application Support/Sublime Text 3/Packages/SideBarEnhancements/Side Bar.sublime-settings",
 		"/Users/harmindervirk/Library/Application Support/Sublime Text 3/Packages/User/Distraction Free.sublime-settings",
-		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/Cakefile",
-		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/lib/validator.coffee",
 		"/Users/harmindervirk/Library/Application Support/Sublime Text 3/Packages/Better CoffeeScript/CoffeeScript.sublime-settings",
-		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/lib/extendedRules.coffee",
 		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/test/rules.coffee",
 		"/Users/harmindervirk/docBuilder/lib/menu.coffee",
 		"/Users/harmindervirk/docBuilder/lib/templates.coffee",
@@ -712,26 +727,11 @@
 		"/Users/harmindervirk/jezDb/clientAppNew/app/controllers/addProperty.js",
 		"/Users/harmindervirk/jezDb/clientAppNew/app/styles/custom.css",
 		"/Users/harmindervirk/Downloads/modal-prop.html",
-		"/Users/harmindervirk/jezDb/clientAppNew/app/templates/partials/new-property.html",
-		"/Users/harmindervirk/jezDb/clientAppNew/app/templates/partials/new-ma.html",
-		"/Users/harmindervirk/jezDb/clientAppNew/app/templates/partials/new-vendor.html",
-		"/Users/harmindervirk/jezDb/clientAppNew/app/directives/addNav.js",
-		"/Users/harmindervirk/jezDb/clientAppNew/app/controllers/index.js",
-		"/Users/harmindervirk/jezDb/clientAppNew/app/templates/properties/sections/add-property.html",
-		"/Users/harmindervirk/jezDb/clientAppNew/app/directives/quickAdd.js",
-		"/Users/harmindervirk/jezDb/clientAppNew/bower_components/ui-modal-box/uiModalBox.js",
-		"/Users/harmindervirk/jezDb/clientAppNew/app/services/fileManager.js",
-		"/Users/harmindervirk/jezDb/clientAppNew/app/services/alert.js",
-		"/Users/harmindervirk/jezDb/clientAppNew/app/templates/partials/header.html",
-		"/Users/harmindervirk/jezDb/clientAppNew/app/app.js",
-		"/Users/harmindervirk/jezDb/clientAppNew/app/directives/index.js",
-		"/Users/harmindervirk/jezDb/clientAppNew/app/property_routes.js",
-		"/Users/harmindervirk/jezDb/clientAppNew/app/index.html",
-		"/Users/harmindervirk/jezDb/clientAppNew/app/constants.js"
+		"/Users/harmindervirk/jezDb/clientAppNew/app/templates/partials/new-property.html"
 	],
 	"find":
 	{
-		"height": 39.0
+		"height": 38.0
 	},
 	"find_in_files":
 	{
@@ -838,6 +838,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"'",
+			"_parseRules",
 			"caps",
 			"aysncMap",
 			"test.md",
@@ -963,9 +965,7 @@
 			"603",
 			"product-stats",
 			"table-cell",
-			"uiView",
-			".main-container section.main",
-			"images/"
+			"uiView"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1042,7 +1042,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 39.0
+		"height": 25.0
 	},
 	"input":
 	{
@@ -1083,7 +1083,7 @@
 	"project": "indicative.sublime-project",
 	"replace":
 	{
-		"height": 74.0
+		"height": 46.0
 	},
 	"save_all_on_build": true,
 	"select_file":
