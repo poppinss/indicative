@@ -8,18 +8,18 @@ rules       = new Rules
 
 describe "#Rules", () ->
   describe "arthimetic rules", () ->
-  
+
     context "above", () ->
-    
+
       field = 'age'
       message = 'Age must be above 30 years'
       ruleDefination = '30'
 
       it "should return error when value passed is not above the defined value", () ->
-      
-        data = 
+
+        data =
           age:23
-      
+
         rules.validations.above data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
@@ -28,26 +28,26 @@ describe "#Rules", () ->
           expect(err).to.equal message
 
       it "should return resolved promise when value passed is more than defined value", () ->
-      
-        data = 
+
+        data =
           age:31
-      
+
         rules.validations.above data,field,message,ruleDefination
         .then (success) ->
           should.exist success
         .catch (err) ->
           should.not.exist err
-    
+
     context "decimal", () ->
-      
+
       field = 'test-speed'
       message = 'test speed should be in decimal numbers'
-      
+
       it "should return error when value passed is not a decimal number", () ->
-              
+
         data =
           'test-speed' : 10
-        
+
         rules.validations.decimal data,field,message
         .then (success) ->
           should.not.exist success
@@ -56,10 +56,10 @@ describe "#Rules", () ->
           expect(err).to.equal message
 
       it "should return work fine when a valid decimal value has been passed", () ->
-      
+
         data =
           'test-speed' : 10.5
-        
+
         rules.validations.decimal data,field,message
         .then (success) ->
           should.exist success
@@ -68,16 +68,16 @@ describe "#Rules", () ->
 
 
     context "equals", () ->
-      
+
       field = 'promo_code'
       message = 'invalid promo code'
       ruleDefination = 'SUNDAY30'
-      
+
       it "should return error when value passed does not equals defined value", () ->
-              
+
         data =
           promo_code: 'SUNDAY10'
-        
+
         rules.validations.equals data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
@@ -86,10 +86,10 @@ describe "#Rules", () ->
           expect(err).to.equal message
 
       it "should work fine when value passed is equal to the defined value", () ->
-      
+
         data =
           promo_code: 'SUNDAY30'
-        
+
         rules.validations.equals data,field,message,ruleDefination
         .then (success) ->
           should.exist success
@@ -98,15 +98,15 @@ describe "#Rules", () ->
 
 
     context "even", () ->
-      
+
       field = 'car_doors'
       message = 'car doors cannot be even in number'
-      
+
       it "should return error when value passed is not an even number", () ->
-              
+
         data =
           car_doors: 3
-        
+
         rules.validations.even data,field,message
         .then (success) ->
           should.not.exist success
@@ -116,10 +116,10 @@ describe "#Rules", () ->
 
 
       it "should work fine when value passed is a valid even number", () ->
-      
+
         data =
           car_doors: 4
-        
+
         rules.validations.even data,field,message
         .then (success) ->
           should.exist success
@@ -130,15 +130,15 @@ describe "#Rules", () ->
 
 
     context "finite", () ->
-      
+
       field = 'employees'
       message = 'number of employees should be finite'
-      
+
       it "should return error when value passed is not finite", () ->
-              
+
         data =
           employees: 42/0
-        
+
         rules.validations.finite data,field,message
         .then (success) ->
           should.not.exist success
@@ -147,10 +147,10 @@ describe "#Rules", () ->
           expect(err).to.equal message
 
       it "should work fine when value passed is a valid finite number", () ->
-      
+
         data =
           employees: 42
-        
+
         rules.validations.finite data,field,message
         .then (success) ->
           should.exist success
@@ -159,15 +159,15 @@ describe "#Rules", () ->
 
 
     context "infinite", () ->
-      
+
       field = 'stars'
       message = 'number of employees should be infinite'
-      
+
       it "should return error when value passed is not infinite", () ->
-              
+
         data =
           stars: 42
-        
+
         rules.validations.infinite data,field,message
         .then (success) ->
           should.not.exist success
@@ -176,10 +176,10 @@ describe "#Rules", () ->
           expect(err).to.equal message
 
       it "should work fine when value passed is a valid infinite number", () ->
-      
+
         data =
           stars: Infinity
-        
+
         rules.validations.infinite data,field,message
         .then (success) ->
           should.exist success
@@ -188,15 +188,15 @@ describe "#Rules", () ->
 
 
     context "integer ", () ->
-      
+
       field = 'age'
       message = 'age is not valid'
-      
+
       it "should return error when value passed is not an integer", () ->
-              
+
         data =
           age: '42'
-        
+
         rules.validations.integer data,field,message
         .then (success) ->
           should.not.exist success
@@ -205,10 +205,10 @@ describe "#Rules", () ->
           expect(err).to.equal message
 
       it "should work fine when value passed is a valid integer", () ->
-      
+
         data =
           age: 28
-        
+
         rules.validations.integer data,field,message
         .then (success) ->
           should.exist success
@@ -217,16 +217,16 @@ describe "#Rules", () ->
 
 
     context "max", () ->
-      
+
       field = 'password'
       message = 'password cannot be greater than 6 digits'
       ruleDefination = 6
-      
+
       it "should return error when length of value is more than defined length", () ->
-                
+
         data =
           password: 'hello@1210219'
-        
+
         rules.validations.max data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
@@ -235,10 +235,10 @@ describe "#Rules", () ->
           expect(err).to.equal message
 
       it "should work fine when length of value is below than defined length", () ->
-      
+
         data =
           password: 'r@1Y!'
-        
+
         rules.validations.max data,field,message,ruleDefination
         .then (success) ->
           should.exist success
@@ -247,10 +247,10 @@ describe "#Rules", () ->
 
 
       it "should work fine when length of value is equal to the defined length", () ->
-      
+
         data =
           password: 'tr@1Y!'
-        
+
         rules.validations.max data,field,message,ruleDefination
         .then (success) ->
           should.exist success
@@ -259,10 +259,10 @@ describe "#Rules", () ->
 
 
       it "should work fine when value contains integers only", () ->
-      
+
         data =
           password: 123456
-        
+
         rules.validations.max data,field,message,ruleDefination
         .then (success) ->
           should.exist success
@@ -271,16 +271,16 @@ describe "#Rules", () ->
 
 
     context "min", () ->
-      
+
       field = 'password'
       message = 'password should be greater than 6 digits'
       ruleDefination = 6
-      
+
       it "should return error when length of value is less than defined length", () ->
-                
+
         data =
           password: 'hello'
-        
+
         rules.validations.min data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
@@ -289,10 +289,10 @@ describe "#Rules", () ->
           expect(err).to.equal message
 
       it "should work fine when length of value is greater than defined length", () ->
-      
+
         data =
           password: 'brr@1Y!'
-        
+
         rules.validations.min data,field,message,ruleDefination
         .then (success) ->
           should.exist success
@@ -301,10 +301,10 @@ describe "#Rules", () ->
 
 
       it "should work fine when length of value is equal to the defined length", () ->
-      
+
         data =
           password: 'tr@1Y!'
-        
+
         rules.validations.min data,field,message,ruleDefination
         .then (success) ->
           should.exist success
@@ -313,10 +313,10 @@ describe "#Rules", () ->
 
 
       it "should work fine when value contains integers only", () ->
-      
+
         data =
           password: 123456
-        
+
         rules.validations.min data,field,message,ruleDefination
         .then (success) ->
           should.exist success
@@ -325,15 +325,15 @@ describe "#Rules", () ->
 
 
     context "negative", () ->
-      
+
       field = 'tempature'
       message = 'tempature should be below 0 degrees'
-      
+
       it "should return error when value passed is not negative", () ->
-              
+
         data =
           tempature: 10
-        
+
         rules.validations.negative data,field,message
         .then (success) ->
           should.not.exist success
@@ -343,10 +343,10 @@ describe "#Rules", () ->
 
 
       it "should return error when value passed is not a valid number", () ->
-      
+
         data =
           tempature: '-2'
-        
+
         rules.validations.negative data,field,message
         .then (success) ->
           should.not.exist success
@@ -355,10 +355,10 @@ describe "#Rules", () ->
           expect(err).to.equal message
 
       it "should work fine when value passed is a valid negative number", () ->
-      
+
         data =
           tempature: -2
-        
+
         rules.validations.negative data,field,message
         .then (success) ->
           should.exist success
@@ -368,16 +368,16 @@ describe "#Rules", () ->
 
 
     context "notEquals", () ->
-      
+
       field = 'username'
       message = 'username john has already been taken'
       ruleDefination = 'john'
-      
+
       it "should return an error when value passed is equal to the defined value", () ->
-              
+
         data =
           username: 'john'
-        
+
         rules.validations.notEquals data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
@@ -387,10 +387,10 @@ describe "#Rules", () ->
 
 
       it "should work fine when value passed does not equal defined value", () ->
-      
+
         data =
           username: 'johny'
-        
+
         rules.validations.notEquals data,field,message,ruleDefination
         .then (success) ->
           should.exist success
@@ -400,15 +400,15 @@ describe "#Rules", () ->
 
 
     context "odd", () ->
-      
+
       field = 'station'
       message = 'station channel frequency should be an odd value'
-      
+
       it "should return error when value passed is not an odd number", () ->
-              
+
         data =
           station: 104
-        
+
         rules.validations.odd data,field,message
         .then (success) ->
           should.not.exist success
@@ -418,10 +418,10 @@ describe "#Rules", () ->
 
 
       it "should work fine when value passed is a valid odd number", () ->
-      
+
         data =
           station: 93.5
-        
+
         rules.validations.odd data,field,message
         .then (success) ->
           should.exist success
@@ -431,15 +431,15 @@ describe "#Rules", () ->
 
 
     context "positive", () ->
-      
+
       field = 'age'
       message = 'age cannot be negative'
-      
+
       it "should return error when value passed is not positive", () ->
-              
+
         data =
           age: -1
-        
+
         rules.validations.positive data,field,message
         .then (success) ->
           should.not.exist success
@@ -449,10 +449,10 @@ describe "#Rules", () ->
 
 
       it "should work fine when value passed is a valid positive number", () ->
-      
+
         data =
           age: 10
-        
+
         rules.validations.positive data,field,message
         .then (success) ->
           should.exist success
@@ -462,16 +462,16 @@ describe "#Rules", () ->
 
 
     context "range", () ->
-      
+
       field = 'age'
       message = 'age should be between 18 to 40 years'
       ruleDefination = '18,40'
-      
+
       it "should return error when value passed is under defined range", () ->
-              
+
         data =
           age: 16
-        
+
         rules.validations.range data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
@@ -481,10 +481,10 @@ describe "#Rules", () ->
 
 
       it "should return error when value passed is over defined range", () ->
-              
+
         data =
           age: 42
-        
+
         rules.validations.range data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
@@ -494,10 +494,48 @@ describe "#Rules", () ->
 
 
       it "should work fine when value passed is between defined range", () ->
-      
+
         data =
           age: 22
-        
+
+        rules.validations.range data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
+      it "should work fine when value passed is between defined range and is a decimal number", () ->
+
+        data =
+          age: 22.2
+
+        rules.validations.range data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
+      it "should work fine when value passed is between defined range and is a rounded decimal number", () ->
+
+        data =
+          age: 22.0
+
+        rules.validations.range data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
+      it "should work fine when value passed is between defined range and range is in negative", () ->
+
+        data =
+          longitude: 89.1
+        ruleDefination = '-180.0,180.0'
+        field = 'longitude'
+
         rules.validations.range data,field,message,ruleDefination
         .then (success) ->
           should.exist success
@@ -506,16 +544,16 @@ describe "#Rules", () ->
 
 
     context "under", () ->
-    
+
       field = 'age'
       message = 'Age must be under 50 years'
       ruleDefination = 50
 
       it "should return error when value passed is not under defined value", () ->
-      
-        data = 
+
+        data =
           age:52
-      
+
         rules.validations.under data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
@@ -524,10 +562,10 @@ describe "#Rules", () ->
           expect(err).to.equal message
 
       it "should return resolved promise when value passed is under defined value", () ->
-      
-        data = 
+
+        data =
           age:31
-      
+
         rules.validations.under data,field,message,ruleDefination
         .then (success) ->
           should.exist success
@@ -535,18 +573,18 @@ describe "#Rules", () ->
           should.not.exist err
 
   describe "datetime rules", () ->
-    
+
     context "after", () ->
-      
+
       field = 'expiry_date'
       message = 'Expiry date cannot be past'
       ruleDefination = moment().format "YYYY-MM-DD"
-      
+
       it "should return error when value passed is not after defined date" , () ->
-        
-        data = 
+
+        data =
           expiry_date: moment().subtract(1,'day').format "YYYY-MM-DD"
-    
+
         rules.validations.after data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
@@ -555,10 +593,10 @@ describe "#Rules", () ->
           expect(err).to.equal message
 
       it "should return error when value passed is same as defined date" , () ->
-        
-        data = 
+
+        data =
           expiry_date:moment().format "YYYY-MM-DD"
-    
+
         rules.validations.after data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
@@ -569,10 +607,10 @@ describe "#Rules", () ->
 
 
       it "should work fine when date passed is after defined date" , () ->
-        
-        data = 
+
+        data =
           expiry_date: moment().add(1,'day').format "YYYY-MM-DD"
-    
+
         rules.validations.after data,field,message,ruleDefination
         .then (success) ->
           should.exist success
@@ -581,16 +619,16 @@ describe "#Rules", () ->
 
 
     context "before", () ->
-      
+
       field = 'dob'
       message = 'Your dob cannot be after today'
       ruleDefination = moment().format "YYYY-MM-DD"
-      
+
       it "should return error when value passed is not before defined date" , () ->
-        
-        data = 
+
+        data =
           dob: moment().add(1,'day').format "YYYY-MM-DD"
-    
+
         rules.validations.before data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
@@ -599,10 +637,10 @@ describe "#Rules", () ->
           expect(err).to.equal message
 
       it "should return error when value passed is same as defined date" , () ->
-        
-        data = 
+
+        data =
           dob:moment().format "YYYY-MM-DD"
-    
+
         rules.validations.before data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
@@ -613,10 +651,10 @@ describe "#Rules", () ->
 
 
       it "should work fine when date passed is before defined date" , () ->
-        
-        data = 
+
+        data =
           dob: moment().subtract(1,'day').format "YYYY-MM-DD"
-    
+
         rules.validations.before data,field,message,ruleDefination
         .then (success) ->
           should.exist success
@@ -625,15 +663,15 @@ describe "#Rules", () ->
 
 
     context "date", () ->
-      
+
       field = 'dob'
       message = 'dob should be a valid date'
-      
+
       it "should return error when value passed is not a valid date" , () ->
-        
-        data = 
+
+        data =
           dob: "20140428"
-    
+
         rules.validations.date data,field,message
         .then (success) ->
           should.not.exist success
@@ -643,10 +681,10 @@ describe "#Rules", () ->
 
 
       it "should work fine when date passed is a valid date" , () ->
-        
-        data = 
+
+        data =
           dob: "2014-04-28"
-    
+
         rules.validations.date data,field,message
         .then (success) ->
           should.exist success
@@ -655,10 +693,10 @@ describe "#Rules", () ->
 
 
       it "should work fine when date passed is a valid date and has MM/DD/YYYY format" , () ->
-        
-        data = 
+
+        data =
           dob: "04/28/2015"
-    
+
         rules.validations.date data,field,message
         .then (success) ->
           should.exist success
@@ -667,10 +705,10 @@ describe "#Rules", () ->
 
 
       it "should work fine when date passed is a valid date and has MM‐DD‐YYYY format" , () ->
-        
-        data = 
+
+        data =
           dob: "04-28-2015"
-    
+
         rules.validations.date data,field,message
         .then (success) ->
           should.exist success
@@ -679,10 +717,10 @@ describe "#Rules", () ->
 
 
       it "should work fine when date passed is a valid date and has YYYY/MM/DD format" , () ->
-        
-        data = 
+
+        data =
           dob: "2015/04/28"
-    
+
         rules.validations.date data,field,message
         .then (success) ->
           should.exist success
@@ -691,10 +729,10 @@ describe "#Rules", () ->
 
 
       it "should return error when value passed is not in predefined date formats" , () ->
-        
-        data = 
+
+        data =
           dob: "2014.04.28"
-    
+
         rules.validations.date data,field,message
         .then (success) ->
           should.not.exist success
@@ -705,16 +743,16 @@ describe "#Rules", () ->
 
 
     context "dateFormat", () ->
-      
+
       field = 'dob'
       message = 'dob should be a valid date as YYYY-MM-DD'
       ruleDefination = "YYYY-MM-DD"
-      
+
       it "should return error when value passed is not a valid date" , () ->
-        
-        data = 
+
+        data =
           dob: "20140428"
-    
+
         rules.validations.dateFormat data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
@@ -724,10 +762,10 @@ describe "#Rules", () ->
 
 
       it "should return error when value passed is a valid date but not in defined format" , () ->
-        
-        data = 
+
+        data =
           dob: "2015/04/28"
-    
+
         rules.validations.dateFormat data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
@@ -738,10 +776,10 @@ describe "#Rules", () ->
 
 
       it "should work fine when date passed is a valid date with valid defined format" , () ->
-        
-        data = 
+
+        data =
           dob: "2014-04-28"
-    
+
         rules.validations.dateFormat data,field,message,ruleDefination
         .then (success) ->
           should.exist success
@@ -752,16 +790,16 @@ describe "#Rules", () ->
 
 
     context "day", () ->
-      
+
       field = 'party_night'
       message = 'Party nights should be saturday\'s only'
       ruleDefination = "saturday"
-      
+
       it "should return error when day of date passed is not equal to defined day" , () ->
 
-        data = 
+        data =
           party_night: "2015-04-28"
-    
+
         rules.validations.day data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
@@ -772,7 +810,7 @@ describe "#Rules", () ->
 
       it "should not work when value passed is not a valid date object or neither can be converted to date object" , () ->
 
-        data = 
+        data =
           party_night: "25th april 2015"
 
         rules.validations.day data,field,message,ruleDefination
@@ -785,9 +823,9 @@ describe "#Rules", () ->
 
       it "should work fine when day of date passed is equal to defined day" , () ->
 
-        data = 
+        data =
           party_night: "2015-04-25"
-    
+
         rules.validations.day data,field,message,ruleDefination
         .then (success) ->
           should.exist success
@@ -798,15 +836,15 @@ describe "#Rules", () ->
 
 
     context "future", () ->
-      
+
       field = 'next_release'
       message = 'Release can be done in future only'
-      
+
       it "should return error when value passed is not a future date" , () ->
 
-        data = 
+        data =
           next_release: moment().format()
-    
+
         rules.validations.future data,field,message
         .then (success) ->
           should.not.exist success
@@ -817,9 +855,9 @@ describe "#Rules", () ->
 
       it "should return error when value passed is today but with smaller time" , () ->
 
-        data = 
+        data =
           next_release: moment().subtract(3,'hours').format()
-    
+
         rules.validations.future data,field,message
         .then (success) ->
           should.not.exist success
@@ -831,21 +869,21 @@ describe "#Rules", () ->
 
       it "should work fine when value passed is today but with greater time" , () ->
 
-        data = 
+        data =
           next_release: moment().add(3,'hours').format()
-    
+
         rules.validations.future data,field,message
         .then (success) ->
           should.exist success
         .catch (err) ->
           should.not.exist err
-          
+
 
       it "should work fine when value passed is a valid future date" , () ->
 
-        data = 
+        data =
           next_release: moment().add(1,'day').format()
-    
+
         rules.validations.future data,field,message
         .then (success) ->
           should.exist success
@@ -857,16 +895,16 @@ describe "#Rules", () ->
 
 
     context "month", () ->
-      
+
       field = 'closing_date'
       message = 'Closing months can be march only'
       ruleDefination = "march"
-      
+
       it "should return error when month of date passed is not equal to defined month" , () ->
 
         data =
           closing_date: "2015-04-28"
-    
+
         rules.validations.month data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
@@ -879,7 +917,7 @@ describe "#Rules", () ->
 
         data =
           closing_date: "2015-03-31"
-    
+
         rules.validations.month data,field,message,ruleDefination
         .then (success) ->
           should.exist success
@@ -889,15 +927,15 @@ describe "#Rules", () ->
 
 
     context "future", () ->
-      
+
       field = 'dob'
       message = 'Dob should be in past'
-      
+
       it "should return error when value passed is not a past date" , () ->
 
-        data = 
+        data =
           dob: moment().add(3,'days').format()
-    
+
         rules.validations.past data,field,message
         .then (success) ->
           should.not.exist success
@@ -908,9 +946,9 @@ describe "#Rules", () ->
 
       it "should return error when value passed is today but with greater time" , () ->
 
-        data = 
+        data =
           dob: moment().add(3,'hours').format()
-    
+
         rules.validations.past data,field,message
         .then (success) ->
           should.not.exist success
@@ -922,21 +960,21 @@ describe "#Rules", () ->
 
       it "should work fine when value passed is today but with smaller time" , () ->
 
-        data = 
+        data =
           dob: moment().subtract(3,'hours').format()
-    
+
         rules.validations.past data,field,message
         .then (success) ->
           should.exist success
         .catch (err) ->
           should.not.exist err
-          
+
 
       it "should work fine when value passed is a valid date in past" , () ->
 
-        data = 
+        data =
           dob: moment().subtract(3,'days').format()
-    
+
         rules.validations.past data,field,message
         .then (success) ->
           should.exist success
@@ -946,15 +984,15 @@ describe "#Rules", () ->
 
 
     context "today", () ->
-      
+
       field = 'somefield'
       message = 'date should be today only'
-      
+
       it "should return error when date passed is not today" , () ->
 
-        data = 
+        data =
           somefield: moment().add(1,'day').format()
-    
+
         rules.validations.today data,field,message
         .then (success) ->
           should.not.exist success
@@ -965,9 +1003,9 @@ describe "#Rules", () ->
 
       it "should work fine when value date passed is today" , () ->
 
-        data = 
+        data =
           somefield: moment().format()
-    
+
         rules.validations.today data,field,message
         .then (success) ->
           should.exist success
@@ -977,15 +1015,15 @@ describe "#Rules", () ->
 
 
     context "tomorrow", () ->
-      
+
       field = 'somefield'
       message = 'date should be tomorrow only'
-      
+
       it "should return error when date passed is not tomorrow" , () ->
 
-        data = 
+        data =
           somefield: moment().format()
-    
+
         rules.validations.tomorrow data,field,message
         .then (success) ->
           should.not.exist success
@@ -996,9 +1034,9 @@ describe "#Rules", () ->
 
       it "should work fine when value date passed is tomorrow" , () ->
 
-        data = 
+        data =
           somefield: moment().add(1,'day').format()
-    
+
         rules.validations.tomorrow data,field,message
         .then (success) ->
           should.exist success
@@ -1009,13 +1047,13 @@ describe "#Rules", () ->
 
 
     context "weekday", () ->
-      
+
       field = 'working_hours'
       message = 'working hours should be on weekdays only'
-      
+
       it "should return error when day of date passed is not a weekday" , () ->
 
-        data = 
+        data =
           working_hours: moment().day('sunday').format()
 
 
@@ -1030,9 +1068,9 @@ describe "#Rules", () ->
 
       it "should work fine when day of date passed is a valid weekday" , () ->
 
-        data = 
+        data =
           working_hours: moment().day('monday').format()
-    
+
         rules.validations.weekday data,field,message
         .then (success) ->
           should.exist success
@@ -1043,13 +1081,13 @@ describe "#Rules", () ->
 
 
     context "weekend", () ->
-      
+
       field = 'adoniscon'
       message = 'adoniscon should be on weekends only'
-      
+
       it "should return error when day of date passed is not weekend" , () ->
 
-        data = 
+        data =
           adoniscon: moment().day('monday').format()
 
 
@@ -1064,9 +1102,9 @@ describe "#Rules", () ->
 
       it "should work fine when day of date passed is a valid weekend" , () ->
 
-        data = 
+        data =
           adoniscon: moment().day('saturday').format()
-    
+
         rules.validations.weekend data,field,message
         .then (success) ->
           should.exist success
@@ -1078,13 +1116,13 @@ describe "#Rules", () ->
 
 
     context "weekend", () ->
-      
+
       field = 'adoniscon'
       message = 'adoniscon should be on weekends only'
-      
+
       it "should return error when day of date passed is not weekend" , () ->
 
-        data = 
+        data =
           adoniscon: moment().day('monday').format()
 
 
@@ -1099,9 +1137,9 @@ describe "#Rules", () ->
 
       it "should work fine when day of date passed is a valid weekend" , () ->
 
-        data = 
+        data =
           adoniscon: moment().day('saturday').format()
-    
+
         rules.validations.weekend data,field,message
         .then (success) ->
           should.exist success
@@ -1112,14 +1150,14 @@ describe "#Rules", () ->
 
 
     context "year", () ->
-      
+
       field = 'world_cup'
       message = 'cricket world cup dates should be in 2015 only'
       ruleDefination = 2015
-      
+
       it "should return error when year of date passed is not equal to defined year" , () ->
 
-        data = 
+        data =
           world_cup: "2014-10-20"
 
         rules.validations.year data,field,message,ruleDefination
@@ -1133,9 +1171,9 @@ describe "#Rules", () ->
 
       it "should work fine when year of date passed is equal to defined year" , () ->
 
-        data = 
+        data =
           world_cup: "2015-10-20"
-    
+
         rules.validations.year data,field,message,ruleDefination
         .then (success) ->
           should.exist success
@@ -1146,15 +1184,15 @@ describe "#Rules", () ->
 
 
     context "yesterday", () ->
-      
+
       field = 'somefield'
       message = 'date should be yesterday only'
-      
+
       it "should return error when date passed is not yesterday" , () ->
 
-        data = 
+        data =
           somefield: moment().add(1,'day').format()
-    
+
         rules.validations.yesterday data,field,message
         .then (success) ->
           should.not.exist success
@@ -1165,9 +1203,9 @@ describe "#Rules", () ->
 
       it "should work fine when value date passed is yesterday" , () ->
 
-        data = 
+        data =
           somefield: moment().subtract(1,'day').format()
-    
+
         rules.validations.yesterday data,field,message
         .then (success) ->
           should.exist success
@@ -1175,17 +1213,17 @@ describe "#Rules", () ->
           should.not.exist err
 
   describe "regular expression rules", () ->
-    
+
     context "alpha", () ->
 
       field = 'name'
       message = 'name should only contain letters'
-      
+
       it "should return error when value passed is not alpha" , () ->
 
-        data = 
+        data =
           name: 'doe123'
-    
+
         rules.validations.alpha data,field,message
         .then (success) ->
           should.not.exist success
@@ -1196,9 +1234,9 @@ describe "#Rules", () ->
 
       it "should work fine when value passed is an alpha value" , () ->
 
-        data = 
+        data =
           name: 'doe'
-    
+
         rules.validations.alpha data,field,message
         .then (success) ->
           should.exist success
@@ -1211,12 +1249,12 @@ describe "#Rules", () ->
 
       field = 'username'
       message = 'username should be combination of numbers and letters'
-      
+
       it "should return error when value passed is not alphaNumeric" , () ->
 
-        data = 
+        data =
           username: 'doe@123'
-    
+
         rules.validations.alphaNumeric data,field,message
         .then (success) ->
           should.not.exist success
@@ -1227,9 +1265,9 @@ describe "#Rules", () ->
 
       it "should work fine when value passed is an alphaNumeric value" , () ->
 
-        data = 
+        data =
           username: 'd0e1j'
-    
+
         rules.validations.alphaNumeric data,field,message
         .then (success) ->
           should.exist success
@@ -1242,12 +1280,12 @@ describe "#Rules", () ->
 
       field = 'card_number'
       message = 'card number is not valid'
-      
+
       it "should return error when value passed is not a valid credit card number format" , () ->
 
-        data = 
+        data =
           card_number: '878282246310005'
-    
+
         rules.validations.creditCard data,field,message
         .then (success) ->
           should.not.exist success
@@ -1260,7 +1298,7 @@ describe "#Rules", () ->
 
         data =
           card_number: '378282246310005'
-    
+
         rules.validations.creditCard data,field,message
         .then (success) ->
           should.exist success
@@ -1272,7 +1310,7 @@ describe "#Rules", () ->
 
         data =
           card_number: '371449635398431'
-    
+
         rules.validations.creditCard data,field,message
         .then (success) ->
           should.exist success
@@ -1284,7 +1322,7 @@ describe "#Rules", () ->
 
         data =
           card_number: '378734493671000'
-    
+
         rules.validations.creditCard data,field,message
         .then (success) ->
           should.exist success
@@ -1296,7 +1334,7 @@ describe "#Rules", () ->
 
         data =
           card_number: '6011111111111117'
-    
+
         rules.validations.creditCard data,field,message
         .then (success) ->
           should.exist success
@@ -1308,7 +1346,7 @@ describe "#Rules", () ->
 
         data =
           card_number: '30569309025904'
-    
+
         rules.validations.creditCard data,field,message
         .then (success) ->
           should.exist success
@@ -1320,7 +1358,7 @@ describe "#Rules", () ->
 
         data =
           card_number: '3530111333300000'
-    
+
         rules.validations.creditCard data,field,message
         .then (success) ->
           should.exist success
@@ -1332,7 +1370,7 @@ describe "#Rules", () ->
 
         data =
           card_number: '5555555555554444'
-    
+
         rules.validations.creditCard data,field,message
         .then (success) ->
           should.exist success
@@ -1344,7 +1382,7 @@ describe "#Rules", () ->
 
         data =
           card_number: '4111111111111111'
-    
+
         rules.validations.creditCard data,field,message
         .then (success) ->
           should.exist success
@@ -1356,7 +1394,7 @@ describe "#Rules", () ->
 
         data =
           card_number: '4222222222222'
-    
+
         rules.validations.creditCard data,field,message
         .then (success) ->
           should.exist success
@@ -1369,12 +1407,12 @@ describe "#Rules", () ->
 
       field = 'email'
       message = 'email is not valid'
-      
+
       it "should return error when value passed is not valid email address" , () ->
 
-        data = 
+        data =
           email: 'some-string'
-    
+
         rules.validations.email data,field,message
         .then (success) ->
           should.not.exist success
@@ -1385,9 +1423,9 @@ describe "#Rules", () ->
 
       it "should work fine when value passed is valid email address" , () ->
 
-        data = 
+        data =
           username: 'myemail@test.com'
-    
+
         rules.validations.email data,field,message
         .then (success) ->
           should.exist success
@@ -1400,12 +1438,12 @@ describe "#Rules", () ->
 
       field = 'email'
       message = 'email is not valid'
-      
+
       it "should return error when value passed is not valid email address" , () ->
 
-        data = 
+        data =
           email: 'some-string'
-    
+
         rules.validations.email data,field,message
         .then (success) ->
           should.not.exist success
@@ -1416,9 +1454,9 @@ describe "#Rules", () ->
 
       it "should work fine when value passed is valid email address" , () ->
 
-        data = 
+        data =
           username: 'myemail@test.com'
-    
+
         rules.validations.email data,field,message
         .then (success) ->
           should.exist success
@@ -1431,12 +1469,12 @@ describe "#Rules", () ->
 
       field   = 'color'
       message = 'color should hex decimal only'
-      
+
       it "should return error when value passed is not a valid hexadecimal" , () ->
 
         data =
           color: 'string'
-    
+
         rules.validations.hexadecimal data,field,message
         .then (success) ->
           should.not.exist success
@@ -1447,9 +1485,9 @@ describe "#Rules", () ->
 
       it "should work fine when value passed is valid hexadecimal" , () ->
 
-        data = 
+        data =
           color: 'ff0000'
-    
+
         rules.validations.hexadecimal data,field,message
         .then (success) ->
           should.exist success
@@ -1461,12 +1499,12 @@ describe "#Rules", () ->
 
       field   = 'color'
       message = 'color should be a valid hex color code'
-      
+
       it "should return error when value passed is not a valid hex color code" , () ->
 
         data =
           color: '#eeee'
-    
+
         rules.validations.hexColor data,field,message
         .then (success) ->
           should.not.exist success
@@ -1477,9 +1515,9 @@ describe "#Rules", () ->
 
       it "should work fine when value passed is valid hex color code" , () ->
 
-        data = 
+        data =
           color: '#ff0000'
-    
+
         rules.validations.hexColor data,field,message
         .then (success) ->
           should.exist success
@@ -1491,12 +1529,12 @@ describe "#Rules", () ->
 
       field   = 'ip_address'
       message = 'ip address is not valid'
-      
+
       it "should return error when value passed is not a valid ip address" , () ->
 
         data =
           ip_address: '1209000192'
-    
+
         rules.validations.ip data,field,message
         .then (success) ->
           should.not.exist success
@@ -1507,9 +1545,9 @@ describe "#Rules", () ->
 
       it "should work fine with ipv4 address" , () ->
 
-        data = 
+        data =
           ip_address: '10.0.0.68'
-    
+
         rules.validations.ip data,field,message
         .then (success) ->
           should.exist success
@@ -1519,9 +1557,9 @@ describe "#Rules", () ->
 
       it "should work fine with ipv6 address" , () ->
 
-        data = 
+        data =
           ip_address: '3ffe:1900:4545:3:200:f8ff:fe21:67cf'
-    
+
         rules.validations.ip data,field,message
         .then (success) ->
           should.exist success
@@ -1531,9 +1569,9 @@ describe "#Rules", () ->
 
       it "should work fine when value passed is a valid ip address" , () ->
 
-        data = 
+        data =
           ip_address: '127.0.0.1'
-    
+
         rules.validations.ip data,field,message
         .then (success) ->
           should.exist success
@@ -1546,12 +1584,12 @@ describe "#Rules", () ->
 
       field   = 'ip_address'
       message = 'ip address should be valid ipv4 address'
-      
+
       it "should return error when value passed is not a valid ip address" , () ->
 
         data =
           ip_address: '1209000192'
-    
+
         rules.validations.ipv4 data,field,message
         .then (success) ->
           should.not.exist success
@@ -1562,9 +1600,9 @@ describe "#Rules", () ->
 
       it "should work fine with ipv4 address" , () ->
 
-        data = 
+        data =
           ip_address: '10.0.0.68'
-    
+
         rules.validations.ipv4 data,field,message
         .then (success) ->
           should.exist success
@@ -1576,7 +1614,7 @@ describe "#Rules", () ->
 
         data =
           ip_address: '3ffe:1900:4545:3:200:f8ff:fe21:67cf'
-    
+
         rules.validations.ipv4 data,field,message
         .then (success) ->
           should.not.exist success
@@ -1589,12 +1627,12 @@ describe "#Rules", () ->
 
       field   = 'ip_address'
       message = 'ip address should be valid ipv6 address'
-      
+
       it "should return error when value passed is not a valid ip address" , () ->
 
         data =
           ip_address: '1209000192'
-    
+
         rules.validations.ipv6 data,field,message
         .then (success) ->
           should.not.exist success
@@ -1605,9 +1643,9 @@ describe "#Rules", () ->
 
       it "should work fine with ipv6 address" , () ->
 
-        data = 
+        data =
           ip_address: '3ffe:1900:4545:3:200:f8ff:fe21:67cf'
-    
+
         rules.validations.ipv6 data,field,message
         .then (success) ->
           should.exist success
@@ -1619,7 +1657,7 @@ describe "#Rules", () ->
 
         data =
           ip_address: '10.0.0.68'
-    
+
         rules.validations.ipv6 data,field,message
         .then (success) ->
           should.not.exist success
@@ -1632,12 +1670,12 @@ describe "#Rules", () ->
 
       field   = 'ssn'
       message = 'ssn is not valid'
-      
+
       it "should return error when value passed is not a valid ssn" , () ->
 
         data =
           ssn: '121000999'
-    
+
         rules.validations.socialSecurityNumber data,field,message
         .then (success) ->
           should.not.exist success
@@ -1648,9 +1686,9 @@ describe "#Rules", () ->
 
       it "should work fine with valid ssn" , () ->
 
-        data = 
+        data =
           ssn: '362-90-0999'
-    
+
         rules.validations.socialSecurityNumber data,field,message
         .then (success) ->
           should.exist success
@@ -1663,12 +1701,12 @@ describe "#Rules", () ->
 
       field   = 'blog_address'
       message = 'blog address should be a valid url'
-      
+
       it "should return error when value passed is not a valid url" , () ->
 
         data =
           blog_address: 'examplecom'
-    
+
         rules.validations.url data,field,message
         .then (success) ->
           should.not.exist success
@@ -1679,9 +1717,9 @@ describe "#Rules", () ->
 
       it "should work fine with valid url" , () ->
 
-        data = 
+        data =
           blog_address: 'http://url.com'
-    
+
         rules.validations.url data,field,message
         .then (success) ->
           should.exist success
@@ -1691,9 +1729,9 @@ describe "#Rules", () ->
 
       it "should work fine without http protocol" , () ->
 
-        data = 
+        data =
           blog_address: 'url.com'
-    
+
         rules.validations.url data,field,message
         .then (success) ->
           should.exist success
@@ -1703,9 +1741,9 @@ describe "#Rules", () ->
 
       it "should work fine without https protocol" , () ->
 
-        data = 
+        data =
           blog_address: 'https://url.com'
-    
+
         rules.validations.url data,field,message
         .then (success) ->
           should.exist success
@@ -1715,9 +1753,9 @@ describe "#Rules", () ->
 
       it "should work fine without www" , () ->
 
-        data = 
+        data =
           blog_address: 'www.url.com'
-    
+
         rules.validations.url data,field,message
         .then (success) ->
           should.exist success
@@ -1727,9 +1765,9 @@ describe "#Rules", () ->
 
       it "should work fine without www" , () ->
 
-        data = 
+        data =
           blog_address: 'www.url.com'
-    
+
         rules.validations.url data,field,message
         .then (success) ->
           should.exist success
@@ -1738,17 +1776,17 @@ describe "#Rules", () ->
 
 
   describe "strings", () ->
-    
+
     context "capitalized" , () ->
 
       field   = 'full_name'
       message = 'your name should start with a capital letter'
-      
+
       it "should return error when value passed is not capitalized" , () ->
 
         data =
           full_name: 'j doe'
-    
+
         rules.validations.capitalized data,field,message
         .then (success) ->
           should.not.exist success
@@ -1761,7 +1799,7 @@ describe "#Rules", () ->
 
         data =
           full_name: 'J Doe'
-    
+
         rules.validations.capitalized data,field,message
         .then (success) ->
           should.exist success
@@ -1775,12 +1813,12 @@ describe "#Rules", () ->
       field   = 'email_address'
       message = 'your email address should ends with @company.com'
       ruleDefination = '@company.com'
-      
+
       it "should return error when value passed does not ends with defined value" , () ->
 
         data =
           email_address: 'some.email@example.com'
-    
+
         rules.validations.endsWith data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
@@ -1793,7 +1831,7 @@ describe "#Rules", () ->
 
         data =
           email_address: 'some.email@company.com'
-    
+
         rules.validations.endsWith data,field,message,ruleDefination
         .then (success) ->
           should.exist success
@@ -1807,12 +1845,12 @@ describe "#Rules", () ->
       field   = 'flight_make'
       message = 'flight make should be Boeing'
       ruleDefination = 'boeing'
-      
+
       it "should return error when value passed does not include defined value" , () ->
 
         data =
           flight_make: 'airbus a380'
-    
+
         rules.validations.includes data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
@@ -1825,7 +1863,7 @@ describe "#Rules", () ->
 
         data =
           flight_make: 'boeing 787'
-    
+
         rules.validations.includes data,field,message,ruleDefination
         .then (success) ->
           should.exist success
@@ -1839,12 +1877,12 @@ describe "#Rules", () ->
 
       field   = 'username'
       message = 'username should be all lower case'
-      
+
       it "should return error when value passed is not all lower case" , () ->
 
         data =
           username: 'Bingo!'
-    
+
         rules.validations.lowerCase data,field,message
         .then (success) ->
           should.not.exist success
@@ -1857,7 +1895,7 @@ describe "#Rules", () ->
 
         data =
           username: 'bingo!'
-    
+
         rules.validations.lowerCase data,field,message
         .then (success) ->
           should.exist success
@@ -1870,12 +1908,12 @@ describe "#Rules", () ->
       field   = 'username'
       message = 'username should prefix with company name'
       ruleDefination = 'COM'
-      
+
       it "should return error when value passed does not starts with defined value" , () ->
 
         data =
           username: 'CO-bingo'
-    
+
         rules.validations.startsWith data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
@@ -1888,7 +1926,7 @@ describe "#Rules", () ->
 
         data =
           username: 'COM-bingo'
-    
+
         rules.validations.startsWith data,field,message,ruleDefination
         .then (success) ->
           should.exist success
@@ -1900,12 +1938,12 @@ describe "#Rules", () ->
 
       field   = 'gender'
       message = 'gender should be all lower case'
-      
+
       it "should return error when value passed is not all upper case" , () ->
 
         data =
           gender: 'Male'
-    
+
         rules.validations.upperCase data,field,message
         .then (success) ->
           should.not.exist success
@@ -1918,7 +1956,7 @@ describe "#Rules", () ->
 
         data =
           username: 'MALE'
-    
+
         rules.validations.upperCase data,field,message
         .then (success) ->
           should.exist success
@@ -1927,17 +1965,17 @@ describe "#Rules", () ->
 
 
   describe "types", () ->
-    
+
     context "array" , () ->
-      
+
       field   = 'cars'
       message = 'cars should be an array'
-      
+
       it "should return error when value passed is not an array" , () ->
 
         data =
           cars: 'beamer'
-    
+
         rules.validations.array data,field,message
         .then (success) ->
           should.not.exist success
@@ -1950,7 +1988,7 @@ describe "#Rules", () ->
 
         data =
           cars: ['beamer']
-    
+
         rules.validations.array data,field,message
         .then (success) ->
           should.exist success
@@ -1960,15 +1998,15 @@ describe "#Rules", () ->
 
 
     context "boolean" , () ->
-      
+
       field   = 'is_active'
       message = 'active state should be a boolean'
-      
+
       it "should return error when value passed is not a boolean value" , () ->
 
         data =
           is_active: 'yes'
-    
+
         rules.validations.boolean data,field,message
         .then (success) ->
           should.not.exist success
@@ -1981,7 +2019,7 @@ describe "#Rules", () ->
 
         data =
           is_active: true
-    
+
         rules.validations.boolean data,field,message
         .then (success) ->
           should.exist success
@@ -1992,15 +2030,15 @@ describe "#Rules", () ->
 
 
     context "json" , () ->
-      
+
       field   = 'songs_list'
       message = 'songs should be sent over in JSON format'
-      
+
       it "should return error when value passed is not a valid JSON" , () ->
 
         data =
           songs_list: 'songname:somename'
-    
+
         rules.validations.json data,field,message
         .then (success) ->
           should.not.exist success
@@ -2013,7 +2051,7 @@ describe "#Rules", () ->
 
         data =
           songs_list: {song_name:'somename'}
-    
+
         rules.validations.json data,field,message
         .then (success) ->
           should.exist success
@@ -2022,7 +2060,7 @@ describe "#Rules", () ->
 
 
   describe "presence" , () ->
-    
+
     context "accepted", () ->
 
       field   = 'terms'
@@ -2124,7 +2162,7 @@ describe "#Rules", () ->
 
 
       it "should work fine when value of defined field is in one of the defined values", () ->
-      
+
         data =
           user_type : 'Admin'
 
@@ -2255,7 +2293,7 @@ describe "#Rules", () ->
 
       it "should return an error when field if field is present and field under validation is not present", () ->
 
-        data = 
+        data =
           gender : 'male'
 
         rules.validations.requiredIf data,field,message,ruleDefination
@@ -2269,7 +2307,7 @@ describe "#Rules", () ->
 
       it "should return an error when field if field is present and field under validation is null", () ->
 
-        data = 
+        data =
           gender   : 'male'
           mustache : null
 
@@ -2284,7 +2322,7 @@ describe "#Rules", () ->
 
       it "should return an error when field if field is present and field under validation is undefined", () ->
 
-        data = 
+        data =
           gender   : 'male'
           mustache : undefined
 
@@ -2299,7 +2337,7 @@ describe "#Rules", () ->
 
       it "should return an error when field if field is present and field under validation is set to false", () ->
 
-        data = 
+        data =
           gender   : 'male'
           mustache : false
 
@@ -2313,7 +2351,7 @@ describe "#Rules", () ->
 
       it "should work fine when field under validation is present and value of field under if is also same", () ->
 
-        data = 
+        data =
           gender   : 'male'
           mustache : true
 
@@ -2327,7 +2365,7 @@ describe "#Rules", () ->
 
       it "should work fine when field under validation is present and value of field under if value is not equal to defined value", () ->
 
-        data = 
+        data =
           gender   : 'female'
           mustache : false
 
@@ -2357,7 +2395,7 @@ describe "#Rules", () ->
 
       it "should work fine when some of the `with fields` are present and field under validation is not present", () ->
 
-        data = 
+        data =
           imac : true
           ipod : true
 
@@ -2370,7 +2408,7 @@ describe "#Rules", () ->
 
       it "should return error when all of the `with fields` are present and field under validation is not present", () ->
 
-        data = 
+        data =
           imac   : true
           ipod   : true
           ipad   : true
@@ -2387,7 +2425,7 @@ describe "#Rules", () ->
 
       it "should return error when all of the `with fields` are present and field under validation is null", () ->
 
-        data = 
+        data =
           imac   : true
           ipod   : true
           ipad   : true
@@ -2405,7 +2443,7 @@ describe "#Rules", () ->
 
       it "should return error when all of the `with fields` are present and field under validation is undefined", () ->
 
-        data = 
+        data =
           imac   : true
           ipod   : true
           ipad   : true
@@ -2422,7 +2460,7 @@ describe "#Rules", () ->
 
       it "should return error when all of the `with fields` are present and field under validation is false", () ->
 
-        data = 
+        data =
           imac   : true
           ipod   : true
           ipad   : true
@@ -2441,7 +2479,7 @@ describe "#Rules", () ->
 
       it "should work fine when all of the `with fields` are present and field under validation is true or present", () ->
 
-        data = 
+        data =
           imac   : true
           ipod   : true
           ipad   : true
@@ -2581,7 +2619,7 @@ describe "#Rules", () ->
 
       it "should return error when `without all fields` are not present and field under validation is null", () ->
 
-        data = 
+        data =
           phone_number : null
 
         rules.validations.requiredWithoutAll data,field,message,ruleDefination
@@ -2594,7 +2632,7 @@ describe "#Rules", () ->
 
       it "should return error when `without all fields` are not present and field under validation is undefined", () ->
 
-        data = 
+        data =
           phone_number : undefined
 
         rules.validations.requiredWithoutAll data,field,message,ruleDefination
@@ -2607,7 +2645,7 @@ describe "#Rules", () ->
 
       it "should return error when `without all fields` are not present and field under validation is false", () ->
 
-        data = 
+        data =
           phone_number : false
 
         rules.validations.requiredWithoutAll data,field,message,ruleDefination
@@ -2620,7 +2658,7 @@ describe "#Rules", () ->
 
       it "should work fine when `without all fields` are not present and field under validation is true or present", () ->
 
-        data = 
+        data =
           phone_number : true
 
         rules.validations.requiredWithoutAll data,field,message,ruleDefination

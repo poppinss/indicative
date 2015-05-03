@@ -419,8 +419,8 @@ class ExtendedRules
       [start,end] = args.split ","
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
-        or        data[field] in [start..end]
-        then      resolve "is different"
+        or        _.inRange data[field],start,end
+        then      resolve "is in range"
         else      reject message
 
     ###*
