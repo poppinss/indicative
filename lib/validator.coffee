@@ -41,6 +41,7 @@ class Validator extends RULES
 
   initiate: (messages) ->
     ERRORS::cleanErrors()
+    MESSAGES::destructor()
     MESSAGES::setMessages messages
 
 
