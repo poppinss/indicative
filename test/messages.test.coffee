@@ -6,7 +6,11 @@ Messages      = new (require '../lib/messages')
 
 describe "setMessage", () ->
 
-  it "should set message for a single field", () ->
+  beforeEach (done) ->
+    Messages.destructor()
+    done()
+
+  it "should set message for a single field", (done) ->
 
     rule    = 'required'
     message = 'This field is required'
@@ -15,9 +19,10 @@ describe "setMessage", () ->
 
     builtMessage = Messages.buildMessage rule,'name'
     expect(builtMessage).to.equal(message)
+    done()
 
 
-  it "should set bulk messages", () ->
+  it "should set bulk messages", (done) ->
 
     message = 'This field is required'
 
@@ -28,9 +33,10 @@ describe "setMessage", () ->
 
     builtMessage = Messages.buildMessage 'required','name'
     expect(builtMessage).to.equal(message)
+    done()
 
 
-  it "should set bulk messages and should convert dot strings to objects", () ->
+  it "should set bulk messages and should convert dot strings to objects", (done) ->
 
     message      = 'This field is required'
     nameSpecific = 'Your name is required'
@@ -43,3 +49,4 @@ describe "setMessage", () ->
 
     builtMessage = Messages.buildMessage 'required','name'
     expect(builtMessage).to.equal(nameSpecific)
+    done()

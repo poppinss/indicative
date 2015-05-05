@@ -4,6 +4,54 @@
 		"selected_items":
 		[
 			[
+				"name",
+				"nameSpecific"
+			],
+			[
+				"buil",
+				"builtMessage"
+			],
+			[
+				"req",
+				"required"
+			],
+			[
+				"set",
+				"setMessage"
+			],
+			[
+				"re",
+				"required"
+			],
+			[
+				"Pr",
+				"Parser"
+			],
+			[
+				"exp",
+				"expected"
+			],
+			[
+				"pa",
+				"param	@param"
+			],
+			[
+				"ru",
+				"rules"
+			],
+			[
+				"Pro",
+				"PROMISE"
+			],
+			[
+				"err",
+				"errors"
+			],
+			[
+				"rule",
+				"rules"
+			],
+			[
 				"E",
 				"Eloquent"
 			],
@@ -104,10 +152,6 @@
 				"async"
 			],
 			[
-				"req",
-				"require"
-			],
-			[
 				"confi",
 				"configFile"
 			],
@@ -118,10 +162,6 @@
 			[
 				"ra",
 				"readFile"
-			],
-			[
-				"pa",
-				"partial"
 			],
 			[
 				"ext",
@@ -158,10 +198,6 @@
 			[
 				"met",
 				"metaObject"
-			],
-			[
-				"re",
-				"require"
 			],
 			[
 				"ma",
@@ -328,10 +364,6 @@
 				"brand_id"
 			],
 			[
-				"err",
-				"error"
-			],
-			[
 				"pro",
 				"processMessage"
 			],
@@ -372,15 +404,7 @@
 				"resume"
 			],
 			[
-				"ru",
-				"rulesHash"
-			],
-			[
 				"rules",
-				"rulesHash"
-			],
-			[
-				"rule",
 				"rulesHash"
 			],
 			[
@@ -418,10 +442,6 @@
 			[
 				"Us",
 				"UserModel"
-			],
-			[
-				"Pr",
-				"PromosCollection"
 			],
 			[
 				"order",
@@ -494,26 +514,6 @@
 			[
 				"_befor",
 				"_beforeUpdate"
-			],
-			[
-				"_",
-				"_afterUpdate"
-			],
-			[
-				"fi",
-				"fields_for_updates"
-			],
-			[
-				"mode",
-				"model"
-			],
-			[
-				"prof",
-				"profile_cache_key"
-			],
-			[
-				"us",
-				"user_id"
 			]
 		]
 	},
@@ -596,13 +596,26 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative"
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/lib",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/test"
 	],
 	"file_history":
 	[
-		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/indicative.sublime-project",
-		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/lib/extendedRules.js",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/package.json",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/lib/errors.coffee",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/test/messages.test.coffee",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/lib/messages.coffee",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/test/parser.test.coffee",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/lib/parser.coffee",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/test/rules.test.coffee",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/lib/validator.coffee",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/lib/rules.coffee",
 		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/lib/extendedRules.coffee",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/example.coffee",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/indicative.sublime-project",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/lib/validator.js",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/lib/extendedRules.js",
+		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/benchmarks/index.coffee",
 		"/Users/harmindervirk/adonisjs/poc/ioc/mock.coffee",
 		"/Users/harmindervirk/adonisjs/poc/ioc/models/User.coffee",
 		"/Users/harmindervirk/adonisjs/poc/ioc/controllers/User.coffee",
@@ -614,10 +627,6 @@
 		"/Users/harmindervirk/adonisjs/poc/ioc/map.coffee",
 		"/Users/harmindervirk/adonisjs/poc/ioc/index.js",
 		"/Users/harmindervirk/adonisjs/poc/ioc/app.js",
-		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/example.coffee",
-		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/package.json",
-		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/test/rules.test.coffee",
-		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/lib/rules.coffee",
 		"/Users/harmindervirk/adonisjs/poc/ioc/controllers/user.js",
 		"/Users/harmindervirk/adonisjs/poc/ioc/hello.js",
 		"/Users/harmindervirk/prototypes/newWork/sass/app.scss",
@@ -625,7 +634,6 @@
 		"/Users/harmindervirk/adonisjs/poc/routes/controller.coffee",
 		"/Users/harmindervirk/adonisjs/poc/routes/index.coffee",
 		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/npm-debug.log",
-		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/lib/validator.coffee",
 		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/readme.md",
 		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/gulpfile.coffee",
 		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/gulpfile.js",
@@ -633,10 +641,8 @@
 		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/.travis.yml",
 		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/coffeelint.json",
 		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/.jshintrc",
-		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/lib/messages.coffee",
 		"/Users/harmindervirk/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/test/validate.test.coffee",
-		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/benchmarks/index.coffee",
 		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/Cakefile",
 		"/Users/harmindervirk/adonisjs/indicativeRepos/indicative/settings.sublime-project",
 		"/Users/harmindervirk/Library/Application Support/Sublime Text 3/Packages/SideBarEnhancements/Side Bar.sublime-settings",
@@ -722,16 +728,11 @@
 		"/Users/harmindervirk/react-server/dist/build.js",
 		"/Users/harmindervirk/edbooks/profile.html",
 		"/Users/harmindervirk/edbooks/index.html",
-		"/Users/harmindervirk/edbooks/product.html",
-		"/Users/harmindervirk/edbooks/add-book.html",
-		"/Users/harmindervirk/edbooks/sass/app.scss",
-		"/Users/harmindervirk/edbooks/scripts/app.js",
-		"/Users/harmindervirk/edbooks/scripts/floatlabel.js",
-		"/Users/harmindervirk/edbooks/stylesheets/jquery.range.css"
+		"/Users/harmindervirk/edbooks/product.html"
 	],
 	"find":
 	{
-		"height": 25.0
+		"height": 38.0
 	},
 	"find_in_files":
 	{
@@ -838,6 +839,12 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"PARSER",
+			"required",
+			"number",
+			"MESSAGES",
+			"_parseRule",
+			"_parseRules",
 			"range",
 			"decimal",
 			"'",
@@ -959,13 +966,7 @@
 			"totalItems",
 			"items",
 			"features-grid",
-			"banner",
-			"#f55960",
-			"FF4200",
-			".click-capture",
-			"602",
-			"603",
-			"product-stats"
+			"banner"
 		],
 		"highlight": true,
 		"in_selection": false,

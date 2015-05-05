@@ -4,7 +4,6 @@
  * @author Harminder Virk
  * @since v1.0.5
  * @description Class to store error messages, build them as per priority
- * @singleton
 ###
 
 _            = require 'lodash'
@@ -19,6 +18,8 @@ class Messages
     if !instance then instance = this
     return instance
 
+  destructor: () ->
+    @CVM = {}
 
   ###*
    * Return best possible error message
@@ -31,7 +32,6 @@ class Messages
     else if @CVM[validation]? then         md = @CVM[validation]
     else                                   md = "#{validation} validation failed on %field%"
     md.replace '%field%',field
-
 
   ###*
    * Setting a single message to CVM object
