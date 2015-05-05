@@ -5,15 +5,14 @@ Validator = require "./lib/validator"
 _         = require "lodash"
 
 rules =
-  'name'      : 'required|alpha|includes:am|startsWith:am|endsWith:rk'
-  'phone_no'  : 'number'
+  'name'      : 'required|alpha|includes:am|startsWith:am|endsWith:rk|'
   'email'     : 'required|email'
   'join_from' : 'future'
   'signin'    : 'today'
   'terms'     : 'accepted'
   'reverse'   : 'palindrome'
   'blog'      : 'url'
-  'status'    : 'required_with_any:name,phone_no' 
+  'status'    : 'required_with_any:name,phone_no'
   'is_admin'  : 'required_with_all:name,phone_no|boolean'
   'acl'       : 'required_without_all:is_admin,status'
   'cars'      : 'required|array'
@@ -22,13 +21,13 @@ rules =
   'dob'       : 'after:2015-03-10|before:2015-05-15'
   'created_on': 'date_format:YYYY-MM-DD'
   'score'     : 'above:30|under:39'
-  'age'       : 'required_if:email,virk.officials@gmail.com|number|range:18,24'
+  'age'       : 'required_if:email,virk.officials@gmail.com|range:18,24'
 
 data =
   'name'      : 'amanvirk'
   'signin'    : '2015-04-29'
   'phone_no'  : 102
-  'age'       : '24'
+  'age'       : '23'
   'is_admin'  : true
   'reverse'   : 'ama'
   'status'    : 'active'
@@ -46,6 +45,7 @@ data =
 messages =
   'required'      : 'Enter %field%'
   'name.required' : 'Need your name'
+  'future'        : 'This is not in futute'
   'url'           : 'Blog address is not valid'
   'age.number'    : 'This is not a valid age'
 
@@ -75,9 +75,9 @@ v.extend 'number', 'Enter valid number',phone_no
 
 console.time 'validating'
 
-v.validateAll rules,data
-.then (good) -> 
-  console.log 'good>>',good  
+v.validateAll rules,data,messages
+.then (good) ->
+  console.log 'good>>',good
 .catch (err) ->
   console.log 'err>>',err
 .finally () ->

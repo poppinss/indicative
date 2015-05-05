@@ -5,20 +5,17 @@
  * @since v0.6
  * @description Expressions to deep object parser, validator
  * and message constructor
- * @example
- * somefield = required|min:8 will be parsed to
- * { name:['required','min:8'] }
- * later each rule is validated using defined methods
 ###
 
 _            = require 'lodash'
 IS           = require 'is_js'
 
-MESSAGES     = require './messages'
+PARSER       = require './parser'
+ERRORS       = require './errors'
 RULES        = require './rules'
+MESSAGES     = require './messages'
 PROMISE      = require 'bluebird'
 ASYNC        = require 'async'
-DOT          = require 'dot-object'
 
 
 ###*
@@ -30,21 +27,10 @@ class Validator extends RULES
 
   # Access to raw `IS` object ,
   # to run Manual validations
-  IS: IS
-
+  'is': IS
 
   # singleton instance holder
   instance = null
-
-
-  # global private property
-  # to save custom error messages
-  CVM = {}
-
-
-  # global private property
-  # to save list of messages to return
-  GE = []
 
 
   constructor: ->
@@ -52,36 +38,11 @@ class Validator extends RULES
     super()
     return instance
 
-  # private method to parse hash of rules
-  _parseRules = (rules) ->
-    _.transform rules, (result,rule,key) -> result[key] = rule.split "|"
 
+  initiate: (messages) ->
+    ERRORS::cleanErrors()
+    MESSAGES::setMessages messages
 
-  # private method to parse a single rule and return
-  # rule applied, arguments and error message to display
-  _parseRule = (rule,key) ->
-    [defination,args]   = rule.split ":"
-    message             = _messages defination,key
-
-    ## converting _ to camelcase
-    defination          = defination.replace /_([a-z])/g , (g) -> g[1].toUpperCase()
-
-    {defination,args,message}
-
-
-  ###*
-   * Return best possible error message
-   * @param  {[string]} Validation name
-   * @param  {[string]} Field name
-   * @return {[string]} Constructed message
-  ###
-  _messages = (validation,field) ->
-    if CVM[field]?[validation] then       md = CVM[field][validation]
-    else if CVM[validation]? then         md = CVM[validation]
-    else if MESSAGES[validation]? then    md = MESSAGES[validation]
-    else                                  md = "#{validation} validation failed on %field%"
-
-    md.replace '%field%',field
 
   ###*
    * validating single field with array of rules
@@ -91,18 +52,24 @@ class Validator extends RULES
    * @param  {[string]}   field name
    * @return {[promise]}
   ###
-  _validateField = (self,data,rules,field) ->
+  validateField : (data,rules,field) ->
+
+    self = @
 
     new PROMISE (resolve,reject) ->
+
       PROMISE.reduce (_.keys rules), (t,f) ->
-        {defination,args,message} = _parseRule rules[f],field
-        self.validations[defination].call self, data,field,message,args
-        .catch (err) ->
-          GE.push {field:field,message:err,rule:defination}
-          reject GE
+
+        {rule,args,message} = PARSER::parseRule rules[f],field
+
+        self.validations[rule].call self,data,field,message,args
+        .catch (message) ->
+          ERRORS::pushError {field,message,rule}
+          reject ERRORS::getErrors()
       , 0
+
       .then resolve
-      .catch reject
+      .reject
 
   ###*
    * Public method to invoke validations
@@ -113,21 +80,22 @@ class Validator extends RULES
   ###
   validateAll : (rulesHash,data,messages) ->
     self = @
-    CVM = messages || {}
-    GE = []
-    rH = _parseRules rulesHash
+    @initiate(messages)
 
-    if _.size messages
-      DOT.object messages
+    parsedRules = PARSER::parseRules rulesHash
 
     validateAsync = (index,cb) ->
-      _validateField self,data,rH[index],index
+      self.validateField data,parsedRules[index],index
       .then (success) -> cb null,success
       .catch (err)    -> cb err,null
 
     new PROMISE (resolve,reject) ->
-      ASYNC.filter (_.keys rH), validateAsync , (err,results) ->
-        if _.size err then reject GE else resolve data
+      ASYNC.filter (_.keys parsedRules), validateAsync , (err,results) ->
+        if _.size err
+          reject ERRORS::getErrors()
+        else
+          resolve data
+
 
   ###*
    * Public method to invoke validations and break on first error
@@ -137,21 +105,20 @@ class Validator extends RULES
    * @return {[promise]}
   ###
   validate : (rulesHash,data,messages) ->
-    self = @
-    CVM  = messages || {}
-    GE   = []
-    rH   = _parseRules rulesHash
 
-    if _.size messages
-      DOT.object messages
+    self = @
+    @initiate(messages)
+
+    parsedRules = PARSER::parseRules rulesHash
 
     new PROMISE (resolve,reject) ->
-      PROMISE.reduce _.keys(rH), (t,field) ->
-        rules = rH[field]
-        _validateField self,data,rules,field
-      , 0
+
+      PROMISE.reduce _.keys(parsedRules), (t,field) ->
+        self.validateField data,parsedRules[field],field
+      ,0
       .then () -> resolve data
       .catch reject
+
 
   ###*
    * Interface to extend validator class
@@ -161,8 +128,9 @@ class Validator extends RULES
    * @return {[void]}
   ###
   extend: (name,message,func_body) ->
-    self = @
-    self.validations[name] = func_body
-    MESSAGES[name] = message
+    @validations[name] = func_body
+    MESSAGES::setMessage name,message
+
+
 
 module.exports = Validator
