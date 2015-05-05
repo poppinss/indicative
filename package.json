@@ -20,7 +20,7 @@
     "mocha": "^2.2.4"
   },
   "scripts": {
-    "test": "node ./node_modules/gulp/bin/gulp lint && node ./node_modules/mocha/bin/mocha test --reporter spec --check-leaks --bail",
+    "test": "node ./node_modules/gulp/bin/gulp lint && node ./node_modules/mocha/bin/mocha test/messages.test.js --reporter spec --check-leaks --bail",
     "install": "node ./node_modules/coffee-script/bin/coffee -c ."
   },
   "repository":{
