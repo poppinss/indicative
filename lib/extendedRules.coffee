@@ -435,7 +435,7 @@ class ExtendedRules
       [desired_length] = args.toString().split ","
 
       ## to calc integers length too
-      data[field] = data[field].toString()
+      data[field] = if typeof(data[field]) isnt 'undefined' then data[field].toString() else data[field]
 
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
@@ -455,7 +455,7 @@ class ExtendedRules
       [desired_length] = args.toString().split ","
 
       ## to calc integers length too
-      data[field] = data[field].toString()
+      data[field] = if typeof(data[field]) isnt 'undefined' then data[field].toString() else data[field]
 
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
