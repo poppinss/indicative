@@ -28,16 +28,14 @@ class Parser
   ###
   parseRules: (rules,return_data,toKey) ->
     self = @
-    _.each rules, (rule,key) ->
-      ## if toKey is there, join it with new key
-      ## using dot
-      # if toKey
-      #   key             = "#{toKey}.#{key}"
+    _.transform rules, (result,rule,key) ->
 
-      # if 'object' is typeof rule
-      #   self.parseRules rule,return_data,key
-      # else
-        return_data[key] = _.compact rule.split "|"
+      if not return_data then return_data = result
+      if toKey then key = "#{toKey}.#{key}"
+
+      if                  'object' is typeof rule
+      then                self.parseRules rule,return_data,key
+      else                return_data[key] = _.compact rule.split "|"
 
 
   ###*
@@ -45,14 +43,14 @@ class Parser
   ###
   normalizeData: (data,return_data,toKey) ->
     self = @
-    _.each data, (item,key) ->
-      # if toKey
-      #   key             = "#{toKey}.#{key}"
 
-      # if 'object' is typeof item
-      #   self.normalizeData item,return_data,key
-      # else
-        return_data[key]  = item
+    _.transform data, (result,item,key) ->
+      if not return_data then return_data = result
+      if toKey then key = "#{toKey}.#{key}"
+
+      if                  'object' is typeof item
+      then                self.normalizeData item,return_data,key
+      else                return_data[key]  = item
 
 
   ###*
