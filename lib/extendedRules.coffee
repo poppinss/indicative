@@ -507,9 +507,10 @@ class ExtendedRules
     ###
     includes : (data,field,message,args) ->
       [substring] = args.split ","
+
       new PROMISE (resolve,reject) ->
         if        (not _.has data,field) \
-        or        IS.include data[field],substring
+        or        _.contains data[field],substring
         then      resolve "does include"
         else      reject message
 

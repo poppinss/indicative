@@ -83,10 +83,14 @@ class Validator extends RULES
     self = @
     @initiate(messages)
 
-    parsedRules = PARSER::parseRules rulesHash
+    parsedRules = {}
+    PARSER::parseRules rulesHash,parsedRules
+   
+    normalizedData = {}
+    PARSER::normalizeData data,normalizedData
 
     validateAsync = (index,cb) ->
-      self.validateField data,parsedRules[index],index
+      self.validateField normalizedData,parsedRules[index],index
       .then (success) -> cb null,success
       .catch (err)    -> cb err,null
 
@@ -110,12 +114,16 @@ class Validator extends RULES
     self = @
     @initiate(messages)
 
-    parsedRules = PARSER::parseRules rulesHash
+    parsedRules = {}
+    PARSER::parseRules rulesHash,parsedRules
+   
+    normalizedData = {}
+    PARSER::normalizeData data,normalizedData
+
 
     new PROMISE (resolve,reject) ->
-
       PROMISE.reduce _.keys(parsedRules), (t,field) ->
-        self.validateField data,parsedRules[field],field
+        self.validateField normalizedData,parsedRules[field],field
       ,0
       .then () -> resolve data
       .catch reject

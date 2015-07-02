@@ -1,7 +1,7 @@
 
 "use strict"
 
-Validator = require "./lib/validator"
+Validator = require "../lib/validator"
 _         = require "lodash"
 
 rules =

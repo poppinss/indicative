@@ -21,13 +21,39 @@ class Parser
     if !instance then instance = this
     return instance
 
+
   ###*
    * Parse entry level rules into nested object
    * @param  {[string]} rules - Object to rule string
   ###
-  parseRules: (rules) ->
-    _.transform rules, (result,rule,key) ->
-      result[key] = _.compact rule.split "|"
+  parseRules: (rules,return_data,toKey) ->
+    self = @
+    _.each rules, (rule,key) ->
+      ## if toKey is there, join it with new key
+      ## using dot
+      # if toKey
+      #   key             = "#{toKey}.#{key}"
+
+      # if 'object' is typeof rule
+      #   self.parseRules rule,return_data,key
+      # else
+        return_data[key] = _.compact rule.split "|"
+
+
+  ###*
+   * Normalize data
+  ###
+  normalizeData: (data,return_data,toKey) ->
+    self = @
+    _.each data, (item,key) ->
+      # if toKey
+      #   key             = "#{toKey}.#{key}"
+
+      # if 'object' is typeof item
+      #   self.normalizeData item,return_data,key
+      # else
+        return_data[key]  = item
+
 
   ###*
     * method to parse a single rule and return

@@ -1843,7 +1843,7 @@ describe "#Rules", () ->
     context "includes" , () ->
 
       field   = 'flight_make'
-      message = 'flight make should be Boeing'
+      message = 'flight make should be boeing'
       ruleDefination = 'boeing'
 
       it "should return error when value passed does not include defined value" , () ->
