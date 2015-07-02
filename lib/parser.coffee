@@ -38,6 +38,7 @@ class Parser
       else                return_data[key] = _.compact rule.split "|"
 
 
+
   ###*
    * Normalize data
   ###
@@ -51,6 +52,7 @@ class Parser
       if                  'object' is typeof item
       then                self.normalizeData item,return_data,key
       else                return_data[key]  = item
+
 
 
   ###*

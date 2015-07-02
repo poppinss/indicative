@@ -11,16 +11,24 @@
     "firstname"                : "required"
     "numbers.value"            : "array"
 
+
   data =
     firstname : "virk"
     person:
       profile:
-        firstname: "virk"
+        firstname: null
     numbers:
       value: [1]
 
+
+  message =
+    "required"                         : "This is required"
+    person:
+      profile:
+        "firstname.required"           : "I need person firstname" 
+
   indicative
-  .validateAll rules,data
+  .validateAll rules,data,message
   .then (success) ->
     console.log success
   .catch (error) ->

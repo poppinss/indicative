@@ -7,12 +7,25 @@
 ###
 
 _            = require 'lodash'
-DOT          = require 'dot-object'
 
 class Messages
 
   instance = null
   CVM : {}
+
+
+
+  normalizeMessages: (data,return_data,toKey) ->
+    self = @
+
+    _.transform data, (result,item,key) ->
+      if not return_data then return_data = result
+      if toKey then key = "#{toKey}.#{key}"
+
+      if                  'object' is typeof item
+      then                self.normalizeMessages item,return_data,key
+      else                return_data[key]  = item
+
 
   constructor: () ->
     if !instance then instance = this
@@ -28,7 +41,8 @@ class Messages
    * @return {[string]} Constructed message
   ###
   buildMessage : (validation,field) ->
-    if @CVM[field]?[validation] then       md = @CVM[field][validation]
+    field = "#{field}.#{validation}"
+    if @CVM[field]? then                   md = "#{@CVM[field]}"
     else if @CVM[validation]? then         md = @CVM[validation]
     else                                   md = "#{validation} validation failed on %field%"
     md.replace '%field%',field
@@ -48,7 +62,7 @@ class Messages
   setMessages: (hash) ->
     hash or= {}
     if _.size hash
-      DOT.object hash
+      hash = @normalizeMessages hash
     @CVM  = hash
 
 
