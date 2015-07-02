@@ -41,8 +41,8 @@ class Messages
    * @return {[string]} Constructed message
   ###
   buildMessage : (validation,field) ->
-    field = "#{field}.#{validation}"
-    if @CVM[field]? then                   md = "#{@CVM[field]}"
+    fieldNotation = "#{field}.#{validation}"
+    if @CVM[fieldNotation]? then           md = "#{@CVM[fieldNotation]}"
     else if @CVM[validation]? then         md = @CVM[validation]
     else                                   md = "#{validation} validation failed on %field%"
     md.replace '%field%',field
