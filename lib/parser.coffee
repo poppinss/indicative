@@ -29,30 +29,12 @@ class Parser
   parseRules: (rules,return_data,toKey) ->
     self = @
     _.transform rules, (result,rule,key) ->
-
       if not return_data then return_data = result
       if toKey then key = "#{toKey}.#{key}"
 
       if                  'object' is typeof rule
       then                self.parseRules rule,return_data,key
       else                return_data[key] = _.compact rule.split "|"
-
-
-
-  ###*
-   * Normalize data
-  ###
-  normalizeData: (data,return_data,toKey) ->
-    self = @
-
-    _.transform data, (result,item,key) ->
-      if not return_data then return_data = result
-      if toKey then key = "#{toKey}.#{key}"
-
-      if                  'object' is typeof item
-      then                self.normalizeData item,return_data,key
-      else                return_data[key]  = item
-
 
 
   ###*

@@ -7,6 +7,7 @@
 ###
 
 _            = require 'lodash'
+UTILS        = require "./utils"
 
 class Messages
 
@@ -62,7 +63,7 @@ class Messages
   setMessages: (hash) ->
     hash or= {}
     if _.size hash
-      hash = @normalizeMessages hash
+      hash = UTILS.convert_object_to_dot_notation hash
     @CVM  = hash
 
 

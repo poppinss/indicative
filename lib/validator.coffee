@@ -16,7 +16,7 @@ RULES        = require './rules'
 MESSAGES     = require './messages'
 PROMISE      = require 'bluebird'
 ASYNC        = require 'async'
-
+UTILS        = require "./utils"
 
 ###*
  * @class Validator
@@ -84,7 +84,7 @@ class Validator extends RULES
     @initiate(messages)
 
     parsedRules    = PARSER::parseRules rulesHash
-    normalizedData = PARSER::normalizeData data
+    normalizedData = UTILS.convert_object_to_dot_notation data
 
     validateAsync = (index,cb) ->
       self.validateField normalizedData,parsedRules[index],index
@@ -112,7 +112,7 @@ class Validator extends RULES
     @initiate(messages)
 
     parsedRules    = PARSER::parseRules rulesHash
-    normalizedData = PARSER::normalizeData data
+    normalizedData = UTILS.convert_object_to_dot_notation data
 
     new PROMISE (resolve,reject) ->
       PROMISE.reduce _.keys(parsedRules), (t,field) ->
