@@ -8,13 +8,14 @@
     "async": "^0.9.0",
     "bluebird": "^2.9.14",
     "coffee-script": "^1.9.2",
-    "dot-object": "^0.11.0",
     "is_js": "^0.7.1",
     "lodash": "^3.5.0",
     "moment": "^2.9.0"
   },
   "devDependencies": {
+    "benchmark": "1.0.x",
     "chai": "^2.3.0",
+    "joi": "6.1.x",
     "gulp": "^3.8.11",
     "gulp-coffeelint": "^0.4.0",
     "mocha": "^2.2.4"
@@ -23,9 +24,9 @@
     "test": "node ./node_modules/gulp/bin/gulp lint && node ./node_modules/mocha/bin/mocha test --reporter spec --check-leaks --bail",
     "install": "node ./node_modules/coffee-script/bin/coffee -c ."
   },
-  "repository":{
-    "type" : "git",
-    "url"  : "https://github.com/AdonisJs/indicative"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AdonisJs/indicative"
   },
   "keywords": [
     "schema-validator",

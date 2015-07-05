@@ -3,8 +3,6 @@
 
   Validator     = require "../lib/validator"
   indicative    = new Validator
-  DOT           = require "dot-object"
-
 
   rules = 
     "person.profile.firstname" : "required"
