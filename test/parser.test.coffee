@@ -115,5 +115,5 @@ describe "parseRule" , () ->
       message : rangeMessage
 
     hash = Parser.parseRule rule,field
-    # expect(hash).to.deep.equal(expected)
+    expect(hash).to.deep.equal(expected)
     done()

@@ -9,7 +9,7 @@
     "bluebird": "^2.9.14",
     "coffee-script": "^1.9.2",
     "is_js": "^0.7.1",
-    "lodash": "^3.5.0",
+    "lodash": "^3.10.0",
     "moment": "^2.9.0"
   },
   "devDependencies": {
@@ -21,7 +21,7 @@
     "mocha": "^2.2.4"
   },
   "scripts": {
-    "test": "node ./node_modules/gulp/bin/gulp lint && node ./node_modules/mocha/bin/mocha test --reporter spec --check-leaks --bail",
+    "test": "node ./node_modules/mocha/bin/mocha test --reporter spec --check-leaks --bail",
     "install": "node ./node_modules/coffee-script/bin/coffee -c ."
   },
   "repository": {

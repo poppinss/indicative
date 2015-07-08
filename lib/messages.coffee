@@ -8,17 +8,23 @@
 
 _            = require 'lodash'
 UTILS        = require "./utils"
+_.templateSettings =
+  interpolate: /{{([\s\S]+?)}}/g
+
 
 class Messages
 
   instance = null
-  CVM : {}
+
+  constructor: () ->
+    if !instance then instance = this
+    @CVM = {}
+    return instance
 
 
 
   normalizeMessages: (data,return_data,toKey) ->
     self = @
-
     _.transform data, (result,item,key) ->
       if not return_data then return_data = result
       if toKey then key = "#{toKey}.#{key}"
@@ -28,11 +34,7 @@ class Messages
       else                return_data[key]  = item
 
 
-  constructor: () ->
-    if !instance then instance = this
-    return instance
-
-  destructor: () ->
+  destructor: ->
     @CVM = {}
 
   ###*
@@ -41,12 +43,22 @@ class Messages
    * @param  {[string]} Field name
    * @return {[string]} Constructed message
   ###
-  buildMessage : (validation,field) ->
-    fieldNotation = "#{field}.#{validation}"
-    if @CVM[fieldNotation]? then           md = "#{@CVM[fieldNotation]}"
-    else if @CVM[validation]? then         md = @CVM[validation]
-    else                                   md = "#{validation} validation failed on %field%"
-    md.replace '%field%',field
+  buildMessage : (rule,field,args,value) ->
+    argument      = args?.split ","
+    templateData  = {field,argument,rule,value}
+
+    fieldNotation = "#{field}.#{rule}"
+    if @CVM[fieldNotation]? then           md = @CVM[fieldNotation]
+    else if @CVM[rule]? then               md = @CVM[rule]
+    else                                   md = "{{rule}} validation failed on {{field}}"
+
+    expression = new RegExp "(?:\\.)(\\w)(?:}})","g"
+    matches    = md.match(expression)
+
+    md = md.replace expression, "[$1]}}"
+    template = _.template(md)
+    template(templateData)
+
 
   ###*
    * Setting a single message to CVM object

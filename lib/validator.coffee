@@ -13,7 +13,7 @@ IS           = require 'is_js'
 PARSER       = require './parser'
 ERRORS       = require './errors'
 RULES        = require './rules'
-MESSAGES     = require './messages'
+MESSAGES     = new(require './messages')
 PROMISE      = require 'bluebird'
 ASYNC        = require 'async'
 UTILS        = require "./utils"
@@ -41,8 +41,8 @@ class Validator extends RULES
 
   initiate: (messages) ->
     ERRORS::cleanErrors()
-    MESSAGES::destructor()
-    MESSAGES::setMessages messages
+    MESSAGES.destructor()
+    MESSAGES.setMessages messages
 
 
   ###*
@@ -61,7 +61,7 @@ class Validator extends RULES
 
       PROMISE.reduce (_.keys rules), (t,f) ->
 
-        {rule,args,message} = PARSER::parseRule rules[f],field
+        {rule,args,message} = PARSER::parseRule rules[f],field,data[field]
 
         self.validations[rule].call self,data,field,message,args
         .catch (message) ->
@@ -131,7 +131,7 @@ class Validator extends RULES
   ###
   extend: (name,message,func_body) ->
     @validations[name] = func_body
-    MESSAGES::setMessage name,message
+    MESSAGES.setMessage name,message
 
 
 

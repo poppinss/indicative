@@ -10,7 +10,7 @@
 
 
 _            = require 'lodash'
-MESSAGES     = require './messages'
+MESSAGES     = new(require './messages')
 
 
 class Parser
@@ -43,9 +43,9 @@ class Parser
     * @param {String} rule Rule to parse against a field
     * @param {String} key field name
   ###
-  parseRule: (rule,key) ->
+  parseRule: (rule,key,value) ->
     [defination,args]   = rule.split ":"
-    message             = MESSAGES::buildMessage defination,key
+    message             = MESSAGES.buildMessage defination,key,args,value
 
     ## converting _ to camelcase
     rule          = defination.replace /_([a-z])/g , (g) -> g[1].toUpperCase()
