@@ -2222,6 +2222,20 @@ describe "#Rules", () ->
           expect(err).to.equal message
 
 
+
+      it "should work when data passed is not a string and is required", () ->
+
+        data = 
+          username: [0,1]
+
+        rules.validations.required data,field,message
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
+
       it "should return an error when field under validation is null", () ->
 
         data =

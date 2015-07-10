@@ -4,17 +4,30 @@
   Validator     = require "../lib/validator"
   indicative    = new Validator
 
+
+  rules = 
+    binary: "required"
+
+  data =
+    binary: [0,1]
+
+  indicative
+  .validateAll rules,data
+  .then (success) ->
+    console.log success
+  .catch (error) ->
+    console.log error  
+
+
   rules = 
     "person.profile.firstname" : "required"
-    "firstname"                : "required"
     "numbers.value"            : "array"
 
 
   data =
-    firstname : "virk"
     person:
       profile:
-        firstname: null
+        firstname: "somename"
     numbers:
       value: [1]
 

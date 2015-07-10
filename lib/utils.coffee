@@ -7,6 +7,7 @@
    * @description Util methods, to follow DRY approach
   ###
 
+  _ = require "lodash"
 
   module.exports =
 
@@ -17,14 +18,19 @@
      * @param  {String} key                  dot notatation key build over time
      * @return {Object}                      Single leaf object to return
     ###
-    convert_object_to_dot_notation: (data,resultsBuiltOverTime,key) ->
-      if not resultsBuiltOverTime then resultsBuiltOverTime = {}
+    convert_object_to_dot_notation: (compareWith,data,resultsBuiltOverTime,key) ->
 
+      resultsBuiltOverTime ?= {}
+      
       for index,item of data
-        if                    key
-        then                  index = "#{key}.#{index}"
+        cloneIndex = index
+        if key then index = "#{key}.#{index}"
 
-        if                    typeof(item) is 'object'
-        then                  @convert_object_to_dot_notation item,resultsBuiltOverTime,index
+        if typeof(compareWith) is 'undefined' then return resultsBuiltOverTime[index] = item
+
+        ## @if - Do recursive only when rules are also recursive otherwise no
+        if                    typeof(item) is 'object' and typeof(compareWith[cloneIndex]) isnt 'string'
+        then                  @convert_object_to_dot_notation compareWith[cloneIndex],item,resultsBuiltOverTime,index
         else                  resultsBuiltOverTime[index] = item
+
       return resultsBuiltOverTime

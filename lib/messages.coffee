@@ -75,7 +75,7 @@ class Messages
   setMessages: (hash) ->
     hash or= {}
     if _.size hash
-      hash = UTILS.convert_object_to_dot_notation hash
+      hash = UTILS.convert_object_to_dot_notation {},hash
     @CVM  = hash
 
 
