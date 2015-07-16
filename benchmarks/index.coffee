@@ -17,27 +17,28 @@ user_data =
 ## Getting joi
 Joi = require 'joi'
 
-validateUsingJOI = () ->
-  schema = Joi.object().keys(
-    username : Joi.required()
-    password : Joi.required()
-    email    : Joi.string().email().required()
-  )
+joiSchema = Joi.object().keys(
+  username : Joi.required()
+  password : Joi.required()
+  email    : Joi.string().email().required()
+)
 
+indicativeSchema = 
+  username : 'required'
+  password : 'required'
+  email    : 'required|email'
+
+
+validateUsingJOI = () ->
   Joi.validate(
     user_data,
-    schema,
+    joiSchema,
     (err,value) ->
       return
   )
 
 validateUsingIndicative = () ->
-  schema = 
-    username : 'required'
-    password : 'required'
-    email    : 'required|email'
-
-  validator.validate schema,user_data
+  validator.validate indicativeSchema,user_data
   .then (success) ->
     return
   .catch (err) ->

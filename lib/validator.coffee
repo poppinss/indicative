@@ -140,5 +140,4 @@ class Validator extends RULES
     MESSAGES.setMessage name,message
 
 
-
 module.exports = Validator

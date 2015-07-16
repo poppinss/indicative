@@ -16,27 +16,28 @@ correct_user_data =
 ## Getting joi
 Joi = require 'joi'
 
-validationPassedUsingJoi = () ->
-  schema = Joi.object().keys(
-    username : Joi.required()
-    password : Joi.required()
-    email    : Joi.string().email().required()
-  )
+joiSchema = Joi.object().keys(
+  username : Joi.required()
+  password : Joi.required()
+  email    : Joi.string().email().required()
+)
 
+indicativeSchema = 
+  username : 'required'
+  password : 'required'
+  email    : 'required|email'
+
+
+validationPassedUsingJoi = () ->
   Joi.validate(
     correct_user_data,
-    schema,
+    joiSchema,
     (err,value) ->
       return
   )
 
 validationPassedUsingIndicative = () ->
-  schema = 
-    username : 'required'
-    password : 'required'
-    email    : 'required|email'
-
-  validator.validate schema,correct_user_data
+  validator.validate indicativeSchema,correct_user_data
   .then (success) ->
     return
   .catch (err) ->

@@ -22,18 +22,6 @@ class Messages
     return instance
 
 
-
-  normalizeMessages: (data,return_data,toKey) ->
-    self = @
-    _.transform data, (result,item,key) ->
-      if not return_data then return_data = result
-      if toKey then key = "#{toKey}.#{key}"
-
-      if                  'object' is typeof item
-      then                self.normalizeMessages item,return_data,key
-      else                return_data[key]  = item
-
-
   destructor: ->
     @CVM = {}
 
