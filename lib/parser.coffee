@@ -44,7 +44,17 @@ class Parser
     * @param {String} key field name
   ###
   parseRule: (rule,key,value) ->
-    [defination,args]   = rule.split ":"
+    # seperating rules via regex instead of
+    # using split ":"
+    # fixed as of issue #14
+    matchedRule = /(\w+):/.exec(rule)
+    defination = rule
+    args = undefined
+
+    if matchedRule
+      [extracter,defination] = matchedRule
+      args   = rule.replace extracter,''
+
     message             = MESSAGES.buildMessage defination,key,args,value
 
     ## converting _ to camelcase

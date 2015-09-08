@@ -117,3 +117,15 @@ describe "parseRule" , () ->
     hash = Parser.parseRule rule,field
     expect(hash).to.deep.equal(expected)
     done()
+
+  it "should not parse values defined next to rules", () ->
+
+    rule  = 'date_format:HH:mm'
+    field = 'time'
+
+    expected =
+      rule    : 'date_format'
+      args    : "HH:mm"
+
+    hash = Parser.parseRule rule,field
+    expect(hash.args).to.equal(expected.args)
