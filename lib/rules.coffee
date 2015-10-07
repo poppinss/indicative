@@ -117,7 +117,7 @@ class Rules extends EXTENDED_RULES
         then     data[field] = new Date data[field]
 
         new PROMISE (resolve,reject) ->
-          if        (not _.has data,field) \
+          if        (not data[field]) \
           or        IS[method] data[field]
           then      resolve "is #{method}"
           else      reject message
