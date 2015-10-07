@@ -22,8 +22,8 @@
     "mocha": "^2.2.4"
   },
   "scripts": {
-    "test": "$(npm bin)/mocha test --reporter spec --check-leaks --bail",
-    "install": "$(npm bin)/coffee -c ."
+    "test": "mocha test --reporter spec --check-leaks --bail",
+    "postinstall": "coffee -c ."
   },
   "repository": {
     "type": "git",
