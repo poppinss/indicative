@@ -22,8 +22,8 @@
     "mocha": "^2.2.4"
   },
   "scripts": {
-    "test": "node ./node_modules/mocha/bin/mocha test --reporter spec --check-leaks --bail",
-    "install": "node ./node_modules/coffee-script/bin/coffee -c ."
+    "test": "node ./node_modules/.bin/mocha test --reporter spec --check-leaks --bail",
+    "install": "node ./node_modules/.bin/coffee -c ."
   },
   "repository": {
     "type": "git",
