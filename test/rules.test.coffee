@@ -2772,6 +2772,32 @@ describe "#Rules", () ->
           should.not.exist err
 
 
+    context "regex", () ->
+
+      field   = 'email'
+      message = 'regex should match'
+      ruleDefination = "^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$"
+
+      it "should execute defined regex on rule defination and fail when regex is not passed", () ->
+
+        data =
+          email  : 'foo'
+
+        rules.validations.regex data,field,message,ruleDefination
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+      it "should execute defined regex on rule defination and succeed when regex is passed", () ->
+
+        data =
+          email  : 'foo@bar.com'
+
+        rules.validations.regex data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
 
 
     context "same", () ->

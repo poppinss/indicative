@@ -58,6 +58,23 @@ class ExtendedRules
         else      reject message
 
 
+    ###*
+     * Executes defined regex on value for a given
+     * field.
+     * @method regex
+     * @param  {Object} data    [description]
+     * @param  {String} field   [description]
+     * @param  {String} message [description]
+     * @param  {String} args    [description]
+     * @return {Promise}         [description]
+    ###
+    regex: (data,field,message,args) ->
+      new PROMISE (resolve, reject) ->
+        if        (not data[field]) \
+        or        new RegExp(args).test(data[field])
+        then      resolve "regex passed"
+        else      reject message
+
 
     ###*
      * Make sure field under validation is on {defined} day

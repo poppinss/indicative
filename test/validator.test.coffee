@@ -334,6 +334,41 @@
         should.not.exist(err)
 
 
+    it "should fail when regex test has not been passed", (done) ->
+
+      rules =
+        email: "regex:^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$"
+
+      data = 
+        email: 'foo'
+
+      Validator
+      .validate(rules,data)
+      .then (success) ->
+        should.not.exist(success)
+      .catch (err) ->
+        should.exist(err)
+        expect(err[0].message).to.match(/regex validation failed/)
+        expect(err[0].rule).to.equal('regex')
+        done()
+
+
+    it "should pass when regex test has been passed", (done) ->
+
+      rules =
+        email: "regex:^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$"
+
+      data = 
+        email: 'foo@bar.com'
+
+      Validator
+      .validate(rules,data)
+      .then (success) ->
+        should.exist(success)
+        done()
+      .catch (err) ->
+        should.not.exist(err)
+
 
     it "should return an error when key under validation is under root and same key is present under nested object", (done) ->
 
