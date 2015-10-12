@@ -392,3 +392,87 @@
         expect(err[0].field).to.equal("firstname")
         expect(err[0].rule).to.equal("required")
         done()
+
+    it "should work fine when rules are defined as an array and there are nested values to be parsed", (done) ->
+
+      rules =
+        fullname : ['required']
+        profile :
+          username : ['required']
+
+
+      data =
+        fullname: "ook"
+
+
+      Validator
+      .validate rules,data
+      .then (success) ->
+        should.not.exist success
+      .catch (err) ->
+        expect(err).to.be.an "array"
+        expect(err[0].field).to.equal "profile.username"
+        expect(err[0].rule).to.equal "required"
+        done()
+
+
+    it "should work fine when rules are defined as an array and there are nested values to be parsed and all data is present", (done) ->
+
+      rules =
+        fullname : ['required']
+        profile :
+          username : ['required']
+
+
+      data =
+        fullname: "ook"
+        profile:
+          username: "ook"
+
+      Validator
+      .validate rules,data
+      .then (success) ->
+        should.exist(success)
+        done()
+      .catch (err) ->
+        should.not.exist err
+        done()
+
+    it "should work fine when rules are defined as an array and rules schema is dot notated", (done) ->
+
+      rules =
+        fullname : ['required']
+        "profile.username" : ['required']
+
+      data =
+        fullname: "ook"
+
+      Validator
+      .validate rules,data
+      .then (success) ->
+        should.not.exist(success)
+      .catch (err) ->
+        expect(err).to.be.an "array"
+        expect(err[0].field).to.equal "profile.username"
+        expect(err[0].rule).to.equal "required"
+        done()
+
+    it "should work fine when rules are defined as an array and rules schema is dot notated and values are present", (done) ->
+
+      rules =
+        fullname : ['required']
+        "profile.username" : ['required']
+
+      data =
+        fullname: "ook"
+        profile:
+          username: "ook"
+
+      Validator
+      .validate rules,data
+      .then (success) ->
+        should.exist(success)
+        done()
+      .catch (err) ->
+        should.not.exist(err)
+        done()

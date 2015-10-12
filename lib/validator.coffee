@@ -118,6 +118,7 @@ class Validator extends RULES
     parsedRules    = PARSER::parseRules rulesHash
     ruleCopy       = rulesHash
     DOT.object(ruleCopy)
+
     normalizedData = UTILS.convert_object_to_dot_notation ruleCopy,data
 
     new PROMISE (resolve,reject) ->

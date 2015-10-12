@@ -129,3 +129,16 @@ describe "parseRule" , () ->
 
     hash = Parser.parseRule rule,field
     expect(hash.args).to.equal(expected.args)
+
+  it "should not split an array of rules", () ->
+
+    rules  =
+      dob: 'date_format:HH:mm|required'
+
+    rules  =
+      dob: ['date_format:HH:mm','required']
+
+    return_data = {}
+
+    Parser.parseRules rules,return_data
+    expect(return_data).deep.equal(rules)

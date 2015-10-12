@@ -28,6 +28,9 @@
 
         if typeof(compareWith) is 'undefined' then return resultsBuiltOverTime[index] = item
 
+        if _.isArray(compareWith[cloneIndex]) and typeof(compareWith[cloneIndex][0]) is 'string'
+          compareWith[cloneIndex] = compareWith[cloneIndex][0]
+
         ## @if - Do recursive only when rules are also recursive otherwise no
         if                    typeof(item) is 'object' and typeof(compareWith[cloneIndex]) isnt 'string'
         then                  @convert_object_to_dot_notation compareWith[cloneIndex],item,resultsBuiltOverTime,index

@@ -32,9 +32,9 @@ class Parser
       if not return_data then return_data = result
       if toKey then key = "#{toKey}.#{key}"
 
-      if                  'object' is typeof rule
+      if                  _.isObject(rule) && !_.isArray(rule)
       then                self.parseRules rule,return_data,key
-      else                return_data[key] = _.compact rule.split "|"
+      else                return_data[key] = if _.isArray(rule) then rule else _.compact rule.split "|"
 
 
   ###*
