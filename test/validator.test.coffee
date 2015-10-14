@@ -1,9 +1,10 @@
-  
+
   "use strict"
 
   chai          = require 'chai'
   should        = chai.should()
   expect        = chai.expect
+  Promise       = require 'bluebird'
   Validator     = new (require '../lib/validator')
 
 
@@ -144,7 +145,7 @@
 
       messages =
         required   : "Field is required"
-        name       : 
+        name       :
           required : "Name is required to continue"
 
       Validator
@@ -191,7 +192,7 @@
       rules =
         binary: "required"
 
-      data = 
+      data =
         binary : [0,1]
 
       Validator
@@ -208,9 +209,9 @@
       rules =
         binary: "required"
 
-      data = 
+      data =
         binary : [0,1]
-        data   : 
+        data   :
           binary : null
 
       Validator
@@ -228,7 +229,7 @@
         data :
           binary: "required"
 
-      data = 
+      data =
         data :
           binary : [0,1]
 
@@ -249,7 +250,7 @@
           another:
             binary: "required"
 
-      data = 
+      data =
         data :
           binary : [0,1]
 
@@ -273,7 +274,7 @@
           another:
             binary: "required"
 
-      data = 
+      data =
         data :
           binary : [0,1]
           another:
@@ -296,7 +297,7 @@
           another:
             binary: "required"
 
-      data = 
+      data =
         data :
           binary : [0,1]
           another:
@@ -320,7 +321,7 @@
       rules =
         fullname: "required"
 
-      data = 
+      data =
         fullname:
           fullname:
             firstname: "somename"
@@ -339,7 +340,7 @@
       rules =
         email: "regex:^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$"
 
-      data = 
+      data =
         email: 'foo'
 
       Validator
@@ -358,7 +359,7 @@
       rules =
         email: "regex:^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$"
 
-      data = 
+      data =
         email: 'foo@bar.com'
 
       Validator
@@ -376,7 +377,7 @@
         fullname: "required"
         firstname: "required"
 
-      data = 
+      data =
         fullname:
           firstname: "ook"
           fullname:
@@ -476,3 +477,22 @@
       .catch (err) ->
         should.not.exist(err)
         done()
+
+
+    it "should work fine with simultenaous calls", (done) ->
+
+      rules =
+        fullname : ['required']
+
+      data =
+        fullname: ""
+
+      Promise.map([data, data], (data) ->
+        return Validator.validate(rules, data)
+          .catch((errs) -> errs );
+      )
+      .then((all_errs) ->
+        expect(all_errs[0].length).to.equal 1
+        expect(all_errs[1].length).to.equal 1
+        done()
+      );
