@@ -492,6 +492,7 @@
           .catch((errs) -> errs );
       )
       .then((all_errs) ->
+        console.log all_errs
         expect(all_errs[0].length).to.equal 1
         expect(all_errs[1].length).to.equal 1
         done()

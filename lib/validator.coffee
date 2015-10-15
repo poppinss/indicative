@@ -30,11 +30,8 @@ class Validator extends RULES
   # to run Manual validations
   'is': IS
 
-
-
   constructor: ->
     super()
-
 
   initiate: (messages) ->
     MESSAGES.destructor()
@@ -63,9 +60,8 @@ class Validator extends RULES
         .catch (message) ->
           reject {field,message,rule}
       , 0
-
       .then resolve
-##      .reject
+      .reject
 
   ###*
    * Public method to invoke validations
@@ -91,11 +87,9 @@ class Validator extends RULES
     new PROMISE (resolve,reject) ->
       ASYNC.filter (_.keys parsedRules), validateAsync , (err,results) ->
         if _.size err
-
           reject err
         else
           resolve data
-
 
   ###*
    * Public method to invoke validations and break on first error
