@@ -11,3 +11,9 @@ Indicative is an elegant schema/raw validator for NodeJs and web.
 If you are tired of writing nested callbacks and declaring nested schema , then you are at right place.
 
 [Click here to browse official documentation](http://indicative.adonisjs.com)
+
+
+## Contributors
+
+[Aman Virk](https://github.com/thetutlage)
+[amelon](https://github.com/amelon)
