@@ -488,7 +488,7 @@
         fullname: ""
 
       Promise.map([data, data], (data) ->
-        return Validator.validateAll(rules, data)
+        return Validator.validate(rules, data)
           .catch((errs) -> errs );
       )
       .then((all_errs) ->
