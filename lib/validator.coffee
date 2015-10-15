@@ -73,6 +73,7 @@ class Validator extends RULES
   validateAll : (rulesHash,data,messages) ->
     self = @
     @initiate(messages)
+    errors = []
 
     parsedRules    = PARSER::parseRules rulesHash
     ruleCopy       = rulesHash
@@ -82,12 +83,14 @@ class Validator extends RULES
     validateAsync = (index,cb) ->
       self.validateField normalizedData,parsedRules[index],index
       .then (success) -> cb null,success
-      .catch (err)    -> cb err,null
+      .catch (err)    ->
+        errors.push err
+        cb err,null
 
     new PROMISE (resolve,reject) ->
-      ASYNC.filter (_.keys parsedRules), validateAsync , (err,results) ->
+      ASYNC.filter (_.keys parsedRules), validateAsync , (err) ->
         if _.size err
-          reject err
+          reject errors
         else
           resolve data
 

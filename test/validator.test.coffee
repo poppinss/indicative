@@ -479,7 +479,7 @@
         done()
 
 
-    it "should work fine with simultenaous calls", (done) ->
+    it "validate should work fine with simultenaous calls", (done) ->
 
       rules =
         fullname : ['required']
@@ -488,11 +488,31 @@
         fullname: ""
 
       Promise.map([data, data], (data) ->
-        return Validator.validate(rules, data)
+        return Validator.validateAll(rules, data)
           .catch((errs) -> errs );
       )
       .then((all_errs) ->
         expect(all_errs[0].length).to.equal 1
         expect(all_errs[1].length).to.equal 1
+        expect(all_errs[0][0]).to.contain.all.keys ["field", "message", "rule"]
         done()
+      );
+
+    it "validateAll should work fine with simultenaous calls", (done) ->
+
+      rules =
+        fullname : ['required']
+
+      data =
+        fullname: ""
+
+      Promise.map([data, data], (data) ->
+        return Validator.validateAll(rules, data)
+          .catch((errs) -> errs );
+      )
+      .then((all_errs) ->
+        expect(all_errs[0].length).to.equal 1
+        expect(all_errs[1].length).to.equal 1
+        expect(all_errs[0][0]).to.contain.all.keys ["field", "message", "rule"]
+        done();
       );
