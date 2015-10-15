@@ -1,6 +1,6 @@
 {
   "name": "indicative",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "Expressive schema and raw validator for nodejs/web",
   "main": "lib/validator.js",
   "homepage": "http://indicative.adonisjs.com",
