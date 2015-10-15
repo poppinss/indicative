@@ -11,7 +11,6 @@ _            = require 'lodash'
 IS           = require 'is_js'
 
 PARSER       = require './parser'
-ERRORS       = require './errors'
 RULES        = require './rules'
 MESSAGES     = new(require './messages')
 PROMISE      = require 'bluebird'
@@ -31,18 +30,10 @@ class Validator extends RULES
   # to run Manual validations
   'is': IS
 
-  # singleton instance holder
-  instance = null
-
-
   constructor: ->
-    if !instance then instance = this
     super()
-    return instance
-
 
   initiate: (messages) ->
-    ERRORS::cleanErrors()
     MESSAGES.destructor()
     MESSAGES.setMessages messages
 
@@ -67,10 +58,8 @@ class Validator extends RULES
 
         self.validations[rule].call self,data,field,message,args
         .catch (message) ->
-          ERRORS::pushError {field,message,rule}
-          reject ERRORS::getErrors()
+          reject {field,message,rule}
       , 0
-
       .then resolve
       .reject
 
@@ -98,10 +87,9 @@ class Validator extends RULES
     new PROMISE (resolve,reject) ->
       ASYNC.filter (_.keys parsedRules), validateAsync , (err,results) ->
         if _.size err
-          reject ERRORS::getErrors()
+          reject err
         else
           resolve data
-
 
   ###*
    * Public method to invoke validations and break on first error
@@ -126,7 +114,7 @@ class Validator extends RULES
         self.validateField normalizedData,parsedRules[field],field
       ,0
       .then () -> resolve data
-      .catch reject
+      .catch (err) -> reject([err])
 
 
   ###*
