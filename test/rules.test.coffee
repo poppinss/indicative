@@ -618,6 +618,75 @@ describe "#Rules", () ->
           should.not.exist err
 
 
+
+    context "afterNow", () ->
+
+      field = 'expiry_date'
+      message = 'Expiry date cannot be past'
+      ruleDefination = '1,days'
+
+      it "should return error when value passed is not after defined offset" , () ->
+
+        data =
+          expiry_date: moment().format "YYYY-MM-DD"
+
+        rules.validations.afterNow data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+      it "should return error when value passed is same as defined offset" , () ->
+
+        data =
+          expiry_date: moment().add(1,'days').toISOString()
+
+        rules.validations.afterNow data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+
+      it "should work fine when date passed is after the defined offset" , () ->
+
+        data =
+          expiry_date: moment().add(1,'days').add(1,'seconds').toISOString()
+
+        rules.validations.afterNow data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
+      it "should validate against now with no args as offset" , () ->
+        data =
+          expiry_date: moment().toISOString()
+
+        rules.validations.afterNow data,field,message,''
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+      it "should work fine when date passed is after now with no args as offset" , () ->
+
+        data =
+          expiry_date: moment().add(1,'seconds').toISOString()
+
+        rules.validations.afterNow data,field,message,''
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
     context "before", () ->
 
       field = 'dob'
@@ -656,6 +725,76 @@ describe "#Rules", () ->
           dob: moment().subtract(1,'day').format "YYYY-MM-DD"
 
         rules.validations.before data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
+
+    context "beforeNow", () ->
+
+      field = 'dob'
+      message = 'Your dob cannot be after today'
+      ruleDefination = '1,days'
+
+      it "should return error when value passed is after defined offset" , () ->
+
+        data =
+          dob: moment().add(1,'day').add(1, 'seconds').toISOString()
+
+        rules.validations.beforeNow data,field,message,ruleDefination
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+      it "should return error when value passed is same as defined offset" , () ->
+        # mimic now date as pivot will be created later
+        data =
+          dob: moment().add(1, 's').toISOString()
+
+        rules.validations.beforeNow data,field,message,'0'
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+
+      it "should work fine when date passed is before defined offset" , () ->
+
+        data =
+          dob: moment().toISOString()
+
+        rules.validations.beforeNow data,field,message,ruleDefination
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+
+      it "should validate against now with no args as offset" , () ->
+        # mimic future date
+        data =
+          dob: moment().add(1, 's').toISOString()
+
+        rules.validations.beforeNow data,field,message,''
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
+
+
+      it "should work fine when date passed is before now with no args as offset" , () ->
+        data =
+          dob: moment().subtract(1, 's').toISOString()
+
+        rules.validations.beforeNow data,field,message,''
         .then (success) ->
           should.exist success
         .catch (err) ->
@@ -2225,7 +2364,7 @@ describe "#Rules", () ->
 
       it "should work when data passed is not a string and is required", () ->
 
-        data = 
+        data =
           username: [0,1]
 
         rules.validations.required data,field,message

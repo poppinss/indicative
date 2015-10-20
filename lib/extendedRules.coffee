@@ -57,6 +57,74 @@ class ExtendedRules
         then      resolve "is after date"
         else      reject message
 
+    ###*
+     * Make sure field under validation is afterNow + or - offset
+     * @param  {[object]}   data    [global data object]
+     * @param  {[string]}   field   [field to be validated]
+     * @param  {[string]}   message [message to be printed]
+     * @param  {[string]}   args    [arguments passed along with validator]
+     *                      args.0  [offset, positive or negative]
+     *                      args.1  [type of offset accepted by moment().add]
+     *                                Key           Shorthand
+     *                                years         y
+     *                                quarters      Q
+     *                                months        M
+     *                                weeks         w
+     *                                days          d
+     *                                hours         h
+     *                                minutes       m
+     *                                seconds       s
+     *                                milliseconds  ms
+     * @return {[promise]}  returns final promise
+    ###
+    afterNow : (data,field,message,args) ->
+
+      new PROMISE (resolve,reject) ->
+        [offset = 0,key = 'days'] = args.toString().split ","
+
+        if        (not _.has data,field) then return resolve "empty field"
+
+        fieldValue = MOMENT data[field]
+        pivot      = MOMENT().add offset, key
+
+        if        fieldValue.isAfter pivot
+        then      resolve "is after date"
+        else      reject message
+
+
+    ###*
+     * Make sure field under validation is beforeNow + or - offset
+     * @param  {[object]}   data    [global data object]
+     * @param  {[string]}   field   [field to be validated]
+     * @param  {[string]}   message [message to be printed]
+     * @param  {[string]}   args    [arguments passed along with validator]
+     *                      args.0  [offset, positive or negative]
+     *                      args.1  [type of offset accepted by moment().add]
+     *                                Key           Shorthand
+     *                                years         y
+     *                                quarters      Q
+     *                                months        M
+     *                                weeks         w
+     *                                days          d
+     *                                hours         h
+     *                                minutes       m
+     *                                seconds       s
+     *                                milliseconds  ms
+     * @return {[promise]}  returns final promise
+    ###
+    beforeNow : (data,field,message,args) ->
+
+      new PROMISE (resolve,reject) ->
+        [offset=0,key='days'] = args.toString().split ","
+
+        if        (not _.has data,field) then return resolve "empty field"
+        fieldValue = MOMENT data[field]
+        pivot      = MOMENT().add offset, key
+
+        if        fieldValue.isBefore pivot
+        then      resolve "is before date"
+        else      reject message
+
 
     ###*
      * Executes defined regex on value for a given
