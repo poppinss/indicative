@@ -58,7 +58,7 @@ class ExtendedRules
         else      reject message
 
     ###*
-     * Make sure field under validation is afterNow + or - offset
+     * Make sure field under validation is afterOffsetOf + or - offset
      * @param  {[object]}   data    [global data object]
      * @param  {[string]}   field   [field to be validated]
      * @param  {[string]}   message [message to be printed]
@@ -77,7 +77,7 @@ class ExtendedRules
      *                                milliseconds  ms
      * @return {[promise]}  returns final promise
     ###
-    afterNow : (data,field,message,args) ->
+    afterOffsetOf : (data,field,message,args) ->
 
       new PROMISE (resolve,reject) ->
         [offset = 0,key = 'days'] = args.toString().split ","
@@ -93,7 +93,7 @@ class ExtendedRules
 
 
     ###*
-     * Make sure field under validation is beforeNow + or - offset
+     * Make sure field under validation is beforeOffsetOf + or - offset
      * @param  {[object]}   data    [global data object]
      * @param  {[string]}   field   [field to be validated]
      * @param  {[string]}   message [message to be printed]
@@ -112,7 +112,7 @@ class ExtendedRules
      *                                milliseconds  ms
      * @return {[promise]}  returns final promise
     ###
-    beforeNow : (data,field,message,args) ->
+    beforeOffsetOf : (data,field,message,args) ->
 
       new PROMISE (resolve,reject) ->
         [offset=0,key='days'] = args.toString().split ","

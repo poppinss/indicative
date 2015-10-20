@@ -619,7 +619,7 @@ describe "#Rules", () ->
 
 
 
-    context "afterNow", () ->
+    context "afterOffsetOf", () ->
 
       field = 'expiry_date'
       message = 'Expiry date cannot be past'
@@ -630,7 +630,7 @@ describe "#Rules", () ->
         data =
           expiry_date: moment().format "YYYY-MM-DD"
 
-        rules.validations.afterNow data,field,message,ruleDefination
+        rules.validations.afterOffsetOf data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
         .catch (err) ->
@@ -642,7 +642,7 @@ describe "#Rules", () ->
         data =
           expiry_date: moment().add(1,'days').toISOString()
 
-        rules.validations.afterNow data,field,message,ruleDefination
+        rules.validations.afterOffsetOf data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
         .catch (err) ->
@@ -656,7 +656,7 @@ describe "#Rules", () ->
         data =
           expiry_date: moment().add(1,'days').add(1,'seconds').toISOString()
 
-        rules.validations.afterNow data,field,message,ruleDefination
+        rules.validations.afterOffsetOf data,field,message,ruleDefination
         .then (success) ->
           should.exist success
         .catch (err) ->
@@ -667,7 +667,7 @@ describe "#Rules", () ->
         data =
           expiry_date: moment().toISOString()
 
-        rules.validations.afterNow data,field,message,''
+        rules.validations.afterOffsetOf data,field,message,''
         .then (success) ->
           should.not.exist success
         .catch (err) ->
@@ -680,7 +680,7 @@ describe "#Rules", () ->
         data =
           expiry_date: moment().add(1,'seconds').toISOString()
 
-        rules.validations.afterNow data,field,message,''
+        rules.validations.afterOffsetOf data,field,message,''
         .then (success) ->
           should.exist success
         .catch (err) ->
@@ -732,7 +732,7 @@ describe "#Rules", () ->
 
 
 
-    context "beforeNow", () ->
+    context "beforeOffsetOf", () ->
 
       field = 'dob'
       message = 'Your dob cannot be after today'
@@ -743,7 +743,7 @@ describe "#Rules", () ->
         data =
           dob: moment().add(1,'day').add(1, 'seconds').toISOString()
 
-        rules.validations.beforeNow data,field,message,ruleDefination
+        rules.validations.beforeOffsetOf data,field,message,ruleDefination
         .then (success) ->
           should.not.exist success
         .catch (err) ->
@@ -756,7 +756,7 @@ describe "#Rules", () ->
         data =
           dob: moment().add(1, 's').toISOString()
 
-        rules.validations.beforeNow data,field,message,'0'
+        rules.validations.beforeOffsetOf data,field,message,'0'
         .then (success) ->
           should.not.exist success
         .catch (err) ->
@@ -770,7 +770,7 @@ describe "#Rules", () ->
         data =
           dob: moment().toISOString()
 
-        rules.validations.beforeNow data,field,message,ruleDefination
+        rules.validations.beforeOffsetOf data,field,message,ruleDefination
         .then (success) ->
           should.exist success
         .catch (err) ->
@@ -782,7 +782,7 @@ describe "#Rules", () ->
         data =
           dob: moment().add(1, 's').toISOString()
 
-        rules.validations.beforeNow data,field,message,''
+        rules.validations.beforeOffsetOf data,field,message,''
         .then (success) ->
           should.not.exist success
         .catch (err) ->
@@ -794,7 +794,7 @@ describe "#Rules", () ->
         data =
           dob: moment().subtract(1, 's').toISOString()
 
-        rules.validations.beforeNow data,field,message,''
+        rules.validations.beforeOffsetOf data,field,message,''
         .then (success) ->
           should.exist success
         .catch (err) ->
