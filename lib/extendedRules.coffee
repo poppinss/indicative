@@ -310,11 +310,11 @@ class ExtendedRules
      * @return {[promise]}  returns final promise
     ###
     required : (data,field,message) ->
+
       new PROMISE (resolve,reject) ->
         if        (_.has data,field) \
-        and       IS.truthy data[field] \
-        and       IS.existy data[field] \
-        and       IS.not.empty data[field]
+        and       (IS.existy data[field]) \
+        and       (IS.not.empty data[field])
         then      resolve "is present"
         else      reject message
 
@@ -333,9 +333,8 @@ class ExtendedRules
         if        (not _.has data,with_field) \
         or        (IS.not.equal data[with_field],value) \
         or        (_.has data,field) \
-        and       IS.truthy data[field] \
-        and       IS.existy data[field] \
-        and       IS.not.empty data[field]
+        and       (IS.existy data[field]) \
+        and       (IS.not.empty data[field])
         then      resolve "is equal"
         else      reject message
 
@@ -354,9 +353,8 @@ class ExtendedRules
       new PROMISE (resolve,reject) ->
         if        (_.size intersection) is 0 \
         or        (_.has data,field) \
-        and       IS.truthy data[field] \
-        and       IS.existy data[field] \
-        and       IS.not.empty data[field]
+        and       (IS.existy data[field]) \
+        and       (IS.not.empty data[field])
         then      resolve "is equal"
         else      reject message
 
@@ -376,9 +374,8 @@ class ExtendedRules
       new PROMISE (resolve,reject) ->
         if        (_.size intersection) is (_.size with_any_fields) \
         or        (_.has data,field) \
-        and       IS.truthy data[field] \
-        and       IS.existy data[field] \
-        and       IS.not.empty data[field]
+        and       (IS.existy data[field]) \
+        and       (IS.not.empty data[field])
         then      resolve "is equal"
         else      reject message
 
@@ -396,9 +393,8 @@ class ExtendedRules
       new PROMISE (resolve,reject) ->
         if        (_.size intersection) isnt (_.size with_any_fields) \
         or        (_.has data,field) \
-        and       IS.truthy data[field] \
-        and       IS.existy data[field] \
-        and       IS.not.empty data[field]
+        and       (IS.existy data[field]) \
+        and       (IS.not.empty data[field])
         then      resolve "is equal"
         else      reject message
 
@@ -418,9 +414,8 @@ class ExtendedRules
       new PROMISE (resolve,reject) ->
         if        (_.size intersection) isnt 0 \
         or        (_.has data,field) \
-        and       IS.truthy data[field] \
-        and       IS.existy data[field] \
-        and       IS.not.empty data[field]
+        and       (IS.existy data[field]) \
+        and       (IS.not.empty data[field])
         then      resolve "is equal"
         else      reject message
 

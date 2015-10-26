@@ -2401,17 +2401,16 @@ describe "#Rules", () ->
           expect(err).to.equal message
 
 
-      it "should return an error when field under validation is false", () ->
+      it "should not return an error when field under validation is false", () ->
 
         data =
           username : false
 
         rules.validations.required data,field,message
         .then (success) ->
-          should.not.exist success
+          should.exist success
         .catch (err) ->
-          should.exist err
-          expect(err).to.equal message
+          should.not.exist err
 
 
       it "should work fine when value is present", () ->
@@ -2424,6 +2423,29 @@ describe "#Rules", () ->
           should.exist success
         .catch (err) ->
           should.not.exist err
+
+      it "work fine when value passed is a numeric negative boolean", () ->
+
+        data =
+          username : 0
+
+        rules.validations.required data,field,message
+        .then (success) ->
+          should.exist success
+        .catch (err) ->
+          should.not.exist err
+
+      it "throw error when field under validation is empty", () ->
+
+        data = 
+          username : ""
+
+        rules.validations.required data,field,message
+        .then (success) ->
+          should.not.exist success
+        .catch (err) ->
+          should.exist err
+          expect(err).to.equal message
 
 
     context "required_if", () ->
@@ -2496,10 +2518,9 @@ describe "#Rules", () ->
 
         rules.validations.requiredIf data,field,message,ruleDefination
         .then (success) ->
-          should.not.exist success
+          should.exist success
         .catch (err) ->
-          should.exist err
-          expect(err).to.equal message
+          should.not.exist err
 
 
       it "should work fine when field under validation is present and value of field under if is also same", () ->
@@ -2611,7 +2632,7 @@ describe "#Rules", () ->
           should.exist err
           expect(err).to.equal message
 
-      it "should return error when all of the `with fields` are present and field under validation is false", () ->
+      it "should work fine when all of the `with fields` are present and field under validation is false", () ->
 
         data =
           imac   : true
@@ -2624,10 +2645,9 @@ describe "#Rules", () ->
 
         rules.validations.requiredWithAll data,field,message,ruleDefination
         .then (success) ->
-          should.not.exist success
+          should.exist success
         .catch (err) ->
-          should.exist err
-          expect(err).to.equal message
+          should.not.exist err
 
 
       it "should work fine when all of the `with fields` are present and field under validation is true or present", () ->
@@ -2708,7 +2728,7 @@ describe "#Rules", () ->
           expect(err).to.equal message
 
 
-      it "should return error when field under validation is false and any one with any fields are present", () ->
+      it "should work fine when field under validation is false and any one with any fields are present", () ->
 
         data =
           twitter       : true
@@ -2716,11 +2736,9 @@ describe "#Rules", () ->
 
         rules.validations.requiredWithAny data,field,message,ruleDefination
         .then (success) ->
-          should.not.exist success
+          should.exist success
         .catch (err) ->
-          should.exist err
-          expect(err).to.equal message
-
+          should.not.exist err
 
 
       it "should work fine when `with any fields` are present and field under validation is also present and not false", () ->
@@ -2796,17 +2814,16 @@ describe "#Rules", () ->
           expect(err).to.equal message
 
 
-      it "should return error when `without all fields` are not present and field under validation is false", () ->
+      it "should work fine when `without all fields` are not present and field under validation is false", () ->
 
         data =
           phone_number : false
 
         rules.validations.requiredWithoutAll data,field,message,ruleDefination
         .then (success) ->
-          should.not.exist success
+          should.exist success
         .catch (err) ->
-          should.exist err
-          expect(err).to.equal message
+          should.not.exist err
 
 
       it "should work fine when `without all fields` are not present and field under validation is true or present", () ->
@@ -2870,7 +2887,7 @@ describe "#Rules", () ->
           expect(err).to.equal message
 
 
-      it "should return error when any of the `without any fields` are missing and field under validation is false", () ->
+      it "should work fine when any of the `without any fields` are missing and field under validation is false", () ->
 
         data =
           phone_number  : '9102301021'
@@ -2878,10 +2895,9 @@ describe "#Rules", () ->
 
         rules.validations.requiredWithoutAny data,field,message,ruleDefination
         .then (success) ->
-          should.not.exist success
+          should.exist success
         .catch (err) ->
-          should.exist err
-          expect(err).to.equal message
+          should.not.exist err
 
 
       it "should return error when any of the `without any fields` are missing and field under validation is undefined", () ->
