@@ -1,0 +1,25 @@
+{
+  "name": "indicative",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "_mocha test --bail",
+    "coverage": "istanbul cover _mocha test --bail"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "benchmark": "^1.0.0",
+    "chai": "^3.4.0",
+    "co-mocha": "^1.1.2",
+    "istanbul": "^0.4.0",
+    "mocha": "^2.3.3"
+  },
+  "dependencies": {
+    "bluebird": "^3.0.5",
+    "dot-prop": "^2.2.0",
+    "moment": "^2.10.6",
+    "pope": "^1.0.0"
+  }
+}
