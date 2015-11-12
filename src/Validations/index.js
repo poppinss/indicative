@@ -106,6 +106,64 @@ Validations.after = function (data, field, message, args, get) {
 }
 
 /**
+ * @description makes sure the value of field under validation is
+ * after defined offset
+ * @method afterOffsetOf
+ * @param  {Object}      data
+ * @param  {String}      field
+ * @param  {String}      message
+ * @param  {Array}      args
+ * @param  {Function}      get
+ * @return {Object}
+ * @public
+ */
+Validations.afterOffsetOf = function (data, field, message, args, get) {
+  return new Promise(function (resolve, reject) {
+    const fieldValue = get(data, field)
+    const offset = Number(args[0])
+    const key = args[1]
+    if (skippable(fieldValue)) {
+      resolve('validation skipped')
+      return
+    }
+    if(Raw.afterOffsetOf(fieldValue, offset, key)){
+      resolve('validation passed')
+      return
+    }
+    reject(message)
+  })
+}
+
+/**
+ * @description makes sure the value of field under validation is
+ * before defined offset
+ * @method beforeOffsetOf
+ * @param  {Object}      data
+ * @param  {String}      field
+ * @param  {String}      message
+ * @param  {Array}      args
+ * @param  {Function}      get
+ * @return {Object}
+ * @public
+ */
+Validations.beforeOffsetOf = function (data, field, message, args, get) {
+  return new Promise(function (resolve, reject) {
+    const fieldValue = get(data, field)
+    const offset = Number(args[0])
+    const key = args[1]
+    if (skippable(fieldValue)) {
+      resolve('validation skipped')
+      return
+    }
+    if(Raw.beforeOffsetOf(fieldValue, offset, key)){
+      resolve('validation passed')
+      return
+    }
+    reject(message)
+  })
+}
+
+/**
  * @description makes sure the field under validation is a
  * valid alpha string
  * @method alpha
@@ -296,6 +354,60 @@ Validations.ip = function (data, field, message, args, get) {
 
 /**
  * @description makes sure value of field under validation is a
+ * valid ipv4 address
+ * @method ipv4
+ * @param  {Object} data
+ * @param  {String} field
+ * @param  {String} message
+ * @param  {Array} args
+ * @param  {Function} get
+ * @return {Object}
+ * @public
+ */
+Validations.ipv4 = function (data, field, message, args, get) {
+  return new Promise(function (resolve, reject) {
+    const fieldValue = get(data, field)
+    if (skippable(fieldValue)) {
+      resolve('validation skipped')
+      return
+    }
+    if (Raw.ipv4(fieldValue)) {
+      resolve('validation passed')
+      return
+    }
+    reject(message)
+  })
+}
+
+/**
+ * @description makes sure value of field under validation is a
+ * valid ipv6 address
+ * @method ipv6
+ * @param  {Object} data
+ * @param  {String} field
+ * @param  {String} message
+ * @param  {Array} args
+ * @param  {Function} get
+ * @return {Object}
+ * @public
+ */
+Validations.ipv6 = function (data, field, message, args, get) {
+  return new Promise(function (resolve, reject) {
+    const fieldValue = get(data, field)
+    if (skippable(fieldValue)) {
+      resolve('validation skipped')
+      return
+    }
+    if (Raw.ipv6(fieldValue)) {
+      resolve('validation passed')
+      return
+    }
+    reject(message)
+  })
+}
+
+/**
+ * @description makes sure value of field under validation is a
  * valid integer
  * @method integer
  * @param  {Object} data
@@ -406,7 +518,7 @@ Validations.date = function (data, field, message, args, get) {
       resolve('validation skipped')
       return
     }
-    if (Raw.isDate(fieldValue, formats)) {
+    if (Raw.dateFormat(fieldValue, formats)) {
       resolve('validation passed')
       return
     }
@@ -434,7 +546,7 @@ Validations.dateFormat = function (data, field, message, args, get) {
       resolve('validation skipped')
       return
     }
-    if (Raw.isDate(fieldValue, format)) {
+    if (Raw.dateFormat(fieldValue, format)) {
       resolve('validation passed')
       return
     }
@@ -551,6 +663,37 @@ Validations.requiredIf = function (data, field, message, args, get) {
 }
 
 /**
+ * @description makes sure field under validation is present and
+ * value matches to the conditional field value
+ * @method requiredWhen
+ * @param  {Object}   data
+ * @param  {String}   field
+ * @param  {String}   message
+ * @param  {Array}   args
+ * @param  {Function}   get
+ * @return {Object}
+ * @public
+ */
+Validations.requiredWhen = function (data, field, message, args, get) {
+  const withField = args[0]
+  const withfieldExpectedValue = args[1]
+  return new Promise(function (resolve, reject) {
+    const withFieldValue = get(data, withField)
+    if (!withFieldValue || withfieldExpectedValue !== withFieldValue) {
+      resolve('validation skipped')
+      return
+    }
+
+    const fieldValue = get(data, field)
+    if (!Raw.empty(fieldValue)) {
+      resolve('validation passed')
+      return
+    }
+    reject(message)
+  })
+}
+
+/**
  * @description enforces field under validation to have data
  * when any of the other expected fields are present
  * @method requiredWithAny
@@ -636,7 +779,7 @@ Validations.requiredWithAll = function (data, field, message, args, get) {
 /**
  * @description enforces field under validation to have data
  * when any of the other expected fields are missing
- * @method requiredWithOutAny
+ * @method requiredWithoutAny
  * @param  {Object}        data
  * @param  {String}        field
  * @param  {String}        message
@@ -645,7 +788,7 @@ Validations.requiredWithAll = function (data, field, message, args, get) {
  * @return {Object}
  * @public
  */
-Validations.requiredWithOutAny = function (data, field, message, args, get) {
+Validations.requiredWithoutAny = function (data, field, message, args, get) {
   return new Promise(function (resolve, reject) {
     let withOutFieldCounts = 0
 
@@ -678,7 +821,7 @@ Validations.requiredWithOutAny = function (data, field, message, args, get) {
 /**
  * @description enforces field under validation to have data
  * when all of the other expected fields are missing
- * @method requiredWithOutAll
+ * @method requiredWithoutAll
  * @param  {Object}        data
  * @param  {String}        field
  * @param  {String}        message
@@ -687,7 +830,7 @@ Validations.requiredWithOutAny = function (data, field, message, args, get) {
  * @return {Object}
  * @public
  */
-Validations.requiredWithOutAll = function (data, field, message, args, get) {
+Validations.requiredWithoutAll = function (data, field, message, args, get) {
   return new Promise(function (resolve, reject) {
     let withOutFieldCounts = 0
 
@@ -1105,7 +1248,6 @@ Validations.regex = function (data, field, message, args, get) {
     }
 
     const expression = regexFlags ? new RegExp(regexExp, regexFlags) : new RegExp(regexExp)
-
     if (Raw.regex(fieldValue, expression)) {
       resolve('validation passed')
       return

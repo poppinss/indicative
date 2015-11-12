@@ -9,6 +9,7 @@
 const Validations = require('../src/Validations')
 const dotProp = require('dot-prop')
 const chai = require('chai')
+const moment = require('moment')
 const expect = chai.expect
 
 require('co-mocha')
@@ -317,7 +318,6 @@ describe('Validations', function() {
       const passes = yield Validations.after(data, field, message, args, get)
       expect(passes).to.equal('validation skipped')
     })
-
   })
 
   context('alpha', function () {
@@ -1001,7 +1001,7 @@ describe('Validations', function() {
     })
   })
 
-  context('requiredWithOutAny', function () {
+  context('requiredWithoutAny', function () {
 
     ///////////////////
     // test suite 65 //
@@ -1012,7 +1012,7 @@ describe('Validations', function() {
       const message = 'enter email or password'
       const get = dotProp.get
       const args = ['username','email']
-      const passes = yield Validations.requiredWithOutAny(data, field, message, args, get)
+      const passes = yield Validations.requiredWithoutAny(data, field, message, args, get)
       expect(passes).to.equal('validation skipped')
     })
 
@@ -1026,7 +1026,7 @@ describe('Validations', function() {
       const get = dotProp.get
       const args = ['username','email']
       try{
-        const passes = yield Validations.requiredWithOutAny(data, field, message, args, get)
+        const passes = yield Validations.requiredWithoutAny(data, field, message, args, get)
         expect(passes).not.to.exist()
       }catch(e){
         expect(e).to.equal(message)
@@ -1043,7 +1043,7 @@ describe('Validations', function() {
       const get = dotProp.get
       const args = ['username','email']
       try{
-        const passes = yield Validations.requiredWithOutAny(data, field, message, args, get)
+        const passes = yield Validations.requiredWithoutAny(data, field, message, args, get)
         expect(passes).not.to.exist()
       }catch(e){
         expect(e).to.equal(message)
@@ -1059,12 +1059,12 @@ describe('Validations', function() {
       const message = 'enter email or password'
       const get = dotProp.get
       const args = ['username','email']
-      const passes = yield Validations.requiredWithOutAny(data, field, message, args, get)
+      const passes = yield Validations.requiredWithoutAny(data, field, message, args, get)
       expect(passes).to.equal('validation passed')
     })
   })
 
-  context('requiredWithOutAll', function () {
+  context('requiredWithoutAll', function () {
 
     ///////////////////
     // test suite 69 //
@@ -1075,7 +1075,7 @@ describe('Validations', function() {
       const message = 'enter username,email or password'
       const get = dotProp.get
       const args = ['username','email']
-      const passes = yield Validations.requiredWithOutAll(data, field, message, args, get)
+      const passes = yield Validations.requiredWithoutAll(data, field, message, args, get)
       expect(passes).to.equal('validation skipped')
     })
 
@@ -1089,7 +1089,7 @@ describe('Validations', function() {
       const get = dotProp.get
       const args = ['username','email']
       try{
-        const passes = yield Validations.requiredWithOutAll(data, field, message, args, get)
+        const passes = yield Validations.requiredWithoutAll(data, field, message, args, get)
         expect(passes).not.to.exist()
       }catch(e){
         expect(e).to.equal(message)
@@ -1106,7 +1106,7 @@ describe('Validations', function() {
       const get = dotProp.get
       const args = ['username','email']
       try{
-        const passes = yield Validations.requiredWithOutAll(data, field, message, args, get)
+        const passes = yield Validations.requiredWithoutAll(data, field, message, args, get)
         expect(passes).not.to.exist()
       }catch(e){
         expect(e).to.equal(message)
@@ -1122,7 +1122,7 @@ describe('Validations', function() {
       const message = 'enter username,email or password'
       const get = dotProp.get
       const args = ['username','email']
-      const passes = yield Validations.requiredWithOutAll(data, field, message, args, get)
+      const passes = yield Validations.requiredWithoutAll(data, field, message, args, get)
       expect(passes).to.equal('validation passed')
     })
 
@@ -1135,7 +1135,7 @@ describe('Validations', function() {
       const message = 'enter username,email or password'
       const get = dotProp.get
       const args = ['username','email']
-      const passes = yield Validations.requiredWithOutAll(data, field, message, args, get)
+      const passes = yield Validations.requiredWithoutAll(data, field, message, args, get)
       expect(passes).to.equal('validation skipped')
     })
   })
@@ -2710,6 +2710,314 @@ describe('Validations', function() {
       const get = dotProp.get
       const args = []
       const passes = yield Validations.json(data, field, message, args, get)
+      expect(passes).to.equal('validation skipped')
+    })
+  })
+
+  context('ipv4', function () {
+
+    ////////////////////
+    // test suite 180 //
+    ////////////////////
+    it('should throw an error when value is not a valid ipv4 address', function * () {
+      const data = {user_ip: '2001:DB8:0:0:1::1'}
+      const field = 'user_ip'
+      const message = 'invalid ipv4 address'
+      const get = dotProp.get
+      const args = []
+      try{
+        const passes = yield Validations.ipv4(data, field, message, args, get)
+        expect(passes).not.to.exist()
+      }catch(e){
+        expect(e).to.equal(message)
+      }
+    })
+
+    ////////////////////
+    // test suite 181 //
+    ////////////////////
+    it('should work fine when value is a valid ipv4 address', function * () {
+      const data = {user_ip: '127.0.0.1'}
+      const field = 'user_ip'
+      const message = 'invalid ipv4 address'
+      const get = dotProp.get
+      const args = []
+      const passes = yield Validations.ipv4(data, field, message, args, get)
+      expect(passes).to.equal('validation passed')
+    })
+
+    ////////////////////
+    // test suite 182 //
+    ////////////////////
+    it('should skip validation when field does not exists', function * () {
+      const data = {}
+      const field = 'user_ip'
+      const message = 'invalid ipv4 address'
+      const get = dotProp.get
+      const args = []
+      const passes = yield Validations.ipv4(data, field, message, args, get)
+      expect(passes).to.equal('validation skipped')
+    })
+
+    ////////////////////
+    // test suite 183 //
+    ////////////////////
+    it('should skip validation when field value is undefined', function * () {
+      const data = {user_ip:undefined}
+      const field = 'user_ip'
+      const message = 'invalid ipv4 address'
+      const get = dotProp.get
+      const args = []
+      const passes = yield Validations.ipv4(data, field, message, args, get)
+      expect(passes).to.equal('validation skipped')
+    })
+  })
+
+  context('ipv6', function () {
+
+    ////////////////////
+    // test suite 184 //
+    ////////////////////
+    it('should throw an error when value is not a valid ipv6 address', function * () {
+      const data = {user_ip: '127.0.0.1'}
+      const field = 'user_ip'
+      const message = 'invalid ipv6 address'
+      const get = dotProp.get
+      const args = []
+      try{
+        const passes = yield Validations.ipv6(data, field, message, args, get)
+        expect(passes).not.to.exist()
+      }catch(e){
+        expect(e).to.equal(message)
+      }
+    })
+
+    ////////////////////
+    // test suite 185 //
+    ////////////////////
+    it('should work fine when value is a valid ipv6 address', function * () {
+      const data = {user_ip: '2001:DB8:0:0:1::1'}
+      const field = 'user_ip'
+      const message = 'invalid ipv6 address'
+      const get = dotProp.get
+      const args = []
+      const passes = yield Validations.ipv6(data, field, message, args, get)
+      expect(passes).to.equal('validation passed')
+    })
+
+    ////////////////////
+    // test suite 186 //
+    ////////////////////
+    it('should skip validation when field does not exists', function * () {
+      const data = {}
+      const field = 'user_ip'
+      const message = 'invalid ipv6 address'
+      const get = dotProp.get
+      const args = []
+      const passes = yield Validations.ipv6(data, field, message, args, get)
+      expect(passes).to.equal('validation skipped')
+    })
+
+    ////////////////////
+    // test suite 187 //
+    ////////////////////
+    it('should skip validation when field value is undefined', function * () {
+      const data = {user_ip:undefined}
+      const field = 'user_ip'
+      const message = 'invalid ipv6 address'
+      const get = dotProp.get
+      const args = []
+      const passes = yield Validations.ipv6(data, field, message, args, get)
+      expect(passes).to.equal('validation skipped')
+    })
+  })
+
+  context('requiredWhen', function () {
+
+    ////////////////////
+    // test suite 188 //
+    ////////////////////
+    it('should skip validation when conditional field does not exists', function * () {
+      const data = {}
+      const field = 'state'
+      const message = 'state is required'
+      const get = dotProp.get
+      const args = ['country','US']
+      const passes = yield Validations.requiredWhen(data, field, message, args, get)
+      expect(passes).to.equal('validation skipped')
+    })
+
+    ////////////////////
+    // test suite 189 //
+    ////////////////////
+    it('should throw error when conditional field value matches and field under validation is missing', function * () {
+      const data = {country:'US'}
+      const field = 'state'
+      const message = 'state is required'
+      const get = dotProp.get
+      const args = ['country','US']
+      try{
+        const passes = yield Validations.requiredWhen(data, field, message, args, get)
+        expect(passes).not.to.exist()
+      }catch(e){
+        expect(e).to.equal(message)
+      }
+    })
+
+    ////////////////////
+    // test suite 189 //
+    ////////////////////
+    it('should skip validation when of value of conditional field does not match', function * () {
+      const data = {country:'UK'}
+      const field = 'state'
+      const message = 'state is required'
+      const get = dotProp.get
+      const args = ['country','US']
+      const passes = yield Validations.requiredWhen(data, field, message, args, get)
+      expect(passes).to.equal('validation skipped')
+    })
+
+    ////////////////////
+    // test suite 190 //
+    ////////////////////
+    it('should skip validation when conditional field is null', function * () {
+      const data = {country:null}
+      const field = 'state'
+      const message = 'state is required'
+      const get = dotProp.get
+      const args = ['country','US']
+      const passes = yield Validations.requiredWhen(data, field, message, args, get)
+      expect(passes).to.equal('validation skipped')
+    })
+
+    ////////////////////
+    // test suite 191 //
+    ////////////////////
+    it('should work fine when field under validation is available and conditional field value match', function * () {
+      const data = {country:'US',state:'NewYork'}
+      const field = 'state'
+      const message = 'state is required'
+      const get = dotProp.get
+      const args = ['country','US']
+      const passes = yield Validations.requiredWhen(data, field, message, args, get)
+      expect(passes).to.equal('validation passed')
+    })
+  })
+
+  context('afterOffsetOf', function () {
+
+    ////////////////////
+    // test suite 192 //
+    ////////////////////
+    it('should throw an error when date is not after defined offset', function * () {
+      const data = {renewal:new Date()}
+      const field = 'renewal'
+      const message = 'packages are renewed after 12 months'
+      const get = dotProp.get
+      const args = ['12','months']
+      try{
+        const passes = yield Validations.afterOffsetOf(data, field, message, args, get)
+        expect(passes).not.to.exist()
+      }catch(e){
+        expect(e).to.equal(message)
+      }
+    })
+
+    /////////////////////
+    // test suite 193 ///
+    /////////////////////
+    it('should work fine when value is after defined offset', function * () {
+      const data = {renewal: moment().add(13,'months')}
+      const field = 'renewal'
+      const message = 'packages are renewed after 12 months'
+      const get = dotProp.get
+      const args = ['12','months']
+      const passes = yield Validations.afterOffsetOf(data, field, message, args, get)
+      expect(passes).to.equal('validation passed')
+    })
+
+    ////////////////////
+    // test suite 194 //
+    ////////////////////
+    it('should skip validation when field is not defined', function * () {
+      const data = {}
+      const field = 'renewal'
+      const message = 'packages are renewed after 12 months'
+      const get = dotProp.get
+      const args = ['12','months']
+      const passes = yield Validations.afterOffsetOf(data, field, message, args, get)
+      expect(passes).to.equal('validation skipped')
+    })
+
+    ////////////////////
+    // test suite 195 //
+    ////////////////////
+    it('should skip validation when field value is undefined', function * () {
+      const data = {renewal: undefined}
+      const field = 'renewal'
+      const message = 'packages are renewed after 12 months'
+      const get = dotProp.get
+      const args = ['12','months']
+      const passes = yield Validations.afterOffsetOf(data, field, message, args, get)
+      expect(passes).to.equal('validation skipped')
+    })
+  })
+
+  context('beforeOffsetOf', function () {
+
+    ////////////////////
+    // test suite 196 //
+    ////////////////////
+    it('should throw an error when date is not before defined offset', function * () {
+      const data = {subscription:new Date()}
+      const field = 'subscription'
+      const message = '12 months old subscriptions are upgradable'
+      const get = dotProp.get
+      const args = ['12','months']
+      try{
+        const passes = yield Validations.beforeOffsetOf(data, field, message, args, get)
+        expect(passes).not.to.exist()
+      }catch(e){
+        expect(e).to.equal(message)
+      }
+    })
+
+    /////////////////////
+    // test suite 197 ///
+    /////////////////////
+    it('should work fine when value is before defined offset', function * () {
+      const data = {subscription:moment().subtract(2, 'years')}
+      const field = 'subscription'
+      const message = '12 months old subscriptions are upgradable'
+      const get = dotProp.get
+      const args = ['12','months']
+      const passes = yield Validations.beforeOffsetOf(data, field, message, args, get)
+      expect(passes).to.equal('validation passed')
+    })
+
+    ////////////////////
+    // test suite 198 //
+    ////////////////////
+    it('should skip validation when field is not defined', function * () {
+      const data = {}
+      const field = 'subscription'
+      const message = '12 months old subscriptions are upgradable'
+      const get = dotProp.get
+      const args = ['12','months']
+      const passes = yield Validations.beforeOffsetOf(data, field, message, args, get)
+      expect(passes).to.equal('validation skipped')
+    })
+
+    ///////////////////
+    // test suite 199 //
+    ///////////////////
+    it('should skip validation when field value is undefined', function * () {
+      const data = {subscription: undefined}
+      const field = 'subscription'
+      const message = '12 months old subscriptions are upgradable'
+      const get = dotProp.get
+      const args = ['12','months']
+      const passes = yield Validations.beforeOffsetOf(data, field, message, args, get)
       expect(passes).to.equal('validation skipped')
     })
   })

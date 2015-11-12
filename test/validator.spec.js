@@ -292,8 +292,27 @@ describe('Validator', function() {
     }
   })
 
+  it('should be able to define regex as an array', function * () {
+    const rules = {
+      name: ['regex:^[a-zA-z]+$']
+    }
+
+    const body = {
+      name: 'virk@33$'
+    }
+
+    try{
+      const passed = yield Validator.validate(rules, body)
+      expect(passed).not.to.exist()
+    }catch(e){
+      expect(e).to.be.an('array')
+      expect(e[0].field).to.equal('name')
+      expect(e[0].validation).to.equal('regex')
+    }
+  })
+
   ///////////////////
-  // test suite 15 //
+  // test suite 16 //
   ///////////////////
   it('should run all validations on multiple fields using validateAll', function * () {
     const rules = {
@@ -317,7 +336,7 @@ describe('Validator', function() {
   })
 
   ///////////////////
-  // test suite 16 //
+  // test suite 17 //
   ///////////////////
   it('should make use of snake case validations', function * () {
     const rules = {
@@ -339,7 +358,7 @@ describe('Validator', function() {
   })
 
   ///////////////////
-  // test suite 17 //
+  // test suite 18 //
   ///////////////////
   it('should be able to define custom messages for snake case rules', function * () {
     const rules = {

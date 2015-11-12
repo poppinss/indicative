@@ -9,6 +9,7 @@
 const Is = require('../src/Raw')
 const chai = require('chai')
 const expect = chai.expect
+const moment = require('moment')
 
 describe('Raw Validator', function() {
 
@@ -1030,6 +1031,41 @@ describe('Raw Validator', function() {
     it('should return false when target value is not an array', function () {
       const doesIntersectAny = Is.intersectAll([10,20],10)
       expect(doesIntersectAny).to.equal(false)
+    })
+  })
+
+  context('Dates', function () {
+
+    ////////////////////
+    // test suite 120 //
+    ////////////////////
+    it('should make return false when date is not after defined offset', function () {
+      const isAfterOffset = Is.afterOffsetOf(new Date(), 12, 'months')
+      expect(isAfterOffset).to.equal(false)
+    })
+
+    ////////////////////
+    // test suite 121 //
+    ////////////////////
+    it('should make return true when date is after defined offset', function () {
+      const isAfterOffset = Is.afterOffsetOf(moment().add(13,'months'), 12, 'months')
+      expect(isAfterOffset).to.equal(true)
+    })
+
+    ////////////////////
+    // test suite 122 //
+    ////////////////////
+    it('should make return false when date is not before defined offset', function () {
+      const isBeforeOffset = Is.beforeOffsetOf(new Date(), 12, 'months')
+      expect(isBeforeOffset).to.equal(false)
+    })
+
+    ////////////////////
+    // test suite 123 //
+    ////////////////////
+    it('should make return true when date is after defined offset', function () {
+      const isBeforeOffset = Is.beforeOffsetOf(moment().subtract(13,'months'), 12, 'months')
+      expect(isBeforeOffset).to.equal(true)
     })
 
   })

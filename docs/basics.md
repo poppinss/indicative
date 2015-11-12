@@ -143,7 +143,7 @@ Here `dot-notation` will help you in removing the use of unnecessary curly brace
 
 ## Custom messages
 
-Indicative self construct error messages when validation for a given rule fails, which may not be helpful when trying to keep error messages descriptive and personalized.
+Indicative self-constructs error messages when validation for a given rule fails, which may not be helpful when trying to keep error messages descriptive and personalized.
 
 ### global messages
 Global messages are defined on rules, and the same message will be used whenever a rule will fail.
@@ -163,7 +163,7 @@ indicative
 })
 ```
 
-Above, whenever a `required` rule will fail, it will return your custom message instead of a self-constructed message.
+Whenever a `required` rule fails, it will return your custom message instead of a self-constructed message.
 
 ### field specific messages.
 field specific messages are even more personalized as they are defined for a given rule and field.
