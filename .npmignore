@@ -57,6 +57,6 @@ Temporary Items
 # npm specific
 
 test
-.cz.json
 .travis.yml
 .editorconfig
+docs

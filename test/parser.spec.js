@@ -125,4 +125,23 @@ describe('Parser', function() {
     const parsed = {password:Parser.parse(rules.password)}
     expect(parsed).deep.equal(parsedRules)
   })
+
+  //////////////////
+  // test suite 5 //
+  //////////////////
+  it('should convert snake case values to camelcase', function () {
+    const rule = 'alpha_numeric'
+    const convertedRule = Parser.toCamelCase(rule)
+    expect(convertedRule).to.equal('alphaNumeric')
+  })
+
+  //////////////////
+  // test suite 6 //
+  //////////////////
+  it('should convert multiple snake case values to camelcase', function () {
+    const rule = 'before_offset_of'
+    const convertedRule = Parser.toCamelCase(rule)
+    expect(convertedRule).to.equal('beforeOffsetOf')
+  })
+
 })

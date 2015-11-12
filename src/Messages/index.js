@@ -26,7 +26,6 @@ const messagesStore = {}
  * @type {Object}
  */
 let Messages = exports = module.exports = {}
-
 /**
  * @description returns most relevant message for a given
  * field and validation rule

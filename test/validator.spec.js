@@ -316,4 +316,53 @@ describe('Validator', function() {
     }
   })
 
+  ///////////////////
+  // test suite 16 //
+  ///////////////////
+  it('should make use of snake case validations', function * () {
+    const rules = {
+      username: 'alpha_numeric'
+    }
+
+    const body = {
+      username: 'virk@33$'
+    }
+
+    try{
+      const passed = yield Validator.validate(rules, body)
+      expect(passed).not.to.exist()
+    }catch(e){
+      expect(e).to.be.an('array')
+      expect(e[0].field).to.equal('username')
+      expect(e[0].validation).to.equal('alpha_numeric')
+    }
+  })
+
+  ///////////////////
+  // test suite 17 //
+  ///////////////////
+  it('should be able to define custom messages for snake case rules', function * () {
+    const rules = {
+      username: 'alpha_numeric'
+    }
+
+    const body = {
+      username: 'virk@33$'
+    }
+
+    const messages = {
+      'alpha_numeric': 'special chars not allowed'
+    }
+
+    try{
+      const passed = yield Validator.validate(rules, body, messages)
+      expect(passed).not.to.exist()
+    }catch(e){
+      expect(e).to.be.an('array')
+      expect(e[0].field).to.equal('username')
+      expect(e[0].validation).to.equal('alpha_numeric')
+      expect(e[0].message).to.equal(messages['alpha_numeric'])
+    }
+  })
+
 });

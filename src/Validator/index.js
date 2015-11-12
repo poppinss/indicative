@@ -43,11 +43,13 @@ const _validateField = function (validations, data, field, messages, handleAllEr
    * @return {Promise}
    */
   const executeValidation = function (validation) {
-    if (typeof (Validations[validation]) !== 'function') {
+    const message = Messages.message(messages, field, validation, validationRules[validation].args)
+    const convertedValidation = Parser.toCamelCase(validation)
+
+    if (typeof (Validations[convertedValidation]) !== 'function') {
       throw new Error(validation + ' is not defined as a rule')
     }
-    const message = Messages.message(messages, field, validation, validationRules[validation].args)
-    return Validations[validation](data, field, message, validationRules[validation].args, dotProp.get)
+    return Validations[convertedValidation](data, field, message, validationRules[validation].args, dotProp.get)
       .catch(function (message) {
         errors.push({field, validation, message})
         if (!handleAllErrors) {

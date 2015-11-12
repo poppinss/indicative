@@ -14,21 +14,7 @@
  */
 let Parser = exports = module.exports = {}
 
-/**
- * @description loops through an array of validation rules and
- * turns them into a valid consumable object
- * @method _parseValidations
- * @param  {Array}          validations
- * @return {Object}
- * @private
- */
-const _parseValidations = function (validations) {
-  const parsedValidations = {}
-  validations.forEach(function (validation) {
-    _parseValidation(parsedValidations, validation)
-  })
-  return parsedValidations
-}
+const snakeCaseRegex = /_(\w)/g
 
 /**
  * @description parse a single validation rule and pulls
@@ -59,6 +45,22 @@ const _parseValidation = function (validations, validation) {
 }
 
 /**
+ * @description loops through an array of validation rules and
+ * turns them into a valid consumable object
+ * @method _parseValidations
+ * @param  {Array}          validations
+ * @return {Object}
+ * @private
+ */
+const _parseValidations = function (validations) {
+  const parsedValidations = {}
+  validations.forEach(function (validation) {
+    _parseValidation(parsedValidations, validation)
+  })
+  return parsedValidations
+}
+
+/**
  * @description parses a rule string its validations
  * into a formatted object to be used by validator
  * @method parse
@@ -69,4 +71,17 @@ const _parseValidation = function (validations, validation) {
 Parser.parse = function (rule) {
   let rulesArray = rule instanceof Array ? rule : rule.split('|')
   return {rules: _parseValidations(rulesArray)}
+}
+
+/**
+ * @description converts a snake case string to camelCase
+ * @method toCamelCase
+ * @param  {String}    string
+ * @return {String}
+ */
+Parser.toCamelCase = function (string) {
+  let formattedString = string
+  return formattedString.replace(snakeCaseRegex, function (m, $1) {
+    return $1.toUpperCase()
+  })
 }
