@@ -82,7 +82,7 @@ const _validateField = function (validations, data, field, messages, handleAllEr
  * @return {Object}
  * @public
  */
-Validator.validate = function (rules, data, messages) {
+Validator.validate = function (data, rules, messages) {
   messages = messages || {}
   const rulesKeys = Object.keys(rules)
 
@@ -102,13 +102,13 @@ Validator.validate = function (rules, data, messages) {
  * @description validates all of the fields defined in rules and
  * returns an array of errors
  * @method validateAll
- * @param  {Object}    rules
  * @param  {Object}    data
+ * @param  {Object}    rules
  * @param  {Object}    messages
  * @return {Object}
  * @public
  */
-Validator.validateAll = function (rules, data, messages) {
+Validator.validateAll = function (data, rules, messages) {
   messages = messages || {}
   const rulesKeys = Object.keys(rules)
   let errors = []

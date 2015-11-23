@@ -26,7 +26,7 @@ describe('Validator', function() {
     }
 
     try{
-      const passed = yield Validator.validate(rules, body)
+      const passed = yield Validator.validate(body, rules)
       expect(passed).not.to.exist()
     }catch(e){
       expect(e).to.be.an('array')
@@ -48,7 +48,7 @@ describe('Validator', function() {
     }
 
     try{
-      const passed = yield Validator.validateAll(rules, body)
+      const passed = yield Validator.validateAll(body, rules)
       expect(passed).not.to.exist()
     }catch(e){
       expect(e).to.be.an('array')
@@ -72,7 +72,7 @@ describe('Validator', function() {
     }
 
     try{
-      const passed = yield Validator.validateAll(rules, body)
+      const passed = yield Validator.validateAll(body, rules)
       expect(passed).not.to.exist()
     }catch(e){
       expect(e).to.be.an('array')
@@ -103,7 +103,7 @@ describe('Validator', function() {
     }
 
     try{
-      const passed = yield Validator.validateAll(rules, body, messages)
+      const passed = yield Validator.validateAll(body, rules, messages)
       expect(passed).not.to.exist()
     }catch(e){
       expect(e).to.be.an('array')
@@ -126,7 +126,7 @@ describe('Validator', function() {
       phone: 9192910200
     }
 
-    const validated = yield Validator.validateAll(rules, body)
+    const validated = yield Validator.validateAll(body, rules)
     expect(validated).to.equal(body)
   })
 
@@ -144,7 +144,7 @@ describe('Validator', function() {
       phone: 9192910200
     }
 
-    const validated = yield Validator.validate(rules, body)
+    const validated = yield Validator.validate(body, rules)
     expect(validated).to.equal(body)
   })
 
@@ -163,7 +163,7 @@ describe('Validator', function() {
     }
 
     try{
-      const validated = yield Validator.validate(rules, body)
+      const validated = yield Validator.validate(body, rules)
       expect(validated).not.to.exist()
     }catch (e){
       expect(e).to.match(/foo is not defined as a rule/i)
@@ -187,7 +187,7 @@ describe('Validator', function() {
     const body = {}
 
     try{
-      const validated = yield Validator.validate(rules, body)
+      const validated = yield Validator.validate(body, rules)
       expect(validated).not.to.exist()
     }catch (e){
       expect(e).to.be.an('array')
@@ -209,7 +209,7 @@ describe('Validator', function() {
       phone: 9192910200
     }
 
-    const validated = yield Validator.validateAll(rules, body)
+    const validated = yield Validator.validateAll(body, rules)
     expect(validated).to.equal(body)
   })
 
@@ -226,7 +226,7 @@ describe('Validator', function() {
     }
 
     try{
-      const passed = yield Validator.validate(rules, body)
+      const passed = yield Validator.validate(body, rules)
       expect(passed).not.to.exist()
     }catch(e){
       expect(e).to.be.an('array')
@@ -281,7 +281,7 @@ describe('Validator', function() {
     }
 
     try{
-      const passed = yield Validator.validateAll(rules, body)
+      const passed = yield Validator.validateAll(body, rules)
       expect(passed).not.to.exist()
     }catch(e){
       expect(e).to.be.an('array')
@@ -302,7 +302,7 @@ describe('Validator', function() {
     }
 
     try{
-      const passed = yield Validator.validate(rules, body)
+      const passed = yield Validator.validate(body, rules)
       expect(passed).not.to.exist()
     }catch(e){
       expect(e).to.be.an('array')
@@ -324,7 +324,7 @@ describe('Validator', function() {
     }
 
     try{
-      const passed = yield Validator.validateAll(rules, body)
+      const passed = yield Validator.validateAll(body, rules)
       expect(passed).not.to.exist()
     }catch(e){
       expect(e).to.be.an('array')
@@ -348,7 +348,7 @@ describe('Validator', function() {
     }
 
     try{
-      const passed = yield Validator.validate(rules, body)
+      const passed = yield Validator.validate(body, rules)
       expect(passed).not.to.exist()
     }catch(e){
       expect(e).to.be.an('array')
@@ -374,7 +374,7 @@ describe('Validator', function() {
     }
 
     try{
-      const passed = yield Validator.validate(rules, body, messages)
+      const passed = yield Validator.validate(body, rules, messages)
       expect(passed).not.to.exist()
     }catch(e){
       expect(e).to.be.an('array')
