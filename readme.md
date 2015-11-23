@@ -1,7 +1,7 @@
 # Indicative
 
 ![coverage](https://img.shields.io/badge/tests-231-green.svg)
-![build](https://img.shields.io/travis/Adonis-Js/indicative.svg)
+![build](https://img.shields.io/travis/poppinss/indicative.svg)
 
 Indicative is a fast, expressive schema and raw validator for NodeJs with ton of rules to validate data on the fly and return customized errors.
 
@@ -11,5 +11,5 @@ Indicative is a fast, expressive schema and raw validator for NodeJs with ton of
 
 ## Contributors
 
-[Aman Virk (creator)](https://github.com/thetutlage)
-[amelon](https://github.com/amelon)
+- [Aman Virk (creator)](https://github.com/thetutlage)
+- [amelon](https://github.com/amelon)
