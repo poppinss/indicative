@@ -8,7 +8,7 @@
     "coverage": "istanbul cover _mocha test --bail"
   },
   "author": "amanvirk",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "benchmark": "^1.0.0",
     "chai": "^3.4.0",
@@ -23,5 +23,23 @@
     "dot-prop": "^2.2.0",
     "moment": "^2.10.6",
     "pope": "^1.0.0"
-  }
+  },
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/poppinss/indicative.git"
+  },
+  "keywords": [
+    "node-validator",
+    "validator",
+    "schema-validator",
+    "quick-validations"
+  ],
+  "bugs": {
+    "url": "https://github.com/poppinss/indicative/issues"
+  },
+  "homepage": "https://github.com/poppinss/indicative#readme"
 }
