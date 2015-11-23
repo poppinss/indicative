@@ -1,13 +1,13 @@
 {
   "name": "indicative",
-  "version": "1.0.0",
-  "description": "",
+  "version": "2.0.0",
+  "description": "Intentionally beautiful schema and raw validator for nodejs",
   "main": "index.js",
   "scripts": {
     "test": "_mocha test --bail",
     "coverage": "istanbul cover _mocha test --bail"
   },
-  "author": "",
+  "author": "amanvirk",
   "license": "ISC",
   "devDependencies": {
     "benchmark": "^1.0.0",
