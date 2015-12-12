@@ -13,6 +13,13 @@ const Bluebird = require('bluebird')
 const dotProp = require('dot-prop')
 
 /**
+ * modes supported by indicative
+ * @type {Array}
+ */
+const modes = ['normal', 'string strict']
+let currentMode = 'normal'
+
+/**
  * @module Validator
  * @description Validator to run through an object
  * of validations and report formatted errors
@@ -49,6 +56,7 @@ const _validateField = function (validations, data, field, messages, handleAllEr
     if (typeof (Validations[convertedValidation]) !== 'function') {
       throw new Error(validation + ' is not defined as a rule')
     }
+    Validator.transformFieldValue(data, field)
     return Validations[convertedValidation](data, field, message, validationRules[validation].args, dotProp.get)
       .catch(function (message) {
         errors.push({field, validation, message})
@@ -69,6 +77,22 @@ const _validateField = function (validations, data, field, messages, handleAllEr
         return errors.length ? reject(errors) : reject(err)
       })
   })
+}
+
+/**
+ * @description sets field value to null when current field is empty
+ * and when currentMode is set to string strict
+ * @param  {Object} data
+ * @param  {String} field
+ * @return {void}
+ */
+Validator.transformFieldValue = function (data, field) {
+  if(currentMode === 'string strict') {
+    const value = dotProp.get(data, field)
+    if(typeof(value) === 'string' && value.length === 0){
+      dotProp.set(data, field, null)
+    }
+  }
 }
 
 /**
@@ -144,6 +168,20 @@ Validator.extend = function (name, method, message) {
     throw new Error('Invalid arguments, extend expects a method to execute')
   }
   Validations[name] = method
+}
+
+/**
+ * @description setting up validation mode for indicative
+ * @method setMode
+ * @param {String} mode
+ * @public
+ */
+Validator.setMode = function (mode) {
+  if(modes.indexOf(mode) <= -1) {
+    console.log(`indicative: ${mode} is not a valid mode, switching back to normal mode`)
+    return
+  }
+  currentMode = mode
 }
 
 /**

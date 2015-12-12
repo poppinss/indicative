@@ -384,4 +384,52 @@ describe('Validator', function() {
     }
   })
 
+  ///////////////////
+  // test suite 19 //
+  ///////////////////
+
+  it('should fail validation when empty string is passed for any rule with string strict mode on', function * () {
+
+    Validator.setMode('string strict')
+
+    const rules = {
+      select: 'array'
+    }
+
+    const body = {
+      select: ''
+    }
+
+    try{
+      const passed = yield Validator.validate(body, rules)
+      expect(passed).not.to.exist()
+    }catch(e) {
+      expect(e).to.be.an('array')
+      expect(e[0].field).to.equal('select')
+      expect(e[0].validation).to.equal('array')
+    }
+  })
+
+  ///////////////////
+  // test suite 20 //
+  ///////////////////
+
+  it('should not fail validation when empty string is passed for any rule in normal mode', function * () {
+
+    Validator.setMode('normal')
+
+    const rules = {
+      select: 'array'
+    }
+
+    const body = {
+      select: ''
+    }
+
+    const passed = yield Validator.validate(body, rules)
+    expect(passed).to.be.an('object')
+    expect(passed).to.have.property('select')
+
+  })
+
 });
