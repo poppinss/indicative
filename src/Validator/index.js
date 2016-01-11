@@ -11,6 +11,9 @@ const Validations = require('../Validations')
 const Parser = require('../Parser')
 const Bluebird = require('bluebird')
 const dotProp = require('dot-prop')
+Bluebird.config({
+  warnings: false
+})
 
 /**
  * modes supported by indicative
