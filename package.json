@@ -1,6 +1,6 @@
 {
   "name": "indicative",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Intentionally beautiful schema and raw validator for nodejs",
   "main": "index.js",
   "scripts": {
