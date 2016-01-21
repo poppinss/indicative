@@ -1,0 +1,12 @@
+<a name="2.0.4"></a>
+## 2.0.4 (2016-01-21)
+
+
+### Features
+
+* **package:** added commitizen ([c8c319d](https://github.com/poppinss/indicative/commit/c8c319d))
+* **sanitizaor:** Added extend method to add sanitization filters ([dc11f5a](https://github.com/poppinss/indicative/commit/dc11f5a))
+* **sanitizations:** Added support for sanitizations ([ee33244](https://github.com/poppinss/indicative/commit/ee33244))
+
+
+
