@@ -15,7 +15,7 @@ describe('Parser', function() {
   //////////////////
   // test suite 1 //
   //////////////////
-  it('should parse a rule and it into an object', function () {
+  it('should parse a rule and convert it into an object', function () {
 
     const rules = {
       name: 'required',

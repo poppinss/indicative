@@ -21,6 +21,7 @@
   "dependencies": {
     "bluebird": "^3.0.5",
     "dot-prop": "^2.2.0",
+    "inflect": "^0.3.0",
     "moment": "^2.10.6",
     "pope": "^1.0.0"
   },
