@@ -28,7 +28,7 @@ Sanitization._sanitizeField = function (data, rule, field) {
 
   ruleKeys.forEach(function (key) {
     const ruleMethod = Parser.toCamelCase(key)
-    if (typeof(filters[ruleMethod]) !== 'function') {
+    if (typeof (filters[ruleMethod]) !== 'function') {
       throw new Error(key + ' is not defined as a sanitization rule')
     }
     fieldValue = filters[ruleMethod](fieldValue, rule[key].args)

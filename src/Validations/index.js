@@ -126,7 +126,7 @@ Validations.afterOffsetOf = function (data, field, message, args, get) {
       resolve('validation skipped')
       return
     }
-    if(Raw.afterOffsetOf(fieldValue, offset, key)){
+    if (Raw.afterOffsetOf(fieldValue, offset, key)) {
       resolve('validation passed')
       return
     }
@@ -155,7 +155,7 @@ Validations.beforeOffsetOf = function (data, field, message, args, get) {
       resolve('validation skipped')
       return
     }
-    if(Raw.beforeOffsetOf(fieldValue, offset, key)){
+    if (Raw.beforeOffsetOf(fieldValue, offset, key)) {
       resolve('validation passed')
       return
     }

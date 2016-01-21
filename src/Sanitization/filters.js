@@ -21,7 +21,7 @@ let SanitizationFilters = exports = module.exports = {}
  * @param  {String}                 domain
  * @return {Boolean}
  */
-function _isNormalizeableProvider(domain) {
+function _isNormalizeableProvider (domain) {
   return domains.test(domain)
 }
 
@@ -46,8 +46,8 @@ function _isHotmail (domain) {
  * @return {Mixed}
  * @private
  */
-function _replace(value, pattern, subsitute) {
-  if(typeof(value) !== 'string') {
+function _replace (value, pattern, subsitute) {
+  if (typeof (value) !== 'string') {
     return value
   }
   return value.replace(pattern, subsitute)
@@ -74,12 +74,12 @@ SanitizationFilters.blacklist = function (value, args) {
  * @public
  */
 SanitizationFilters.escape = function (value) {
-  if(typeof(value) !== 'string') {
+  if (typeof (value) !== 'string') {
     return value
   }
 
   return (
-    value
+  value
     .replace(/&/g, '&amp;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#x27;')
@@ -107,24 +107,24 @@ SanitizationFilters.normalizeEmail = function (value, args) {
   }
 
   args.forEach(function (option) {
-    if(option === '!lc') {
+    if (option === '!lc') {
       options.lowercase = false
     }
-    if(option === '!rd') {
+    if (option === '!rd') {
       options.removeDots = false
     }
-    if(option === '!re') {
+    if (option === '!re') {
       options.removeExtension = false
     }
   })
 
-  if(typeof(value) !== 'string') {
+  if (typeof (value) !== 'string') {
     return value
   }
 
   const splitValue = value.split('@')
 
-  if(!splitValue[1]) {
+  if (!splitValue[1]) {
     return value
   }
 
@@ -135,7 +135,7 @@ SanitizationFilters.normalizeEmail = function (value, args) {
     username = username.split('+')[0]
   }
 
-  if(options.removeDots && !_isHotmail(domain)) {
+  if (options.removeDots && !_isHotmail(domain)) {
     username = username.replace(/\./g, '')
   }
 
@@ -179,7 +179,7 @@ SanitizationFilters.toFloat = function (value) {
  * @public
  */
 SanitizationFilters.toInt = function (value, args) {
-  const radix = typeof(args[0]) === 'number' ? args[0] : 10
+  const radix = typeof (args[0]) === 'number' ? args[0] : 10
   return parseInt(value, radix)
 }
 
@@ -219,12 +219,12 @@ SanitizationFilters.stripLinks = function (value) {
  * @public
  */
 SanitizationFilters.stripTags = function (value, args) {
-  const strict = args[0] && args[0] === 'trim' ? true : false
+  const strict = (args[0] && args[0] === 'trim')
   value = _replace(value, tagsRegex, '')
   if (strict) {
     value = _replace(value, /\s+/g, ' ')
   }
-  return typeof(value) === 'string' ? value.trim() : value
+  return typeof (value) === 'string' ? value.trim() : value
 }
 
 SanitizationFilters.plural = function (value) {
