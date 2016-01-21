@@ -54,3 +54,20 @@ Sanitization.sanitize = function (data, schema) {
   })
   return sanitizedData
 }
+
+Sanitization.sanitizor = filters
+
+/**
+ * @descriptions extends raw filters of sanitizor
+ * @method extend
+ * @param  {String} name
+ * @param  {Function} method
+ * @return {void}
+ * @public
+ */
+Sanitization.sanitizor.extend = function (name, method) {
+  if (typeof (method) !== 'function') {
+    throw new Error('Invalid arguments, sanitizor.extend expects 2nd parameter as a function')
+  }
+  Sanitization.sanitizor[name] = method
+}

@@ -369,4 +369,20 @@ describe('Sanitization', function() {
     }
     expect(sanitized).to.throw(/foo is not defined/)
   })
+
+  it('should be able to extend sanitizor', function () {
+    Sanitization.sanitizor.extend('upperCase', function (value) {
+      return value.toUpperCase()
+    })
+    expect(Sanitization.sanitizor.upperCase('foo')).to.equal('FOO')
+    const data = {
+      name: 'doe'
+    }
+    const rules = {
+      name: 'upper_case'
+    }
+    const sanitized = Sanitization.sanitize(data, rules)
+    expect(sanitized).deep.equal({name: 'DOE'})
+  })
+
 })

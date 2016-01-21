@@ -6,7 +6,6 @@
  * MIT Licensed
 */
 const Validator = require('./src/Validator')
-const SanitizationFilters = require('./src/Sanitization/filters')
 const Sanitization = require('./src/Sanitization')
 
 module.exports = {
@@ -16,5 +15,6 @@ module.exports = {
   is: Validator.is,
   'is.extend': Validator.is.extend,
   sanitize: Sanitization.sanitize,
-  sanitizor: SanitizationFilters
+  sanitizor: Sanitization.sanitizor,
+  'sanitizor.extend': Sanitization.sanitizor.extend
 }

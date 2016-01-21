@@ -18,3 +18,8 @@ const sanitizationRules = {
 
 console.log(indicative.sanitize(data, sanitizationRules))
 console.log(indicative.sanitizor.blacklist('hello world', ['ord']))
+indicative.sanitizor.extend('uppercase', function (value) {
+  return value.toUpperCase()
+})
+console.log(indicative.sanitizor.uppercase('hello world'))
+
