@@ -1,11 +1,12 @@
 {
   "name": "indicative",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Intentionally beautiful schema and raw validator for nodejs",
   "main": "index.js",
   "scripts": {
     "test": "istanbul cover _mocha --report lcovonly -- -R spec test && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "coverage": "istanbul cover _mocha test --bail"
+    "coverage": "istanbul cover _mocha test --bail",
+    "standard": "standard src/**/*.js"
   },
   "author": "amanvirk",
   "license": "MIT",
@@ -14,13 +15,16 @@
     "chai": "^3.4.0",
     "co-mocha": "^1.1.2",
     "coveralls": "^2.11.4",
+    "cz-conventional-changelog": "^1.1.5",
     "istanbul": "^0.4.0",
     "mocha": "^2.3.3",
-    "mocha-lcov-reporter": "^1.0.0"
+    "mocha-lcov-reporter": "^1.0.0",
+    "standard": "^5.4.1"
   },
   "dependencies": {
     "bluebird": "^3.0.5",
     "dot-prop": "^2.2.0",
+    "inflect": "^0.3.0",
     "moment": "^2.10.6",
     "pope": "^1.0.0"
   },
@@ -41,5 +45,10 @@
   "bugs": {
     "url": "https://github.com/poppinss/indicative/issues"
   },
-  "homepage": "https://github.com/poppinss/indicative#readme"
+  "homepage": "https://github.com/poppinss/indicative#readme",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }

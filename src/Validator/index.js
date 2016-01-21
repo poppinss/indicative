@@ -90,9 +90,9 @@ const _validateField = function (validations, data, field, messages, handleAllEr
  * @return {void}
  */
 Validator.transformFieldValue = function (data, field) {
-  if(currentMode === 'string strict') {
+  if (currentMode === 'string strict') {
     const value = dotProp.get(data, field)
-    if(typeof(value) === 'string' && value.length === 0){
+    if (typeof (value) === 'string' && value.length === 0) {
       dotProp.set(data, field, null)
     }
   }
@@ -180,7 +180,7 @@ Validator.extend = function (name, method, message) {
  * @public
  */
 Validator.setMode = function (mode) {
-  if(modes.indexOf(mode) <= -1) {
+  if (modes.indexOf(mode) <= -1) {
     console.log(`indicative: ${mode} is not a valid mode, switching back to normal mode`)
     return
   }
