@@ -1,3 +1,10 @@
+<a name="2.0.6"></a>
+## 2.0.6 (2016-02-15)
+
+### Bug Fixes
+* **validator:** Allow emails with address extension, e.g. foo+baz@bar.com ([125fe9f](https://github.com/poppinss/indicative/commit/125fe9f))
+
+
 <a name="2.0.5"></a>
 ## 2.0.5 (2016-01-21)
 
