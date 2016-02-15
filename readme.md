@@ -7,7 +7,7 @@ Indicative is a fast, expressive schema and raw validator for NodeJs with ton of
 
 ## Documentation
 
-[Click here](http://indicative.adonisjs.com/) to read official docs
+[Click here](http://indicative.adonisjs.com/docs/2.0/basics) to read official docs
 
 ## Contributors
 

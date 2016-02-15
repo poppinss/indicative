@@ -167,16 +167,6 @@ describe('Validations', function() {
       expect(passes).to.equal('validation passed')
     })
 
-    it('should work fine when valid email with extension is provided', function * () {
-      const data = {email:'foo+baz@bar.com'}
-      const field = 'email'
-      const message = 'email must be email'
-      const get = dotProp.get
-      const args = []
-      const passes = yield Validations.email(data, field, message, args, get)
-      expect(passes).to.equal('validation passed')
-    })
-
   })
 
   context('Accepted', function () {
