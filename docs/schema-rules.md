@@ -11,7 +11,7 @@ const schema = {
 }
 
 indicative
-.validate(schema, data)
+.validate(data, schema)
 .then (function () {
   // validation passed
 })

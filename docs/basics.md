@@ -32,7 +32,7 @@ const data = {
 }
 
 indicative
-.validate(schema, data)
+.validate(data, schema)
 .then(function () {
   // validation passed  
 })
@@ -45,7 +45,7 @@ indicative
 Validate all will validate all fields even after errors are thrown and return an array of error messages.
 
 ```javascript,line-numbers
-indicative.validateAll(schema, data)
+indicative.validateAll(data, schema)
 ```
 
 ## Rules
@@ -112,7 +112,7 @@ const data = {
 }
 
 indicative
-.validate(schema, data)
+.validate(data, schema)
 .then(function () {
   // validation passed  
 })
@@ -154,7 +154,7 @@ const messages = {
 }
 
 indicative
-.validate(rules, schema, messages)
+.validate(data, schema, messages)
 .then(function () {
   // validation passed  
 })
@@ -176,7 +176,7 @@ const messages = {
 
 
 indicative
-.validate(rules, schema, messages)
+.validate(data, schema, messages)
 .then(function () {
   // validation passed  
 })
