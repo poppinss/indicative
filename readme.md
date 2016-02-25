@@ -253,11 +253,11 @@ arguments are values defined on rules inside schema, and they can be accessed us
 
 ```javascript
 const messages = {
-  min: '{{field}} must be over {{argument.0}} years'
+  above: '{{field}} must be over {{argument.0}} years'
 }
 
 const schema = {
-  age: 'min:18'
+  age: 'above:18'
 }
 
 const data = {
