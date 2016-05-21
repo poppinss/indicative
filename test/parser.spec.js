@@ -22,13 +22,10 @@ describe('Parser', function() {
     }
 
     const parsedRules = {
-      name : {
-        rules: {
-          required: {
-            args: []
-          }
-        }
-      },
+      name: [{
+        name: 'required',
+        args: []
+      }]
     }
     const parsed = {name:Parser.parse(rules.name)}
     expect(parsed).deep.equal(parsedRules)
@@ -42,16 +39,16 @@ describe('Parser', function() {
       email: 'email|required'
     }
     const parsedRules = {
-      email : {
-        rules: {
-          email: {
-            args: []
-          },
-          required: {
-            args: []
-          }
+      email: [
+        {
+          name: 'email',
+          args: []
+        },
+        {
+          name: 'required',
+          args: []
         }
-      }
+      ]
     }
     const parsed = {email:Parser.parse(rules.email)}
     expect(parsed).deep.equal(parsedRules)
@@ -65,16 +62,16 @@ describe('Parser', function() {
       email: ['email','required']
     }
     const parsedRules = {
-      'email' : {
-        rules: {
-          email: {
-            args: []
-          },
-          required: {
-            args: []
-          }
+      email: [
+        {
+          name: 'email',
+          args: []
+        },
+        {
+          name: 'required',
+          args: []
         }
-      }
+      ]
     }
     const parsed = {email:Parser.parse(rules.email)}
     expect(parsed).deep.equal(parsedRules)
@@ -88,16 +85,16 @@ describe('Parser', function() {
       password: 'required|max:4'
     }
     const parsedRules = {
-      password: {
-        rules: {
-          required: {
-            args: []
-          },
-          max: {
-            args: ['4']
-          }
+      password: [
+        {
+          name: 'required',
+          args: []
         },
-      }
+        {
+          name: 'max',
+          args: ['4']
+        }
+      ]
     }
     const parsed = {password:Parser.parse(rules.password)}
     expect(parsed).deep.equal(parsedRules)
@@ -111,16 +108,16 @@ describe('Parser', function() {
       password: 'required|between:4,10'
     }
     const parsedRules = {
-      password: {
-        rules: {
-          required: {
-            args: []
-          },
-          between: {
-            args: ['4','10']
-          }
+      password: [
+        {
+          name: 'required',
+          args: []
         },
-      }
+        {
+          name: 'between',
+          args: ['4','10']
+        }
+      ]
     }
     const parsed = {password:Parser.parse(rules.password)}
     expect(parsed).deep.equal(parsedRules)
@@ -143,5 +140,4 @@ describe('Parser', function() {
     const convertedRule = Parser.toCamelCase(rule)
     expect(convertedRule).to.equal('beforeOffsetOf')
   })
-
 })
