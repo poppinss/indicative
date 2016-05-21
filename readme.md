@@ -1,5 +1,7 @@
 # Indicative
 
+{{TOC}}
+
 Indicative is an expressive Javascript validator for humans. Improve your workflow by removing all unnecessary curly braces and nested declarations. Under the hood indicative has following.
 
  * Schema validator to validate an data object.
@@ -268,6 +270,60 @@ const data = {
 
 Above message will yield `age must be over 18 years`.
 
+### Array Expressions
+
+Validating arrays asynchronously is never fun. Indicative makes it so simple to validating one level deep nested arrays using `array expressions`.
+
+```javascript
+const schema = {
+  'users.*.username': 'required|alpha',
+  'users.*.email': 'required|email'
+}
+
+const data = {
+  users: [
+    {
+      username: 'validUsername',
+      email: 'bar.sneark@gmail.com'
+    },
+    {
+      username: '123Invalid',
+      email: 'bar.com'
+    }
+  ]
+}
+
+indicative
+.validate(data, schema)
+.then(function () {
+  // validation passed
+})
+.catch(function (errors) {
+  // validation failed
+})
+```
+
+Also you can validate flat arrays using the same expression syntax.
+
+```javascript
+const rules = {
+  'emails': 'array|min:2', 
+  'emails.*': 'email'
+}
+
+const data = {
+  emails: ['foo@bar.com', 'invalid.com']
+}
+
+indicative
+.validate(data, schema)
+.then(function () {
+  // validation passed
+})
+.catch(function (errors) {
+  // validation failed
+})
+```
 
 ## Sanitizor
 
