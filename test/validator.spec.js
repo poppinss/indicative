@@ -28,7 +28,7 @@ describe('Validator', function() {
     try{
       const passed = yield Validator.validate(body, rules)
       expect(passed).not.to.exist()
-    }catch(e){
+    } catch(e) {
       expect(e).to.be.an('array')
       expect(e[0].field).to.equal('username')
       expect(e[0].validation).to.equal('required')
@@ -166,7 +166,7 @@ describe('Validator', function() {
       const validated = yield Validator.validate(body, rules)
       expect(validated).not.to.exist()
     }catch (e){
-      expect(e).to.match(/foo is not defined as a rule/i)
+      expect(e).to.match(/foo is not defined as a validation/i)
     }
   })
 
@@ -415,7 +415,6 @@ describe('Validator', function() {
   ///////////////////
 
   it('should not fail validation when empty string is passed for any rule in normal mode', function * () {
-
     Validator.setMode('normal')
 
     const rules = {
@@ -429,7 +428,306 @@ describe('Validator', function() {
     const passed = yield Validator.validate(body, rules)
     expect(passed).to.be.an('object')
     expect(passed).to.have.property('select')
-
   })
 
+  ///////////////////
+  // test suite 21 //
+  ///////////////////
+  it('should be able to validate nested objects using array expression', function * () {
+    const rules = {
+      'person.*.firstname': 'required'
+    }
+    const data = {
+      person: [{
+        firstname: null
+      }]
+    }
+
+    try {
+      const passed = yield Validator.validate(data, rules)
+      expect(passed).not.to.exist()
+    } catch (e) {
+      expect(e).to.be.an('array')
+      expect(e[0].field).to.equal('person.0.firstname')
+      expect(e[0].validation).to.equal('required')
+    }
+  })
+
+  ///////////////////
+  // test suite 22 //
+  ///////////////////
+  it('should be able to validate multiple nested objects using array expression', function * () {
+    const rules = {
+      'person.*.firstname': 'required'
+    }
+    const data = {
+      person: [
+        {
+          firstname: 'virk'
+        },
+        {
+          firstname: null
+        }
+      ]
+    }
+
+    try {
+      const passed = yield Validator.validate(data, rules)
+      expect(passed).not.to.exist()
+    } catch (e) {
+      expect(e).to.be.an('array')
+      expect(e[0].field).to.equal('person.1.firstname')
+      expect(e[0].validation).to.equal('required')
+    }
+  })
+
+  ///////////////////
+  // test suite 23 //
+  ///////////////////
+  it('should be able to validate flat arrays using array expression', function * () {
+    const rules = {
+      'email.*': 'email'
+    }
+    const data = {
+      email: ['virkm']
+    }
+
+    try {
+      const passed = yield Validator.validate(data, rules)
+      expect(passed).not.to.exist()
+    } catch (e) {
+      expect(e).to.be.an('array')
+      expect(e[0].field).to.equal('email.0')
+      expect(e[0].validation).to.equal('email')
+    }
+  })
+
+  ///////////////////
+  // test suite 24 //
+  ///////////////////
+  it('should be able to validate multiple values inside flat arrays using array expression', function * () {
+    const rules = {
+      'email.*': 'email'
+    }
+    const data = {
+      email: ['foo@bar.com', 'barnseek']
+    }
+
+    try {
+      const passed = yield Validator.validate(data, rules)
+      expect(passed).not.to.exist()
+    } catch (e) {
+      expect(e).to.be.an('array')
+      expect(e[0].field).to.equal('email.1')
+      expect(e[0].validation).to.equal('email')
+    }
+  })
+
+  ///////////////////
+  // test suite 25 //
+  ///////////////////
+  it('should throw an error when value is not an array', function * () {
+    const rules = {
+      people: 'array',
+      'people.*.email': 'required|email'
+    }
+
+    const data = {
+      people: null
+    }
+
+    try {
+      const passed = yield Validator.validate(data, rules)
+      expect(passed).not.to.exist()
+    } catch (e) {
+      expect(e).to.be.an('array')
+      expect(e.length).to.equal(1)
+      expect(e[0].field).to.equal('people')
+      expect(e[0].validation).to.equal('array')
+    }
+  })
+
+  ///////////////////
+  // test suite 26 //
+  ///////////////////
+  it('should throw an error when value is an array but childs does not exists', function * () {
+    const rules = {
+      people: 'array',
+      'people.*.email': 'required|email'
+    }
+
+    const data = {
+      people: [{}]
+    }
+
+    try {
+      const passed = yield Validator.validate(data, rules)
+      expect(passed).not.to.exist()
+    } catch (e) {
+      expect(e).to.be.an('array')
+      expect(e.length).to.equal(1)
+      expect(e[0].field).to.equal('people.0.email')
+      expect(e[0].validation).to.equal('required')
+    }
+  })
+
+  ///////////////////
+  // test suite 27 //
+  ///////////////////
+  it('should throw an error when value is an array but childs are not valid', function * () {
+    const rules = {
+      people: 'array',
+      'people.*.email': 'required|email'
+    }
+
+    const data = {
+      people: [{email: 'foo'}]
+    }
+
+    try {
+      const passed = yield Validator.validate(data, rules)
+      expect(passed).not.to.exist()
+    } catch (e) {
+      expect(e).to.be.an('array')
+      expect(e.length).to.equal(1)
+      expect(e[0].field).to.equal('people.0.email')
+      expect(e[0].validation).to.equal('email')
+    }
+  })
+
+  ///////////////////
+  // test suite 28 //
+  ///////////////////
+  it('should throw an error when value is an array but one of the multiple childs is not valid', function * () {
+    const rules = {
+      people: 'array',
+      'people.*.email': 'required|email'
+    }
+
+    const data = {
+      people: [{email: 'foo@bar.com'}, {email: 'snee'}]
+    }
+
+    try {
+      const passed = yield Validator.validate(data, rules)
+      expect(passed).not.to.exist()
+    } catch (e) {
+      expect(e).to.be.an('array')
+      expect(e.length).to.equal(1)
+      expect(e[0].field).to.equal('people.1.email')
+      expect(e[0].validation).to.equal('email')
+    }
+  })
+
+  ///////////////////
+  // test suite 29 //
+  ///////////////////
+  it('should be able to define custom messages for array expressions', function * () {
+    const rules = {
+      people: 'array',
+      'people.*.email': 'required|email'
+    }
+
+    const data = {
+      people: [{email: 'foo@bar.com'}, {email: 'snee'}]
+    }
+
+    const messages = {
+      'people.*.email.email': 'Enter valid email address'
+    }
+
+    try {
+      const passed = yield Validator.validate(data, rules, messages)
+      expect(passed).not.to.exist()
+    } catch (e) {
+      expect(e).to.be.an('array')
+      expect(e.length).to.equal(1)
+      expect(e[0].field).to.equal('people.1.email')
+      expect(e[0].validation).to.equal('email')
+      expect(e[0].message).to.equal('Enter valid email address')
+    }
+  })
+
+  ///////////////////
+  // test suite 30 //
+  ///////////////////
+  it('should be able to define messages for flat array expression', function * () {
+    const rules = {
+      'email.*': 'email'
+    }
+    const data = {
+      email: ['virkm']
+    }
+    const messages = {
+      'email.*.email': 'Email address is not valid'
+    }
+
+    try {
+      const passed = yield Validator.validate(data, rules, messages)
+      expect(passed).not.to.exist()
+    } catch (e) {
+      expect(e).to.be.an('array')
+      expect(e[0].field).to.equal('email.0')
+      expect(e[0].validation).to.equal('email')
+      expect(e[0].message).to.equal('Email address is not valid')
+    }
+  })
+
+  ///////////////////
+  // test suite 31 //
+  ///////////////////
+  it('should be able to define messages and make use of dynamic attributes', function * () {
+    const rules = {
+      'email.*': 'email'
+    }
+    const data = {
+      email: ['virkm']
+    }
+    const messages = {
+      'email.*.email': '{{field}} is not a valid email'
+    }
+
+    try {
+      const passed = yield Validator.validate(data, rules, messages)
+      expect(passed).not.to.exist()
+    } catch (e) {
+      expect(e).to.be.an('array')
+      expect(e[0].field).to.equal('email.0')
+      expect(e[0].validation).to.equal('email')
+      expect(e[0].message).to.equal('email.0 is not a valid email')
+    }
+  })
+
+  ///////////////////
+  // test suite 32 //
+  ///////////////////
+  it('should not mutate the actual data set', function * () {
+    const rules = {
+    }
+
+    const data = {
+      username: ''
+    }
+
+    const passed = yield Validator.validate(data, rules)
+    expect(passed).deep.equal(data)
+  })
+
+  ///////////////////
+  // test suite 33 //
+  ///////////////////
+  it('should not mutate actual data set in string strict mode', function * () {
+    const rules = {
+      email: 'required'
+    }
+
+    const data = {
+      username: '',
+      email: 'foo@bar.com'
+    }
+
+    Validator.setMode('string strict')
+    const passed = yield Validator.validate(data, rules)
+    expect(passed).deep.equal(data)
+  })
 });

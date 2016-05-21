@@ -4,7 +4,7 @@ const indicative = require('../')
 
 const data = {
   profile: {
-    email: 'bar.sneak+foo@googlemail.com'
+    email: 'bar'
   }
 }
 

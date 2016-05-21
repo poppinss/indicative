@@ -2,86 +2,164 @@
 
 /**
  * indicative
- * Copyright(c) 2015-2015 Harminder Virk
- * MIT Licensed
+ *
+ * (c) Harminder Virk <virk@adonisjs.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
 */
 
-/**
- * @module Parser
- * @description Rule parser to convert rule string into a consumable
- * object
- * @type {Object}
- */
+const snakeCaseRegex = /_(\w)/g
+const arrayExpressionRegex = /(\w[^\.\*]+)(\.\*\.?)(.+)?/
+const _ = require('lodash')
+
 let Parser = exports = module.exports = {}
 
-const snakeCaseRegex = /_(\w)/g
-
 /**
- * @description parse a single validation rule and pulls
- * of required information based upon keywords and
- * turn them into valid data objects
- * @method _parseValidation
- * @param  {Object}         validations
- * @param  {String}         validation
- * @return {Object}
- * @example
- * parses between:4,10 to between: {values: [4,10]}
+ * parse a validation validation string to fetch
+ * args from it.
+ *
+ * @param   {String} validation
+ *
+ * @return  {Object}
+ *
  * @private
  */
-const _parseValidation = function (validations, validation) {
-  const matchedValidation = validation.split(':')
-  if (matchedValidation.length === 1) {
-    validations[validation] = {args: []}
-    return
-  }
-  validation = matchedValidation.splice(0, 1)
-
-  // pulling of values defined with validation defination
-  const args = matchedValidation.join(':').split(',')
-
-  validations[validation] = {
-    args: args
-  }
+const _parseValidation = function (validation) {
+  return _(validation.split(':'))
+  .thru((value) => {
+    const args = value[1] ? value[1].split(',') : []
+    return {name: value[0], args}
+  })
+  .value()
 }
 
 /**
- * @description loops through an array of validation rules and
- * turns them into a valid consumable object
- * @method _parseValidations
- * @param  {Array}          validations
- * @return {Object}
+ * parse all validation strings to object.
+ *
+ * @param   {Array} validations
+ *
+ * @return  {Array}
+ *
  * @private
  */
 const _parseValidations = function (validations) {
-  const parsedValidations = {}
-  validations.forEach(function (validation) {
-    _parseValidation(parsedValidations, validation)
+  return _.map(validations, (validation) => {
+    return _parseValidation(validation)
   })
-  return parsedValidations
 }
 
 /**
- * @description parses a rule string its validations
- * into a formatted object to be used by validator
- * @method parse
- * @param  {String} rule
- * @return {Object}
- * @public
+ * parse a given set of validations to a consumable array.
+ *
+ * @param  {String|Array} rule
+ *
+ * @return {Array}
  */
-Parser.parse = function (rule) {
-  let rulesArray = rule instanceof Array ? rule : rule.split('|')
-  return {rules: _parseValidations(rulesArray)}
+Parser.parse = function (validations) {
+  const validationsArray = validations instanceof Array ? validations : validations.split('|')
+  return _parseValidations(validationsArray)
 }
 
 /**
- * @description converts a snake case string to camelCase
- * @method toCamelCase
- * @param  {String}    string
+ * convert a snake case string to camelcase.
+ *
+ * @param  {String} string
+ *
  * @return {String}
  */
 Parser.toCamelCase = function (string) {
-  let formattedString = string
-  return formattedString.replace(snakeCaseRegex, function (m, $1) {
+  return string.replace(snakeCaseRegex, function (m, $1) {
     return $1.toUpperCase()
   })
+}
+
+/**
+ * parses an array expression to a consumable object
+ *
+ * @param  {String} field
+ * @return {Object|Null}
+ *
+ * @public
+ */
+Parser.expressionCurryFor = function (field, whenMatched, otherwise) {
+  const expression = field.match(arrayExpressionRegex)
+  if (_.size(expression) < 4) {
+    return otherwise()
+  }
+  return whenMatched(expression[1], expression[3])
+}
+
+
+/**
+ * parses a rule and returns an object with
+ * field name and parsed rule.
+ *
+ * @param   {String} rule
+ * @param   {String} field
+ *
+ * @return  {Object}
+ *
+ * @private
+ */
+Parser.parseFieldRule = function (rule, field) {
+  return {[field]: Parser.parse(rule)}
+}
+
+/**
+ * parses field rules for a array expressions
+ *
+ * @param   {Object} data
+ * @param   {String} rule
+ * @param   {String} node
+ * @param   {String} [child]
+ *
+ * @return  {Object}
+ *
+ * @private
+ */
+Parser.getRulesForExpression = function (data, rule, node, child) {
+  return _.fromPairs(_.map(data[node], (value, index) => {
+    const fieldName = _([node, index, child]).takeWhile((value) => value !== undefined).join('.')
+    return [fieldName, Parser.parse(rule)]
+  }))
+}
+
+/**
+ * transforms a single rule or an array expression
+ * into multiple rules
+ *
+ * @param   {Object} data
+ * @param   {String} rule
+ * @param   {String} field
+ *
+ * @return  {Object}
+ *
+ * @private
+ */
+Parser.transformRule = function (data, rule, field) {
+  return Parser.expressionCurryFor(
+    field,
+    (dataKey, fieldKey) => Parser.getRulesForExpression(data, rule, dataKey, fieldKey),
+    () => Parser.parseFieldRule(rule, field)
+  )
+}
+
+/**
+ * transform rules by parsing each rule and converting
+ * array expressions into multiple rules
+ *
+ * @param   {Object} data
+ * @param   {Object} rules
+ *
+ * @return  {Object}
+ *
+ * @private
+ */
+Parser.transformRules = function (data, rules) {
+  return _(rules)
+  .transform((result, rule, field) => {
+    _.extend(result, Parser.transformRule(data, rule, field))
+  })
+  .value()
 }

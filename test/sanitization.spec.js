@@ -334,7 +334,7 @@ describe('Sanitization', function() {
     expect(sanitized).deep.equal({profile: {email:'barsneaky@gmail.com'}, body:'hello-world'})
   })
 
-  it('should pass values to sanization methods', function () {
+  it('should pass arguments to sanization methods', function () {
     const data = {
       profile: {
         email: 'bar.sneaky@googlemail.com',
@@ -349,6 +349,68 @@ describe('Sanitization', function() {
 
     const sanitized = Sanitization.sanitize(data, rules)
     expect(sanitized).deep.equal({profile: {email:'bar.sneaky@gmail.com'}, body:'hello-world'})
+  })
+
+  it('should be able to sanitize values with array expressions', function () {
+    const data = {
+      profile: [
+        {
+          email: 'bar.sneaky@googlemail.com'
+        },
+        {
+          email: 'bar.foo@googlemail.com'
+        }
+      ]
+    }
+
+    const rules = {
+      'profile.*.email': 'normalize_email'
+    }
+
+    const sanitized = Sanitization.sanitize(data, rules)
+    expect(sanitized).deep.equal({profile: [{ email:'barsneaky@gmail.com'}, {email: 'barfoo@gmail.com'} ] })
+  })
+
+  it('should be able to sanitize values with flat array expressions', function () {
+    const data = {
+      emails: ['bar.sneaky@googlemail.com', 'bar.foo@googlemail.com']
+    }
+
+    const rules = {
+      'emails.*': 'normalize_email'
+    }
+
+    const sanitized = Sanitization.sanitize(data, rules)
+    expect(sanitized).deep.equal({emails:['barsneaky@gmail.com', 'barfoo@gmail.com']})
+  })
+
+  it('should return the original data back when there are no matching filters found', function () {
+    const data = {
+      email: 'bar.sneaky@googlemail.com',
+      body: '<p>foo</p>'
+    }
+
+    const rules = {
+    }
+
+    const sanitized = Sanitization.sanitize(data, rules)
+    expect(sanitized).deep.equal(data)
+  })
+
+  it('should not mutate the original data set', function () {
+    const data = {
+      email: 'bar.sneaky@googlemail.com',
+      body: '<p>foo</p>'
+    }
+
+    const rules = {
+      email: 'normalize_email',
+      body: 'strip_tags'
+    }
+
+    const sanitized = Sanitization.sanitize(data, rules)
+    expect(data).deep.equal(data)
+    expect(sanitized).deep.equal({email: 'barsneaky@gmail.com', body: 'foo'})
   })
 
   it('should throw an error when sanization rule method is not found', function () {

@@ -2,8 +2,11 @@
 
 /**
  * indicative
- * Copyright(c) 2015-2015 Harminder Virk
- * MIT Licensed
+ *
+ * (c) Harminder Virk <virk@adonisjs.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
 */
 const Validator = require('./src/Validator')
 const Sanitization = require('./src/Sanitization')

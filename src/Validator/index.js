@@ -2,169 +2,118 @@
 
 /**
  * indicative
- * Copyright(c) 2015-2015 Harminder Virk
- * MIT Licensed
+ *
+ * (c) Harminder Virk <virk@adonisjs.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
 */
 
-const Messages = require('../Messages')
-const Validations = require('../Validations')
+const _ = require('lodash')
 const Parser = require('../Parser')
-const Bluebird = require('bluebird')
-const dotProp = require('dot-prop')
-Bluebird.config({
-  warnings: false
-})
+const Validations = require('../Validations')
+const ValidationEngine = require('./engine')
+const Modes = require('../Modes')
+const Q = require('q')
 
 /**
- * modes supported by indicative
- * @type {Array}
- */
-const modes = ['normal', 'string strict']
-let currentMode = 'normal'
-
-/**
- * @module Validator
- * @description Validator to run through an object
- * of validations and report formatted errors
- * @type {Object}
- */
-let Validator = exports = module.exports = {}
-
-/**
- * @description validates a single field of rules
- * which can have multiple validation rules.
- * @method _validateField
- * @param  {Object}       validations
- * @param  {Object}       data
- * @param  {String}       field
- * @return {Object}
+ * map all parsedRules into a validation messages to be executed
+ * using Q.
+ *
+ * @param   {Object} data
+ * @param   {Object} rules
+ * @param   {Object} messages
+ *
+ * @return  {Array}
+ *
  * @private
  */
-const _validateField = function (validations, data, field, messages, handleAllErrors) {
-  const validationRules = validations.rules
-  const validationRulesKeys = Object.keys(validationRules)
-  const errors = []
-
-  /**
-   * @description calls validation rule and construct a formatted
-   * error out of it
-   * @method executeValidation
-   * @param  {String}    validation
-   * @return {Promise}
-   */
-  const executeValidation = function (validation) {
-    const message = Messages.message(messages, field, validation, validationRules[validation].args)
-    const convertedValidation = Parser.toCamelCase(validation)
-
-    if (typeof (Validations[convertedValidation]) !== 'function') {
-      throw new Error(validation + ' is not defined as a rule')
-    }
-    Validator.transformFieldValue(data, field)
-    return Validations[convertedValidation](data, field, message, validationRules[validation].args, dotProp.get)
-      .catch(function (message) {
-        errors.push({field, validation, message})
-        if (!handleAllErrors) {
-          throw message
-        }
-      })
-  }
-
-  return new Promise(function (resolve, reject) {
-    Bluebird
-      .reduce(validationRulesKeys, function (t, validation) {
-        return executeValidation(validation)
-      }, 0)
-      .then(function () {
-        return errors.length ? reject(errors) : resolve()
-      }).catch(function (err) {
-        return errors.length ? reject(errors) : reject(err)
-      })
-  })
+function _mapValidations (data, rules, messages, runAll) {
+  return _.map(rules, (validations, field) => ValidationEngine.validateField(data, field, validations, messages, runAll))
 }
 
 /**
- * @description sets field value to null when current field is empty
- * and when currentMode is set to string strict
- * @param  {Object} data
- * @param  {String} field
+ * it manually maps all the errors returned by Q.allSettled
+ * and throws them as an array only if there are errors.
+ *
+ * @param  {Array} results
+ *
  * @return {void}
+ * @throws {Error} If promise resolves to errors or a single error
+ *
+ * @private
  */
-Validator.transformFieldValue = function (data, field) {
-  if (currentMode === 'string strict') {
-    const value = dotProp.get(data, field)
-    if (typeof (value) === 'string' && value.length === 0) {
-      dotProp.set(data, field, null)
-    }
+function _settleAllPromises (results) {
+  const errors = _(results)
+  .flatten()
+  .map((result) => {
+    return result.state === 'rejected' ? result.reason : null
+  })
+  .compact()
+  .value()
+  if (_.size(errors)) {
+    throw errors
   }
 }
 
+const Validator = exports = module.exports = {}
+
 /**
- * @description validates an object of rules by parsing
- * rules and custom messages.It is a very high level
- * function
- * @method validate
- * @param  {Object} rules
+ * validate a set of async validations mapped as field and rule
+ * called rules.
+ *
  * @param  {Object} data
+ * @param  {Object} rules
  * @param  {Object} messages
- * @return {Object}
- * @public
+ *
+ * @return {Object|Array}
  */
 Validator.validate = function (data, rules, messages) {
   messages = messages || {}
-  const rulesKeys = Object.keys(rules)
+  const transformedRules = Parser.transformRules(data, rules)
+  const validations = _mapValidations(data, transformedRules, messages)
 
-  return new Promise(function (resolve, reject) {
-    Bluebird.reduce(rulesKeys, function (t, rule) {
-      const parsedRule = Parser.parse(rules[rule])
-      return _validateField(parsedRule, data, rule, messages, false)
-    }, 0)
-      .then(function () {
-        resolve(data)
-      })
-      .catch(reject)
+  return Q.Promise((resolve, reject) => {
+    Q.all(validations)
+    .then(() => resolve(data))
+    .catch((error) => reject([error]))
   })
 }
 
 /**
- * @description validates all of the fields defined in rules and
- * returns an array of errors
- * @method validateAll
- * @param  {Object}    data
- * @param  {Object}    rules
- * @param  {Object}    messages
- * @return {Object}
- * @public
+ * Just like validate but waits for all the validations to occur
+ * and returns an array of errors.
+ *
+ * @param  {Object} data
+ * @param  {Object} rules
+ * @param  {Object} messages
+ *
+ * @return {Object|Array}
  */
 Validator.validateAll = function (data, rules, messages) {
   messages = messages || {}
-  const rulesKeys = Object.keys(rules)
-  let errors = []
+  const transformedRules = Parser.transformRules(data, rules)
+  const validations = _mapValidations(data, transformedRules, messages, true)
 
-  return new Promise(function (resolve, reject) {
-    Bluebird.reduce(rulesKeys, function (t, rule) {
-      const parsedRule = Parser.parse(rules[rule])
-      return _validateField(parsedRule, data, rule, messages, true)
-        .catch(function (err) {
-          errors = errors.concat(err)
-        })
-    }, 0)
-      .then(function () {
-        return errors.length > 0 ? reject(errors) : resolve(data)
-      })
-      .catch(function (err) {
-        return errors.length ? reject(errors) : reject(err)
-      })
+  return Q.Promise((resolve, reject) => {
+    Q.all(validations)
+    .then(_settleAllPromises)
+    .then(() => resolve(data))
+    .catch(reject)
   })
 }
 
 /**
- * @description extend or override validation rules
- * @method extend
+ * exposes an interface to extend the validator and add
+ * new methods to it.
+ *
  * @param  {String} name
  * @param  {Function} method
- * @param  {String|Function} message
+ * @param  {String} message
+ *
  * @return {void}
- * @public
+ *
+ * @throws {Error} If method is not a function
  */
 Validator.extend = function (name, method, message) {
   if (typeof (method) !== 'function') {
@@ -173,34 +122,18 @@ Validator.extend = function (name, method, message) {
   Validations[name] = method
 }
 
-/**
- * @description setting up validation mode for indicative
- * @method setMode
- * @param {String} mode
- * @public
- */
-Validator.setMode = function (mode) {
-  if (modes.indexOf(mode) <= -1) {
-    console.log(`indicative: ${mode} is not a valid mode, switching back to normal mode`)
-    return
-  }
-  currentMode = mode
-}
-
-/**
- * attaching raw validator
- * @type {Object}
- */
 Validator.is = require('../Raw')
 
 /**
- * @description extends to add/override methods
- * on raw validator
- * @method extend
+ * exposes an interface to extend the raw validator and add
+ * own methods to it.
+ *
  * @param  {String} name
  * @param  {Function} method
+ *
  * @return {void}
- * @public
+ *
+ * @throws {Error} If method is not a function
  */
 Validator.is.extend = function (name, method) {
   if (typeof (method) !== 'function') {
@@ -208,3 +141,8 @@ Validator.is.extend = function (name, method) {
   }
   Validator.is[name] = method
 }
+
+/**
+ * @see Modes.set
+ */
+Validator.setMode = Modes.set

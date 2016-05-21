@@ -16,7 +16,7 @@ describe('Messages', function () {
   // test suite 1 //
   //////////////////
   it('should return default message when custom messages are not defined', function () {
-    const message = Messages.message({}, 'email', 'required')
+    const message = Messages.make({}, 'email', 'required')
     expect(message).to.equal('required validation failed on email')
   })
 
@@ -24,7 +24,7 @@ describe('Messages', function () {
   // test suite 2 //
   //////////////////
   it('should return message defined for rule', function () {
-    const message = Messages.message({required:'this is required'}, 'email', 'required')
+    const message = Messages.make({required:'this is required'}, 'email', 'required')
     expect(message).to.equal('this is required')
   })
 
@@ -32,7 +32,7 @@ describe('Messages', function () {
   // test suite 3 //
   //////////////////
   it('should return message defined on field for rule', function () {
-    const message = Messages.message({required:'this is required','email.required':'email is required'}, 'email', 'required')
+    const message = Messages.make({required:'this is required','email.required':'email is required'}, 'email', 'required')
     expect(message).to.equal('email is required')
   })
 
@@ -40,7 +40,7 @@ describe('Messages', function () {
   // test suite 4 //
   //////////////////
   it('should construct valid error message from dynamic placholders', function () {
-    const message = Messages.message(
+    const message = Messages.make(
       {
         'email.required':'{{field}} is required'
       },
@@ -56,7 +56,7 @@ describe('Messages', function () {
   // test suite 5 //
   //////////////////
   it('should be able to use rule values as argument', function () {
-    const message = Messages.message(
+    const message = Messages.make(
       {
         'between': '{{field}} should be over {{argument.0}} and under {{argument.1}}'
       },
@@ -71,7 +71,7 @@ describe('Messages', function () {
   // test suite 6 //
   //////////////////
   it('should be able make message out of getter function', function () {
-    const message = Messages.message(
+    const message = Messages.make(
       {
         'between': function (field, validation, args) {
           return field + ' should be over ' + args[0] + ' and under ' + args[1]
@@ -89,7 +89,7 @@ describe('Messages', function () {
   //////////////////
   it('should be able to set message for a given rule using set method', function () {
     Messages.set('required','I need you')
-    const message = Messages.message({},'username','required',[])
+    const message = Messages.make({},'username','required',[])
     expect(message).to.equal('I need you')
   })
 
