@@ -3031,5 +3031,80 @@ describe('Validations', function() {
       expect(passes).to.equal('validation skipped')
     })
   })
+
+  context('Confirmation', function () {
+    ///////////////////
+    // test suite 200 //
+    ///////////////////
+    it('should work fine when the confirmed field is equal', function * () {
+      const data = { password: '1234', password_confirmation: '1234' }
+      const field = 'password'
+      const message = 'Password does not match!'
+      const get = _.get
+      const args = []
+      const passes = yield Validations.confirmed(data, field, message, args, get)
+      expect(passes).to.equal('validation passed')
+    })
+
+    ///////////////////
+    // test suite 201 //
+    ///////////////////
+    it('should throw an error when then confirmed field isn\'t equal', function * () {
+      const data = { password: '1234', password_confirmation: '12345' }
+      const field = 'password'
+      const message = 'Password does not match!'
+      const get = _.get
+      const args = []
+      try {
+        const passes = yield Validations.confirmed(data, field, message, args, get)
+        expect(passes).not.to.exist()
+      } catch(e) {
+        expect(e).to.equal(message)
+      }
+    })
+
+    ///////////////////
+    // test suite 202 //
+    ///////////////////
+    it('should throw an error when then confirmed field isn\'t equal', function * () {
+      const data = { password: '1234', password_confirmation: undefined }
+      const field = 'password'
+      const message = 'Password does not match!'
+      const get = _.get
+      const args = []
+      try {
+        const passes = yield Validations.confirmed(data, field, message, args, get)
+        expect(passes).not.to.exist()
+      } catch(e) {
+        expect(e).to.equal(message)
+      }
+    })
+
+    ///////////////////
+    // test suite 203 //
+    ///////////////////
+    it('should skip validation when field value is not defined', function * () {
+      const data = { }
+      const field = 'password'
+      const message = 'Password does not match!'
+      const get = _.get
+      const args = []
+      const passes = yield Validations.confirmed(data, field, message, args, get)
+      expect(passes).to.equal('validation skipped')
+    })
+
+    ///////////////////
+    // test suite 204 //
+    ///////////////////
+    it('should skip validation when field value is undefined', function * () {
+      const data = { password: undefined, password_confirmation: undefined }
+      const field = 'password'
+      const message = 'Password does not match!'
+      const get = _.get
+      const args = []
+      const passes = yield Validations.confirmed(data, field, message, args, get)
+      expect(passes).to.equal('validation skipped')
+    })
+  })
 })
 
