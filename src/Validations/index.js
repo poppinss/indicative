@@ -31,6 +31,33 @@ const skippable = function (value) {
 }
 
 /**
+ * @description enforces a field to be confirmed by another.
+ * @method email
+ * @param  {Object} data
+ * @param  {String} field
+ * @param  {String} message
+ * @param  {Array} args
+ * @param  {Function} get
+ * @return {Object}
+ * @public
+ */
+Validations.confirmed = function (data, field, message, args, get) {
+  return new Promise(function (resolve, reject) {
+    const fieldValue = get(data, field)
+    const confirmedFieldValue = get(data, `${field}_confirmation`)
+    if (skippable(fieldValue)) {
+      resolve('validation skipped')
+      return
+    }
+    if (Raw.same(fieldValue, confirmedFieldValue)) {
+      resolve('validation passed')
+      return
+    }
+    reject(message)
+  })
+}
+
+/**
  * @description enforces a field to be an email if present
  * @method email
  * @param  {Object} data
