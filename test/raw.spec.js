@@ -1067,7 +1067,5 @@ describe('Raw Validator', function() {
       const isBeforeOffset = Is.beforeOffsetOf(moment().subtract(13,'months'), 12, 'months')
       expect(isBeforeOffset).to.equal(true)
     })
-
   })
-
 });
