@@ -13,6 +13,7 @@ const _ = require('lodash')
 const Parser = require('../Parser')
 const Validations = require('../Validations')
 const ValidationEngine = require('./engine')
+const Messages = require('../Messages')
 const Modes = require('../Modes')
 const Q = require('q')
 
@@ -68,6 +69,7 @@ const Validator = exports = module.exports = {}
  *
  * @return {Object|Array}
  */
+
 Validator.validate = function (data, rules, messages) {
   messages = messages || {}
   const transformedRules = Parser.transformRules(data, rules)
@@ -120,6 +122,7 @@ Validator.extend = function (name, method, message) {
     throw new Error('Invalid arguments, extend expects a method to execute')
   }
   Validations[name] = method
+  Messages.set('name', message)
 }
 
 Validator.is = require('../Raw')
