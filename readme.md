@@ -36,12 +36,12 @@ You start by requiring indicative and then make use of multiple methods to valid
 const indicative = require('indicative')
 ```
 
-#### validate (rules, data [,messages])
+#### validate (data, rules, [messages])
 Validate method will run the validation cycle, which gets terminated on the first error.
 
 ```javascript
 
-const schema = {
+const rules = {
   username: 'required'
 }
 
@@ -50,7 +50,7 @@ const data = {
 }
 
 indicative
-.validate(data, schema)
+.validate(data, rules)
 .then(function () {
   // validation passed
 })
@@ -59,11 +59,11 @@ indicative
 })
 ```
 
-#### validateAll (rules, data [,messages])
+#### validateAll (data, rules, [messages])
 Validate all will validate all fields even after errors are thrown and return an array of error messages.
 
 ```javascript
-indicative.validateAll(data, schema)
+indicative.validateAll(data, rules)
 ```
 
 ### Rules
@@ -107,17 +107,17 @@ Define age is separated by the colon on `above` rule. Also, some rules can accep
 Schema definition is an object containing multiple rules for multiple fields and is used by validation methods.
 
 ```javascript
-const schema = {
+const rules = {
   username  : 'required|alpha_numeric',
   email     : 'required|email',
   password  : 'required|min:6|max:30'
 }
 ```
 
-Schema object is a set of different rules defined for different fields and in order to validate an object of data you need to pass `schema` and `data` together to `validate` method.
+Schema object is a set of different rules defined for different fields and in order to validate an object of data you need to pass `rules` and `data` together to `validate` method.
 
 ```javascript
-const schema = {
+const rules = {
   username  : 'required|alpha_numeric',
   email     : 'required|email',
   password  : 'required|min:6|max:30'
@@ -130,7 +130,7 @@ const data = {
 }
 
 indicative
-.validate(data, schema)
+.validate(data, rules)
 .then(function () {
   // validation passed
 })
@@ -139,12 +139,12 @@ indicative
 })
 ```
 
-#### nested schema
+#### nested rules
 
 In order to validate nested data you need to make use of `dot-notation` to target nested fields inside data object.
 
 ```javascript
-const schema = {
+const rules = {
   'profile.username'  : 'required',
   'profile.password'  : 'required|min:6|max:30'
 }
@@ -161,7 +161,7 @@ Here `dot-notation` will help you in removing the use of unnecessary curly brace
 
 ### Custom messages
 
-Indicative self-constructs error messages when validation for a given rule fails, which may not be helpful when trying to keep error messages descriptive and personalized.
+Indicative self-constructs error messages when validation for a given rule fails, which may not be helpful when trying to keep error messages descriptive and personalised.
 
 #### global messages
 Global messages are defined on rules, and the same message will be used whenever a rule will fail.
@@ -172,7 +172,7 @@ const messages = {
 }
 
 indicative
-.validate(rules, schema, messages)
+.validate(data, rules, messages)
 .then(function () {
   // validation passed
 })
@@ -184,7 +184,7 @@ indicative
 Whenever a `required` rule fails, it will return your custom message instead of a self-constructed message.
 
 #### field specific messages.
-field specific messages are even more personalized as they are defined for a given rule and field.
+`field` specific messages are even more personalised as they are defined for a given rule and field.
 
 ```javascript
 const messages = {
@@ -194,7 +194,7 @@ const messages = {
 
 
 indicative
-.validate(rules, schema, messages)
+.validate(data, rules, messages)
 .then(function () {
   // validation passed
 })
@@ -236,7 +236,7 @@ const messages = {
 ```
 
 #### validation
-validation rule
+Name of the validation rule.
 
 ```javascript
 const messages = {
@@ -249,14 +249,14 @@ const data = {
 ```
 
 #### argument
-arguments are values defined on rules inside schema, and they can be accessed using their array index.
+`arguments` are values defined on rules inside schema, and they can be accessed using their array index.
 
 ```javascript
 const messages = {
   above: '{{field}} must be over {{argument.0}} years'
 }
 
-const schema = {
+const rules = {
   age: 'above:18'
 }
 
@@ -268,6 +268,60 @@ const data = {
 
 Above message will yield `age must be over 18 years`.
 
+### Array Expressions
+
+Validating arrays asynchronously is never fun. Indicative makes it so simple to validating one level deep nested arrays using `array expressions`.
+
+```javascript
+const rules = {
+  'users.*.username': 'required|alpha',
+  'users.*.email': 'required|email'
+}
+
+const data = {
+  users: [
+    {
+      username: 'validUsername',
+      email: 'bar.sneark@gmail.com'
+    },
+    {
+      username: '123Invalid',
+      email: 'bar.com'
+    }
+  ]
+}
+
+indicative
+.validate(data, rules)
+.then(function () {
+  // validation passed
+})
+.catch(function (errors) {
+  // validation failed
+})
+```
+
+Also you can validate flat arrays using the same expression syntax.
+
+```javascript
+const rules = {
+  'emails': 'array|min:2', 
+  'emails.*': 'email'
+}
+
+const data = {
+  emails: ['foo@bar.com', 'invalid.com']
+}
+
+indicative
+.validate(data, rules)
+.then(function () {
+  // validation passed
+})
+.catch(function (errors) {
+  // validation failed
+})
+```
 
 ## Sanitizor
 
@@ -361,7 +415,7 @@ indicative.sanitizor.normalizeEmail('bar.sneaky+foo@gmail.com', ['!rd', '!re', '
 ```
 
 #### toBoolean
-convers value to a boolean, `0, false, null, undefined, ''` will return `false` and everything else will return `true`.
+Converts value to a boolean, `0, false, null, undefined, ''` will return `false` and everything else will return `true`.
 
 ```javascript
 // raw sanitization
@@ -374,7 +428,7 @@ indicative.sanitizor.toBoolean('false')
 ```
 
 #### toFloat
-convers value to float and returns `NaN` if unable to convert.
+Converts value to float and returns `NaN` if unable to convert.
 
 ```javascript
 // raw sanitization
@@ -387,7 +441,7 @@ indicative.sanitizor.toFloat('32.55')
 ```
 
 #### toInt
-convers value to integer and returns `NaN` if unable to convert.
+Converts value to integer and returns `NaN` if unable to convert.
 
 ```javascript
 // raw sanitization
@@ -400,7 +454,7 @@ indicative.sanitizor.toInt('32')
 ```
 
 #### toInt
-convers value to date object and returns `null` if unable to convert.
+Converts value to date object and returns `null` if unable to convert.
 
 ```javascript
 // raw sanitization
@@ -413,7 +467,7 @@ indicative.sanitizor.toDate('2010-22-10')
 ```
 
 #### stripLinks
-strips `<a></a>` tags from a given string. If input is not a string, actual value will be returned.
+Strips `<a></a>` tags from a given string. If input is not a string, actual value will be returned.
 
 ```javascript
 // raw sanitization
@@ -426,7 +480,7 @@ indicative.sanitizor.stripLinks('<a href="http://adonisjs.com"> Adonisjs </a>')
 ```
 
 #### stripTags
-strips html tags from a given string. If input is not a string, actual value will be returned.
+Strips html tags from a given string. If input is not a string, actual value will be returned.
 
 ```javascript
 // raw sanitization
@@ -439,7 +493,7 @@ indicative.sanitizor.stripTags('<p> Hello </p>')
 ```
 
 #### plural
-coverts a given value to plural. Which means `person` will be converted to `people`.
+Converts a given value to plural. Which means `person` will be converted to `people`.
 
 ```javascript
 // raw sanitization
@@ -452,7 +506,7 @@ indicative.sanitizor.plural('child')
 ```
 
 #### singular
-coverts a given value to singular. Which means `people` will be converted to `person`.
+Converts a given value to singular. Which means `people` will be converted to `person`.
 
 ```javascript
 // raw sanitization
@@ -465,7 +519,7 @@ indicative.sanitizor.plural('children')
 ```
 
 #### camelCase
-coverts a given to camelcalse.
+Converts a given to camel-case.
 
 ```javascript
 // raw sanitization
@@ -478,7 +532,7 @@ indicative.sanitizor.camelCase('users-controller')
 ```
 
 #### capitalize
-capitalize a given string.
+`capitalize` a given string.
 
 ```javascript
 // raw sanitization
@@ -491,7 +545,7 @@ indicative.sanitizor.capitalize('doe')
 ```
 
 #### decapitalize
-decapitalize a given string.
+`decapitalize` a given string.
 
 ```javascript
 // raw sanitization
@@ -517,7 +571,7 @@ indicative.sanitizor.title('hello-world')
 ```
 
 #### slug
-coverts a value to url friendly slug.
+Converts a value to url friendly slug.
 
 ```javascript
 // raw sanitization
@@ -596,7 +650,7 @@ Extend method takes 3 required parameters to register validation to validations 
 Once your custom validation rule has been stored, you can consume it inside your schema.
 
 ```javascript
-const schema = {
+const rules = {
   username: 'required|unique'
 }
 ```
@@ -1267,13 +1321,13 @@ Schema rules can/may be different from raw validation rules. In order make use o
 ```javascript
 const indicative = require('indicative')
 
-const schema = {
+const rules = {
   username : 'required|alpha_numeric|min:6|max:20',
   email    : 'required|email'
 }
 
 indicative
-.validate(data, schema)
+.validate(data, rules)
 .then (function () {
   // validation passed
 })

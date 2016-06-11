@@ -1,3 +1,12 @@
+<a name="2.1.1"></a>
+## [2.1.1](https://github.com/poppinss/indicative/compare/v2.1.0...v2.1.1) (2016-06-11)
+
+
+### Bug Fixes
+
+* **validator:extend:** make sure to set the extended rule message([2f1054c](https://github.com/poppinss/indicative/commit/2f1054c))
+
+
 <a name="2.0.6"></a>
 ## 2.0.6 (2016-02-15)
 
