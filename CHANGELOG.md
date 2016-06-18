@@ -1,3 +1,14 @@
+<a name="2.1.2"></a>
+## [2.1.2](https://github.com/poppinss/indicative/compare/v2.1.0...v2.1.2) (2016-06-18)
+
+
+### Bug Fixes
+
+* **validator:** fix custom message typo error([19ec186](https://github.com/poppinss/indicative/commit/19ec186))
+* **validator:extend:** make sure to set the extended rule message([2f1054c](https://github.com/poppinss/indicative/commit/2f1054c))
+
+
+
 <a name="2.1.1"></a>
 ## [2.1.1](https://github.com/poppinss/indicative/compare/v2.1.0...v2.1.1) (2016-06-11)
 
