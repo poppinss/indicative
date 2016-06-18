@@ -122,7 +122,7 @@ Validator.extend = function (name, method, message) {
     throw new Error('Invalid arguments, extend expects a method to execute')
   }
   Validations[name] = method
-  Messages.set('name', message)
+  Messages.set(name, message)
 }
 
 Validator.is = require('../Raw')

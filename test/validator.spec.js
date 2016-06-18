@@ -179,7 +179,7 @@ describe('Validator', function() {
         reject(message)
       })
     }
-    Validator.extend('phone',phone,'Enter valid phone number')
+    Validator.extend('phone', phone, 'Enter valid phone number')
 
     const rules = {
       contact_no: 'phone'
@@ -192,6 +192,7 @@ describe('Validator', function() {
     }catch (e){
       expect(e).to.be.an('array')
       expect(e[0].validation).to.equal('phone')
+      expect(e[0].message).to.equal('Enter valid phone number')
     }
   })
 
