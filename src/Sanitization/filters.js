@@ -109,7 +109,7 @@ SanitizationFilters.normalizeEmail = function (value, args) {
     removeExtension: true
   }
 
-  if(args instanceof Array)
+  if(args instanceof Array) {
     args.forEach(function (option) {
       if (option === '!lc') {
         options.lowercase = false
