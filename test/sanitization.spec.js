@@ -28,6 +28,11 @@ describe('SanitizationFilters', function() {
     expect(sanitized).deep.equal({name: 'foo'})
   })
 
+  it('should accept the first arguement only', function () {
+    const sanitized = SanitizationFilters.normalizeEmail('bar.sneaky@gmail.com')
+    expect(sanitized).to.equal('barsneaky@gmail.com')
+  })
+
   it('should remove dots from an email', function () {
     const sanitized = SanitizationFilters.normalizeEmail('bar.sneaky@gmail.com', [])
     expect(sanitized).to.equal('barsneaky@gmail.com')
