@@ -109,17 +109,19 @@ SanitizationFilters.normalizeEmail = function (value, args) {
     removeExtension: true
   }
 
-  args.forEach(function (option) {
-    if (option === '!lc') {
-      options.lowercase = false
-    }
-    if (option === '!rd') {
-      options.removeDots = false
-    }
-    if (option === '!re') {
-      options.removeExtension = false
-    }
-  })
+  if(args instanceof Array) {
+    args.forEach(function (option) {
+      if (option === '!lc') {
+        options.lowercase = false
+      }
+      if (option === '!rd') {
+        options.removeDots = false
+      }
+      if (option === '!re') {
+        options.removeExtension = false
+      }
+    })
+  }
 
   if (typeof (value) !== 'string') {
     return value

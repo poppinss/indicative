@@ -305,7 +305,7 @@ Also you can validate flat arrays using the same expression syntax.
 
 ```javascript
 const rules = {
-  'emails': 'array|min:2', 
+  'emails': 'array|min:2',
   'emails.*': 'email'
 }
 
@@ -453,7 +453,7 @@ indicative.sanitizor.toInt('32')
 }
 ```
 
-#### toInt
+#### toDate
 Converts value to date object and returns `null` if unable to convert.
 
 ```javascript
@@ -462,7 +462,7 @@ indicative.sanitizor.toDate('2010-22-10')
 
 // with schema
 {
-  age: 'to_date'
+  birthday: 'to_date'
 }
 ```
 
