@@ -3124,7 +3124,7 @@ describe('Validations', function() {
     ///////////////////
     // test suite 206 //
     ///////////////////
-    it('should throw an error when then confirmed field is a number', function * () {
+    it('should throw an error when the confirmed field is a number', function * () {
       const data = { username: 1234 }
       const field = 'username'
       const message = 'Username should be a string'
@@ -3141,14 +3141,14 @@ describe('Validations', function() {
     ///////////////////
     // test suite 207 //
     ///////////////////
-    it('should throw an error when then confirmed field is boolean', function * () {
+    it('should throw an error when the confirmed field is a boolean', function * () {
       const data = { username: true }
       const field = 'username'
       const message = 'Username should be a string'
       const get = _.get
       const args = []
       try {
-        const passes = yield Validations.confirmed(data, field, message, args, get)
+        const passes = yield Validations.string(data, field, message, args, get)
         expect(passes).not.to.exist()
       } catch(e) {
         expect(e).to.equal(message)
@@ -3164,7 +3164,7 @@ describe('Validations', function() {
       const message = 'Username should be a string'
       const get = _.get
       const args = []
-      const passes = yield Validations.confirmed(data, field, message, args, get)
+      const passes = yield Validations.string(data, field, message, args, get)
       expect(passes).to.equal('validation skipped')
     })
 
@@ -3177,7 +3177,7 @@ describe('Validations', function() {
       const message = 'Username should be a string'
       const get = _.get
       const args = []
-      const passes = yield Validations.confirmed(data, field, message, args, get)
+      const passes = yield Validations.string(data, field, message, args, get)
       expect(passes).to.equal('validation skipped')
     })
   })
