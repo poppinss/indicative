@@ -1287,6 +1287,33 @@ Validations.regex = function (data, field, message, args, get) {
 }
 
 /**
+ * @description makes sure field under validation is a string
+ * @method regex
+ * @param  {Object} data
+ * @param  {String} field
+ * @param  {String} message
+ * @param  {Array} args
+ * @param  {Function} get
+ * @return {Object}
+ * @public
+ */
+Validations.string = function (data, field, message, args, get) {
+  return new Promise(function (resolve, reject) {
+    const fieldValue = get(data, field)
+    if (skippable(fieldValue)) {
+      resolve('validation skipped')
+      return
+    }
+
+    if (Raw.string(fieldValue)) {
+      resolve('validation passed')
+      return
+    }
+    reject(message)
+  })
+}
+
+/**
  * aliases
  */
 Validations.between = Validations.range
