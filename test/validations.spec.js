@@ -3106,5 +3106,81 @@ describe('Validations', function() {
       expect(passes).to.equal('validation skipped')
     })
   })
+
+  context('String', function () {
+    ///////////////////
+    // test suite 205 //
+    ///////////////////
+    it('should work fine when the confirmed field is string', function * () {
+      const data = { username: 'david' }
+      const field = 'username'
+      const message = 'Username should be a string'
+      const get = _.get
+      const args = []
+      const passes = yield Validations.string(data, field, message, args, get)
+      expect(passes).to.equal('validation passed')
+    })
+
+    ///////////////////
+    // test suite 206 //
+    ///////////////////
+    it('should throw an error when the confirmed field is a number', function * () {
+      const data = { username: 1234 }
+      const field = 'username'
+      const message = 'Username should be a string'
+      const get = _.get
+      const args = []
+      try {
+        const passes = yield Validations.string(data, field, message, args, get)
+        expect(passes).not.to.exist()
+      } catch(e) {
+        expect(e).to.equal(message)
+      }
+    })
+
+    ///////////////////
+    // test suite 207 //
+    ///////////////////
+    it('should throw an error when the confirmed field is a boolean', function * () {
+      const data = { username: true }
+      const field = 'username'
+      const message = 'Username should be a string'
+      const get = _.get
+      const args = []
+      try {
+        const passes = yield Validations.string(data, field, message, args, get)
+        expect(passes).not.to.exist()
+      } catch(e) {
+        expect(e).to.equal(message)
+      }
+    })
+
+    ///////////////////
+    // test suite 208 //
+    ///////////////////
+    it('should skip validation when field value is not defined', function * () {
+      const data = { }
+      const field = 'username'
+      const message = 'Username should be a string'
+      const get = _.get
+      const args = []
+      const passes = yield Validations.string(data, field, message, args, get)
+      expect(passes).to.equal('validation skipped')
+    })
+
+    ///////////////////
+    // test suite 209 //
+    ///////////////////
+    it('should skip validation when field value is undefined', function * () {
+      const data = { username: undefined }
+      const field = 'username'
+      const message = 'Username should be a string'
+      const get = _.get
+      const args = []
+      const passes = yield Validations.string(data, field, message, args, get)
+      expect(passes).to.equal('validation skipped')
+    })
+  })
+
 })
 

@@ -39,6 +39,7 @@ indicative
 - [in](#in)
 - [includes](#includes)
 - [integer](#integer)
+- [string](#string)
 - [ip](#ip)
 - [ipv4](#ipv4)
 - [ipv6](#ipv6)
@@ -231,6 +232,15 @@ the value of field under validation should be an integer
 ```javascript,line-numbers
 {
   age: 'integer'
+}
+```
+
+### string
+the value of field under validation should be a string
+
+```javascript,line-numbers
+{
+  username: 'string'
 }
 ```
 
