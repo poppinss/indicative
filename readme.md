@@ -1356,7 +1356,6 @@ indicative
 [in](#in)
 [includes](#includes)
 [integer](#integer)
-[string](#string)
 [ip](#ip)
 [ipv4](#ipv4)
 [ipv6](#ipv6)
@@ -1377,6 +1376,7 @@ indicative
 [required_without_any](#required-without-any)
 [same](#same)
 [starts_with](#starts-with)
+[string](#string)
 [under](#under)
 [url](#url)
 
@@ -1551,15 +1551,6 @@ the value of field under validation should be an integer
 ```javascript
 {
   age: 'integer'
-}
-```
-
-#### string
-the value of field under validation should be a string
-
-```javascript
-{
-  username: 'string'
 }
 ```
 
@@ -1746,6 +1737,15 @@ the value of field should start with defined letters
 ```javascript
 {
   accepted: 'starts_with:y'
+}
+```
+
+#### string
+the value of field under validation should be a string
+
+```javascript
+{
+  username: 'string'
 }
 ```
 
