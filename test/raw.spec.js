@@ -451,6 +451,22 @@ describe('Raw Validator', function() {
       expect(isUrl).to.equal(true)
     })
 
+    //////////////////////////
+    // test suite add later //
+    //////////////////////////
+    it('should return true when input contains 63 characters TLD', function () {
+      const isUrl = Is.url('https://example.abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijk')
+      expect(isUrl).to.equal(true)
+    })
+
+    //////////////////////////
+    // test suite add later //
+    //////////////////////////
+    it('should return false when input contains more than 63 characters TLD', function () {
+      const isUrl = Is.url('https://example.abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijkl')
+      expect(isUrl).to.equal(false)
+    })
+
     ///////////////////
     // test suite 55 //
     ///////////////////
@@ -486,9 +502,17 @@ describe('Raw Validator', function() {
     ///////////////////
     // test suite 59 //
     ///////////////////
-    it('should return true when input is a valid email address with different TLD', function () {
-      const isEmail = Is.email('someone@example.org')
+    it('should return true when input is a valid email address with 63 characters TLD', function () {
+      const isEmail = Is.email('someone@example.abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijk')
       expect(isEmail).to.equal(true)
+    })
+
+    //////////////////////////
+    // test suite add later //
+    //////////////////////////
+    it('should return false when input is not a valid email address with more than 63 characters TLD', function () {
+      const isEmail = Is.email('someone@example.abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijkl')
+      expect(isEmail).to.equal(false)
     })
 
     //////////////////////////

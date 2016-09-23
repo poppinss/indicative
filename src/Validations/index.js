@@ -9,6 +9,7 @@
  * file that was distributed with this source code.
 */
 const Raw = require('../Raw')
+const Modes = require('../Modes')
 
 /**
  * @module Validations
@@ -27,7 +28,7 @@ let Validations = exports = module.exports = {}
  * @private
  */
 const skippable = function (value) {
-  return !Raw.existy(value) && value !== null
+  return Modes.get() === 'strict' ? typeof (value) === undefined : !Raw.existy(value)
 }
 
 /**
@@ -981,7 +982,7 @@ Validations.equals = function (data, field, message, args, get) {
       return
     }
 
-    if (targetedValue === fieldValue) {
+    if (targetedValue == fieldValue) {
       resolve('validation passed')
       return
     }
@@ -1279,6 +1280,33 @@ Validations.regex = function (data, field, message, args, get) {
 
     const expression = regexFlags ? new RegExp(regexExp, regexFlags) : new RegExp(regexExp)
     if (Raw.regex(fieldValue, expression)) {
+      resolve('validation passed')
+      return
+    }
+    reject(message)
+  })
+}
+
+/**
+ * @description makes sure field under validation is a string
+ * @method regex
+ * @param  {Object} data
+ * @param  {String} field
+ * @param  {String} message
+ * @param  {Array} args
+ * @param  {Function} get
+ * @return {Object}
+ * @public
+ */
+Validations.string = function (data, field, message, args, get) {
+  return new Promise(function (resolve, reject) {
+    const fieldValue = get(data, field)
+    if (skippable(fieldValue)) {
+      resolve('validation skipped')
+      return
+    }
+
+    if (Raw.string(fieldValue)) {
       resolve('validation passed')
       return
     }

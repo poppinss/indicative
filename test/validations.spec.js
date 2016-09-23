@@ -225,23 +225,6 @@ describe('Validations', function() {
     })
 
     ///////////////////
-    // test suite 13 //
-    ///////////////////
-    it('should throw error when field is defined and contains null as value', function * () {
-      const data = {terms:null}
-      const field = 'terms'
-      const message = 'terms must be accepted'
-      const get = _.get
-      const args = []
-      try{
-        const passes = yield Validations.accepted(data, field, message, args, get)
-        expect(passes).not.to.exist()
-      }catch(e){
-        expect(e).to.equal(message)
-      }
-    })
-
-    ///////////////////
     // test suite 14 //
     ///////////////////
     it('should skip validation when field is not present or is undefined', function * () {
@@ -261,23 +244,6 @@ describe('Validations', function() {
     ///////////////////
     it('should throw an error when date is not after defined date', function * () {
       const data = {dob:'1980-11-20'}
-      const field = 'dob'
-      const message = 'dob should be after 2010'
-      const get = _.get
-      const args = ['2010-11-20']
-      try{
-        const passes = yield Validations.after(data, field, message, args, get)
-        expect(passes).not.to.exist()
-      }catch(e){
-        expect(e).to.equal(message)
-      }
-    })
-
-    ///////////////////
-    // test suite 16 //
-    ///////////////////
-    it('should throw an error when date is null', function * () {
-      const data = {dob:null}
       const field = 'dob'
       const message = 'dob should be after 2010'
       const get = _.get
@@ -337,23 +303,6 @@ describe('Validations', function() {
     ///////////////////
     it('should throw an error when value is not alpha', function * () {
       const data = {username: 'virk1234'}
-      const field = 'username'
-      const message = 'username must contain letters only'
-      const get = _.get
-      const args = []
-      try{
-        const passes = yield Validations.alpha(data, field, message, args, get)
-        expect(passes).not.to.exist()
-      }catch(e){
-        expect(e).to.equal(message)
-      }
-    })
-
-    ///////////////////
-    // test suite 21 //
-    ///////////////////
-    it('should throw an error when value is null', function * () {
-      const data = {username: null}
       const field = 'username'
       const message = 'username must contain letters only'
       const get = _.get
@@ -427,23 +376,6 @@ describe('Validations', function() {
     })
 
     ///////////////////
-    // test suite 26 //
-    ///////////////////
-    it('should throw an error when date is null', function * () {
-      const data = {dob:null}
-      const field = 'dob'
-      const message = 'dob should be before 2010'
-      const get = _.get
-      const args = ['2010-11-20']
-      try{
-        const passes = yield Validations.before(data, field, message, args, get)
-        expect(passes).not.to.exist()
-      }catch(e){
-        expect(e).to.equal(message)
-      }
-    })
-
-    ///////////////////
     // test suite 27 //
     ///////////////////
     it('should work fine when value is before defined date', function * () {
@@ -490,23 +422,6 @@ describe('Validations', function() {
     ///////////////////
     it('should throw an error when field value is not a valid date', function * () {
       const data = {dob:'10th'}
-      const field = 'dob'
-      const message = 'dob should be a valid date'
-      const get = _.get
-      const args = []
-      try{
-        const passes = yield Validations.date(data, field, message, args, get)
-        expect(passes).not.to.exist()
-      }catch(e){
-        expect(e).to.equal(message)
-      }
-    })
-
-    ///////////////////
-    // test suite 31 //
-    ///////////////////
-    it('should throw an error when field value is null', function * () {
-      const data = {dob:null}
       const field = 'dob'
       const message = 'dob should be a valid date'
       const get = _.get
@@ -609,23 +524,6 @@ describe('Validations', function() {
     })
 
     ///////////////////
-    // test suite 38 //
-    ///////////////////
-    it('should throw an error when field value is null', function * () {
-      const data = {dob:null}
-      const field = 'dob'
-      const message = 'dob should be a valid date'
-      const get = _.get
-      const args = ['YYYY/MM/DD']
-      try{
-        const passes = yield Validations.dateFormat(data, field, message, args, get)
-        expect(passes).not.to.exist()
-      }catch(e){
-        expect(e).to.equal(message)
-      }
-    })
-
-    ///////////////////
     // test suite 39 //
     ///////////////////
     it('should work fine when field value is a valid date according to given format', function * () {
@@ -672,23 +570,6 @@ describe('Validations', function() {
     ///////////////////
     it('should throw an error when field value is not in defined fields', function * () {
       const data = {gender:'Foo'}
-      const field = 'gender'
-      const message = 'select valid gender'
-      const get = _.get
-      const args = ['F','M','O']
-      try{
-        const passes = yield Validations.in(data, field, message, args, get)
-        expect(passes).not.to.exist()
-      }catch(e){
-        expect(e).to.equal(message)
-      }
-    })
-
-    ///////////////////
-    // test suite 43 //
-    ///////////////////
-    it('should throw an error when field value is null', function * () {
-      const data = {gender:null}
       const field = 'gender'
       const message = 'select valid gender'
       const get = _.get
@@ -1276,6 +1157,19 @@ describe('Validations', function() {
       const message = 'title should be bar'
       const get = _.get
       const args = ['bar']
+      const passes = yield Validations.equals(data, field, message, args, get)
+      expect(passes).to.equal('validation passed')
+    })
+
+    ///////////////////
+    // test suite 82 //
+    ///////////////////
+    it('should work fine when then under validation is a number', function * () {
+      const data = {age:18}
+      const field = 'age'
+      const message = 'age should be 18'
+      const get = _.get
+      const args = ['18']
       const passes = yield Validations.equals(data, field, message, args, get)
       expect(passes).to.equal('validation passed')
     })
@@ -2094,23 +1988,6 @@ describe('Validations', function() {
     ////////////////////
     it('should throw an error when value is not alpha numeric', function * () {
       const data = {username: 'virk@123'}
-      const field = 'username'
-      const message = 'username must letters and numbers only'
-      const get = _.get
-      const args = []
-      try{
-        const passes = yield Validations.alphaNumeric(data, field, message, args, get)
-        expect(passes).not.to.exist()
-      }catch(e){
-        expect(e).to.equal(message)
-      }
-    })
-
-    ////////////////////
-    // test suite 138 //
-    ////////////////////
-    it('should throw an error when value is null', function * () {
-      const data = {username: null}
       const field = 'username'
       const message = 'username must letters and numbers only'
       const get = _.get
@@ -3106,5 +2983,81 @@ describe('Validations', function() {
       expect(passes).to.equal('validation skipped')
     })
   })
+
+  context('String', function () {
+    ///////////////////
+    // test suite 205 //
+    ///////////////////
+    it('should work fine when the confirmed field is string', function * () {
+      const data = { username: 'david' }
+      const field = 'username'
+      const message = 'Username should be a string'
+      const get = _.get
+      const args = []
+      const passes = yield Validations.string(data, field, message, args, get)
+      expect(passes).to.equal('validation passed')
+    })
+
+    ///////////////////
+    // test suite 206 //
+    ///////////////////
+    it('should throw an error when the confirmed field is a number', function * () {
+      const data = { username: 1234 }
+      const field = 'username'
+      const message = 'Username should be a string'
+      const get = _.get
+      const args = []
+      try {
+        const passes = yield Validations.string(data, field, message, args, get)
+        expect(passes).not.to.exist()
+      } catch(e) {
+        expect(e).to.equal(message)
+      }
+    })
+
+    ///////////////////
+    // test suite 207 //
+    ///////////////////
+    it('should throw an error when the confirmed field is a boolean', function * () {
+      const data = { username: true }
+      const field = 'username'
+      const message = 'Username should be a string'
+      const get = _.get
+      const args = []
+      try {
+        const passes = yield Validations.string(data, field, message, args, get)
+        expect(passes).not.to.exist()
+      } catch(e) {
+        expect(e).to.equal(message)
+      }
+    })
+
+    ///////////////////
+    // test suite 208 //
+    ///////////////////
+    it('should skip validation when field value is not defined', function * () {
+      const data = { }
+      const field = 'username'
+      const message = 'Username should be a string'
+      const get = _.get
+      const args = []
+      const passes = yield Validations.string(data, field, message, args, get)
+      expect(passes).to.equal('validation skipped')
+    })
+
+    ///////////////////
+    // test suite 209 //
+    ///////////////////
+    it('should skip validation when field value is undefined', function * () {
+      const data = { username: undefined }
+      const field = 'username'
+      const message = 'Username should be a string'
+      const get = _.get
+      const args = []
+      const passes = yield Validations.string(data, field, message, args, get)
+      expect(passes).to.equal('validation skipped')
+    })
+  })
+
 })
 

@@ -1,6 +1,6 @@
 {
   "name": "indicative",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "Intentionally beautiful schema and raw validator for nodejs",
   "main": "index.js",
   "scripts": {
@@ -27,6 +27,9 @@
     "moment": "^2.13.0",
     "pope": "^1.0.0",
     "q": "^2.0.3"
+  },
+  "standard": {
+    "global": ["it", "describe", "context", "before", "after", "beforeEach", "afterEach"]
   },
   "directories": {
     "doc": "docs",

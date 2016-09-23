@@ -305,7 +305,7 @@ Also you can validate flat arrays using the same expression syntax.
 
 ```javascript
 const rules = {
-  'emails': 'array|min:2', 
+  'emails': 'array|min:2',
   'emails.*': 'email'
 }
 
@@ -453,7 +453,7 @@ indicative.sanitizor.toInt('32')
 }
 ```
 
-#### toInt
+#### toDate
 Converts value to date object and returns `null` if unable to convert.
 
 ```javascript
@@ -462,7 +462,7 @@ indicative.sanitizor.toDate('2010-22-10')
 
 // with schema
 {
-  age: 'to_date'
+  birthday: 'to_date'
 }
 ```
 
@@ -1376,6 +1376,7 @@ indicative
 [required_without_any](#required-without-any)
 [same](#same)
 [starts_with](#starts-with)
+[string](#string)
 [under](#under)
 [url](#url)
 
@@ -1736,6 +1737,15 @@ the value of field should start with defined letters
 ```javascript
 {
   accepted: 'starts_with:y'
+}
+```
+
+#### string
+the value of field under validation should be a string
+
+```javascript
+{
+  username: 'string'
 }
 ```
 

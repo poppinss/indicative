@@ -11,7 +11,6 @@
 
 const Validations = require('../Validations')
 const Parser = require('../Parser')
-const Modes = require('../Modes')
 const Messages = require('../Messages')
 const _ = require('lodash')
 const Q = require('q')
@@ -55,7 +54,6 @@ ValidationEngine.runValidationOnField = function (data, field, validation, messa
   const validationMethod = ValidationEngine.getValidationMethod(validation)
 
   return Q.Promise((resolve, reject) => {
-    ValidationEngine.transformValue(data, field)
     validationMethod(data, field, message, args, _.get)
     .then(resolve)
     .catch((error) => {
@@ -79,25 +77,4 @@ ValidationEngine.getValidationMethod = function (validation) {
   return _.get(Validations, Parser.toCamelCase(validation), function () {
     throw new Error(`${validation} is not defined as a validation`)
   })
-}
-
-/**
- * transform values of empty string to null when
- * string strict mode is on.
- *
- * @param   {Object} data
- * @param   {String} field
- *
- * @return  {void}
- *
- * @private
- */
-ValidationEngine.transformValue = function (data, field) {
-  if (Modes.get() !== 'string strict') {
-    return
-  }
-  const value = _.get(data, field)
-  if (_.isString(value) && _.size(value) === 0) {
-    _.set(data, field, null)
-  }
 }

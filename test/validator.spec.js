@@ -389,9 +389,9 @@ describe('Validator', function() {
   // test suite 19 //
   ///////////////////
 
-  it('should fail validation when empty string is passed for any rule with string strict mode on', function * () {
+  it('should fail validation when empty string is passed for any rule with strict mode on', function * () {
 
-    Validator.setMode('string strict')
+    Validator.setMode('strict')
 
     const rules = {
       select: 'array'
@@ -534,10 +534,11 @@ describe('Validator', function() {
     }
 
     const data = {
-      people: null
+      people: ''
     }
 
     try {
+      Validator.setMode('strict')
       const passed = yield Validator.validate(data, rules)
       expect(passed).not.to.exist()
     } catch (e) {
@@ -717,7 +718,7 @@ describe('Validator', function() {
   ///////////////////
   // test suite 33 //
   ///////////////////
-  it('should not mutate actual data set in string strict mode', function * () {
+  it('should not mutate actual data set in strict mode', function * () {
     const rules = {
       email: 'required'
     }
@@ -727,8 +728,22 @@ describe('Validator', function() {
       email: 'foo@bar.com'
     }
 
-    Validator.setMode('string strict')
+    Validator.setMode('strict')
     const passed = yield Validator.validate(data, rules)
     expect(passed).deep.equal(data)
   })
-});
+
+  it('should skip the string validation when value is null', function * () {
+    const rules = {
+      description: 'string'
+    }
+
+    const data = {
+      description: null
+    }
+
+    Validator.setMode('normal')
+    const passed = yield Validator.validate(data, rules)
+    expect(passed).deep.equal(data)
+  })
+})
