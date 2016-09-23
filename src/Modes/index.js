@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
 */
 
-const availableModes = ['normal', 'string strict']
+const availableModes = ['normal', 'strict']
 let currentMode = 'normal'
 
 const Modes = exports = module.exports = {}

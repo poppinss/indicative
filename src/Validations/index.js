@@ -9,6 +9,7 @@
  * file that was distributed with this source code.
 */
 const Raw = require('../Raw')
+const Modes = require('../Modes')
 
 /**
  * @module Validations
@@ -27,7 +28,7 @@ let Validations = exports = module.exports = {}
  * @private
  */
 const skippable = function (value) {
-  return !Raw.existy(value) && value !== null
+  return Modes.get() === 'strict' ? typeof (value) === undefined : !Raw.existy(value)
 }
 
 /**
