@@ -1160,6 +1160,19 @@ describe('Validations', function() {
       const passes = yield Validations.equals(data, field, message, args, get)
       expect(passes).to.equal('validation passed')
     })
+
+    ///////////////////
+    // test suite 82 //
+    ///////////////////
+    it('should work fine when then under validation is a number', function * () {
+      const data = {age:18}
+      const field = 'age'
+      const message = 'age should be 18'
+      const get = _.get
+      const args = ['18']
+      const passes = yield Validations.equals(data, field, message, args, get)
+      expect(passes).to.equal('validation passed')
+    })
   })
 
   context('notEquals', function () {
