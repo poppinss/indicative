@@ -19,7 +19,7 @@
     "istanbul": "^0.4.3",
     "mocha": "^3.0.2",
     "mocha-lcov-reporter": "^1.2.0",
-    "standard": "^8.1.0"
+    "standard": "^8.2.0"
   },
   "dependencies": {
     "inflect": "^0.3.0",
