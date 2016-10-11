@@ -10,7 +10,6 @@
 */
 
 const Validations = require('../Validations')
-const Parser = require('../Parser')
 const Messages = require('../Messages')
 const _ = require('lodash')
 const Q = require('q')
@@ -74,7 +73,7 @@ ValidationEngine.runValidationOnField = function (data, field, validation, messa
  * @throws {Error} If validation is not found
  */
 ValidationEngine.getValidationMethod = function (validation) {
-  return _.get(Validations, Parser.toCamelCase(validation), function () {
+  return _.get(Validations, _.camelCase(validation), function () {
     throw new Error(`${validation} is not defined as a validation`)
   })
 }

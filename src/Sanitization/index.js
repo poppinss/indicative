@@ -27,7 +27,7 @@ const filters = require('./filters')
  * @private
  */
 function _getSanitizationMethod (filter) {
-  return _.get(filters, Parser.toCamelCase(filter), function () {
+  return _.get(filters, _.camelCase(filter), function () {
     throw new Error(`${filter} is not defined as a filter`)
   })
 }

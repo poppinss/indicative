@@ -746,4 +746,27 @@ describe('Validator', function() {
     const passed = yield Validator.validate(data, rules)
     expect(passed).deep.equal(data)
   })
+
+  it('should be able to add it\'s own validation messages to validation store', function * () {
+    const phone = function (data, field, message, args, get) {
+      return new Promise(function (resolve, reject) {
+        reject(message)
+      })
+    }
+    Validator.extend('isPhone', phone, 'Enter valid phone number')
+
+    const rules = {
+      contact_no: 'is_phone'
+    }
+    const body = {}
+
+    try {
+      const validated = yield Validator.validate(body, rules)
+      expect(validated).not.to.exist()
+    } catch (e) {
+      expect(e).to.be.an('array')
+      expect(e[0].validation).to.equal('is_phone')
+      expect(e[0].message).to.equal('Enter valid phone number')
+    }
+  })
 })
