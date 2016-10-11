@@ -982,7 +982,7 @@ Validations.equals = function (data, field, message, args, get) {
       return
     }
 
-    if (targetedValue == fieldValue) {
+    if (targetedValue == fieldValue) { // eslint-disable-line eqeqeq
       resolve('validation passed')
       return
     }

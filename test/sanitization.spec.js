@@ -11,8 +11,7 @@ const Sanitization = require('../src/Sanitization')
 const chai = require('chai')
 const expect = chai.expect
 
-describe('SanitizationFilters', function() {
-
+describe('SanitizationFilters', function () {
   it('should escape html div using escape method', function () {
     const sanitized = SanitizationFilters.escape('<div id="foo"> hello </div>')
     expect(sanitized).to.equal('&lt;div id=&quot;foo&quot;&gt; hello &lt;&#x2F;div&gt;')
@@ -184,7 +183,7 @@ describe('SanitizationFilters', function() {
   })
 
   it('should entertain regex keywords inside blacklist', function () {
-    const sanitized = SanitizationFilters.blacklist('hello.wor\ld', ['.\\[\\]'])
+    const sanitized = SanitizationFilters.blacklist('hello.world', ['.\\[\\]'])
     expect(sanitized).to.equal('helloworld')
   })
 
@@ -198,33 +197,33 @@ describe('SanitizationFilters', function() {
     const para = `Click <a href="http://google.com"> here </a> to search
     and visit <a href="http://adonisjs.com"> AdonisJs </a>`
     const sanitized = SanitizationFilters.stripLinks(para)
-    expect(sanitized.replace(/\n\s*/,' ')).to.equal(`Click here to search and visit AdonisJs`)
+    expect(sanitized.replace(/\n\s*/, ' ')).to.equal('Click here to search and visit AdonisJs')
   })
 
   it('should remove tags from a given string', function () {
     const para = `Click <a href="http://google.com"> here </a> to search
     and visit <a href="http://adonisjs.com"> AdonisJs </a>`
     const sanitized = SanitizationFilters.stripTags(para, [])
-    expect(sanitized.replace(/\s+/g,' ').trim()).to.equal(`Click here to search and visit AdonisJs`)
+    expect(sanitized.replace(/\s+/g, ' ').trim()).to.equal('Click here to search and visit AdonisJs')
   })
 
   it('should remove extra space after tags replace', function () {
     const para = `Click <a href="http://google.com"> here </a> to search
     and visit <a href="http://adonisjs.com"> AdonisJs </a>`
     const sanitized = SanitizationFilters.stripTags(para, ['trim'])
-    expect(sanitized).to.equal(`Click here to search and visit AdonisJs`)
+    expect(sanitized).to.equal('Click here to search and visit AdonisJs')
   })
 
   it('should remove extra space after tags replace when in one line', function () {
-    const para = `Click <a href="http://google.com"> here </a> to search and visit AdonisJs`
+    const para = 'Click <a href="http://google.com"> here </a> to search and visit AdonisJs'
     const sanitized = SanitizationFilters.stripTags(para, ['trim'])
-    expect(sanitized).to.equal(`Click here to search and visit AdonisJs`)
+    expect(sanitized).to.equal('Click here to search and visit AdonisJs')
   })
 
   it('should actual value when value is not a string', function () {
     const para = 11
-    const sanitized = SanitizationFilters.stripTags(11, ['trim'])
-    expect(sanitized).to.equal(11)
+    const sanitized = SanitizationFilters.stripTags(para, ['trim'])
+    expect(sanitized).to.equal(para)
   })
 
   it('should pluralize a given string', function () {
@@ -286,10 +285,9 @@ describe('SanitizationFilters', function() {
     const sanitized = SanitizationFilters.humanize('dot case')
     expect(sanitized).to.equal('Dot case')
   })
-
 })
 
-describe('Sanitization', function() {
+describe('Sanitization', function () {
   it('should sanitize values using sanitize method', function () {
     const data = {
       email: 'bar.sneaky@googlemail.com',
@@ -302,13 +300,13 @@ describe('Sanitization', function() {
     }
 
     const sanitized = Sanitization.sanitize(data, rules)
-    expect(sanitized).deep.equal({email:'barsneaky@gmail.com', body:'Hello'})
+    expect(sanitized).deep.equal({email: 'barsneaky@gmail.com', body: 'Hello'})
   })
 
   it('should sanitize nested values using sanitize method', function () {
     const data = {
       profile: {
-        email: 'bar.sneaky@googlemail.com',
+        email: 'bar.sneaky@googlemail.com'
       },
       body: '<p> Hello </p>'
     }
@@ -319,13 +317,13 @@ describe('Sanitization', function() {
     }
 
     const sanitized = Sanitization.sanitize(data, rules)
-    expect(sanitized).deep.equal({profile: {email:'barsneaky@gmail.com'}, body:'Hello'})
+    expect(sanitized).deep.equal({profile: {email: 'barsneaky@gmail.com'}, body: 'Hello'})
   })
 
   it('should run multiple sanizations on a given field', function () {
     const data = {
       profile: {
-        email: 'bar.sneaky@googlemail.com',
+        email: 'bar.sneaky@googlemail.com'
       },
       body: '<p> hello world </p>'
     }
@@ -336,13 +334,13 @@ describe('Sanitization', function() {
     }
 
     const sanitized = Sanitization.sanitize(data, rules)
-    expect(sanitized).deep.equal({profile: {email:'barsneaky@gmail.com'}, body:'hello-world'})
+    expect(sanitized).deep.equal({profile: {email: 'barsneaky@gmail.com'}, body: 'hello-world'})
   })
 
   it('should pass arguments to sanization methods', function () {
     const data = {
       profile: {
-        email: 'bar.sneaky@googlemail.com',
+        email: 'bar.sneaky@googlemail.com'
       },
       body: '<p> hello world </p>'
     }
@@ -353,7 +351,7 @@ describe('Sanitization', function() {
     }
 
     const sanitized = Sanitization.sanitize(data, rules)
-    expect(sanitized).deep.equal({profile: {email:'bar.sneaky@gmail.com'}, body:'hello-world'})
+    expect(sanitized).deep.equal({profile: {email: 'bar.sneaky@gmail.com'}, body: 'hello-world'})
   })
 
   it('should be able to sanitize values with array expressions', function () {
@@ -373,7 +371,7 @@ describe('Sanitization', function() {
     }
 
     const sanitized = Sanitization.sanitize(data, rules)
-    expect(sanitized).deep.equal({profile: [{ email:'barsneaky@gmail.com'}, {email: 'barfoo@gmail.com'} ] })
+    expect(sanitized).deep.equal({profile: [{email: 'barsneaky@gmail.com'}, {email: 'barfoo@gmail.com'}]})
   })
 
   it('should be able to sanitize values with flat array expressions', function () {
@@ -386,7 +384,7 @@ describe('Sanitization', function() {
     }
 
     const sanitized = Sanitization.sanitize(data, rules)
-    expect(sanitized).deep.equal({emails:['barsneaky@gmail.com', 'barfoo@gmail.com']})
+    expect(sanitized).deep.equal({emails: ['barsneaky@gmail.com', 'barfoo@gmail.com']})
   })
 
   it('should return the original data back when there are no matching filters found', function () {
@@ -421,7 +419,7 @@ describe('Sanitization', function() {
   it('should throw an error when sanization rule method is not found', function () {
     const data = {
       profile: {
-        email: 'bar.sneaky@googlemail.com',
+        email: 'bar.sneaky@googlemail.com'
       },
       body: '<p> hello world </p>'
     }
@@ -451,5 +449,4 @@ describe('Sanitization', function() {
     const sanitized = Sanitization.sanitize(data, rules)
     expect(sanitized).deep.equal({name: 'DOE'})
   })
-
 })
