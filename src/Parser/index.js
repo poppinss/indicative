@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
 */
 
-const snakeCaseRegex = /_(\w)/g
 const arrayExpressionRegex = /(\w[^\.\*]+)(\.\*\.?)(.+)?/
 const _ = require('lodash')
 
@@ -62,19 +61,6 @@ Parser.parse = function (validations) {
 }
 
 /**
- * convert a snake case string to camelcase.
- *
- * @param  {String} string
- *
- * @return {String}
- */
-Parser.toCamelCase = function (string) {
-  return string.replace(snakeCaseRegex, function (m, $1) {
-    return $1.toUpperCase()
-  })
-}
-
-/**
  * parses an array expression to a consumable object
  *
  * @param  {String} field
@@ -89,7 +75,6 @@ Parser.expressionCurryFor = function (field, whenMatched, otherwise) {
   }
   return whenMatched(expression[1], expression[3])
 }
-
 
 /**
  * parses a rule and returns an object with
