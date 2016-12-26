@@ -449,4 +449,18 @@ describe('Sanitization', function () {
     const sanitized = Sanitization.sanitize(data, rules)
     expect(sanitized).deep.equal({name: 'DOE'})
   })
+
+  context('Regression', function () {
+    it('should work fine without optional 2nd argument', function () {
+      const sanitized = SanitizationFilters.toInt('20')
+      expect(sanitized).to.equal(20)
+    })
+
+    it('should remove tags without optional 2nd argument', function () {
+      const para = `Click <a href="http://google.com"> here </a> to search
+      and visit <a href="http://adonisjs.com"> AdonisJs </a>`
+      const sanitized = SanitizationFilters.stripTags(para)
+      expect(sanitized.replace(/\s+/g, ' ').trim()).to.equal('Click here to search and visit AdonisJs')
+    })
+  })
 })

@@ -12,6 +12,7 @@
 const domains = /^hotmail\.com|gmail\.com|live\.com$/
 const linksRegex = /<a\b[^>]*>(.*?)<\/a>/ig
 const tagsRegex = /<\/?[^>]+(>|$)/g
+const _ = require('lodash')
 
 const inflect = require('inflect')
 
@@ -184,7 +185,7 @@ SanitizationFilters.toFloat = function (value) {
  * @public
  */
 SanitizationFilters.toInt = function (value, args) {
-  const radix = typeof (args[0]) === 'number' ? args[0] : 10
+  const radix = _.isNumber(_.get(args, '0')) ? args[0] : 10
   return parseInt(value, radix)
 }
 
@@ -224,7 +225,7 @@ SanitizationFilters.stripLinks = function (value) {
  * @public
  */
 SanitizationFilters.stripTags = function (value, args) {
-  const strict = (args[0] && args[0] === 'trim')
+  const strict = _.get(args, '0') === 'trim'
   value = _replace(value, tagsRegex, '')
   if (strict) {
     value = _replace(value, /\s+/g, ' ')
