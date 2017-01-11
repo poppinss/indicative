@@ -27,8 +27,8 @@ let Parser = exports = module.exports = {}
 const _parseValidation = function (validation) {
   return _(validation.split(':'))
   .thru((value) => {
-    const name = value.shift();
-    value = value.join(':');
+    const name = value.shift()
+    value = value.join(':')
     const args = value ? value.split(',') : []
 
     return {name: name, args}

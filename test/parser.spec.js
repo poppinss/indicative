@@ -120,4 +120,24 @@ describe('Parser', function () {
     const parsed = {password: Parser.parse(rules.password)}
     expect(parsed).deep.equal(parsedRules)
   })
+
+  // ////////////////
+  // test suite 5 //
+  // ////////////////
+  it('should not split `:` in argument value', function () {
+    const rules = {
+      password: 'date_format:2016-10-10T10:10:10'
+    }
+    const parsedRules = {
+      password: [
+        {
+          name: 'date_format',
+          args: ['2016-10-10T10:10:10']
+        }
+      ]
+    }
+    const parsed = {password: Parser.parse(rules.password)}
+    expect(parsed).deep.equal(parsedRules)
+  })
+
 })
