@@ -10,6 +10,8 @@
 */
 
 const arrayExpressionRegex = /(\w[^\.\*]+)(\.\*\.?)(.+)?/
+const splitArgsRegex = /^([^:]+)[:](.+)$/
+
 const _ = require('lodash')
 
 let Parser = exports = module.exports = {}
@@ -25,12 +27,12 @@ let Parser = exports = module.exports = {}
  * @private
  */
 const _parseValidation = function (validation) {
-  return _(validation.split(':'))
-  .thru((value) => {
-    const args = value[1] ? value[1].split(',') : []
-    return {name: value[0], args}
-  })
-  .value()
+  const value = splitArgsRegex.exec(validation)
+  if (_.size(value) < 2) {
+    return {name: validation, args: []}
+  }
+
+  return {name: value[1], args: value[2].split(',')}
 }
 
 /**
