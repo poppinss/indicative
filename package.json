@@ -15,7 +15,7 @@
     "chai": "^3.5.0",
     "co-mocha": "^1.1.2",
     "coveralls": "^2.11.9",
-    "cz-conventional-changelog": "^1.1.6",
+    "cz-conventional-changelog": "^2.0.0",
     "istanbul": "^0.4.3",
     "mocha": "^3.0.2",
     "mocha-lcov-reporter": "^1.2.0",
