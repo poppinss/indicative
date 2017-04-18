@@ -22,7 +22,7 @@
     "standard": "^8.4.0"
   },
   "dependencies": {
-    "inflect": "^0.3.0",
+    "inflect": "^0.4.0",
     "lodash": "^4.12.0",
     "moment": "^2.13.0",
     "pope": "^1.0.0",
