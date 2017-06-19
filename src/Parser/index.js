@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
 */
 
-const arrayExpressionRegex = /(\w[^\.\*]+)(\.\*\.?)(.+)?/
+const arrayExpressionRegex = /(\w[^.*]+)(\.\*\.?)(.+)?/
 const _ = require('lodash')
 
 let Parser = exports = module.exports = {}
