@@ -465,6 +465,30 @@ describe('Raw Validator', function () {
       expect(isUrl).to.equal(false)
     })
 
+    // ////////////////////////
+    // test suite add later //
+    // ////////////////////////
+    it('should return true when input contains only localhost', function () {
+      const isUrl = Is.url('http://localhost')
+      expect(isUrl).to.equal(true)
+    })
+
+    // ////////////////////////
+    // test suite add later //
+    // ////////////////////////
+    it('should return true when input contains localhost with port', function () {
+      const isUrl = Is.url('http://localhost:80')
+      expect(isUrl).to.equal(true)
+    })
+
+    // ////////////////////////
+    // test suite add later //
+    // ////////////////////////
+    it('should return true when domain name part contains 1 character', function () {
+      const isUrl = Is.url('https://t.co')
+      expect(isUrl).to.equal(true)
+    })
+
     // /////////////////
     // test suite 55 //
     // /////////////////
