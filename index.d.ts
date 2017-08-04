@@ -1,9 +1,21 @@
+/**
+ * Exposes an interface to extend the validator and add new methods to it.
+ */
 export function extend(name: string, method: ValidationMethod, message: string): void;
 
-export function sanitize<T>(data: T, rules: Rules): any;
+/**
+ * Sanitizes a given set of data with given set of rules.
+ */
+export function sanitize(data: Data, rules: Rules): Data;
 
+/**
+ * Validate a set of async validations mapped as field and rule called rules.
+ */
 export function validate<T>(data: T, rules: Rules, messages?: Messages): T;
 
+/**
+ * Just like validate but waits for all the validations to occur and returns an array of errors.
+ */
 export function validateAll<T>(data: T, rules: Rules, messages?: Messages): T;
 
 export namespace is {
@@ -92,7 +104,10 @@ export namespace is {
    */
   function existy(input: any): boolean;
 
-  function extend(name: any, method: any): void;
+  /**
+   * Exposes an interface to extend the raw validator and add own methods to it.
+   */
+  function extend(name: string, method: Function): void;
 
   /**
    * Tells whether input is falsy or not, opposite of truthy.
@@ -236,45 +251,70 @@ export namespace is {
 }
 
 export namespace sanitizor {
-  function blacklist(value: any, args: any): any;
+  /**
+   * Removes blacklisted values from string.
+   */
+  function blacklist(value: string, args: any[]): string;
 
-  function camelCase(value: any): any;
+  function camelCase(value: string): string;
 
-  function capitalize(value: any): any;
+  function capitalize(value: string): string;
 
-  function decapitalize(value: any): any;
+  function decapitalize(value: string): string;
 
+  /**
+   * Escapes an input if it's a string.
+   */
+  function escape(value: string): string;
   function escape(value: any): any;
 
-  function extend(name: any, method: any): void;
+  /**
+   * Exposes an interface to extend filters.
+   */
+  function extend(name: string, method: Function): void;
 
-  function humanize(value: any): any;
+  function humanize(value: string): string;
 
-  function normalizeEmail(value: any, args: any): any;
+  /**
+   * Normalizes an email by removing all unncessary characters from it.
+   */
+  function normalizeEmail(value: string, args: any[]): string;
 
-  function plural(value: any): any;
+  function plural(value: string): string;
 
-  function singular(value: any): any;
+  function singular(value: string): string;
 
-  function slug(value: any): any;
+  function slug(value: string): string;
 
-  function stripLinks(value: any): any;
+  function stripLinks(value: string): string;
 
-  function stripTags(value: any, args: any): any;
+  function stripTags(value: string, args: any[]): string;
 
-  function title(value: any): any;
+  function title(value: string): string;
 
-  function toBoolean(value: any): any;
+  /**
+   * Coverts a value to boolean all values with positive inputs yields to true.
+   */
+  function toBoolean(value: any): boolean;
 
-  function toDash(value: any): any;
+  function toDash(value: string): string;
 
-  function toDate(value: any): any;
+  /**
+   * Converts a date to a date object or return null when invalid date
+   */
+  function toDate(value: any): Date | null;
 
-  function toFloat(value: any): any;
+  /**
+   * Converts a value to float or returns NaN when unable to make it a flat.
+   */
+  function toFloat(value: any): number;
 
-  function toInt(value: any, args: any): any;
+  /**
+   * Coverts a value to integer or returns NaN.
+   */
+  function toInt(value: any, args: any[]): number;
 
-  function underscore(value: any): any;
+  function underscore(value: string): string;
 }
 
 export interface ValidationMethod {
@@ -289,6 +329,10 @@ export interface Error {
   field?: string;
   validation?: string;
   message?: string;
+}
+
+export interface Data {
+  [x: string]: any;
 }
 
 export interface Rules {
