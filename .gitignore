@@ -29,6 +29,10 @@ node_modules
 # Users Environment Variables
 .lock-wscript
 
+###Editors###
+.idea
+.vscode
+
 
 ###OSX###
 
@@ -37,7 +41,8 @@ node_modules
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
