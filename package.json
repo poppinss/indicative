@@ -5,21 +5,24 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "test": "npm run lint && istanbul cover _mocha --report lcovonly -- -R spec test && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "coverage": "npm run lint && istanbul cover _mocha test --bail",
-    "lint": "standard"
+    "lint": "standard",
+    "pretest": "npm run lint",
+    "posttest": "npm run coverage",
+    "test:local": "FORCE_COLOR=true node bin/index.js --local",
+    "test": "nyc npm run test:local",
+    "test:win": "set FORCE_COLOR=true && node bin/index.js --win",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "author": "amanvirk",
   "license": "MIT",
   "devDependencies": {
     "benchmark": "^2.1.0",
-    "chai": "^3.5.0",
-    "co-mocha": "^1.1.2",
     "coveralls": "^2.11.9",
     "cz-conventional-changelog": "^1.1.6",
-    "istanbul": "^0.4.3",
-    "mocha": "^3.0.2",
-    "mocha-lcov-reporter": "^1.2.0",
+    "japa": "^1.0.4",
+    "japa-cli": "^1.0.1",
+    "nyc": "^11.1.0",
+    "semver": "^5.4.1",
     "standard": "^8.4.0"
   },
   "dependencies": {
@@ -30,7 +33,15 @@
     "q": "^2.0.3"
   },
   "standard": {
-    "global": ["it", "describe", "context", "before", "after", "beforeEach", "afterEach"]
+    "global": [
+      "it",
+      "describe",
+      "context",
+      "before",
+      "after",
+      "beforeEach",
+      "afterEach"
+    ]
   },
   "directories": {
     "doc": "docs",
@@ -54,5 +65,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "nyc": {
+    "exclude": ["bin", "test"]
   }
 }

@@ -6,289 +6,288 @@
  * MIT Licensed
 */
 
+const test = require('japa')
 const SanitizationFilters = require('../src/Sanitization/filters')
 const Sanitization = require('../src/Sanitization')
-const chai = require('chai')
-const expect = chai.expect
 
-describe('SanitizationFilters', function () {
-  it('should escape html div using escape method', function () {
+test.group('SanitizationFilters', function () {
+  test('should escape html div using escape method', function (assert) {
     const sanitized = SanitizationFilters.escape('<div id="foo"> hello </div>')
-    expect(sanitized).to.equal('&lt;div id=&quot;foo&quot;&gt; hello &lt;&#x2F;div&gt;')
+    assert.equal(sanitized, '&lt;div id=&quot;foo&quot;&gt; hello &lt;&#x2F;div&gt;')
   })
 
-  it('should escape & symbol', function () {
+  test('should escape & symbol', function (assert) {
     const sanitized = SanitizationFilters.escape('Hello & hi')
-    expect(sanitized).to.equal('Hello &amp; hi')
+    assert.equal(sanitized, 'Hello &amp; hi')
   })
 
-  it('should return actual value when value is not string', function () {
+  test('should return actual value when value is not string', function (assert) {
     const sanitized = SanitizationFilters.escape({name: 'foo'})
-    expect(sanitized).deep.equal({name: 'foo'})
+    assert.deepEqual(sanitized, {name: 'foo'})
   })
 
-  it('should accept the first arguement only', function () {
+  test('should accept the first arguement only', function (assert) {
     const sanitized = SanitizationFilters.normalizeEmail('bar.sneaky@gmail.com')
-    expect(sanitized).to.equal('barsneaky@gmail.com')
+    assert.equal(sanitized, 'barsneaky@gmail.com')
   })
 
-  it('should remove dots from an email', function () {
+  test('should remove dots from an email', function (assert) {
     const sanitized = SanitizationFilters.normalizeEmail('bar.sneaky@gmail.com', [])
-    expect(sanitized).to.equal('barsneaky@gmail.com')
+    assert.equal(sanitized, 'barsneaky@gmail.com')
   })
 
-  it('should remove everything after + from an email address', function () {
+  test('should remove everything after + from an email address', function (assert) {
     const sanitized = SanitizationFilters.normalizeEmail('bar.sneaky+foo@gmail.com', [])
-    expect(sanitized).to.equal('barsneaky@gmail.com')
+    assert.equal(sanitized, 'barsneaky@gmail.com')
   })
 
-  it('should convert email to lowercase', function () {
+  test('should convert email to lowercase', function (assert) {
     const sanitized = SanitizationFilters.normalizeEmail('BAR.sneaky+foo@GMAIL.com', [])
-    expect(sanitized).to.equal('barsneaky@gmail.com')
+    assert.equal(sanitized, 'barsneaky@gmail.com')
   })
 
-  it('should convert googlemail.com to gmail.com', function () {
+  test('should convert googlemail.com to gmail.com', function (assert) {
     const sanitized = SanitizationFilters.normalizeEmail('BAR.sneaky+foo@googlemail.com', [])
-    expect(sanitized).to.equal('barsneaky@gmail.com')
+    assert.equal(sanitized, 'barsneaky@gmail.com')
   })
 
-  it('should convert googlemail.com to gmail.com', function () {
+  test('should convert googlemail.com to gmail.com', function (assert) {
     const sanitized = SanitizationFilters.normalizeEmail('BAR.sneaky+foo@googlemail.com', [])
-    expect(sanitized).to.equal('barsneaky@gmail.com')
+    assert.equal(sanitized, 'barsneaky@gmail.com')
   })
 
-  it('should return original value when integer is passed', function () {
+  test('should return original value when integer is passed', function (assert) {
     const sanitized = SanitizationFilters.normalizeEmail(1111, [])
-    expect(sanitized).to.equal(1111)
+    assert.equal(sanitized, 1111)
   })
 
-  it('should return original when email like pattern is not passed', function () {
+  test('should return original when email like pattern is not passed', function (assert) {
     const sanitized = SanitizationFilters.normalizeEmail('hello.world', [])
-    expect(sanitized).to.equal('hello.world')
+    assert.equal(sanitized, 'hello.world')
   })
 
-  it('should not remove dots when !rd options is passed', function () {
+  test('should not remove dots when !rd options is passed', function (assert) {
     const sanitized = SanitizationFilters.normalizeEmail('bar.sneaky@live.com', ['!rd'])
-    expect(sanitized).to.equal('bar.sneaky@live.com')
+    assert.equal(sanitized, 'bar.sneaky@live.com')
   })
 
-  it('should not remove dots when everything after + when !re options is passed', function () {
+  test('should not remove dots when everything after + when !re options is passed', function (assert) {
     const sanitized = SanitizationFilters.normalizeEmail('bar.sneaky+foo@live.com', ['!re'])
-    expect(sanitized).to.equal('barsneaky+foo@live.com')
+    assert.equal(sanitized, 'barsneaky+foo@live.com')
   })
 
-  it('should not remove dots when domain is hotmail', function () {
+  test('should not remove dots when domain is hotmail', function (assert) {
     const sanitized = SanitizationFilters.normalizeEmail('bar.sneaky+foo@hotmail.com', [])
-    expect(sanitized).to.equal('bar.sneaky@hotmail.com')
+    assert.equal(sanitized, 'bar.sneaky@hotmail.com')
   })
 
-  it('should make email lowercase when !lc is passed', function () {
+  test('should make email lowercase when !lc is passed', function (assert) {
     const sanitized = SanitizationFilters.normalizeEmail('BAR.sneaky+foo@live.com', ['!lc'])
-    expect(sanitized).to.equal('BARsneaky@live.com')
+    assert.equal(sanitized, 'BARsneaky@live.com')
   })
 
-  it('should make domain lowercase even if !lc is passed', function () {
+  test('should make domain lowercase even if !lc is passed', function (assert) {
     const sanitized = SanitizationFilters.normalizeEmail('BAR.sneaky+foo@LIVE.com', ['!lc'])
-    expect(sanitized).to.equal('BARsneaky@live.com')
+    assert.equal(sanitized, 'BARsneaky@live.com')
   })
 
-  it('should convert string false to boolean false', function () {
+  test('should convert string false to boolean false', function (assert) {
     const sanitized = SanitizationFilters.toBoolean('false')
-    expect(sanitized).to.equal(false)
+    assert.equal(sanitized, false)
   })
 
-  it('should convert string 0 to boolean false', function () {
+  test('should convert string 0 to boolean false', function (assert) {
     const sanitized = SanitizationFilters.toBoolean('0')
-    expect(sanitized).to.equal(false)
+    assert.equal(sanitized, false)
   })
 
-  it('should convert boolean false to boolean false', function () {
+  test('should convert boolean false to boolean false', function (assert) {
     const sanitized = SanitizationFilters.toBoolean(false)
-    expect(sanitized).to.equal(false)
+    assert.equal(sanitized, false)
   })
 
-  it('should convert integer 0 to boolean false', function () {
+  test('should convert integer 0 to boolean false', function (assert) {
     const sanitized = SanitizationFilters.toBoolean(0)
-    expect(sanitized).to.equal(false)
+    assert.equal(sanitized, false)
   })
 
-  it('should convert empty string to boolean false', function () {
+  test('should convert empty string to boolean false', function (assert) {
     const sanitized = SanitizationFilters.toBoolean('')
-    expect(sanitized).to.equal(false)
+    assert.equal(sanitized, false)
   })
 
-  it('should convert any string to boolean true', function () {
+  test('should convert any string to boolean true', function (assert) {
     const sanitized = SanitizationFilters.toBoolean('hello')
-    expect(sanitized).to.equal(true)
+    assert.equal(sanitized, true)
   })
 
-  it('should parse float a number', function () {
+  test('should parse float a number', function (assert) {
     const sanitized = SanitizationFilters.toFloat('10')
-    expect(sanitized).to.equal(10)
+    assert.equal(sanitized, 10)
   })
 
-  it('should parse float a number with precision', function () {
+  test('should parse float a number with precision', function (assert) {
     const sanitized = SanitizationFilters.toFloat('10.23')
-    expect(sanitized).to.equal(10.23)
+    assert.equal(sanitized, 10.23)
   })
 
-  it('should return NaN when a string is passed', function () {
+  test('should return NaN when a string is passed', function (assert) {
     const sanitized = SanitizationFilters.toFloat('hello')
-    expect(sanitized).deep.equal(NaN)
+    assert.deepEqual(sanitized, NaN)
   })
 
-  it('should return boolean to NaN', function () {
+  test('should return boolean to NaN', function (assert) {
     const sanitized = SanitizationFilters.toFloat(true)
-    expect(sanitized).deep.equal(NaN)
+    assert.deepEqual(sanitized, NaN)
   })
 
-  it('should convert string representation of integer to integer', function () {
+  test('should convert string representation of integer to integer', function (assert) {
     const sanitized = SanitizationFilters.toInt('20', [])
-    expect(sanitized).to.equal(20)
+    assert.equal(sanitized, 20)
   })
 
-  it('should convert string representation of float to integer', function () {
+  test('should convert string representation of float to integer', function (assert) {
     const sanitized = SanitizationFilters.toInt('20.40', [])
-    expect(sanitized).to.equal(20)
+    assert.equal(sanitized, 20)
   })
 
-  it('should convert boolean to NaN', function () {
+  test('should convert boolean to NaN', function (assert) {
     const sanitized = SanitizationFilters.toInt(null, [])
-    expect(sanitized).deep.equal(NaN)
+    assert.deepEqual(sanitized, NaN)
   })
 
-  it('should convert string to NaN', function () {
+  test('should convert string to NaN', function (assert) {
     const sanitized = SanitizationFilters.toInt('hello', [])
-    expect(sanitized).deep.equal(NaN)
+    assert.deepEqual(sanitized, NaN)
   })
 
-  it('should convert a date to date object', function () {
+  test('should convert a date to date object', function (assert) {
     const sanitized = SanitizationFilters.toDate('2015-10-20')
-    expect(sanitized).deep.equal(new Date('2015-10-20'))
+    assert.deepEqual(sanitized, new Date('2015-10-20'))
   })
 
-  it('should return null when is not a valid date', function () {
+  test('should return null when is not a valid date', function (assert) {
     const sanitized = SanitizationFilters.toDate('hello')
-    expect(sanitized).to.equal(null)
+    assert.equal(sanitized, null)
   })
 
-  it('should remove letters listed in blacklist', function () {
+  test('should remove letters listed in blacklist', function (assert) {
     const sanitized = SanitizationFilters.blacklist('hello world', ['ore'])
-    expect(sanitized).to.equal('hll wld')
+    assert.equal(sanitized, 'hll wld')
   })
 
-  it('should return actual value when integer is passed', function () {
+  test('should return actual value when integer is passed', function (assert) {
     const sanitized = SanitizationFilters.blacklist(20, ['ore'])
-    expect(sanitized).to.equal(20)
+    assert.equal(sanitized, 20)
   })
 
-  it('should entertain regex keywords inside blacklist', function () {
+  test('should entertain regex keywords inside blacklist', function (assert) {
     const sanitized = SanitizationFilters.blacklist('hello.world', ['.\\[\\]'])
-    expect(sanitized).to.equal('helloworld')
+    assert.equal(sanitized, 'helloworld')
   })
 
-  it('should strip links and return values inside it', function () {
+  test('should strip links and return values inside it', function (assert) {
     const para = 'Click <a href="http://google.com"> here </a> to search'
     const sanitized = SanitizationFilters.stripLinks(para)
-    expect(sanitized).to.equal('Click here to search')
+    assert.equal(sanitized, 'Click here to search')
   })
 
-  it('should strip multiple links and return values inside it', function () {
+  test('should strip multiple links and return values inside it', function (assert) {
     const para = `Click <a href="http://google.com"> here </a> to search
     and visit <a href="http://adonisjs.com"> AdonisJs </a>`
     const sanitized = SanitizationFilters.stripLinks(para)
-    expect(sanitized.replace(/\n\s*/, ' ')).to.equal('Click here to search and visit AdonisJs')
+    assert.equal(sanitized.replace(/\n\s*/, ' '), 'Click here to search and visit AdonisJs')
   })
 
-  it('should remove tags from a given string', function () {
+  test('should remove tags from a given string', function (assert) {
     const para = `Click <a href="http://google.com"> here </a> to search
     and visit <a href="http://adonisjs.com"> AdonisJs </a>`
     const sanitized = SanitizationFilters.stripTags(para, [])
-    expect(sanitized.replace(/\s+/g, ' ').trim()).to.equal('Click here to search and visit AdonisJs')
+    assert.equal(sanitized.replace(/\s+/g, ' ').trim(), 'Click here to search and visit AdonisJs')
   })
 
-  it('should remove extra space after tags replace', function () {
+  test('should remove extra space after tags replace', function (assert) {
     const para = `Click <a href="http://google.com"> here </a> to search
     and visit <a href="http://adonisjs.com"> AdonisJs </a>`
     const sanitized = SanitizationFilters.stripTags(para, ['trim'])
-    expect(sanitized).to.equal('Click here to search and visit AdonisJs')
+    assert.equal(sanitized, 'Click here to search and visit AdonisJs')
   })
 
-  it('should remove extra space after tags replace when in one line', function () {
+  test('should remove extra space after tags replace when in one line', function (assert) {
     const para = 'Click <a href="http://google.com"> here </a> to search and visit AdonisJs'
     const sanitized = SanitizationFilters.stripTags(para, ['trim'])
-    expect(sanitized).to.equal('Click here to search and visit AdonisJs')
+    assert.equal(sanitized, 'Click here to search and visit AdonisJs')
   })
 
-  it('should actual value when value is not a string', function () {
+  test('should actual value when value is not a string', function (assert) {
     const para = 11
     const sanitized = SanitizationFilters.stripTags(para, ['trim'])
-    expect(sanitized).to.equal(para)
+    assert.equal(sanitized, para)
   })
 
-  it('should pluralize a given string', function () {
+  test('should pluralize a given string', function (assert) {
     const sanitized = SanitizationFilters.plural('person')
-    expect(sanitized).to.equal('people')
+    assert.equal(sanitized, 'people')
   })
 
-  it('should singularize a given string', function () {
+  test('should singularize a given string', function (assert) {
     const sanitized = SanitizationFilters.singular('people')
-    expect(sanitized).to.equal('person')
+    assert.equal(sanitized, 'person')
   })
 
-  it('should camelize a given string', function () {
+  test('should camelize a given string', function (assert) {
     const sanitized = SanitizationFilters.camelCase('users_controller')
-    expect(sanitized).to.equal('UsersController')
+    assert.equal(sanitized, 'UsersController')
   })
 
-  it('should capitalize a given string', function () {
+  test('should capitalize a given string', function (assert) {
     const sanitized = SanitizationFilters.capitalize('hello')
-    expect(sanitized).to.equal('Hello')
+    assert.equal(sanitized, 'Hello')
   })
 
-  it('should decapitalize a given string', function () {
+  test('should decapitalize a given string', function (assert) {
     const sanitized = SanitizationFilters.decapitalize('Hello')
-    expect(sanitized).to.equal('hello')
+    assert.equal(sanitized, 'hello')
   })
 
-  it('should titleize a given string', function () {
+  test('should titleize a given string', function (assert) {
     const sanitized = SanitizationFilters.title('learn jquery in 30minutes')
-    expect(sanitized).to.equal('Learn Jquery In 30minutes')
+    assert.equal(sanitized, 'Learn Jquery In 30minutes')
   })
 
-  it('should convert a given string to underscore', function () {
+  test('should convert a given string to underscore', function (assert) {
     const sanitized = SanitizationFilters.underscore('UsersController')
-    expect(sanitized).to.equal('users_controller')
+    assert.equal(sanitized, 'users_controller')
   })
 
-  it('should convert a given string to dasherize', function () {
+  test('should convert a given string to dasherize', function (assert) {
     const sanitized = SanitizationFilters.toDash('puni_puni')
-    expect(sanitized).to.equal('puni-puni')
+    assert.equal(sanitized, 'puni-puni')
   })
 
-  it('should convert a value to a slug', function () {
+  test('should convert a value to a slug', function (assert) {
     const sanitized = SanitizationFilters.slug('learn jquery in 30minutes')
-    expect(sanitized).to.equal('learn-jquery-in-30minutes')
+    assert.equal(sanitized, 'learn-jquery-in-30minutes')
   })
 
-  it('should convert a weired value to a slug', function () {
+  test('should convert a weired value to a slug', function (assert) {
     const sanitized = SanitizationFilters.slug('weird[case')
-    expect(sanitized).to.equal('weird-case')
+    assert.equal(sanitized, 'weird-case')
   })
 
-  it('should convert a dot seperate value to a slug', function () {
+  test('should convert a dot seperate value to a slug', function (assert) {
     const sanitized = SanitizationFilters.slug('dot.case')
-    expect(sanitized).to.equal('dot-case')
+    assert.equal(sanitized, 'dot-case')
   })
 
-  it('should humanize a given value', function () {
+  test('should humanize a given value', function (assert) {
     const sanitized = SanitizationFilters.humanize('dot case')
-    expect(sanitized).to.equal('Dot case')
+    assert.equal(sanitized, 'Dot case')
   })
 })
 
-describe('Sanitization', function () {
-  it('should sanitize values using sanitize method', function () {
+test.group('Sanitization', function () {
+  test('should sanitize values using sanitize method', function (assert) {
     const data = {
       email: 'bar.sneaky@googlemail.com',
       body: '<p> Hello </p>'
@@ -300,10 +299,10 @@ describe('Sanitization', function () {
     }
 
     const sanitized = Sanitization.sanitize(data, rules)
-    expect(sanitized).deep.equal({email: 'barsneaky@gmail.com', body: 'Hello'})
+    assert.deepEqual(sanitized, {email: 'barsneaky@gmail.com', body: 'Hello'})
   })
 
-  it('should sanitize nested values using sanitize method', function () {
+  test('should sanitize nested values using sanitize method', function (assert) {
     const data = {
       profile: {
         email: 'bar.sneaky@googlemail.com'
@@ -317,10 +316,10 @@ describe('Sanitization', function () {
     }
 
     const sanitized = Sanitization.sanitize(data, rules)
-    expect(sanitized).deep.equal({profile: {email: 'barsneaky@gmail.com'}, body: 'Hello'})
+    assert.deepEqual(sanitized, {profile: {email: 'barsneaky@gmail.com'}, body: 'Hello'})
   })
 
-  it('should run multiple sanizations on a given field', function () {
+  test('should run multiple sanizations on a given field', function (assert) {
     const data = {
       profile: {
         email: 'bar.sneaky@googlemail.com'
@@ -334,10 +333,10 @@ describe('Sanitization', function () {
     }
 
     const sanitized = Sanitization.sanitize(data, rules)
-    expect(sanitized).deep.equal({profile: {email: 'barsneaky@gmail.com'}, body: 'hello-world'})
+    assert.deepEqual(sanitized, {profile: {email: 'barsneaky@gmail.com'}, body: 'hello-world'})
   })
 
-  it('should pass arguments to sanization methods', function () {
+  test('should pass arguments to sanization methods', function (assert) {
     const data = {
       profile: {
         email: 'bar.sneaky@googlemail.com'
@@ -351,10 +350,10 @@ describe('Sanitization', function () {
     }
 
     const sanitized = Sanitization.sanitize(data, rules)
-    expect(sanitized).deep.equal({profile: {email: 'bar.sneaky@gmail.com'}, body: 'hello-world'})
+    assert.deepEqual(sanitized, {profile: {email: 'bar.sneaky@gmail.com'}, body: 'hello-world'})
   })
 
-  it('should be able to sanitize values with array expressions', function () {
+  test('should be able to sanitize values with array expressions', function (assert) {
     const data = {
       profile: [
         {
@@ -371,10 +370,10 @@ describe('Sanitization', function () {
     }
 
     const sanitized = Sanitization.sanitize(data, rules)
-    expect(sanitized).deep.equal({profile: [{email: 'barsneaky@gmail.com'}, {email: 'barfoo@gmail.com'}]})
+    assert.deepEqual(sanitized, {profile: [{email: 'barsneaky@gmail.com'}, {email: 'barfoo@gmail.com'}]})
   })
 
-  it('should be able to sanitize values with flat array expressions', function () {
+  test('should be able to sanitize values with flat array expressions', function (assert) {
     const data = {
       emails: ['bar.sneaky@googlemail.com', 'bar.foo@googlemail.com']
     }
@@ -384,10 +383,10 @@ describe('Sanitization', function () {
     }
 
     const sanitized = Sanitization.sanitize(data, rules)
-    expect(sanitized).deep.equal({emails: ['barsneaky@gmail.com', 'barfoo@gmail.com']})
+    assert.deepEqual(sanitized, {emails: ['barsneaky@gmail.com', 'barfoo@gmail.com']})
   })
 
-  it('should return the original data back when there are no matching filters found', function () {
+  test('should return the original data back when there are no matching filters found', function (assert) {
     const data = {
       email: 'bar.sneaky@googlemail.com',
       body: '<p>foo</p>'
@@ -397,10 +396,10 @@ describe('Sanitization', function () {
     }
 
     const sanitized = Sanitization.sanitize(data, rules)
-    expect(sanitized).deep.equal(data)
+    assert.deepEqual(sanitized, data)
   })
 
-  it('should not mutate the original data set', function () {
+  test('should not mutate the original data set', function (assert) {
     const data = {
       email: 'bar.sneaky@googlemail.com',
       body: '<p>foo</p>'
@@ -412,11 +411,11 @@ describe('Sanitization', function () {
     }
 
     const sanitized = Sanitization.sanitize(data, rules)
-    expect(data).deep.equal(data)
-    expect(sanitized).deep.equal({email: 'barsneaky@gmail.com', body: 'foo'})
+    assert.deepEqual(data, data)
+    assert.deepEqual(sanitized, {email: 'barsneaky@gmail.com', body: 'foo'})
   })
 
-  it('should throw an error when sanization rule method is not found', function () {
+  test('should throw an error when sanization rule method is not found', function (assert) {
     const data = {
       profile: {
         email: 'bar.sneaky@googlemail.com'
@@ -432,14 +431,14 @@ describe('Sanitization', function () {
     const sanitized = function () {
       Sanitization.sanitize(data, rules)
     }
-    expect(sanitized).to.throw(/foo is not defined/)
+    assert.throw(sanitized, /foo is not defined/)
   })
 
-  it('should be able to extend sanitizor', function () {
+  test('should be able to extend sanitizor', function (assert) {
     Sanitization.sanitizor.extend('upperCase', function (value) {
       return value.toUpperCase()
     })
-    expect(Sanitization.sanitizor.upperCase('foo')).to.equal('FOO')
+    assert.equal(Sanitization.sanitizor.upperCase('foo'), 'FOO')
     const data = {
       name: 'doe'
     }
@@ -447,20 +446,25 @@ describe('Sanitization', function () {
       name: 'upper_case'
     }
     const sanitized = Sanitization.sanitize(data, rules)
-    expect(sanitized).deep.equal({name: 'DOE'})
+    assert.deepEqual(sanitized, {name: 'DOE'})
   })
 
-  context('Regression', function () {
-    it('should work fine without optional 2nd argument', function () {
-      const sanitized = SanitizationFilters.toInt('20')
-      expect(sanitized).to.equal(20)
-    })
+  test('throw exception when sanitizor.extend doesnt receives a method', function (assert) {
+    const fn = () => Sanitization.sanitizor.extend('upperCase', 'foo')
+    assert.throw(fn, 'Invalid arguments, sanitizor.extend expects 2nd parameter to be a function')
+  })
+})
 
-    it('should remove tags without optional 2nd argument', function () {
-      const para = `Click <a href="http://google.com"> here </a> to search
-      and visit <a href="http://adonisjs.com"> AdonisJs </a>`
-      const sanitized = SanitizationFilters.stripTags(para)
-      expect(sanitized.replace(/\s+/g, ' ').trim()).to.equal('Click here to search and visit AdonisJs')
-    })
+test.group('Regression', function () {
+  test('should work fine without optional 2nd argument', function (assert) {
+    const sanitized = SanitizationFilters.toInt('20')
+    assert.equal(sanitized, 20)
+  })
+
+  test('should remove tags without optional 2nd argument', function (assert) {
+    const para = `Click <a href="http://google.com"> here </a> to search
+    and visit <a href="http://adonisjs.com"> AdonisJs </a>`
+    const sanitized = SanitizationFilters.stripTags(para)
+    assert.equal(sanitized.replace(/\s+/g, ' ').trim(), 'Click here to search and visit AdonisJs')
   })
 })

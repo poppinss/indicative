@@ -6,17 +6,14 @@
  * MIT Licensed
 */
 
+const test = require('japa')
 const Validator = require('../src/Validator')
-const chai = require('chai')
-const expect = chai.expect
 
-require('co-mocha')
-
-describe('Validator', function () {
+test.group('Validator', function () {
   // ////////////////
   // test suite 1 //
   // ////////////////
-  it('should validate an object of rules', function * () {
+  test('should validate an object of rules', async function (assert) {
     const rules = {
       username: 'required'
     }
@@ -25,19 +22,19 @@ describe('Validator', function () {
     }
 
     try {
-      const passed = yield Validator.validate(body, rules)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validate(body, rules)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e[0].field).to.equal('username')
-      expect(e[0].validation).to.equal('required')
+      assert.isArray(e)
+      assert.equal(e[0].field, 'username')
+      assert.equal(e[0].validation, 'required')
     }
   })
 
   // ////////////////
   // test suite 2 //
   // ////////////////
-  it('should validate multiple rules on same field', function * () {
+  test('should validate multiple rules on same field', async function (assert) {
     const rules = {
       username: 'alpha|alphaNumeric'
     }
@@ -47,21 +44,21 @@ describe('Validator', function () {
     }
 
     try {
-      const passed = yield Validator.validateAll(body, rules)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validateAll(body, rules)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e[0].field).to.equal('username')
-      expect(e[0].validation).to.equal('alpha')
-      expect(e[1].field).to.equal('username')
-      expect(e[1].validation).to.equal('alphaNumeric')
+      assert.isArray(e)
+      assert.equal(e[0].field, 'username')
+      assert.equal(e[0].validation, 'alpha')
+      assert.equal(e[1].field, 'username')
+      assert.equal(e[1].validation, 'alphaNumeric')
     }
   })
 
   // ////////////////
   // test suite 3 //
   // ////////////////
-  it('should run all validations defined under rules object', function * () {
+  test('should run all validations defined under rules object', async function (assert) {
     const rules = {
       age: 'required',
       phone: 'required'
@@ -71,21 +68,21 @@ describe('Validator', function () {
     }
 
     try {
-      const passed = yield Validator.validateAll(body, rules)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validateAll(body, rules)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e[0].field).to.equal('age')
-      expect(e[0].validation).to.equal('required')
-      expect(e[1].field).to.equal('phone')
-      expect(e[1].validation).to.equal('required')
+      assert.isArray(e)
+      assert.equal(e[0].field, 'age')
+      assert.equal(e[0].validation, 'required')
+      assert.equal(e[1].field, 'phone')
+      assert.equal(e[1].validation, 'required')
     }
   })
 
   // ////////////////
   // test suite 4 //
   // ////////////////
-  it('should return custom messages instead of default messages', function * () {
+  test('should return custom messages instead of default messages', async function (assert) {
     const rules = {
       age: 'required',
       phone: 'required'
@@ -102,19 +99,19 @@ describe('Validator', function () {
     }
 
     try {
-      const passed = yield Validator.validateAll(body, rules, messages)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validateAll(body, rules, messages)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e[0].message).to.equal(messages['age.required'])
-      expect(e[1].message).to.equal(messages['phone.required']())
+      assert.isArray(e)
+      assert.equal(e[0].message, messages['age.required'])
+      assert.equal(e[1].message, messages['phone.required']())
     }
   })
 
   // ////////////////
   // test suite 5 //
   // ////////////////
-  it('should return original data when validation passes', function * () {
+  test('should return original data when validation passes', async function (assert) {
     const rules = {
       age: 'required',
       phone: 'required'
@@ -125,14 +122,14 @@ describe('Validator', function () {
       phone: 9192910200
     }
 
-    const validated = yield Validator.validateAll(body, rules)
-    expect(validated).to.equal(body)
+    const validated = await Validator.validateAll(body, rules)
+    assert.equal(validated, body)
   })
 
   // ////////////////
   // test suite 6 //
   // ////////////////
-  it('should return original data when validation passes using validate method', function * () {
+  test('should return original data when validation passes using validate method', async function (assert) {
     const rules = {
       age: 'required',
       phone: 'required'
@@ -143,14 +140,14 @@ describe('Validator', function () {
       phone: 9192910200
     }
 
-    const validated = yield Validator.validate(body, rules)
-    expect(validated).to.equal(body)
+    const validated = await Validator.validate(body, rules)
+    assert.equal(validated, body)
   })
 
   // ////////////////
   // test suite 7 //
   // ////////////////
-  it('should return errors thrown within validation cycle', function * () {
+  test('should return errors thrown within validation cycle', async function (assert) {
     const rules = {
       age: 'foo',
       phone: 'required'
@@ -162,17 +159,17 @@ describe('Validator', function () {
     }
 
     try {
-      const validated = yield Validator.validate(body, rules)
-      expect(validated).not.to.exist()
+      const validated = await Validator.validate(body, rules)
+      assert.notExist(validated)
     } catch (e) {
-      expect(e).to.match(/foo is not defined as a validation/i)
+      assert.match(e, /foo is not defined as a validation/i)
     }
   })
 
   // ////////////////
   // test suite 8 //
   // ////////////////
-  it("should be able to add it's own rules to validation store", function * () {
+  test('should be able to add it\'s own rules to validation store', async function (assert) {
     const phone = function (data, field, message, args, get) {
       return new Promise(function (resolve, reject) {
         reject(message)
@@ -186,19 +183,19 @@ describe('Validator', function () {
     const body = {}
 
     try {
-      const validated = yield Validator.validate(body, rules)
-      expect(validated).not.to.exist()
+      const validated = await Validator.validate(body, rules)
+      assert.notExist(validated)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e[0].validation).to.equal('phone')
-      expect(e[0].message).to.equal('Enter valid phone number')
+      assert.isArray(e)
+      assert.equal(e[0].validation, 'phone')
+      assert.equal(e[0].message, 'Enter valid phone number')
     }
   })
 
   // ////////////////
   // test suite 9 //
   // ////////////////
-  it('should return original data when validation passes using validateAll method', function * () {
+  test('should return original data when validation passes using validateAll method', async function (assert) {
     const rules = {
       age: 'required|integer',
       phone: 'required'
@@ -209,14 +206,14 @@ describe('Validator', function () {
       phone: 9192910200
     }
 
-    const validated = yield Validator.validateAll(body, rules)
-    expect(validated).to.equal(body)
+    const validated = await Validator.validateAll(body, rules)
+    assert.equal(validated, body)
   })
 
   // /////////////////
   // test suite 10 //
   // /////////////////
-  it('should validate not multiple rules when using validate method', function * () {
+  test('should validate not multiple rules when using validate method', async function (assert) {
     const rules = {
       username: 'alpha|alphaNumeric'
     }
@@ -226,52 +223,52 @@ describe('Validator', function () {
     }
 
     try {
-      const passed = yield Validator.validate(body, rules)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validate(body, rules)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e[0].field).to.equal('username')
-      expect(e[0].validation).to.equal('alpha')
-      expect(e[1]).to.equal(undefined)
+      assert.isArray(e)
+      assert.equal(e[0].field, 'username')
+      assert.equal(e[0].validation, 'alpha')
+      assert.equal(e[1], undefined)
     }
   })
 
   // /////////////////
   // test suite 11 //
   // /////////////////
-  it('should throw errors when valid function is not passed to extend method', function * () {
+  test('should throw errors when valid function is not passed to extend method', async function (assert) {
     const fn = function () {
       return Validator.extend('phone', '', '')
     }
-    expect(fn).to.throw(/Invalid arguments/)
+    assert.throws(fn, /Invalid arguments/)
   })
 
   // /////////////////
   // test suite 12 //
   // /////////////////
-  it('should extend raw validator', function () {
+  test('should extend raw validator', function (assert) {
     const presence = function (hash, item) {
       return hash[item]
     }
     Validator.is.extend('presence', presence)
     const isPresent = Validator.is.presence({foo: 'bar'}, 'foo')
-    expect(isPresent).to.equal('bar')
+    assert.equal(isPresent, 'bar')
   })
 
   // /////////////////
   // test suite 13 //
   // /////////////////
-  it('should throw error when function is not passed to is.extend', function () {
+  test('should throw error when function is not passed to is.extend', function (assert) {
     const fn = function () {
       return Validator.is.extend('presence', 'presence')
     }
-    expect(fn).to.throw(/Invalid arguments/)
+    assert.throws(fn, /Invalid arguments/)
   })
 
   // /////////////////
   // test suite 14 //
   // /////////////////
-  it('should be able to define multiple rules as an array instead of | symbol', function * () {
+  test('should be able to define multiple rules as an array instead of | symbol', async function (assert) {
     const rules = {
       username: ['alpha', 'alphaNumeric']
     }
@@ -281,18 +278,18 @@ describe('Validator', function () {
     }
 
     try {
-      const passed = yield Validator.validateAll(body, rules)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validateAll(body, rules)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e[0].field).to.equal('username')
-      expect(e[0].validation).to.equal('alpha')
-      expect(e[1].field).to.equal('username')
-      expect(e[1].validation).to.equal('alphaNumeric')
+      assert.isArray(e)
+      assert.equal(e[0].field, 'username')
+      assert.equal(e[0].validation, 'alpha')
+      assert.equal(e[1].field, 'username')
+      assert.equal(e[1].validation, 'alphaNumeric')
     }
   })
 
-  it('should be able to define regex as an array', function * () {
+  test('should be able to define regex as an array', async function (assert) {
     const rules = {
       name: ['regex:^[a-zA-z]+$']
     }
@@ -302,19 +299,19 @@ describe('Validator', function () {
     }
 
     try {
-      const passed = yield Validator.validate(body, rules)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validate(body, rules)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e[0].field).to.equal('name')
-      expect(e[0].validation).to.equal('regex')
+      assert.isArray(e)
+      assert.equal(e[0].field, 'name')
+      assert.equal(e[0].validation, 'regex')
     }
   })
 
   // /////////////////
   // test suite 16 //
   // /////////////////
-  it('should run all validations on multiple fields using validateAll', function * () {
+  test('should run all validations on multiple fields using validateAll', async function (assert) {
     const rules = {
       username: 'required',
       email: 'required'
@@ -324,21 +321,21 @@ describe('Validator', function () {
     }
 
     try {
-      const passed = yield Validator.validateAll(body, rules)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validateAll(body, rules)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e[0].field).to.equal('username')
-      expect(e[0].validation).to.equal('required')
-      expect(e[1].field).to.equal('email')
-      expect(e[1].validation).to.equal('required')
+      assert.isArray(e)
+      assert.equal(e[0].field, 'username')
+      assert.equal(e[0].validation, 'required')
+      assert.equal(e[1].field, 'email')
+      assert.equal(e[1].validation, 'required')
     }
   })
 
   // /////////////////
   // test suite 17 //
   // /////////////////
-  it('should make use of snake case validations', function * () {
+  test('should make use of snake case validations', async function (assert) {
     const rules = {
       username: 'alpha_numeric'
     }
@@ -348,19 +345,19 @@ describe('Validator', function () {
     }
 
     try {
-      const passed = yield Validator.validate(body, rules)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validate(body, rules)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e[0].field).to.equal('username')
-      expect(e[0].validation).to.equal('alpha_numeric')
+      assert.isArray(e)
+      assert.equal(e[0].field, 'username')
+      assert.equal(e[0].validation, 'alpha_numeric')
     }
   })
 
   // /////////////////
   // test suite 18 //
   // /////////////////
-  it('should be able to define custom messages for snake case rules', function * () {
+  test('should be able to define custom messages for snake case rules', async function (assert) {
     const rules = {
       username: 'alpha_numeric'
     }
@@ -374,13 +371,13 @@ describe('Validator', function () {
     }
 
     try {
-      const passed = yield Validator.validate(body, rules, messages)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validate(body, rules, messages)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e[0].field).to.equal('username')
-      expect(e[0].validation).to.equal('alpha_numeric')
-      expect(e[0].message).to.equal(messages['alpha_numeric'])
+      assert.isArray(e)
+      assert.equal(e[0].field, 'username')
+      assert.equal(e[0].validation, 'alpha_numeric')
+      assert.equal(e[0].message, messages['alpha_numeric'])
     }
   })
 
@@ -388,7 +385,7 @@ describe('Validator', function () {
   // test suite 19 //
   // /////////////////
 
-  it('should fail validation when empty string is passed for any rule with strict mode on', function * () {
+  test('should fail validation when empty string is passed for any rule with strict mode on', async function (assert) {
     Validator.setMode('strict')
 
     const rules = {
@@ -400,12 +397,12 @@ describe('Validator', function () {
     }
 
     try {
-      const passed = yield Validator.validate(body, rules)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validate(body, rules)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e[0].field).to.equal('select')
-      expect(e[0].validation).to.equal('array')
+      assert.isArray(e)
+      assert.equal(e[0].field, 'select')
+      assert.equal(e[0].validation, 'array')
     }
   })
 
@@ -413,7 +410,7 @@ describe('Validator', function () {
   // test suite 20 //
   // /////////////////
 
-  it('should not fail validation when empty string is passed for any rule in normal mode', function * () {
+  test('should not fail validation when empty string is passed for any rule in normal mode', async function (assert) {
     Validator.setMode('normal')
 
     const rules = {
@@ -424,15 +421,15 @@ describe('Validator', function () {
       select: ''
     }
 
-    const passed = yield Validator.validate(body, rules)
-    expect(passed).to.be.an('object')
-    expect(passed).to.have.property('select')
+    const passed = await Validator.validate(body, rules)
+    assert.isObject(passed)
+    assert.property(passed, 'select')
   })
 
   // /////////////////
   // test suite 21 //
   // /////////////////
-  it('should be able to validate nested objects using array expression', function * () {
+  test('should be able to validate nested objects using array expression', async function (assert) {
     const rules = {
       'person.*.firstname': 'required'
     }
@@ -443,19 +440,19 @@ describe('Validator', function () {
     }
 
     try {
-      const passed = yield Validator.validate(data, rules)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validate(data, rules)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e[0].field).to.equal('person.0.firstname')
-      expect(e[0].validation).to.equal('required')
+      assert.isArray(e)
+      assert.equal(e[0].field, 'person.0.firstname')
+      assert.equal(e[0].validation, 'required')
     }
   })
 
   // /////////////////
   // test suite 22 //
   // /////////////////
-  it('should be able to validate multiple nested objects using array expression', function * () {
+  test('should be able to validate multiple nested objects using array expression', async function (assert) {
     const rules = {
       'person.*.firstname': 'required'
     }
@@ -471,19 +468,19 @@ describe('Validator', function () {
     }
 
     try {
-      const passed = yield Validator.validate(data, rules)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validate(data, rules)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e[0].field).to.equal('person.1.firstname')
-      expect(e[0].validation).to.equal('required')
+      assert.isArray(e)
+      assert.equal(e[0].field, 'person.1.firstname')
+      assert.equal(e[0].validation, 'required')
     }
   })
 
   // /////////////////
   // test suite 23 //
   // /////////////////
-  it('should be able to validate flat arrays using array expression', function * () {
+  test('should be able to validate flat arrays using array expression', async function (assert) {
     const rules = {
       'email.*': 'email'
     }
@@ -492,19 +489,19 @@ describe('Validator', function () {
     }
 
     try {
-      const passed = yield Validator.validate(data, rules)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validate(data, rules)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e[0].field).to.equal('email.0')
-      expect(e[0].validation).to.equal('email')
+      assert.isArray(e)
+      assert.equal(e[0].field, 'email.0')
+      assert.equal(e[0].validation, 'email')
     }
   })
 
   // /////////////////
   // test suite 24 //
   // /////////////////
-  it('should be able to validate multiple values inside flat arrays using array expression', function * () {
+  test('should be able to validate multiple values inside flat arrays using array expression', async function (assert) {
     const rules = {
       'email.*': 'email'
     }
@@ -513,19 +510,19 @@ describe('Validator', function () {
     }
 
     try {
-      const passed = yield Validator.validate(data, rules)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validate(data, rules)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e[0].field).to.equal('email.1')
-      expect(e[0].validation).to.equal('email')
+      assert.isArray(e)
+      assert.equal(e[0].field, 'email.1')
+      assert.equal(e[0].validation, 'email')
     }
   })
 
   // /////////////////
   // test suite 25 //
   // /////////////////
-  it('should throw an error when value is not an array', function * () {
+  test('should throw an error when value is not an array', async function (assert) {
     const rules = {
       people: 'array',
       'people.*.email': 'required|email'
@@ -537,20 +534,20 @@ describe('Validator', function () {
 
     try {
       Validator.setMode('strict')
-      const passed = yield Validator.validate(data, rules)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validate(data, rules)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e.length).to.equal(1)
-      expect(e[0].field).to.equal('people')
-      expect(e[0].validation).to.equal('array')
+      assert.isArray(e)
+      assert.equal(e.length, 1)
+      assert.equal(e[0].field, 'people')
+      assert.equal(e[0].validation, 'array')
     }
   })
 
   // /////////////////
   // test suite 26 //
   // /////////////////
-  it('should throw an error when value is an array but childs does not exists', function * () {
+  test('should throw an error when value is an array but childs does not exists', async function (assert) {
     const rules = {
       people: 'array',
       'people.*.email': 'required|email'
@@ -561,20 +558,20 @@ describe('Validator', function () {
     }
 
     try {
-      const passed = yield Validator.validate(data, rules)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validate(data, rules)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e.length).to.equal(1)
-      expect(e[0].field).to.equal('people.0.email')
-      expect(e[0].validation).to.equal('required')
+      assert.isArray(e)
+      assert.equal(e.length, 1)
+      assert.equal(e[0].field, 'people.0.email')
+      assert.equal(e[0].validation, 'required')
     }
   })
 
   // /////////////////
   // test suite 27 //
   // /////////////////
-  it('should throw an error when value is an array but childs are not valid', function * () {
+  test('should throw an error when value is an array but childs are not valid', async function (assert) {
     const rules = {
       people: 'array',
       'people.*.email': 'required|email'
@@ -585,20 +582,20 @@ describe('Validator', function () {
     }
 
     try {
-      const passed = yield Validator.validate(data, rules)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validate(data, rules)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e.length).to.equal(1)
-      expect(e[0].field).to.equal('people.0.email')
-      expect(e[0].validation).to.equal('email')
+      assert.isArray(e)
+      assert.equal(e.length, 1)
+      assert.equal(e[0].field, 'people.0.email')
+      assert.equal(e[0].validation, 'email')
     }
   })
 
   // /////////////////
   // test suite 28 //
   // /////////////////
-  it('should throw an error when value is an array but one of the multiple childs is not valid', function * () {
+  test('should throw an error when value is an array but one of the multiple childs is not valid', async function (assert) {
     const rules = {
       people: 'array',
       'people.*.email': 'required|email'
@@ -609,20 +606,20 @@ describe('Validator', function () {
     }
 
     try {
-      const passed = yield Validator.validate(data, rules)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validate(data, rules)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e.length).to.equal(1)
-      expect(e[0].field).to.equal('people.1.email')
-      expect(e[0].validation).to.equal('email')
+      assert.isArray(e)
+      assert.equal(e.length, 1)
+      assert.equal(e[0].field, 'people.1.email')
+      assert.equal(e[0].validation, 'email')
     }
   })
 
   // /////////////////
   // test suite 29 //
   // /////////////////
-  it('should be able to define custom messages for array expressions', function * () {
+  test('should be able to define custom messages for array expressions', async function (assert) {
     const rules = {
       people: 'array',
       'people.*.email': 'required|email'
@@ -637,21 +634,21 @@ describe('Validator', function () {
     }
 
     try {
-      const passed = yield Validator.validate(data, rules, messages)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validate(data, rules, messages)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e.length).to.equal(1)
-      expect(e[0].field).to.equal('people.1.email')
-      expect(e[0].validation).to.equal('email')
-      expect(e[0].message).to.equal('Enter valid email address')
+      assert.isArray(e)
+      assert.equal(e.length, 1)
+      assert.equal(e[0].field, 'people.1.email')
+      assert.equal(e[0].validation, 'email')
+      assert.equal(e[0].message, 'Enter valid email address')
     }
   })
 
   // /////////////////
   // test suite 30 //
   // /////////////////
-  it('should be able to define messages for flat array expression', function * () {
+  test('should be able to define messages for flat array expression', async function (assert) {
     const rules = {
       'email.*': 'email'
     }
@@ -663,20 +660,20 @@ describe('Validator', function () {
     }
 
     try {
-      const passed = yield Validator.validate(data, rules, messages)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validate(data, rules, messages)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e[0].field).to.equal('email.0')
-      expect(e[0].validation).to.equal('email')
-      expect(e[0].message).to.equal('Email address is not valid')
+      assert.isArray(e)
+      assert.equal(e[0].field, 'email.0')
+      assert.equal(e[0].validation, 'email')
+      assert.equal(e[0].message, 'Email address is not valid')
     }
   })
 
   // /////////////////
   // test suite 31 //
   // /////////////////
-  it('should be able to define messages and make use of dynamic attributes', function * () {
+  test('should be able to define messages and make use of dynamic attributes', async function (assert) {
     const rules = {
       'email.*': 'email'
     }
@@ -688,20 +685,20 @@ describe('Validator', function () {
     }
 
     try {
-      const passed = yield Validator.validate(data, rules, messages)
-      expect(passed).not.to.exist()
+      const passed = await Validator.validate(data, rules, messages)
+      assert.notExist(passed)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e[0].field).to.equal('email.0')
-      expect(e[0].validation).to.equal('email')
-      expect(e[0].message).to.equal('email.0 is not a valid email')
+      assert.isArray(e)
+      assert.equal(e[0].field, 'email.0')
+      assert.equal(e[0].validation, 'email')
+      assert.equal(e[0].message, 'email.0 is not a valid email')
     }
   })
 
   // /////////////////
   // test suite 32 //
   // /////////////////
-  it('should not mutate the actual data set', function * () {
+  test('should not mutate the actual data set', async function (assert) {
     const rules = {
     }
 
@@ -709,14 +706,14 @@ describe('Validator', function () {
       username: ''
     }
 
-    const passed = yield Validator.validate(data, rules)
-    expect(passed).deep.equal(data)
+    const passed = await Validator.validate(data, rules)
+    assert.deepEqual(passed, data)
   })
 
   // /////////////////
   // test suite 33 //
   // /////////////////
-  it('should not mutate actual data set in strict mode', function * () {
+  test('should not mutate actual data set in strict mode', async function (assert) {
     const rules = {
       email: 'required'
     }
@@ -727,11 +724,11 @@ describe('Validator', function () {
     }
 
     Validator.setMode('strict')
-    const passed = yield Validator.validate(data, rules)
-    expect(passed).deep.equal(data)
+    const passed = await Validator.validate(data, rules)
+    assert.deepEqual(passed, data)
   })
 
-  it('should skip the string validation when value is null', function * () {
+  test('should skip the string validation when value is null', async function (assert) {
     const rules = {
       description: 'string'
     }
@@ -741,11 +738,11 @@ describe('Validator', function () {
     }
 
     Validator.setMode('normal')
-    const passed = yield Validator.validate(data, rules)
-    expect(passed).deep.equal(data)
+    const passed = await Validator.validate(data, rules)
+    assert.deepEqual(passed, data)
   })
 
-  it("should be able to add it's own validation messages to validation store", function * () {
+  test('should be able to add it\'s own validation messages to validation store', async function (assert) {
     const phone = function (data, field, message, args, get) {
       return new Promise(function (resolve, reject) {
         reject(message)
@@ -759,12 +756,12 @@ describe('Validator', function () {
     const body = {}
 
     try {
-      const validated = yield Validator.validate(body, rules)
-      expect(validated).not.to.exist()
+      const validated = await Validator.validate(body, rules)
+      assert.notExist(validated)
     } catch (e) {
-      expect(e).to.be.an('array')
-      expect(e[0].validation).to.equal('is_phone')
-      expect(e[0].message).to.equal('Enter valid phone number')
+      assert.isArray(e)
+      assert.equal(e[0].validation, 'is_phone')
+      assert.equal(e[0].message, 'Enter valid phone number')
     }
   })
 })
