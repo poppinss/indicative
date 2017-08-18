@@ -18,7 +18,7 @@
     "coveralls": "^2.11.9",
     "cz-conventional-changelog": "^1.1.6",
     "istanbul": "^0.4.3",
-    "mocha": "^3.0.2",
+    "mocha": "^3.4.1",
     "mocha-lcov-reporter": "^1.2.0",
     "standard": "^8.4.0"
   },
