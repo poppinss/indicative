@@ -533,7 +533,6 @@ Raw.sorted = function (input) {
   input.sort(function (a, b) {
     if (a > b) {
       downScale++
-      return
     }
   })
   return downScale === 0
@@ -762,7 +761,6 @@ Raw.intersectAny = function (input, intersectionArray) {
   input.filter(function (n) {
     if (intersectionArray.indexOf(n) > -1) {
       matchesCount++
-      return
     }
   })
   return matchesCount > 0

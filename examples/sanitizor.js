@@ -22,4 +22,3 @@ indicative.sanitizor.extend('uppercase', function (value) {
   return value.toUpperCase()
 })
 console.log(indicative.sanitizor.uppercase('hello world'))
-

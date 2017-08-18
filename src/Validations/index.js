@@ -28,7 +28,7 @@ let Validations = exports = module.exports = {}
  * @private
  */
 const skippable = function (value) {
-  return Modes.get() === 'strict' ? typeof (value) === undefined : !Raw.existy(value)
+  return Modes.get() === 'strict' ? typeof (value) === 'undefined' : !Raw.existy(value)
 }
 
 /**
@@ -748,7 +748,6 @@ Validations.requiredWithAny = function (data, field, message, args, get) {
       const itemValue = get(data, item)
       if (itemValue) {
         withFieldCount++
-        return
       }
     })
 
@@ -831,7 +830,6 @@ Validations.requiredWithoutAny = function (data, field, message, args, get) {
       const itemValue = get(data, item)
       if (!itemValue) {
         withOutFieldCounts++
-        return
       }
     })
 
@@ -873,7 +871,6 @@ Validations.requiredWithoutAll = function (data, field, message, args, get) {
       const itemValue = get(data, item)
       if (!itemValue) {
         withOutFieldCounts++
-        return
       }
     })
 
@@ -1036,7 +1033,7 @@ Validations.range = function (data, field, message, args, get) {
   const max = args[1]
   return new Promise(function (resolve, reject) {
     if (!min || !max) {
-      return reject('min and max values are required for range validation')
+      return reject(new Error('min and max values are required for range validation'))
     }
 
     const fieldValue = get(data, field)
