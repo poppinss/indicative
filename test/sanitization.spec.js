@@ -235,9 +235,9 @@ test.group('SanitizationFilters', function () {
     assert.equal(sanitized, 'person')
   })
 
-  test('should camelize a given string', function (assert) {
+  test('should camelCase a given string', function (assert) {
     const sanitized = SanitizationFilters.camelCase('users_controller')
-    assert.equal(sanitized, 'UsersController')
+    assert.equal(sanitized, 'usersController')
   })
 
   test('should capitalize a given string', function (assert) {
@@ -252,7 +252,7 @@ test.group('SanitizationFilters', function () {
 
   test('should titleize a given string', function (assert) {
     const sanitized = SanitizationFilters.title('learn jquery in 30minutes')
-    assert.equal(sanitized, 'Learn Jquery In 30minutes')
+    assert.equal(sanitized, 'Learn Jquery In 30 Minutes')
   })
 
   test('should convert a given string to underscore', function (assert) {
@@ -267,7 +267,7 @@ test.group('SanitizationFilters', function () {
 
   test('should convert a value to a slug', function (assert) {
     const sanitized = SanitizationFilters.slug('learn jquery in 30minutes')
-    assert.equal(sanitized, 'learn-jquery-in-30minutes')
+    assert.equal(sanitized, 'learn-jquery-in-30-minutes')
   })
 
   test('should convert a weired value to a slug', function (assert) {
