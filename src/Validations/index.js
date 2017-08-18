@@ -1275,7 +1275,14 @@ Validations.regex = function (data, field, message, args, get) {
       return
     }
 
-    const expression = regexFlags ? new RegExp(regexExp, regexFlags) : new RegExp(regexExp)
+    /**
+     * If regex is already a regex expression, then
+     * use it otherwise wrap it inside regex
+     */
+    const expression = regexExp instanceof RegExp === true
+    ? regexExp
+    : (regexFlags ? new RegExp(regexExp, regexFlags) : new RegExp(regexExp))
+
     if (Raw.regex(fieldValue, expression)) {
       resolve('validation passed')
       return

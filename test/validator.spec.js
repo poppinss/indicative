@@ -8,6 +8,7 @@
 
 const test = require('japa')
 const Validator = require('../src/Validator')
+const Rule = require('../src/Rule')
 
 test.group('Validator', function () {
   // ////////////////
@@ -270,7 +271,7 @@ test.group('Validator', function () {
   // /////////////////
   test('should be able to define multiple rules as an array instead of | symbol', async function (assert) {
     const rules = {
-      username: ['alpha', 'alphaNumeric']
+      username: [Rule('alpha'), Rule('alphaNumeric')]
     }
 
     const body = {
@@ -291,7 +292,7 @@ test.group('Validator', function () {
 
   test('should be able to define regex as an array', async function (assert) {
     const rules = {
-      name: ['regex:^[a-zA-z]+$']
+      name: [Rule('regex', /[a-zA-z]+$/)]
     }
 
     const body = {
@@ -763,5 +764,18 @@ test.group('Validator', function () {
       assert.equal(e[0].validation, 'is_phone')
       assert.equal(e[0].message, 'Enter valid phone number')
     }
+  })
+
+  test('define date format rule', async function (assert) {
+    const rules = {
+      date: [Rule('date_format', 'HH:mm:ss')]
+    }
+
+    const body = {
+      date: '12:22:22'
+    }
+
+    const passed = await Validator.validateAll(body, rules)
+    assert.deepEqual(passed, body)
   })
 })

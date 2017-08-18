@@ -8,6 +8,7 @@
 
 const test = require('japa')
 const Parser = require('../src/Parser')
+const Rule = require('../src/Rule')
 
 test.group('Parser', function () {
   // ////////////////
@@ -52,35 +53,13 @@ test.group('Parser', function () {
   })
 
   // ////////////////
-  // test suite 3 //
-  // ////////////////
-  test('should not split rules already defined as array', function (assert) {
-    const rules = {
-      email: ['email', 'required']
-    }
-    const parsedRules = {
-      email: [
-        {
-          name: 'email',
-          args: []
-        },
-        {
-          name: 'required',
-          args: []
-        }
-      ]
-    }
-    const parsed = {email: Parser.parse(rules.email)}
-    assert.deepEqual(parsed, parsedRules)
-  })
-
-  // ////////////////
   // test suite 4 //
   // ////////////////
   test('should extract values defined next to rules', function (assert) {
     const rules = {
       password: 'required|max:4'
     }
+
     const parsedRules = {
       password: [
         {
@@ -93,6 +72,7 @@ test.group('Parser', function () {
         }
       ]
     }
+
     const parsed = {password: Parser.parse(rules.password)}
     assert.deepEqual(parsed, parsedRules)
   })
@@ -117,6 +97,42 @@ test.group('Parser', function () {
       ]
     }
     const parsed = {password: Parser.parse(rules.password)}
+    assert.deepEqual(parsed, parsedRules)
+  })
+
+  test('define rules as an array via rule method', function (assert) {
+    const rules = {
+      email: [Rule('email'), Rule('required')]
+    }
+    const parsedRules = {
+      email: [
+        {
+          name: 'email',
+          args: []
+        },
+        {
+          name: 'required',
+          args: []
+        }
+      ]
+    }
+    const parsed = {email: Parser.parse(rules.email)}
+    assert.deepEqual(parsed, parsedRules)
+  })
+
+  test('define crazy regex via rule method', function (assert) {
+    const rules = {
+      email: [Rule('regex', /^search1|search2|search3$/)]
+    }
+    const parsedRules = {
+      email: [
+        {
+          name: 'regex',
+          args: [/^search1|search2|search3$/]
+        }
+      ]
+    }
+    const parsed = {email: Parser.parse(rules.email)}
     assert.deepEqual(parsed, parsedRules)
   })
 })
