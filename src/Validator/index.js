@@ -37,23 +37,29 @@ function _mapValidations (data, rules, messages, runAll) {
  * it manually maps all the errors returned by Q.allSettled
  * and throws them as an array only if there are errors.
  *
- * @param  {Array} results
+ * @param  {Array} fieldsResults
  *
  * @return {void}
  * @throws {Error} If promise resolves to errors or a single error
  *
  * @private
  */
-function _settleAllPromises (results) {
-  const errors = _(results)
+function _settleAllPromises (fieldsResults) {
+  const errorsList = _(fieldsResults)
+  .transform((errors, field) => {
+    const ruleErrors = _.filter(field.value, (item) => item.state === 'rejected')
+    if (ruleErrors) {
+      errors.push(ruleErrors.map((item) => item.reason))
+    }
+  }, [])
   .flatten()
-  .map((result) => {
-    return result.state === 'rejected' ? result.reason : null
-  })
-  .compact()
   .value()
-  if (_.size(errors)) {
-    throw errors
+
+  /**
+   * Throw erros when there are errors
+   */
+  if (_.size(errorsList)) {
+    throw errorsList
   }
 }
 
@@ -73,6 +79,7 @@ const Validator = exports = module.exports = {}
 Validator.validate = function (data, rules, messages) {
   messages = messages || {}
   const transformedRules = Parser.transformRules(data, rules)
+  // console.log(transformedRules)
   const validations = _mapValidations(data, transformedRules, messages)
 
   return Q.Promise((resolve, reject) => {
@@ -98,7 +105,7 @@ Validator.validateAll = function (data, rules, messages) {
   const validations = _mapValidations(data, transformedRules, messages, true)
 
   return Q.Promise((resolve, reject) => {
-    Q.all(validations)
+    Q.allSettled(validations)
     .then(_settleAllPromises)
     .then(() => resolve(data))
     .catch(reject)

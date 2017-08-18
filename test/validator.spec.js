@@ -122,7 +122,7 @@ test.group('Validator', function () {
       phone: 9192910200
     }
 
-    const validated = await Validator.validateAll(body, rules)
+    const validated = await Validator.validate(body, rules)
     assert.equal(validated, body)
   })
 
