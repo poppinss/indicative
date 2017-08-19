@@ -1,3 +1,21 @@
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/poppinss/indicative/compare/v2.2.1...v3.0.0) (2017-08-19)
+
+
+### Bug Fixes
+
+* **rules:** work with short urls ([e9fa432](https://github.com/poppinss/indicative/commit/e9fa432))
+* **sanitization:** make 2nd arg optional ([4bb95ec](https://github.com/poppinss/indicative/commit/4bb95ec)), closes [#88](https://github.com/poppinss/indicative/issues/88)
+* **validateAll:** return all validation errors ([a76f146](https://github.com/poppinss/indicative/commit/a76f146)), closes [#100](https://github.com/poppinss/indicative/issues/100)
+
+
+### Features
+
+* **rule:** add a new way to define rules ([26468ac](https://github.com/poppinss/indicative/commit/26468ac))
+* **typescript:** add tsd ([ccbb8fc](https://github.com/poppinss/indicative/commit/ccbb8fc))
+
+
+
 <a name="2.2.1"></a>
 ## [2.2.1](https://github.com/poppinss/indicative/compare/v2.2.0...v2.2.1) (2016-10-11)
 

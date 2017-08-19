@@ -1,35 +1,48 @@
 {
   "name": "indicative",
-  "version": "2.2.1",
+  "version": "3.0.0",
   "description": "Intentionally beautiful schema and raw validator for nodejs",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
-    "test": "npm run lint && istanbul cover _mocha --report lcovonly -- -R spec test && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "coverage": "npm run lint && istanbul cover _mocha test --bail",
-    "lint": "standard"
+    "lint": "standard",
+    "pretest": "npm run lint",
+    "posttest": "npm run coverage",
+    "test:local": "FORCE_COLOR=true node bin/index.js --local",
+    "test": "nyc npm run test:local",
+    "test:win": "set FORCE_COLOR=true && node bin/index.js --win",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "author": "amanvirk",
   "license": "MIT",
   "devDependencies": {
-    "benchmark": "^2.1.0",
-    "chai": "^3.5.0",
-    "co-mocha": "^1.1.2",
-    "coveralls": "^2.11.9",
-    "cz-conventional-changelog": "^1.1.6",
-    "istanbul": "^0.4.3",
-    "mocha": "^3.0.2",
-    "mocha-lcov-reporter": "^1.2.0",
-    "standard": "^8.4.0"
+    "benchmark": "^2.1.4",
+    "coveralls": "^2.13.1",
+    "cz-conventional-changelog": "^2.0.0",
+    "japa": "^1.0.4",
+    "japa-cli": "^1.0.1",
+    "nyc": "^11.1.0",
+    "semver": "^5.4.1",
+    "standard": "^10.0.3"
   },
   "dependencies": {
-    "inflect": "^0.3.0",
-    "lodash": "^4.12.0",
-    "moment": "^2.13.0",
-    "pope": "^1.0.0",
-    "q": "^2.0.3"
+    "haye": "^1.0.1",
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1",
+    "p-settle": "^2.0.0",
+    "pluralize": "^6.0.0",
+    "pope": "^1.0.2"
   },
   "standard": {
-    "global": ["it", "describe", "context", "before", "after", "beforeEach", "afterEach"]
+    "global": [
+      "it",
+      "describe",
+      "context",
+      "before",
+      "after",
+      "beforeEach",
+      "afterEach"
+    ]
   },
   "directories": {
     "doc": "docs",
@@ -53,5 +66,11 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "nyc": {
+    "exclude": [
+      "bin",
+      "test"
+    ]
   }
 }

@@ -9,11 +9,12 @@
  * file that was distributed with this source code.
 */
 
+const _ = require('lodash')
+const pluralize = require('pluralize')
+
 const domains = /^hotmail\.com|gmail\.com|live\.com$/
 const linksRegex = /<a\b[^>]*>(.*?)<\/a>/ig
 const tagsRegex = /<\/?[^>]+(>|$)/g
-
-const inflect = require('inflect')
 
 let SanitizationFilters = exports = module.exports = {}
 
@@ -184,7 +185,7 @@ SanitizationFilters.toFloat = function (value) {
  * @public
  */
 SanitizationFilters.toInt = function (value, args) {
-  const radix = typeof (args[0]) === 'number' ? args[0] : 10
+  const radix = _.isNumber(_.get(args, '0')) ? args[0] : 10
   return parseInt(value, radix)
 }
 
@@ -224,7 +225,7 @@ SanitizationFilters.stripLinks = function (value) {
  * @public
  */
 SanitizationFilters.stripTags = function (value, args) {
-  const strict = (args[0] && args[0] === 'trim')
+  const strict = _.get(args, '0') === 'trim'
   value = _replace(value, tagsRegex, '')
   if (strict) {
     value = _replace(value, /\s+/g, ' ')
@@ -233,41 +234,41 @@ SanitizationFilters.stripTags = function (value, args) {
 }
 
 SanitizationFilters.plural = function (value) {
-  return inflect.pluralize(value)
+  return pluralize(value)
 }
 
 SanitizationFilters.singular = function (value) {
-  return inflect.singularize(value)
+  return pluralize.singular(value)
 }
 
 SanitizationFilters.camelCase = function (value) {
-  return inflect.camelize(value)
+  return _.camelCase(value)
 }
 
 SanitizationFilters.capitalize = function (value) {
-  return inflect.capitalize(value)
+  return _.capitalize(value)
 }
 
 SanitizationFilters.decapitalize = function (value) {
-  return inflect.decapitalize(value)
+  return _.lowerFirst(value)
 }
 
 SanitizationFilters.title = function (value) {
-  return inflect.titleize(value)
+  return _.startCase(value)
 }
 
 SanitizationFilters.underscore = function (value) {
-  return inflect.underscore(value)
+  return _.snakeCase(value)
 }
 
 SanitizationFilters.toDash = function (value) {
-  return inflect.dasherize(value)
+  return _.kebabCase(value)
 }
 
 SanitizationFilters.slug = function (value) {
-  return inflect.parameterize(value)
+  return _.kebabCase(value)
 }
 
 SanitizationFilters.humanize = function (value) {
-  return inflect.humanize(value)
+  return _.upperFirst(_.lowerCase(value))
 }

@@ -15,7 +15,7 @@ const Validations = require('../Validations')
 const ValidationEngine = require('./engine')
 const Messages = require('../Messages')
 const Modes = require('../Modes')
-const Q = require('q')
+const pSettle = require('p-settle')
 
 /**
  * map all parsedRules into a validation messages to be executed
@@ -37,23 +37,29 @@ function _mapValidations (data, rules, messages, runAll) {
  * it manually maps all the errors returned by Q.allSettled
  * and throws them as an array only if there are errors.
  *
- * @param  {Array} results
+ * @param  {Array} fieldsResults
  *
  * @return {void}
  * @throws {Error} If promise resolves to errors or a single error
  *
  * @private
  */
-function _settleAllPromises (results) {
-  const errors = _(results)
+function _settleAllPromises (fieldsResults) {
+  const errorsList = _(fieldsResults)
+  .transform((errors, field) => {
+    const ruleErrors = _.filter(field.value, (item) => item.isRejected)
+    if (ruleErrors) {
+      errors.push(ruleErrors.map((item) => item.reason))
+    }
+  }, [])
   .flatten()
-  .map((result) => {
-    return result.state === 'rejected' ? result.reason : null
-  })
-  .compact()
   .value()
-  if (_.size(errors)) {
-    throw errors
+
+  /**
+   * Throw erros when there are errors
+   */
+  if (_.size(errorsList)) {
+    throw errorsList
   }
 }
 
@@ -75,10 +81,14 @@ Validator.validate = function (data, rules, messages) {
   const transformedRules = Parser.transformRules(data, rules)
   const validations = _mapValidations(data, transformedRules, messages)
 
-  return Q.Promise((resolve, reject) => {
-    Q.all(validations)
+  return new Promise((resolve, reject) => {
+    Promise.all(validations)
     .then(() => resolve(data))
-    .catch((error) => reject([error]))
+    .catch((error) => {
+      /* eslint-disable */
+      reject([error])
+      /* eslint-enable */
+    })
   })
 }
 
@@ -97,8 +107,8 @@ Validator.validateAll = function (data, rules, messages) {
   const transformedRules = Parser.transformRules(data, rules)
   const validations = _mapValidations(data, transformedRules, messages, true)
 
-  return Q.Promise((resolve, reject) => {
-    Q.all(validations)
+  return new Promise((resolve, reject) => {
+    pSettle(validations)
     .then(_settleAllPromises)
     .then(() => resolve(data))
     .catch(reject)

@@ -10,6 +10,7 @@
 */
 const Validator = require('./src/Validator')
 const Sanitization = require('./src/Sanitization')
+const Rule = require('./src/Rule')
 
 module.exports = {
   validate: Validator.validate,
@@ -19,5 +20,6 @@ module.exports = {
   'is.extend': Validator.is.extend,
   sanitize: Sanitization.sanitize,
   sanitizor: Sanitization.sanitizor,
+  rule: Rule,
   'sanitizor.extend': Sanitization.sanitizor.extend
 }

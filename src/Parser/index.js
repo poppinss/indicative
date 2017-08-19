@@ -9,44 +9,11 @@
  * file that was distributed with this source code.
 */
 
-const arrayExpressionRegex = /(\w[^\.\*]+)(\.\*\.?)(.+)?/
+const haye = require('haye')
+const arrayExpressionRegex = /(\w[^.*]+)(\.\*\.?)(.+)?/
 const _ = require('lodash')
 
 let Parser = exports = module.exports = {}
-
-/**
- * parse a validation validation string to fetch
- * args from it.
- *
- * @param   {String} validation
- *
- * @return  {Object}
- *
- * @private
- */
-const _parseValidation = function (validation) {
-  return _(validation.split(':'))
-  .thru((value) => {
-    const args = value[1] ? value[1].split(',') : []
-    return {name: value[0], args}
-  })
-  .value()
-}
-
-/**
- * parse all validation strings to object.
- *
- * @param   {Array} validations
- *
- * @return  {Array}
- *
- * @private
- */
-const _parseValidations = function (validations) {
-  return _.map(validations, (validation) => {
-    return _parseValidation(validation)
-  })
-}
 
 /**
  * parse a given set of validations to a consumable array.
@@ -56,8 +23,23 @@ const _parseValidations = function (validations) {
  * @return {Array}
  */
 Parser.parse = function (validations) {
-  const validationsArray = validations instanceof Array ? validations : validations.split('|')
-  return _parseValidations(validationsArray)
+  if (validations instanceof Array) {
+    return validations.map((rule) => rule)
+  }
+
+  /**
+   * Add .map to be backward compatible, since we want
+   * rules to always expected an array of string,
+   * null or array.
+   *
+   * Can be changed later
+   */
+  return haye.fromPipe(validations).toArray().map((i) => {
+    return {
+      name: i.name,
+      args: i.args === null ? [] : (i.args instanceof Array === true ? i.args : [i.args])
+    }
+  })
 }
 
 /**
@@ -145,6 +127,7 @@ Parser.transformRules = function (data, rules) {
   return _(rules)
   .transform((result, rule, field) => {
     _.extend(result, Parser.transformRule(data, rule, field))
-  })
+    return result
+  }, {})
   .value()
 }

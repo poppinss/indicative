@@ -14,8 +14,8 @@ const moment = require('moment')
 /**
  * list of creepy regex, no they work nice
  */
-const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,63}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/i
-const emailRegex = /^([\w-]+(?:\.[\w-]+)*)(\+[\w\.-]+)?@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,63}(?:\.[a-z]{2})?)$/i
+const urlRegex = /https?:\/\/(www\.)?([-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-z]{2,63}|localhost)\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/i
+const emailRegex = /^([\w-]+(?:\.[\w-]+)*)(\+[\w.-]+)?@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,63}(?:\.[a-z]{2})?)$/i
 const phoneRegex = /\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
 const creditCardRegex = /^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|6(?:011|5[0-9]{2})[0-9]{12}|(?:2131|1800|35\d{3})\d{11})$/
 const alphaNumericRegex = /^[a-z0-9]+$/i
@@ -533,7 +533,6 @@ Raw.sorted = function (input) {
   input.sort(function (a, b) {
     if (a > b) {
       downScale++
-      return
     }
   })
   return downScale === 0
@@ -762,7 +761,6 @@ Raw.intersectAny = function (input, intersectionArray) {
   input.filter(function (n) {
     if (intersectionArray.indexOf(n) > -1) {
       matchesCount++
-      return
     }
   })
   return matchesCount > 0

@@ -6,39 +6,38 @@
  * MIT Licensed
 */
 
+const test = require('japa')
 const Messages = require('../src/Messages')
-const chai = require('chai')
-const expect = chai.expect
 
-describe('Messages', function () {
+test.group('Messages', function () {
   // ////////////////
   // test suite 1 //
   // ////////////////
-  it('should return default message when custom messages are not defined', function () {
+  test('should return default message when custom messages are not defined', function (assert) {
     const message = Messages.make({}, 'email', 'required')
-    expect(message).to.equal('required validation failed on email')
+    assert.equal(message, 'required validation failed on email')
   })
 
   // ////////////////
   // test suite 2 //
   // ////////////////
-  it('should return message defined for rule', function () {
+  test('should return message defined for rule', function (assert) {
     const message = Messages.make({required: 'this is required'}, 'email', 'required')
-    expect(message).to.equal('this is required')
+    assert.equal(message, 'this is required')
   })
 
   // ////////////////
   // test suite 3 //
   // ////////////////
-  it('should return message defined on field for rule', function () {
+  test('should return message defined on field for rule', function (assert) {
     const message = Messages.make({required: 'this is required', 'email.required': 'email is required'}, 'email', 'required')
-    expect(message).to.equal('email is required')
+    assert.equal(message, 'email is required')
   })
 
   // ////////////////
   // test suite 4 //
   // ////////////////
-  it('should construct valid error message from dynamic placholders', function () {
+  test('should construct valid error message from dynamic placholders', function (assert) {
     const message = Messages.make(
       {
         'email.required': '{{field}} is required'
@@ -48,13 +47,13 @@ describe('Messages', function () {
       'foo',
       []
     )
-    expect(message).to.equal('email is required')
+    assert.equal(message, 'email is required')
   })
 
   // ////////////////
   // test suite 5 //
   // ////////////////
-  it('should be able to use rule values as argument', function () {
+  test('should be able to use rule values as argument', function (assert) {
     const message = Messages.make(
       {
         'between': '{{field}} should be over {{argument.0}} and under {{argument.1}}'
@@ -63,13 +62,13 @@ describe('Messages', function () {
       'between',
       [18, 40]
     )
-    expect(message).to.equal('age should be over 18 and under 40')
+    assert.equal(message, 'age should be over 18 and under 40')
   })
 
   // ////////////////
   // test suite 6 //
   // ////////////////
-  it('should be able make message out of getter function', function () {
+  test('should be able make message out of getter function', function (assert) {
     const message = Messages.make(
       {
         'between': function (field, validation, args) {
@@ -80,15 +79,15 @@ describe('Messages', function () {
       'between',
       [18, 40]
     )
-    expect(message).to.equal('age should be over 18 and under 40')
+    assert.equal(message, 'age should be over 18 and under 40')
   })
 
   // ////////////////
   // test suite 7 //
   // ////////////////
-  it('should be able to set message for a given rule using set method', function () {
+  test('should be able to set message for a given rule using set method', function (assert) {
     Messages.set('required', 'I need you')
     const message = Messages.make({}, 'username', 'required', [])
-    expect(message).to.equal('I need you')
+    assert.equal(message, 'I need you')
   })
 })

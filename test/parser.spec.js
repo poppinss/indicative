@@ -6,15 +6,15 @@
  * MIT Licensed
 */
 
+const test = require('japa')
 const Parser = require('../src/Parser')
-const chai = require('chai')
-const expect = chai.expect
+const Rule = require('../src/Rule')
 
-describe('Parser', function () {
+test.group('Parser', function () {
   // ////////////////
   // test suite 1 //
   // ////////////////
-  it('should parse a rule and convert it into an object', function () {
+  test('should parse a rule and convert it into an object', function (assert) {
     const rules = {
       name: 'required'
     }
@@ -26,13 +26,13 @@ describe('Parser', function () {
       }]
     }
     const parsed = {name: Parser.parse(rules.name)}
-    expect(parsed).deep.equal(parsedRules)
+    assert.deepEqual(parsed, parsedRules)
   })
 
   // ////////////////
   // test suite 2 //
   // ////////////////
-  it('should parse multiple rules and convert them into an object', function () {
+  test('should parse multiple rules and convert them into an object', function (assert) {
     const rules = {
       email: 'email|required'
     }
@@ -49,39 +49,17 @@ describe('Parser', function () {
       ]
     }
     const parsed = {email: Parser.parse(rules.email)}
-    expect(parsed).deep.equal(parsedRules)
-  })
-
-  // ////////////////
-  // test suite 3 //
-  // ////////////////
-  it('should not split rules already defined as array', function () {
-    const rules = {
-      email: ['email', 'required']
-    }
-    const parsedRules = {
-      email: [
-        {
-          name: 'email',
-          args: []
-        },
-        {
-          name: 'required',
-          args: []
-        }
-      ]
-    }
-    const parsed = {email: Parser.parse(rules.email)}
-    expect(parsed).deep.equal(parsedRules)
+    assert.deepEqual(parsed, parsedRules)
   })
 
   // ////////////////
   // test suite 4 //
   // ////////////////
-  it('should extract values defined next to rules', function () {
+  test('should extract values defined next to rules', function (assert) {
     const rules = {
       password: 'required|max:4'
     }
+
     const parsedRules = {
       password: [
         {
@@ -94,14 +72,15 @@ describe('Parser', function () {
         }
       ]
     }
+
     const parsed = {password: Parser.parse(rules.password)}
-    expect(parsed).deep.equal(parsedRules)
+    assert.deepEqual(parsed, parsedRules)
   })
 
   // ////////////////
   // test suite 4 //
   // ////////////////
-  it('should extract multiple values defined next to rules', function () {
+  test('should extract multiple values defined next to rules', function (assert) {
     const rules = {
       password: 'required|between:4,10'
     }
@@ -118,6 +97,42 @@ describe('Parser', function () {
       ]
     }
     const parsed = {password: Parser.parse(rules.password)}
-    expect(parsed).deep.equal(parsedRules)
+    assert.deepEqual(parsed, parsedRules)
+  })
+
+  test('define rules as an array via rule method', function (assert) {
+    const rules = {
+      email: [Rule('email'), Rule('required')]
+    }
+    const parsedRules = {
+      email: [
+        {
+          name: 'email',
+          args: []
+        },
+        {
+          name: 'required',
+          args: []
+        }
+      ]
+    }
+    const parsed = {email: Parser.parse(rules.email)}
+    assert.deepEqual(parsed, parsedRules)
+  })
+
+  test('define crazy regex via rule method', function (assert) {
+    const rules = {
+      email: [Rule('regex', /^search1|search2|search3$/)]
+    }
+    const parsedRules = {
+      email: [
+        {
+          name: 'regex',
+          args: [/^search1|search2|search3$/]
+        }
+      ]
+    }
+    const parsed = {email: Parser.parse(rules.email)}
+    assert.deepEqual(parsed, parsedRules)
   })
 })
