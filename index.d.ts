@@ -1,22 +1,22 @@
 /**
  * Exposes an interface to extend the validator and add new methods to it.
  */
-export function extend(name: string, method: ValidationMethod, message: string): void;
+export function extend(name: string, method: ValidationMethod, message?: string): void;
 
 /**
  * Sanitizes a given set of data with given set of rules.
  */
-export function sanitize(data: Data, rules: Rules): Data;
+export function sanitize<T>(data: T, rules: Rules): T;
 
 /**
  * Validate a set of async validations mapped as field and rule called rules.
  */
-export function validate<T>(data: T, rules: Rules, messages?: Messages): T;
+export function validate<T>(data: T, rules: Rules, messages?: Messages): Promise<T>;
 
 /**
  * Just like validate but waits for all the validations to occur and returns an array of errors.
  */
-export function validateAll<T>(data: T, rules: Rules, messages?: Messages): T;
+export function validateAll<T>(data: T, rules: Rules, messages?: Messages): Promise<T>;
 
 export namespace is {
   /**
