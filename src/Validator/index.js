@@ -15,7 +15,7 @@ const Validations = require('../Validations')
 const ValidationEngine = require('./engine')
 const Messages = require('../Messages')
 const Modes = require('../Modes')
-const Q = require('q')
+const pSettle = require('p-settle')
 
 /**
  * map all parsedRules into a validation messages to be executed
@@ -47,7 +47,7 @@ function _mapValidations (data, rules, messages, runAll) {
 function _settleAllPromises (fieldsResults) {
   const errorsList = _(fieldsResults)
   .transform((errors, field) => {
-    const ruleErrors = _.filter(field.value, (item) => item.state === 'rejected')
+    const ruleErrors = _.filter(field.value, (item) => item.isRejected)
     if (ruleErrors) {
       errors.push(ruleErrors.map((item) => item.reason))
     }
@@ -79,13 +79,16 @@ const Validator = exports = module.exports = {}
 Validator.validate = function (data, rules, messages) {
   messages = messages || {}
   const transformedRules = Parser.transformRules(data, rules)
-  // console.log(transformedRules)
   const validations = _mapValidations(data, transformedRules, messages)
 
-  return Q.Promise((resolve, reject) => {
-    Q.all(validations)
+  return new Promise((resolve, reject) => {
+    Promise.all(validations)
     .then(() => resolve(data))
-    .catch((error) => reject([error]))
+    .catch((error) => {
+      /* eslint-disable */
+      reject([error])
+      /* eslint-enable */
+    })
   })
 }
 
@@ -104,8 +107,8 @@ Validator.validateAll = function (data, rules, messages) {
   const transformedRules = Parser.transformRules(data, rules)
   const validations = _mapValidations(data, transformedRules, messages, true)
 
-  return Q.Promise((resolve, reject) => {
-    Q.allSettled(validations)
+  return new Promise((resolve, reject) => {
+    pSettle(validations)
     .then(_settleAllPromises)
     .then(() => resolve(data))
     .catch(reject)

@@ -891,9 +891,10 @@ test.group('Raw | Dates', function () {
   test('should return true when date is today and represented as string', function (assert) {
     const date = new Date()
     const year = date.getFullYear()
-    const month = date.getMonth() + 1
+    let month = date.getMonth() + 1
     let day = date.getDate()
     day = day < 10 ? `0${day}` : day
+    month = month < 10 ? `0${month}` : month
     const todayString = `${year}-${month}-${day}`
     const isToday = Is.today(todayString)
     assert.equal(isToday, true)
@@ -905,9 +906,10 @@ test.group('Raw | Dates', function () {
   test('should return true when date is yesterday and represented as string', function (assert) {
     const date = new Date(new Date().setDate(new Date().getDate() - 1))
     const year = date.getFullYear()
-    const month = date.getMonth() + 1
+    let month = date.getMonth() + 1
     let day = date.getDate()
     day = day < 10 ? `0${day}` : day
+    month = month < 10 ? `0${month}` : month
     const yesterdayString = `${year}-${month}-${day}`
     const isYesterday = Is.yesterday(yesterdayString)
     assert.equal(isYesterday, true)
@@ -927,9 +929,10 @@ test.group('Raw | Dates', function () {
   test('should return true when date is tomorrow and represented as string', function (assert) {
     const date = new Date(new Date().setDate(new Date().getDate() + 1))
     const year = date.getFullYear()
-    const month = date.getMonth() + 1
+    let month = date.getMonth() + 1
     let day = date.getDate()
     day = day < 10 ? `0${day}` : day
+    month = month < 10 ? `0${month}` : month
     const tomorrowString = `${year}-${month}-${day}`
     const isTomorrow = Is.tomorrow(tomorrowString)
     assert.equal(isTomorrow, true)

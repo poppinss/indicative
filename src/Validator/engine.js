@@ -12,7 +12,7 @@
 const Validations = require('../Validations')
 const Messages = require('../Messages')
 const _ = require('lodash')
-const Q = require('q')
+const pSettle = require('p-settle')
 
 const ValidationEngine = exports = module.exports = {}
 
@@ -29,12 +29,10 @@ const ValidationEngine = exports = module.exports = {}
  * @return {Promise<Array>}
  */
 ValidationEngine.validateField = function (data, field, validations, messages, runAll) {
-  const method = runAll ? 'allSettled' : 'all'
-  return Q[method](
-    _.map(validations, (validation) => {
-      return ValidationEngine.runValidationOnField(data, field, validation.name, messages, validation.args)
-    })
-  )
+  const validationsMap = _.map(validations, (validation) => {
+    return ValidationEngine.runValidationOnField(data, field, validation.name, messages, validation.args)
+  })
+  return runAll ? pSettle(validationsMap) : Promise.all(validationsMap)
 }
 
 /**
@@ -52,11 +50,13 @@ ValidationEngine.runValidationOnField = function (data, field, validation, messa
   const message = Messages.make(messages, field, validation, args)
   const validationMethod = ValidationEngine.getValidationMethod(validation)
 
-  return Q.Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     validationMethod(data, field, message, args, _.get)
     .then(resolve)
     .catch((error) => {
+      /* eslint-disable */
       reject({field, validation, message: error})
+      /* eslint-enable */
     })
   })
 }
