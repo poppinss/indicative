@@ -9,7 +9,34 @@
  * file that was distributed with this source code.
 */
 
-const moment = require('moment')
+const addYears = require('date-fns/add_years')
+const addQuarters = require('date-fns/add_quarters')
+const addMonths = require('date-fns/add_months')
+const addDays = require('date-fns/add_days')
+const addWeeks = require('date-fns/add_weeks')
+const addHours = require('date-fns/add_hours')
+const addMinutes = require('date-fns/add_minutes')
+const addSeconds = require('date-fns/add_seconds')
+const addMilliseconds = require('date-fns/add_milliseconds')
+const subYears = require('date-fns/sub_years')
+const subQuarters = require('date-fns/sub_quarters')
+const subMonths = require('date-fns/sub_months')
+const subDays = require('date-fns/sub_days')
+const subWeeks = require('date-fns/sub_weeks')
+const subHours = require('date-fns/sub_hours')
+const subMinutes = require('date-fns/sub_minutes')
+const subSeconds = require('date-fns/sub_seconds')
+const subMilliseconds = require('date-fns/sub_milliseconds')
+const format = require('date-fns/format')
+const isAfter = require('date-fns/is_after')
+const isBefore = require('date-fns/is_before')
+const isPast = require('date-fns/is_past')
+const isToday = require('date-fns/is_today')
+const isTomorrow = require('date-fns/is_tomorrow')
+const isValid = require('date-fns/is_valid')
+const isWithinRange = require('date-fns/is_within_range')
+const isYesterday = require('date-fns/is_yesterday')
+const parseDate = require('date-fns/parse')
 
 /**
  * list of creepy regex, no they work nice
@@ -539,8 +566,7 @@ Raw.sorted = function (input) {
 }
 
 /**
- * @description tells whether input date is a valid date
- * is today or not
+ * @description tells whether input date is today or not
  * @method today
  * @param  {String|Object} input
  * @return {Boolean}
@@ -551,9 +577,7 @@ Raw.sorted = function (input) {
  * @public
  */
 Raw.today = function (input) {
-  const today = moment().format('YYYY-MM-DD')
-  const inputDate = moment(input).format('YYYY-MM-DD')
-  return inputDate === today
+  return isToday(input)
 }
 
 /**
@@ -569,9 +593,7 @@ Raw.today = function (input) {
  * @public
  */
 Raw.yesterday = function (input) {
-  const yesterday = moment().subtract(1, 'days').format('YYYY-MM-DD')
-  const inputDate = moment(input).format('YYYY-MM-DD')
-  return inputDate === yesterday
+  return isYesterday(input)
 }
 
 /**
@@ -587,9 +609,7 @@ Raw.yesterday = function (input) {
  * @public
  */
 Raw.tomorrow = function (input) {
-  const tomorrow = moment().add(1, 'days').format('YYYY-MM-DD')
-  const inputDate = moment(input).format('YYYY-MM-DD')
-  return inputDate === tomorrow
+  return isTomorrow(input)
 }
 
 /**
@@ -604,7 +624,7 @@ Raw.tomorrow = function (input) {
  * @public
  */
 Raw.past = function (input) {
-  return moment().isAfter(input, 'date')
+  return isPast(input)
 }
 
 /**
@@ -635,7 +655,7 @@ Raw.future = function (input) {
  * @public
  */
 Raw.after = function (input, afterDate) {
-  return moment(input).isAfter(afterDate)
+  return isAfter(input, afterDate)
 }
 
 /**
@@ -647,21 +667,24 @@ Raw.after = function (input, afterDate) {
  * @param  {String}      key
  * @return {Boolean}
  * @example
- *   key can be
- *     years        | y
- *     quarters     | Q
- *     months       | M
- *     weeks        | w
- *     days         | d
- *     hours        | h
- *     minutes      | m
- *     seconds      | s
- *     milliseconds | ms
+ *   key can be - years | quarters | months | weeks | days | hours | minutes | seconds | milliseconds
  * @public
  */
 Raw.afterOffsetOf = function (input, number, key) {
-  const afterDate = moment().add(number, key)
-  return moment(input).isAfter(afterDate)
+  const add = {
+    years: addYears,
+    quarters: addQuarters,
+    months: addMonths,
+    weeks: addDays,
+    days: addWeeks,
+    hours: addHours,
+    minutes: addMinutes,
+    seconds: addSeconds,
+    milliseconds: addMilliseconds
+  }[key]
+
+  const afterDate = add(new global.Date(), number)
+  return isAfter(input, afterDate)
 }
 
 /**
@@ -673,21 +696,24 @@ Raw.afterOffsetOf = function (input, number, key) {
  * @param  {String}      key
  * @return {Boolean}
  * @example
- *   key can be
- *     years        | y
- *     quarters     | Q
- *     months       | M
- *     weeks        | w
- *     days         | d
- *     hours        | h
- *     minutes      | m
- *     seconds      | s
- *     milliseconds | ms
+ *   key can be - years | quarters | months | weeks | days | hours | minutes | seconds | milliseconds
  * @public
  */
 Raw.beforeOffsetOf = function (input, number, key) {
-  const beforeDate = moment().subtract(number, key)
-  return moment(input).isBefore(beforeDate)
+  const sub = {
+    years: subYears,
+    quarters: subQuarters,
+    months: subMonths,
+    weeks: subDays,
+    days: subWeeks,
+    hours: subHours,
+    minutes: subMinutes,
+    seconds: subSeconds,
+    milliseconds: subMilliseconds
+  }[key]
+
+  const beforeDate = sub(new global.Date(), number)
+  return isBefore(input, beforeDate)
 }
 
 /**
@@ -703,7 +729,7 @@ Raw.beforeOffsetOf = function (input, number, key) {
  * @public
  */
 Raw.before = function (input, beforeDate) {
-  return moment(input).isBefore(beforeDate)
+  return isBefore(input, beforeDate)
 }
 
 /**
@@ -712,16 +738,17 @@ Raw.before = function (input, beforeDate) {
  * @method dateFormat
  * @param  {String}  input
  * @param  {Array}  formats
- * @param  {String}  locale
  * @return {Boolean}
  * @example
  *   accepts
  *   2015-11-30
  * @public
  */
-Raw.dateFormat = function (input, formats, locale) {
-  locale = locale || 'en'
-  return moment(input, formats, locale, true).isValid()
+Raw.dateFormat = function (input, formats) {
+  const formatsArray = Array.isArray(formats) ? formats : [formats]
+  return formatsArray.some(pattern => {
+    return isValid(parseDate(input)) && format(input, pattern) === input
+  })
 }
 
 /**
@@ -738,7 +765,7 @@ Raw.dateFormat = function (input, formats, locale) {
  * @public
  */
 Raw.inDateRange = function (input, minDate, maxDate) {
-  return moment(input).isBetween(minDate, maxDate)
+  return isWithinRange(input, minDate, maxDate)
 }
 
 /**

@@ -8,7 +8,8 @@
 
 const test = require('japa')
 const Is = require('../src/Raw')
-const moment = require('moment')
+const addMonths = require('date-fns/add_months')
+const subMonths = require('date-fns/sub_months')
 
 test.group('Raw | Types', function () {
   // ////////////////
@@ -1090,7 +1091,7 @@ test.group('Raw | Dates', function () {
   // test suite 121 //
   // //////////////////
   test('should make return true when date is after defined offset', function (assert) {
-    const isAfterOffset = Is.afterOffsetOf(moment().add(13, 'months'), 12, 'months')
+    const isAfterOffset = Is.afterOffsetOf(addMonths(new global.Date(), 13), 12, 'months')
     assert.equal(isAfterOffset, true)
   })
 
@@ -1106,7 +1107,7 @@ test.group('Raw | Dates', function () {
   // test suite 123 //
   // //////////////////
   test('should make return true when date is after defined offset', function (assert) {
-    const isBeforeOffset = Is.beforeOffsetOf(moment().subtract(13, 'months'), 12, 'months')
+    const isBeforeOffset = Is.beforeOffsetOf(subMonths(new global.Date(), 13), 12, 'months')
     assert.equal(isBeforeOffset, true)
   })
 })
