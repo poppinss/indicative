@@ -683,7 +683,7 @@ Raw.afterOffsetOf = function (input, number, key) {
     milliseconds: addMilliseconds
   }[key]
 
-  const afterDate = add(new global.Date(), number)
+  const afterDate = add(new Date(), number)
   return isAfter(input, afterDate)
 }
 
@@ -712,7 +712,7 @@ Raw.beforeOffsetOf = function (input, number, key) {
     milliseconds: subMilliseconds
   }[key]
 
-  const beforeDate = sub(new global.Date(), number)
+  const beforeDate = sub(new Date(), number)
   return isBefore(input, beforeDate)
 }
 
