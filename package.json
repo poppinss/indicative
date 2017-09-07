@@ -31,7 +31,7 @@
     "moment": "^2.18.1",
     "p-settle": "^2.0.0",
     "pluralize": "^6.0.0",
-    "pope": "^1.0.2"
+    "pope": "1.0.2"
   },
   "standard": {
     "global": [
