@@ -9,7 +9,8 @@
 const test = require('japa')
 const Validations = require('../src/Validations')
 const _ = require('lodash')
-const moment = require('moment')
+const addMonths = require('date-fns/add_months')
+const subYears = require('date-fns/sub_years')
 
 test.group('Validations | required', function () {
   // ////////////////
@@ -2769,7 +2770,7 @@ test.group('Validations | afterOffsetOf', function () {
   // test suite 193 ///
   // ///////////////////
   test('should work fine when value is after defined offset', async function (assert) {
-    const data = {renewal: moment().add(13, 'months')}
+    const data = {renewal: addMonths(new Date(), 13)}
     const field = 'renewal'
     const message = 'packages are renewed after 12 months'
     const get = _.get
@@ -2827,7 +2828,7 @@ test.group('Validations | beforeOffsetOf', function () {
   // test suite 197 ///
   // ///////////////////
   test('should work fine when value is before defined offset', async function (assert) {
-    const data = {subscription: moment().subtract(2, 'years')}
+    const data = {subscription: subYears(new Date(), 2)}
     const field = 'subscription'
     const message = '12 months old subscriptions are upgradable'
     const get = _.get
