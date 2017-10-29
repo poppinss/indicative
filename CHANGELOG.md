@@ -1,3 +1,13 @@
+<a name="3.0.2"></a>
+## [3.0.2](https://github.com/poppinss/indicative/compare/v3.0.1...v3.0.2) (2017-10-29)
+
+
+### Bug Fixes
+
+* **raw:** fix where `function` keyword was used as property ([c8c47a2](https://github.com/poppinss/indicative/commit/c8c47a2))
+
+
+
 <a name="3.0.1"></a>
 ## [3.0.1](https://github.com/poppinss/indicative/compare/v3.0.0...v3.0.1) (2017-10-29)
 

@@ -1,6 +1,6 @@
 {
   "name": "indicative",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Intentionally beautiful schema and raw validator for nodejs",
   "main": "index.js",
   "types": "index.d.ts",
@@ -17,32 +17,21 @@
   "license": "MIT",
   "devDependencies": {
     "benchmark": "^2.1.4",
-    "coveralls": "^2.13.1",
-    "cz-conventional-changelog": "^2.0.0",
-    "japa": "^1.0.4",
+    "coveralls": "^3.0.0",
+    "cz-conventional-changelog": "^2.1.0",
+    "japa": "^1.0.5",
     "japa-cli": "^1.0.1",
-    "nyc": "^11.1.0",
+    "nyc": "^11.2.1",
     "semver": "^5.4.1",
     "standard": "^10.0.3"
   },
   "dependencies": {
-    "date-fns": "^1.28.5",
+    "date-fns": "^1.29.0",
     "haye": "^1.0.1",
     "lodash": "^4.17.4",
     "p-settle": "^2.0.0",
-    "pluralize": "^6.0.0",
-    "pope": "^1.0.2"
-  },
-  "standard": {
-    "global": [
-      "it",
-      "describe",
-      "context",
-      "before",
-      "after",
-      "beforeEach",
-      "afterEach"
-    ]
+    "pluralize": "^7.0.0",
+    "pope": "^1.0.4"
   },
   "directories": {
     "doc": "docs",
