@@ -768,11 +768,11 @@ test.group('Validator', function () {
 
   test('define date format rule', async function (assert) {
     const rules = {
-      date: [Rule('date_format', 'HH:mm:ss')]
+      date: [Rule('date_format', 'YYYY/MM/DD HH:mm:ss')]
     }
 
     const body = {
-      date: '12:22:22'
+      date: '2017/01/31 12:22:22'
     }
 
     const passed = await Validator.validateAll(body, rules)

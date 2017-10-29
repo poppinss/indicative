@@ -82,7 +82,7 @@ export namespace is {
   /**
    * Tells whether input is a valid date for a given format or not.
    */
-  function dateFormat(input: string, formats: any[], locale: string): boolean;
+  function dateFormat(input: string, formats: any[]): boolean;
 
   /**
    * Tells whether given input is a valid email address or not.
