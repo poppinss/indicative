@@ -109,7 +109,7 @@ Raw.date = function (input, strict) {
  * @return {Boolean}
  * @public
  */
-Raw.function = function (input) {
+Raw['function'] = function (input) {
   return typeof (input) === 'function'
 }
 
