@@ -64,7 +64,9 @@ Sanitization.sanitize = function (data, rules) {
   const clonedSet = _.cloneDeep(data)
   const transformedRules = Parser.transformRules(data, rules)
   return _.reduce(transformedRules, (result, rules, field) => {
-    _.set(result, field, _sanitizeFieldValue(data, rules, field))
+    if (_.has(clonedSet, field)) {
+      _.set(result, field, _sanitizeFieldValue(data, rules, field))
+    }
     return result
   }, clonedSet)
 }
