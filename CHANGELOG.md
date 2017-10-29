@@ -1,3 +1,8 @@
+<a name="3.0.1"></a>
+## [3.0.1](https://github.com/poppinss/indicative/compare/v3.0.0...v3.0.1) (2017-10-29)
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/poppinss/indicative/compare/v2.2.1...v3.0.0) (2017-08-19)
 
