@@ -467,4 +467,20 @@ test.group('Regression', function () {
     const sanitized = SanitizationFilters.stripTags(para)
     assert.equal(sanitized.replace(/\s+/g, ' ').trim(), 'Click here to search and visit AdonisJs')
   })
+
+  test('sanization should return what\'s received', function (assert) {
+    const data = {
+      email: 'bar.sneaky@googlemail.com'
+    }
+
+    const rules = {
+      'email': 'normalize_email:!rd',
+      body: 'strip_tags|slug'
+    }
+
+    const sanitized = Sanitization.sanitize(data, rules)
+    assert.deepEqual(sanitized, {
+      email: 'bar.sneaky@gmail.com'
+    })
+  })
 })

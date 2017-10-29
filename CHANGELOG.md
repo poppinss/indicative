@@ -1,3 +1,13 @@
+<a name="3.0.3"></a>
+## [3.0.3](https://github.com/poppinss/indicative/compare/v3.0.2...v3.0.3) (2017-10-29)
+
+
+### Bug Fixes
+
+* **sanitization:** only sanitize fields available in data object ([d910165](https://github.com/poppinss/indicative/commit/d910165)), closes [#150](https://github.com/poppinss/indicative/issues/150)
+
+
+
 <a name="3.0.2"></a>
 ## [3.0.2](https://github.com/poppinss/indicative/compare/v3.0.1...v3.0.2) (2017-10-29)
 
