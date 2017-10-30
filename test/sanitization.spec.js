@@ -270,6 +270,11 @@ test.group('SanitizationFilters', function () {
     assert.equal(sanitized, 'learn-jquery-in-30-minutes')
   })
 
+  test('should convert accent text to a slug', function (assert) {
+    const sanitized = SanitizationFilters.slug('tôi tên là đức tạ')
+    assert.equal(sanitized, 'toi-ten-la-duc-ta')
+  })
+
   test('should convert a weired value to a slug', function (assert) {
     const sanitized = SanitizationFilters.slug('weird[case')
     assert.equal(sanitized, 'weird-case')
