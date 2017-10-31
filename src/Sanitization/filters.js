@@ -10,6 +10,7 @@
 */
 
 const _ = require('lodash')
+const slug = require('slug')
 const pluralize = require('pluralize')
 
 const domains = /^hotmail\.com|gmail\.com|live\.com$/
@@ -266,7 +267,7 @@ SanitizationFilters.toDash = function (value) {
 }
 
 SanitizationFilters.slug = function (value) {
-  return _.kebabCase(value)
+  return _.kebabCase(slug(value))
 }
 
 SanitizationFilters.humanize = function (value) {

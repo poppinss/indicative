@@ -31,7 +31,8 @@
     "lodash": "^4.17.4",
     "p-settle": "^2.0.0",
     "pluralize": "^7.0.0",
-    "pope": "^1.0.4"
+    "pope": "^1.0.4",
+    "slug": "^0.9.1"
   },
   "directories": {
     "doc": "docs",
