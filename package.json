@@ -2,9 +2,13 @@
   "name": "indicative",
   "version": "3.0.3",
   "description": "Intentionally beautiful schema and raw validator for nodejs",
-  "main": "index.js",
+  "main": "dist/indicative.cjs.js",
+  "module": "dist/indicative.esm.js",
+  "jsnext:main": "dist/indicative.esm.js",
   "types": "index.d.ts",
   "scripts": {
+    "prepublish": "npm run build",
+    "build": "rollup -c",
     "lint": "standard",
     "pretest": "npm run lint",
     "posttest": "npm run coverage",
@@ -22,8 +26,14 @@
     "japa": "^1.0.5",
     "japa-cli": "^1.0.1",
     "nyc": "^11.2.1",
+    "rollup": "^0.51.3",
+    "rollup-plugin-buble": "^0.17.0",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-uglify": "^2.0.1",
     "semver": "^5.4.1",
-    "standard": "^10.0.3"
+    "standard": "^10.0.3",
+    "uglify-es": "^3.1.8"
   },
   "dependencies": {
     "date-fns": "^1.29.0",
