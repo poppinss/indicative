@@ -9,7 +9,7 @@
   "scripts": {
     "prepublish": "npm run build",
     "build": "rollup -c",
-    "lint": "standard",
+    "lint": "standard src/**/*.js",
     "pretest": "npm run lint",
     "posttest": "npm run coverage",
     "test:local": "FORCE_COLOR=true node bin/index.js --local",
