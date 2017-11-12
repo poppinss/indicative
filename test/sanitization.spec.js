@@ -280,6 +280,11 @@ test.group('SanitizationFilters', function () {
     assert.equal(sanitized, 'dot-case')
   })
 
+  test('should convert a weird character to a slug', function (assert) {
+    const sanitized = SanitizationFilters.slug('tôi tên là đức tạ')
+    assert.equal(sanitized, 'toi-ten-la-duc-ta')
+  })
+
   test('should humanize a given value', function (assert) {
     const sanitized = SanitizationFilters.humanize('dot case')
     assert.equal(sanitized, 'Dot case')
