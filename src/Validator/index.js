@@ -93,11 +93,7 @@ Validator.validate = function (data, rules, messages, formatter) {
   return new Promise((resolve, reject) => {
     pSeries(validations)
     .then(() => resolve(data))
-    .catch(() => {
-      /* eslint-disable */
-      reject(formatterInstance.toJSON())
-      /* eslint-enable */
-    })
+    .catch(() => reject(formatterInstance.toJSON()))
   })
 }
 

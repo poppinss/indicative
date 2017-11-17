@@ -1,3 +1,13 @@
+<a name="3.0.5"></a>
+## [3.0.5](https://github.com/poppinss/indicative/compare/v3.0.4...v3.0.5) (2017-11-17)
+
+
+### Bug Fixes
+
+* **validator:** fix promises concurrency bug with engine ([6159327](https://github.com/poppinss/indicative/commit/6159327))
+
+
+
 <a name="3.0.4"></a>
 ## [3.0.4](https://github.com/poppinss/indicative/compare/v3.0.3...v3.0.4) (2017-11-17)
 
