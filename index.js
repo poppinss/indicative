@@ -15,6 +15,7 @@ const Rule = require('./src/Rule')
 
 Formatters.register('vanilla', require('./src/Formatters/Vanilla'))
 Formatters.register('jsonapi', require('./src/Formatters/JSONAPI'))
+Formatters.default('vanilla')
 
 module.exports = {
   validate: Validator.validate,

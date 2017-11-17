@@ -11,6 +11,7 @@
 
 module.exports = {
   list: new Map(),
+  defaultFormatter: null,
 
   /**
    * Returns the formatter instance using it's name
@@ -22,13 +23,26 @@ module.exports = {
    * @return {Object}
    */
   get (name) {
-    const Formatter = this.list.get(name)
+    const Formatter = this.list.get(name || this.defaultFormatter)
 
     if (!Formatter) {
       throw new Error(`Cannot find formatter for ${name}. Make sure to register it first`)
     }
 
     return new Formatter()
+  },
+
+  /**
+   * Set the formatter to be used by default
+   *
+   * @method default
+   *
+   * @param  {String} name
+   *
+   * @chainable
+   */
+  default (name) {
+    this.defaultFormatter = name
   },
 
   /**

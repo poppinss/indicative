@@ -86,7 +86,7 @@ const Validator = exports = module.exports = {}
 Validator.validate = function (data, rules, messages, formatter) {
   messages = messages || {}
   const transformedRules = Parser.transformRules(data, rules)
-  const formatterInstance = Formatters.get(formatter || 'vanilla')
+  const formatterInstance = Formatters.get(formatter)
 
   const validations = _mapValidations(data, transformedRules, messages, formatterInstance)
 
@@ -111,7 +111,7 @@ Validator.validate = function (data, rules, messages, formatter) {
 Validator.validateAll = function (data, rules, messages, formatter) {
   messages = messages || {}
   const transformedRules = Parser.transformRules(data, rules)
-  const formatterInstance = Formatters.get(formatter || 'vanilla')
+  const formatterInstance = Formatters.get(formatter)
   const validations = _mapValidations(data, transformedRules, messages, formatterInstance, true)
 
   return new Promise((resolve, reject) => {
