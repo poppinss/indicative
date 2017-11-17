@@ -35,7 +35,9 @@ ValidationEngine.validateField = function (data, field, validations, messages, f
   const validationsMap = _.map(validations, (validation) => {
     return ValidationEngine.runValidationOnField(data, field, validation.name, messages, validation.args, formatter)
   })
-  return runAll ? pSettle(validationsMap) : pSeries(validationsMap)
+  return runAll ? pSettle(validationsMap) : function () {
+    return pSeries(validationsMap)
+  }
 }
 
 /**

@@ -44,7 +44,7 @@ test.group('Validator', function (group) {
   // ////////////////
   // test suite 2 //
   // ////////////////
-  test('should validate multiple rules on same field', async function (assert) {
+  test('should validate multiple rules on same field @current', async function (assert) {
     const rules = {
       username: 'alpha|alphaNumeric'
     }
@@ -55,7 +55,7 @@ test.group('Validator', function (group) {
 
     try {
       const passed = await Validator.validateAll(body, rules)
-      assert.notExist(passed)
+      assert.notExists(passed)
     } catch (e) {
       assert.isArray(e)
       assert.equal(e[0].field, 'username')
@@ -788,5 +788,24 @@ test.group('Validator', function (group) {
 
     const passed = await Validator.validateAll(body, rules)
     assert.deepEqual(passed, body)
+  })
+
+  test('should not validate multiple rules on different fields', async function (assert) {
+    const rules = {
+      username: 'required',
+      email: 'required'
+    }
+
+    const body = {}
+
+    try {
+      const passed = await Validator.validate(body, rules)
+      assert.notExist(passed)
+    } catch (e) {
+      assert.isArray(e)
+      assert.equal(e[0].field, 'username')
+      assert.equal(e[0].validation, 'required')
+      assert.equal(e[1], undefined)
+    }
   })
 })
