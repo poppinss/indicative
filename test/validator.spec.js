@@ -14,6 +14,7 @@ const Formatters = require('../src/Formatters')
 test.group('Validator', function (group) {
   group.before(() => {
     Formatters.register('vanilla', require('../src/Formatters/Vanilla'))
+    Formatters.default('vanilla')
   })
 
   group.after(() => {

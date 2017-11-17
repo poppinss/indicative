@@ -68,4 +68,20 @@ test.group('Formatter', (group) => {
     const fn = () => Formatter.get('jsonapi')
     assert.throw(fn, 'Cannot find formatter for jsonapi. Make sure to register it first')
   })
+
+  test('set default formatter', (assert) => {
+    Formatter.default('jsonapi')
+    assert.equal(Formatter.defaultFormatter, 'jsonapi')
+  })
+
+  test('get default formatter instance when name is not defined', (assert) => {
+    function JsonApiFormatter () {}
+    JsonApiFormatter.prototype.addError = function () {}
+    JsonApiFormatter.prototype.toJSON = function () {}
+
+    Formatter.register('jsonapi', JsonApiFormatter)
+    Formatter.default('jsonapi')
+
+    assert.instanceOf(Formatter.get(), JsonApiFormatter)
+  })
 })
