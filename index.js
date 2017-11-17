@@ -10,7 +10,11 @@
 */
 const Validator = require('./src/Validator')
 const Sanitization = require('./src/Sanitization')
+const Formatters = require('./src/Formatters')
 const Rule = require('./src/Rule')
+
+Formatters.register('vanilla', require('./src/Formatters/Vanilla'))
+Formatters.register('jsonapi', require('./src/Formatters/JSONAPI'))
 
 module.exports = {
   validate: Validator.validate,
@@ -21,5 +25,6 @@ module.exports = {
   sanitize: Sanitization.sanitize,
   sanitizor: Sanitization.sanitizor,
   rule: Rule,
-  'sanitizor.extend': Sanitization.sanitizor.extend
+  'sanitizor.extend': Sanitization.sanitizor.extend,
+  formatters: Formatters
 }

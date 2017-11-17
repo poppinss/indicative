@@ -16,6 +16,8 @@ const ValidationEngine = require('./engine')
 const Messages = require('../Messages')
 const Modes = require('../Modes')
 const pSettle = require('p-settle')
+const pSeries = require('p-series')
+const Formatters = require('../Formatters')
 
 /**
  * map all parsedRules into a validation messages to be executed
@@ -24,13 +26,17 @@ const pSettle = require('p-settle')
  * @param   {Object} data
  * @param   {Object} rules
  * @param   {Object} messages
+ * @param   {Object} formatter
+ * @param   {Boolean} runAll
  *
  * @return  {Array}
  *
  * @private
  */
-function _mapValidations (data, rules, messages, runAll) {
-  return _.map(rules, (validations, field) => ValidationEngine.validateField(data, field, validations, messages, runAll))
+function _mapValidations (data, rules, messages, formatter, runAll) {
+  return _.map(rules, (validations, field) => {
+    return ValidationEngine.validateField(data, field, validations, messages, formatter, runAll)
+  })
 }
 
 /**
@@ -72,21 +78,24 @@ const Validator = exports = module.exports = {}
  * @param  {Object} data
  * @param  {Object} rules
  * @param  {Object} messages
+ * @param  {String} formatter
  *
  * @return {Object|Array}
  */
 
-Validator.validate = function (data, rules, messages) {
+Validator.validate = function (data, rules, messages, formatter) {
   messages = messages || {}
   const transformedRules = Parser.transformRules(data, rules)
-  const validations = _mapValidations(data, transformedRules, messages)
+  const formatterInstance = Formatters.get(formatter || 'vanilla')
+
+  const validations = _mapValidations(data, transformedRules, messages, formatterInstance)
 
   return new Promise((resolve, reject) => {
-    Promise.all(validations)
+    pSeries(validations)
     .then(() => resolve(data))
-    .catch((error) => {
+    .catch(() => {
       /* eslint-disable */
-      reject([error])
+      reject(formatterInstance.toJSON())
       /* eslint-enable */
     })
   })
@@ -99,19 +108,21 @@ Validator.validate = function (data, rules, messages) {
  * @param  {Object} data
  * @param  {Object} rules
  * @param  {Object} messages
+ * @param  {String} formatter
  *
  * @return {Object|Array}
  */
-Validator.validateAll = function (data, rules, messages) {
+Validator.validateAll = function (data, rules, messages, formatter) {
   messages = messages || {}
   const transformedRules = Parser.transformRules(data, rules)
-  const validations = _mapValidations(data, transformedRules, messages, true)
+  const formatterInstance = Formatters.get(formatter || 'vanilla')
+  const validations = _mapValidations(data, transformedRules, messages, formatterInstance, true)
 
   return new Promise((resolve, reject) => {
     pSettle(validations)
     .then(_settleAllPromises)
     .then(() => resolve(data))
-    .catch(reject)
+    .catch(() => reject(formatterInstance.toJSON()))
   })
 }
 

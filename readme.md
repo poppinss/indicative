@@ -711,6 +711,75 @@ indicative.sanitizor.uppercase('hello world')
 }
 ```
 
+## Formatters
+Indicative also allows you to easily format your errors based upon the JSON conventions you make use of.
+
+It ships with 2 formatters by default.
+
+### Vanilla formatter
+The output looks as follows:
+
+```js
+[
+  {
+    field: 'username',
+    validation: 'required',
+    message: 'required validation failed on username'
+  }
+]
+```
+
+### JSON API formatter
+The output looks as follows:
+
+```js
+{
+  errors: [{
+    title: 'required',
+    detail: 'required validation failed on username',
+    source: {
+      pointer: 'username'
+    }
+  }]
+}
+```
+
+### Usage
+The `validate` and `validateAll` method accepts the 4th argument as the formatter name.
+
+```js
+indicative
+.validate(data, rules, messages, 'jsonapi')
+.then(function () {
+})
+.catch(function (errors) {
+})
+```
+
+### Register your own
+Also you can register your own formatter as follows.
+
+1. It must be a ES6 class.
+2. It must have `addError` and `toJSON` method.
+
+```js
+class MyFormatter {
+  constructor () {
+    this.errors = []
+  }
+
+  addError (error) {
+    this.errors.push(error)
+  }
+
+  toJSON () {
+    return this.errors
+  }
+}
+
+indicative.formatters.register('myformatter', MyFormatter)
+```
+
 ## Raw Validations
 
 Below is the list of methods supported by the raw validator, also you can [extend raw validator](#indicative-extending-extending-raw-validator) to add your rules.
