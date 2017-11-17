@@ -1,3 +1,13 @@
+<a name="3.0.6"></a>
+## [3.0.6](https://github.com/poppinss/indicative/compare/v3.0.5...v3.0.6) (2017-11-17)
+
+
+### Features
+
+* **formatter:** allow registering a default formatter ([50fe027](https://github.com/poppinss/indicative/commit/50fe027))
+
+
+
 <a name="3.0.5"></a>
 ## [3.0.5](https://github.com/poppinss/indicative/compare/v3.0.4...v3.0.5) (2017-11-17)
 
