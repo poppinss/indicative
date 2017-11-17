@@ -13,6 +13,8 @@ const Validations = require('../Validations')
 const Messages = require('../Messages')
 const _ = require('lodash')
 const pSettle = require('p-settle')
+const pSeries = require('p-series')
+const PLazy = require('p-lazy')
 
 const ValidationEngine = exports = module.exports = {}
 
@@ -24,15 +26,16 @@ const ValidationEngine = exports = module.exports = {}
  * @param  {String}  field
  * @param  {Object}  validations
  * @param  {Object}  messages
+ * @param  {Object}  formatter
  * @param  {Boolean} [runAll]
  *
  * @return {Promise<Array>}
  */
-ValidationEngine.validateField = function (data, field, validations, messages, runAll) {
+ValidationEngine.validateField = function (data, field, validations, messages, formatter, runAll) {
   const validationsMap = _.map(validations, (validation) => {
-    return ValidationEngine.runValidationOnField(data, field, validation.name, messages, validation.args)
+    return ValidationEngine.runValidationOnField(data, field, validation.name, messages, validation.args, formatter)
   })
-  return runAll ? pSettle(validationsMap) : Promise.all(validationsMap)
+  return runAll ? pSettle(validationsMap) : pSeries(validationsMap)
 }
 
 /**
@@ -46,17 +49,22 @@ ValidationEngine.validateField = function (data, field, validations, messages, r
  *
  * @return {Promise}
  */
-ValidationEngine.runValidationOnField = function (data, field, validation, messages, args) {
+ValidationEngine.runValidationOnField = function (data, field, validation, messages, args, formatter) {
   const message = Messages.make(messages, field, validation, args)
-  const validationMethod = ValidationEngine.getValidationMethod(validation)
 
-  return new Promise((resolve, reject) => {
-    validationMethod(data, field, message, args, _.get)
+  return new PLazy((resolve, reject) => {
+    return Promise.resolve(ValidationEngine.getValidationMethod(validation))
+    .then((validationMethod) => {
+      return validationMethod(data, field, message, args, _.get)
+    })
     .then(resolve)
     .catch((error) => {
-      /* eslint-disable */
-      reject({field, validation, message: error})
-      /* eslint-enable */
+      if (error && typeof (error) === 'object' && error.code === 'ENGINE_EXCEPTION') {
+        formatter.addError({ field, validation: 'ENGINE_EXCEPTION', message: error.message })
+      } else {
+        formatter.addError({ field, validation, message: error })
+      }
+      reject(new Error(error))
     })
   })
 }
@@ -74,6 +82,8 @@ ValidationEngine.runValidationOnField = function (data, field, validation, messa
  */
 ValidationEngine.getValidationMethod = function (validation) {
   return _.get(Validations, _.camelCase(validation), function () {
-    throw new Error(`${validation} is not defined as a validation`)
+    const error = new Error(`${validation} is not defined as a validation`)
+    error.code = 'ENGINE_EXCEPTION'
+    throw error
   })
 }

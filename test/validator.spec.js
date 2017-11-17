@@ -9,8 +9,17 @@
 const test = require('japa')
 const Validator = require('../src/Validator')
 const Rule = require('../src/Rule')
+const Formatters = require('../src/Formatters')
 
-test.group('Validator', function () {
+test.group('Validator', function (group) {
+  group.before(() => {
+    Formatters.register('vanilla', require('../src/Formatters/Vanilla'))
+  })
+
+  group.after(() => {
+    Formatters.list.clear()
+  })
+
   // ////////////////
   // test suite 1 //
   // ////////////////
@@ -163,7 +172,9 @@ test.group('Validator', function () {
       const validated = await Validator.validate(body, rules)
       assert.notExist(validated)
     } catch (e) {
-      assert.match(e, /foo is not defined as a validation/i)
+      assert.isArray(e)
+      assert.equal(e[0].validation, 'ENGINE_EXCEPTION')
+      assert.equal(e[0].message, 'foo is not defined as a validation')
     }
   })
 
@@ -214,7 +225,7 @@ test.group('Validator', function () {
   // /////////////////
   // test suite 10 //
   // /////////////////
-  test('should validate not multiple rules when using validate method', async function (assert) {
+  test('should not validate multiple rules when using validate method', async function (assert) {
     const rules = {
       username: 'alpha|alphaNumeric'
     }
