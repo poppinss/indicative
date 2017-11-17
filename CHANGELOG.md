@@ -1,3 +1,14 @@
+<a name="3.0.4"></a>
+## [3.0.4](https://github.com/poppinss/indicative/compare/v3.0.3...v3.0.4) (2017-11-17)
+
+
+### Features
+
+* **formatters:** add support for formatters ([7f332f8](https://github.com/poppinss/indicative/commit/7f332f8))
+* **sanitization:** use [@slynova](https://github.com/slynova)/slug to slugify ([#155](https://github.com/poppinss/indicative/issues/155)) ([78a8b36](https://github.com/poppinss/indicative/commit/78a8b36))
+
+
+
 <a name="3.0.3"></a>
 ## [3.0.3](https://github.com/poppinss/indicative/compare/v3.0.2...v3.0.3) (2017-10-29)
 
