@@ -1293,7 +1293,7 @@ Validations.regex = function (data, field, message, args, get) {
 
 /**
  * @description makes sure field under validation is a string
- * @method regex
+ * @method string
  * @param  {Object} data
  * @param  {String} field
  * @param  {String} message
@@ -1311,6 +1311,33 @@ Validations.string = function (data, field, message, args, get) {
     }
 
     if (Raw.string(fieldValue)) {
+      resolve('validation passed')
+      return
+    }
+    reject(message)
+  })
+}
+
+/**
+ * @description makes sure field under validation is a number, integer or float
+ * @method number
+ * @param  {Object} data
+ * @param  {String} field
+ * @param  {String} message
+ * @param  {Array} args
+ * @param  {Function} get
+ * @return {Object}
+ * @public
+ */
+Validations.number = function (data, field, message, args, get) {
+  return new Promise(function (resolve, reject) {
+    const fieldValue = get(data, field)
+    if (skippable(fieldValue)) {
+      resolve('validation skipped')
+      return
+    }
+
+    if (Raw.number(fieldValue)) {
       resolve('validation passed')
       return
     }
