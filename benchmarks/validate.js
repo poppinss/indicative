@@ -4,8 +4,6 @@ const Benchmark = require('benchmark')
 const suite = new (Benchmark.Suite)()
 
 const { validate } = require('../index')
-const Formatters = require('../src/Formatters')
-Formatters.register('vanilla', require('../src/Formatters/Vanilla'))
 
 const rules = {
   username: 'required|alpha',

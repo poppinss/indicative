@@ -11,7 +11,7 @@ const rules = {
 }
 const data = {}
 
-suite.add('validate', function () {
+suite.add('validateAll', function () {
   validateAll(rules, data)
 })
 .on('cycle', function (event) {
