@@ -2,7 +2,7 @@
   "name": "indicative",
   "version": "3.0.6",
   "description": "Intentionally beautiful schema and raw validator for nodejs",
-  "main": "index.js",
+  "main": "dist/indicative-umd.js",
   "types": "index.d.ts",
   "scripts": {
     "lint": "standard",
@@ -16,12 +16,17 @@
   "author": "amanvirk",
   "license": "MIT",
   "devDependencies": {
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-env": "^1.6.1",
     "benchmark": "^2.1.4",
     "coveralls": "^3.0.0",
     "cz-conventional-changelog": "^2.1.0",
     "japa": "^1.0.5",
     "japa-cli": "^1.0.1",
     "nyc": "^11.2.1",
+    "rollup": "^0.52.0",
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-node-resolve": "^3.0.0",
     "semver": "^5.4.1",
     "standard": "^10.0.3"
   },
