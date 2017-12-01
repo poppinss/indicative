@@ -8,13 +8,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
 */
-const Validator = require('./src/Validator')
-const Sanitization = require('./src/Sanitization')
-const Formatters = require('./src/Formatters')
-const Rule = require('./src/Rule')
+const Validator = require('./src-old/Validator')
+const Sanitization = require('./src-old/Sanitization')
+const Formatters = require('./src-old/Formatters')
+const Rule = require('./src-old/Rule')
 
-Formatters.register('vanilla', require('./src/Formatters/Vanilla'))
-Formatters.register('jsonapi', require('./src/Formatters/JSONAPI'))
+Formatters.register('vanilla', require('./src-old/Formatters/Vanilla'))
+Formatters.register('jsonapi', require('./src-old/Formatters/JSONAPI'))
 Formatters.default('vanilla')
 
 module.exports = {

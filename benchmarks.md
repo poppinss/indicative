@@ -50,3 +50,8 @@ suite.add('validate', function () {
 })
 .run({ 'async': true })
 ```
+
+# Bundle Size
+The initial bundle size with webpack is `725 kB`, which is non-usable by browsers for sure.
+
+![](http://res.cloudinary.com/adonisjs/image/upload/v1512104285/indicative-initial-bundle-size_khiz4o.png)
