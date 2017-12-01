@@ -1699,7 +1699,7 @@ the value of field under should not be one of the defined values.
 ### number
 the value of field should be a number, either integer or float
 
-```javascript,line-numbers
+```javascript
 {
   price: 'number'
 }
