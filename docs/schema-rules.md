@@ -47,6 +47,7 @@ indicative
 - [min](#min)
 - [not_equals](#not-equals)
 - [not_in](#not-in)
+- [number](#number)
 - [object](#object)
 - [range](#range)
 - [regex](#regex)
@@ -304,6 +305,15 @@ the value of field under should not be one of the defined values.
 ```javascript,line-numbers
 {
   username: 'not_in:admin,super,root'
+}
+```
+
+### number
+the value of field should be a number, either integer or float
+
+```javascript,line-numbers
+{
+  price: 'number'
 }
 ```
 

@@ -3013,3 +3013,91 @@ test.group('Validations | String', function () {
     assert.equal(passes, 'validation skipped')
   })
 })
+
+test.group('Validations | Number', function () {
+  // /////////////////
+  // test suite 210 //
+  // /////////////////
+  test('should work fine when the confirmed field is a number (float)', async function (assert) {
+    const data = { price: 12.01 }
+    const field = 'price'
+    const message = 'Price should be a number'
+    const get = _.get
+    const args = []
+    const passes = await Validations.number(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  // /////////////////
+  // test suite 211 //
+  // /////////////////
+  test('should work fine when the confirmed field is a number (integer)', async function (assert) {
+    const data = { age: 47 }
+    const field = 'age'
+    const message = 'Age should be a number'
+    const get = _.get
+    const args = []
+    const passes = await Validations.number(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  // /////////////////
+  // test suite 212 //
+  // /////////////////
+  test('should throw an error when the confirmed field is a string', async function (assert) {
+    const data = { price: 'AnError' }
+    const field = 'price'
+    const message = 'Price should be a number'
+    const get = _.get
+    const args = []
+    try {
+      const passes = await Validations.number(data, field, message, args, get)
+      assert.notExist(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  // /////////////////
+  // test suite 213 //
+  // /////////////////
+  test('should throw an error when the confirmed field is a boolean', async function (assert) {
+    const data = { price: true }
+    const field = 'price'
+    const message = 'Price should be a number'
+    const get = _.get
+    const args = []
+    try {
+      const passes = await Validations.number(data, field, message, args, get)
+      assert.notExist(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  // /////////////////
+  // test suite 214 //
+  // /////////////////
+  test('should skip validation when field value is not defined', async function (assert) {
+    const data = { }
+    const field = 'price'
+    const message = 'Price should be a number'
+    const get = _.get
+    const args = []
+    const passes = await Validations.number(data, field, message, args, get)
+    assert.equal(passes, 'validation skipped')
+  })
+
+  // /////////////////
+  // test suite 215 //
+  // /////////////////
+  test('should skip validation when field value is undefined', async function (assert) {
+    const data = { price: undefined }
+    const field = 'price'
+    const message = 'Price should be a number'
+    const get = _.get
+    const args = []
+    const passes = await Validations.number(data, field, message, args, get)
+    assert.equal(passes, 'validation skipped')
+  })
+})
