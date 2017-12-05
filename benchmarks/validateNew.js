@@ -3,7 +3,9 @@
 const Benchmark = require('benchmark')
 const suite = new (Benchmark.Suite)()
 
-const { validate } = require('../index')
+const { required } = require('../build/validations')
+const validator = require('../build/core')
+const { validate } = validator({ required })
 
 const rules = {
   username: 'required'
