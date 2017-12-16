@@ -108,17 +108,28 @@ function pSeries (iterable, bail) {
       return Promise.resolve(result)
     }
 
-    return iterable[index].then((output) => {
-      result.push(onResolved(output))
-      return noop(index + 1, bail)
-    })
-    .catch((error) => {
-      result.push(onRejected(error))
-      if (!bail) {
+    return iterable[index]
+      .then((output) => {
+        result.push(onResolved(output))
         return noop(index + 1, bail)
-      }
-      return Promise.resolve(result)
-    })
+      })
+      .catch((error) => {
+        result.push(onRejected(error))
+
+        /**
+         *
+         *  When bail is false, we continue after rejections
+         *  too.
+         */
+        if (!bail) {
+          return noop(index + 1, bail)
+        }
+
+        /**
+         *  Otherwise we resolve the promise
+         */
+        return Promise.resolve(result)
+      })
   }
 
   return noop(0, bail)

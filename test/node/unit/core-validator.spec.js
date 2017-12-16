@@ -1,15 +1,37 @@
+'use strict'
+
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
 import test from 'japa'
 
 import validator from '../../../src/core/validator'
 import { required, integer, alpha, alphaNumeric } from '../../../src/validations'
+import * as formatters from '../../../src/formatters'
 
 const validationsHash = { required, integer, alpha, alphaNumeric }
 
 test.group('Validator - Core', () => {
+  test('throw exception when initiated without validations', async (assert) => {
+    const fn = () => validator()
+    assert.throw(fn, 'Cannot instantiate validator without validations')
+  })
+
+  test('throw exception when initiated without formatters', async (assert) => {
+    const fn = () => validator(validationsHash)
+    assert.throw(fn, 'Cannot instantiate validator without formatters')
+  })
+
   test('run validations on data', async (assert) => {
     assert.plan(1)
 
-    const { validate } = validator(validationsHash)
+    const { validate } = validator(validationsHash, formatters)
     const data = {}
     const rules = {
       username: 'required'
@@ -31,7 +53,7 @@ test.group('Validator - Core', () => {
   test('stop validations after first failure', async (assert) => {
     assert.plan(1)
 
-    const { validate } = validator(validationsHash)
+    const { validate } = validator(validationsHash, formatters)
     const data = {}
     const rules = {
       username: 'required',
@@ -54,7 +76,7 @@ test.group('Validator - Core', () => {
   test('run all validations', async (assert) => {
     assert.plan(1)
 
-    const { validateAll } = validator(validationsHash)
+    const { validateAll } = validator(validationsHash, formatters)
     const data = {}
     const rules = {
       username: 'required',
@@ -82,7 +104,7 @@ test.group('Validator - Core', () => {
   test('run multiple validations on one field', async (assert) => {
     assert.plan(1)
 
-    const { validateAll } = validator(validationsHash)
+    const { validateAll } = validator(validationsHash, formatters)
     const data = { username: '$' }
     const rules = {
       username: 'alpha|alphaNumeric'
@@ -109,7 +131,7 @@ test.group('Validator - Core', () => {
   test('run one validation from multiple validations on one field', async (assert) => {
     assert.plan(1)
 
-    const { validate } = validator(validationsHash)
+    const { validate } = validator(validationsHash, formatters)
     const data = {}
     const rules = {
       age: 'required|integer'
@@ -129,7 +151,7 @@ test.group('Validator - Core', () => {
   })
 
   test('return original data when validation passes', async (assert) => {
-    const { validate } = validator(validationsHash)
+    const { validate } = validator(validationsHash, formatters)
     const data = {
       age: 22
     }
@@ -144,7 +166,7 @@ test.group('Validator - Core', () => {
   test('throw engine exception when validation doesn\'t exists', async (assert) => {
     assert.plan(1)
 
-    const { validate } = validator(validationsHash)
+    const { validate } = validator(validationsHash, formatters)
     const data = {
       age: 22
     }
@@ -163,5 +185,18 @@ test.group('Validator - Core', () => {
         }
       ])
     }
+  })
+
+  test('camelcase rules names', async (assert) => {
+    const { validate } = validator(validationsHash, formatters)
+    const data = {
+      username: 'foo123'
+    }
+    const rules = {
+      age: 'alpha_numeric'
+    }
+
+    const response = await validate(data, rules)
+    assert.deepEqual(response, data)
   })
 })

@@ -15,7 +15,7 @@ import PLazy from './PLazy'
 import pSeries from './pSeries'
 import parse from './parse'
 import getMessage from './getMessage'
-import VanillaFormatter from './VanillaFormatter'
+import snakeToCamelCase from './snakeToCamelCase'
 
 /**
  * Returns a lazy promise which runs the validation on a field
@@ -37,25 +37,31 @@ import VanillaFormatter from './VanillaFormatter'
  */
 function validationFn (validations, {name, args}, field, data, messages, formatter) {
   return new PLazy((resolve, reject) => {
+    name = snakeToCamelCase(name)
     if (typeof (validations[name]) !== 'function') {
-      throw new Error(`${name} is not defined as a validation rule`)
+      const error = new Error(`${name} is not defined as a validation rule`)
+      formatter.addError(error, field, name)
+      reject(error)
+      return
     }
 
     const message = getMessage(messages, field, name, args)
     validations[name](data, field, message, args, prop)
       .then(resolve)
-      .catch(reject)
-  }).catch((error) => {
-    formatter.addError(error, field, name)
+      .catch((error) => {
+        formatter.addError(error, field, name)
+        reject(error)
+      })
   })
 }
 
 /**
  * This method loops over the fields and returns a flat stack of
- * validations, for each field and multiple rules on that field.
+ * validations for each field and multiple rules on that field.
  *
  * Also all validation methods are wrapped inside a Lazy promise,
- * so they are executed when `.then` is called on them.
+ * so they are executed when `.then` or `.catch` is called on
+ * them.
  *
  * @method getValidationsStack
  *
@@ -93,9 +99,9 @@ function getValidationsStack (validations, fields, data, messages, formatter) {
  * @returns {Promise} Promise is rejected with an array of errors or resolved with original data
  */
 function validate (validations, bail, data, fields, messages, formatter) {
-  formatter = formatter || new VanillaFormatter()
   return new Promise((resolve, reject) => {
     messages = messages || {}
+
     /**
      * This is expanded form of fields and rules
      * applied on them
@@ -123,10 +129,14 @@ function validate (validations, bail, data, fields, messages, formatter) {
  * pass an object of validations to be used when calling `validate` or
  * `validateAll` methods.
  *
- * @param    {Object}
+ * @param    {Object} validations
+ * @param    {Object} formatters
+ *
+ * @method validator
+ *
  * @return   {Object}   fns
- * @property {Function} validate
- * @property {Function} validateAll
+ * @property {validate}
+ * @property {validateAll} validateAll
  *
  * @example
  * const { email, required } = require('indicative/validations')
@@ -135,7 +145,15 @@ function validate (validations, bail, data, fields, messages, formatter) {
  * // later
  * validatorInstance.validate()
  */
-export default (validations) => {
+export default (validations, formatters) => {
+  let message = 'Cannot instantiate validator without'
+  if (!validations) {
+    throw new Error(`${message} validations`)
+  }
+
+  if (!formatters) {
+    throw new Error(`${message} formatters`)
+  }
   return {
     /**
      * Run validations on a set of data with rules defined on fields.
@@ -148,6 +166,7 @@ export default (validations) => {
      * @returns {Promise} Promise is rejected with an array of errors or resolved with original data
      */
     validate (data, fields, messages, formatter) {
+      formatter = new formatters[formatter || 'Vanilla']()
       return validate(validations, true, data, fields, messages, formatter)
     },
 
@@ -163,6 +182,7 @@ export default (validations) => {
      * @returns {Promise} Promise is rejected with an array of errors or resolved with original data
      */
     validateAll (data, fields, messages, formatter) {
+      formatter = new formatters[formatter || 'Vanilla']()
       return validate(validations, false, data, fields, messages, formatter)
     }
   }

@@ -11,14 +11,16 @@
 
 import test from 'japa'
 import * as validations from '../../../src/validations'
-import * as _ from 'lodash'
+import { prop } from 'pope'
+import subYears from 'date-fns/sub_years'
+import addMonths from 'date-fns/add_months'
 
 test.group('Validations | required', function () {
   test('should reject promise when field is not defined', async function (assert) {
     const data = {}
     const field = 'name'
     const message = 'name is required'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       await validations.required(data, field, message, args, get)
@@ -31,7 +33,7 @@ test.group('Validations | required', function () {
     const data = {name: ''}
     const field = 'name'
     const message = 'name is required'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       await validations.required(data, field, message, args, get)
@@ -44,7 +46,7 @@ test.group('Validations | required', function () {
     const data = {name: 'virk'}
     const field = 'name'
     const message = 'name is required'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.required(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -54,7 +56,7 @@ test.group('Validations | required', function () {
     const data = {name: false}
     const field = 'name'
     const message = 'name is required'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.required(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -64,7 +66,7 @@ test.group('Validations | required', function () {
     const data = {name: 0}
     const field = 'name'
     const message = 'name is required'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.required(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -76,7 +78,7 @@ test.group('Validations | email', function () {
     const data = {email: 'virk'}
     const field = 'email'
     const message = 'email must be email'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.email(data, field, message, args, get)
@@ -90,7 +92,7 @@ test.group('Validations | email', function () {
     const data = {email: false}
     const field = 'email'
     const message = 'email must be email'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.email(data, field, message, args, get)
@@ -104,7 +106,7 @@ test.group('Validations | email', function () {
     const data = {email: 0}
     const field = 'email'
     const message = 'email must be email'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.email(data, field, message, args, get)
@@ -118,7 +120,7 @@ test.group('Validations | email', function () {
     const data = {}
     const field = 'email'
     const message = 'email must be email'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.email(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -128,7 +130,7 @@ test.group('Validations | email', function () {
     const data = {email: 'foo@bar.com'}
     const field = 'email'
     const message = 'email must be email'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.email(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -138,7 +140,7 @@ test.group('Validations | email', function () {
     const data = {email: 'foo+baz@bar.com'}
     const field = 'email'
     const message = 'email must be email'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.email(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -150,7 +152,7 @@ test.group('Validations | Accepted', function () {
     const data = {terms: false}
     const field = 'terms'
     const message = 'terms must be accepted'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.accepted(data, field, message, args, get)
@@ -164,7 +166,7 @@ test.group('Validations | Accepted', function () {
     const data = {terms: true}
     const field = 'terms'
     const message = 'terms must be accepted'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.accepted(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -174,7 +176,7 @@ test.group('Validations | Accepted', function () {
     const data = {terms: 'okay'}
     const field = 'terms'
     const message = 'terms must be accepted'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.accepted(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -184,9 +186,70 @@ test.group('Validations | Accepted', function () {
     const data = {}
     const field = 'terms'
     const message = 'terms must be accepted'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.accepted(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+})
+
+test.group('Validations | after', function () {
+  test('throw exception when after value is not defined', async function (assert) {
+    assert.plan(1)
+
+    const data = {dob: '1980-11-20'}
+    const field = 'dob'
+    const message = 'dob should be after 2010'
+    const get = prop
+    const args = []
+    try {
+      await validations.after(data, field, message, args, get)
+    } catch ({ message }) {
+      assert.equal(message, 'after:make sure to define the after date')
+    }
+  })
+
+  test('should throw an error when date is not after defined date', async function (assert) {
+    const data = {dob: '1980-11-20'}
+    const field = 'dob'
+    const message = 'dob should be after 2010'
+    const get = prop
+    const args = ['2010-11-20']
+    try {
+      const passes = await validations.after(data, field, message, args, get)
+      assert.notExist(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('should work fine when value is after defined date', async function (assert) {
+    const data = {dob: '2011-01-01'}
+    const field = 'dob'
+    const message = 'dob should be after 2010'
+    const get = prop
+    const args = ['2010-11-20']
+    const passes = await validations.after(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when dob is not defined', async function (assert) {
+    const data = {}
+    const field = 'dob'
+    const message = 'dob should be after 2010'
+    const get = prop
+    const args = ['2010-11-20']
+    const passes = await validations.after(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when dob is undefined', async function (assert) {
+    const data = {dob: undefined}
+    const field = 'dob'
+    const message = 'dob should be after 2010'
+    const get = prop
+    const args = ['2010-11-20']
+    const passes = await validations.after(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
   })
 })
@@ -196,7 +259,7 @@ test.group('Validations | alpha', function () {
     const data = {username: 'virk1234'}
     const field = 'username'
     const message = 'username must contain letters only'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.alpha(data, field, message, args, get)
@@ -210,7 +273,7 @@ test.group('Validations | alpha', function () {
     const data = {username: 'virk'}
     const field = 'username'
     const message = 'username must contain letters only'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.alpha(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -220,7 +283,7 @@ test.group('Validations | alpha', function () {
     const data = {}
     const field = 'username'
     const message = 'username must contain letters only'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.alpha(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -230,9 +293,256 @@ test.group('Validations | alpha', function () {
     const data = {username: undefined}
     const field = 'username'
     const message = 'username must contain letters only'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.alpha(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+})
+
+test.group('Validations | before', function () {
+  test('throw exception when before value is missing', async function (assert) {
+    assert.plan(1)
+
+    const data = {dob: '2012-11-20'}
+    const field = 'dob'
+    const message = 'dob should be before 2010'
+    const get = prop
+    const args = []
+
+    try {
+      await validations.before(data, field, message, args, get)
+    } catch ({ message }) {
+      assert.equal(message, 'before:make sure to define the before date')
+    }
+  })
+
+
+  test('should throw an error when date is not before defined date', async function (assert) {
+    const data = {dob: '2012-11-20'}
+    const field = 'dob'
+    const message = 'dob should be before 2010'
+    const get = prop
+    const args = ['2010-11-20']
+    try {
+      const passes = await validations.before(data, field, message, args, get)
+      assert.notExist(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('should work fine when value is before defined date', async function (assert) {
+    const data = {dob: '2009-01-01'}
+    const field = 'dob'
+    const message = 'dob should be before 2010'
+    const get = prop
+    const args = ['2010-11-20']
+    const passes = await validations.before(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when dob is not defined', async function (assert) {
+    const data = {}
+    const field = 'dob'
+    const message = 'dob should be before 2010'
+    const get = prop
+    const args = ['2010-11-20']
+    const passes = await validations.before(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when dob is undefined', async function (assert) {
+    const data = {dob: undefined}
+    const field = 'dob'
+    const message = 'dob should be before 2010'
+    const get = prop
+    const args = ['2010-11-20']
+    const passes = await validations.before(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+})
+
+test.group('Validations | date', function () {
+  test('should throw an error when field value is not a valid date', async function (assert) {
+    const data = {dob: '10th'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = []
+    try {
+      const passes = await validations.date(data, field, message, args, get)
+      assert.notExist(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('should work fine when value of field is a valid date', async function (assert) {
+    const data = {dob: '2015-10-20'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = []
+    const passes = await validations.date(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should work fine when value of field is a valid date but with a differen date format', async function (assert) {
+    const data = {dob: '10/20/2015'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = []
+    const passes = await validations.date(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when field does not exists', async function (assert) {
+    const data = {}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = []
+    const passes = await validations.date(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when field value is undefined', async function (assert) {
+    const data = {dob: undefined}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = []
+    const passes = await validations.date(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+})
+
+test.group('Validations | dateFormat', function () {
+  test('throw exception when date format is not defined', async function (assert) {
+    assert.plan(1)
+
+    const data = {dob: '10th'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = []
+    try {
+      await validations.dateFormat(data, field, message, args, get)
+    } catch ({ message }) {
+      assert.equal(message, 'dateFormat:make sure to define atleast one date format')
+    }
+  })
+
+  test('should throw an error when field value is not a valid date', async function (assert) {
+    const data = {dob: '10th'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY/MM/DD']
+    try {
+      const passes = await validations.dateFormat(data, field, message, args, get)
+      assert.notExist(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('should throw an error when field value is a valid date but not according to defined format', async function (assert) {
+    const data = {dob: '10-20-2015'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY/MM/DD']
+    try {
+      const passes = await validations.dateFormat(data, field, message, args, get)
+      assert.notExist(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('should work fine when field value is a valid date according to given format', async function (assert) {
+    const data = {dob: '2015/10/20'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY/MM/DD']
+    const passes = await validations.dateFormat(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should match against multiple formats', async function (assert) {
+    const data = {dob: '2015/10/20'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY-MM-DD', 'YYYY/MM/DD']
+    const passes = await validations.dateFormat(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when field is not available', async function (assert) {
+    const data = {}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY/MM/DD']
+    const passes = await validations.dateFormat(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when field is undefined', async function (assert) {
+    const data = {dob: undefined}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY/MM/DD']
+    const passes = await validations.dateFormat(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('return error when time is missing from date', async function (assert) {
+    assert.plan(1)
+
+    const data = {dob: '2015/10/20'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY/MM/DD hh:mm:ss']
+
+    try {
+      await validations.dateFormat(data, field, message, args, get)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('return error when time format is different', async function (assert) {
+    assert.plan(1)
+
+    const data = {dob: '2015/10/20 23:33:34'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY/MM/DD hh:mm:ss']
+
+    try {
+      await validations.dateFormat(data, field, message, args, get)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('should pass when time is in correct format', async function (assert) {
+    const data = {dob: '2015/10/20 23:33:34'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY/MM/DD HH:mm:ss']
+
+    const passes = await validations.dateFormat(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
   })
 })
@@ -242,7 +552,7 @@ test.group('Validations | in', function () {
     const data = {gender: 'Foo'}
     const field = 'gender'
     const message = 'select valid gender'
-    const get = _.get
+    const get = prop
     const args = ['F', 'M', 'O']
     try {
       const passes = await validations.in(data, field, message, args, get)
@@ -256,7 +566,7 @@ test.group('Validations | in', function () {
     const data = {gender: 'F'}
     const field = 'gender'
     const message = 'select valid gender'
-    const get = _.get
+    const get = prop
     const args = ['F', 'M', 'O']
     const passes = await validations.in(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -266,7 +576,7 @@ test.group('Validations | in', function () {
     const data = {marks: 10}
     const field = 'marks'
     const message = 'select valid marks'
-    const get = _.get
+    const get = prop
     const args = [10, 20, 40]
     const passes = await validations.in(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -276,7 +586,7 @@ test.group('Validations | in', function () {
     const data = {}
     const field = 'marks'
     const message = 'select valid marks'
-    const get = _.get
+    const get = prop
     const args = [10, 20, 40]
     const passes = await validations.in(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -286,7 +596,7 @@ test.group('Validations | in', function () {
     const data = {marks: undefined}
     const field = 'marks'
     const message = 'select valid marks'
-    const get = _.get
+    const get = prop
     const args = [10, 20, 40]
     const passes = await validations.in(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -298,7 +608,7 @@ test.group('Validations | notIn', function () {
     const data = {username: 'admin'}
     const field = 'username'
     const message = 'select valid username'
-    const get = _.get
+    const get = prop
     const args = ['admin', 'super', 'root']
     try {
       const passes = await validations.notIn(data, field, message, args, get)
@@ -312,7 +622,7 @@ test.group('Validations | notIn', function () {
     const data = {username: 'foo'}
     const field = 'username'
     const message = 'select valid username'
-    const get = _.get
+    const get = prop
     const args = ['admin', 'super', 'root']
     const passes = await validations.notIn(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -322,7 +632,7 @@ test.group('Validations | notIn', function () {
     const data = {}
     const field = 'username'
     const message = 'select valid username'
-    const get = _.get
+    const get = prop
     const args = ['admin', 'super', 'root']
     const passes = await validations.notIn(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -332,7 +642,7 @@ test.group('Validations | notIn', function () {
     const data = {username: undefined}
     const field = 'username'
     const message = 'select valid username'
-    const get = _.get
+    const get = prop
     const args = ['admin', 'super', 'root']
     const passes = await validations.notIn(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -344,7 +654,7 @@ test.group('Validations | requiredIf', function () {
     const data = {}
     const field = 'password_confirm'
     const message = 'please confirm password'
-    const get = _.get
+    const get = prop
     const args = ['password']
     const passes = await validations.requiredIf(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -354,7 +664,7 @@ test.group('Validations | requiredIf', function () {
     const data = {password: 'foobar'}
     const field = 'password_confirm'
     const message = 'please confirm password'
-    const get = _.get
+    const get = prop
     const args = ['password']
     try {
       const passes = await validations.requiredIf(data, field, message, args, get)
@@ -368,7 +678,7 @@ test.group('Validations | requiredIf', function () {
     const data = {password: null}
     const field = 'password_confirm'
     const message = 'please confirm password'
-    const get = _.get
+    const get = prop
     const args = ['password']
     const passes = await validations.requiredIf(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -378,7 +688,7 @@ test.group('Validations | requiredIf', function () {
     const data = {password: 'foobar', 'password_confirm': 'foobar'}
     const field = 'password_confirm'
     const message = 'please confirm password'
-    const get = _.get
+    const get = prop
     const args = ['password']
     const passes = await validations.requiredIf(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -390,7 +700,7 @@ test.group('Validations | requiredWithAny', function () {
     const data = {}
     const field = 'password'
     const message = 'password is required after username or email'
-    const get = _.get
+    const get = prop
     const args = ['username', 'email']
     const passes = await validations.requiredWithAny(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -400,7 +710,7 @@ test.group('Validations | requiredWithAny', function () {
     const data = {username: 'foo'}
     const field = 'password'
     const message = 'password is required after username or email'
-    const get = _.get
+    const get = prop
     const args = ['username', 'email']
     try {
       const passes = await validations.requiredWithAny(data, field, message, args, get)
@@ -414,7 +724,7 @@ test.group('Validations | requiredWithAny', function () {
     const data = {username: 'foo', password: null}
     const field = 'password'
     const message = 'password is required after username or email'
-    const get = _.get
+    const get = prop
     const args = ['username', 'email']
     try {
       const passes = await validations.requiredWithAny(data, field, message, args, get)
@@ -428,7 +738,7 @@ test.group('Validations | requiredWithAny', function () {
     const data = {username: 'foo', password: 'bar'}
     const field = 'password'
     const message = 'password is required after username or email'
-    const get = _.get
+    const get = prop
     const args = ['username', 'email']
     const passes = await validations.requiredWithAny(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -440,35 +750,37 @@ test.group('Validations | requiredWithAll', function () {
     const data = {}
     const field = 'password'
     const message = 'password is required after username or email'
-    const get = _.get
+    const get = prop
     const args = ['username', 'email']
     const passes = await validations.requiredWithAll(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
   })
 
   test('should thrown an error when all of the targeted fields are present but actual field is missing', async function (assert) {
+    assert.plan(1)
+
     const data = {username: 'foo', 'email': 'foo@bar.com'}
     const field = 'password'
     const message = 'password is required after username or email'
-    const get = _.get
+    const get = prop
     const args = ['username', 'email']
     try {
-      const passes = await validations.requiredWithAll(data, field, message, args, get)
-      assert.notExist(passes)
+      await validations.requiredWithAll(data, field, message, args, get)
     } catch (e) {
       assert.equal(e, message)
     }
   })
 
-  test('should thrown an error when all of the targeted fields are present but actual field is value is async null', async function (assert) {
+  test('should thrown an error when all of the targeted fields are present but actual field is value is null', async function (assert) {
+    assert.plan(1)
+
     const data = {username: 'foo', email: 'foo@bar.com', password: null}
     const field = 'password'
     const message = 'password is required after username or email'
-    const get = _.get
+    const get = prop
     const args = ['username', 'email']
     try {
-      const passes = await validations.requiredWithAll(data, field, message, args, get)
-      assert.notExist(passes)
+      await validations.requiredWithAll(data, field, message, args, get)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -478,17 +790,17 @@ test.group('Validations | requiredWithAll', function () {
     const data = {username: 'foo', password: 'bar', 'email': 'foo@bar.com'}
     const field = 'password'
     const message = 'password is required after username or email'
-    const get = _.get
+    const get = prop
     const args = ['username', 'email']
     const passes = await validations.requiredWithAll(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
   })
 
-  test('should work fine when any of the targeted fields are missings and actual field value is missing async too', async function (assert) {
+  test('should work fine when any of the targeted fields are missings and actual field value is missing too', async function (assert) {
     const data = {username: 'foo'}
     const field = 'password'
     const message = 'password is required after username or email'
-    const get = _.get
+    const get = prop
     const args = ['username', 'email']
     const passes = await validations.requiredWithAll(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -500,7 +812,7 @@ test.group('Validations | requiredWithoutAny', function () {
     const data = {username: 'foo', email: 'foo@bar.com'}
     const field = 'password'
     const message = 'enter email or password'
-    const get = _.get
+    const get = prop
     const args = ['username', 'email']
     const passes = await validations.requiredWithoutAny(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -511,7 +823,7 @@ test.group('Validations | requiredWithoutAny', function () {
     const data = { username: 'foo' }
     const field = 'password'
     const message = 'enter email or password'
-    const get = _.get
+    const get = prop
     const args = ['username', 'email']
     try {
       await validations.requiredWithoutAny(data, field, message, args, get)
@@ -525,7 +837,7 @@ test.group('Validations | requiredWithoutAny', function () {
     const data = {username: 'foo', password: null}
     const field = 'password'
     const message = 'enter email or password'
-    const get = _.get
+    const get = prop
     const args = ['username', 'email']
     try {
       await validations.requiredWithoutAny(data, field, message, args, get)
@@ -538,7 +850,7 @@ test.group('Validations | requiredWithoutAny', function () {
     const data = {password: 'foobar'}
     const field = 'password'
     const message = 'enter email or password'
-    const get = _.get
+    const get = prop
     const args = ['username', 'email']
     const passes = await validations.requiredWithoutAny(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -550,7 +862,7 @@ test.group('Validations | requiredWithoutAll', function () {
     const data = {username: 'foo', email: 'foo@bar.com'}
     const field = 'password'
     const message = 'enter username, email or password'
-    const get = _.get
+    const get = prop
     const args = ['username', 'email']
     const passes = await validations.requiredWithoutAll(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -560,7 +872,7 @@ test.group('Validations | requiredWithoutAll', function () {
     const data = {}
     const field = 'password'
     const message = 'enter username, email or password'
-    const get = _.get
+    const get = prop
     const args = ['username', 'email']
     try {
       const passes = await validations.requiredWithoutAll(data, field, message, args, get)
@@ -574,7 +886,7 @@ test.group('Validations | requiredWithoutAll', function () {
     const data = {password: null}
     const field = 'password'
     const message = 'enter username, email or password'
-    const get = _.get
+    const get = prop
     const args = ['username', 'email']
     try {
       const passes = await validations.requiredWithoutAll(data, field, message, args, get)
@@ -588,7 +900,7 @@ test.group('Validations | requiredWithoutAll', function () {
     const data = {password: 'foobar'}
     const field = 'password'
     const message = 'enter username, email or password'
-    const get = _.get
+    const get = prop
     const args = ['username', 'email']
     const passes = await validations.requiredWithoutAll(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -598,7 +910,7 @@ test.group('Validations | requiredWithoutAll', function () {
     const data = {username: 'foo'}
     const field = 'password'
     const message = 'enter username, email or password'
-    const get = _.get
+    const get = prop
     const args = ['username', 'email']
     const passes = await validations.requiredWithoutAll(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -610,7 +922,7 @@ test.group('Validations | same', function () {
     const data = {password: 'foo', 'password_confirm': 'bar'}
     const field = 'password_confirm'
     const message = 'password should match'
-    const get = _.get
+    const get = prop
     const args = ['password']
     try {
       const passes = await validations.same(data, field, message, args, get)
@@ -624,7 +936,7 @@ test.group('Validations | same', function () {
     const data = {'password_confirm': 'bar'}
     const field = 'password_confirm'
     const message = 'password should match'
-    const get = _.get
+    const get = prop
     const args = ['password']
     const passes = await validations.same(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -634,7 +946,7 @@ test.group('Validations | same', function () {
     const data = {}
     const field = 'password_confirm'
     const message = 'password should match'
-    const get = _.get
+    const get = prop
     const args = ['password']
     const passes = await validations.same(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -644,7 +956,7 @@ test.group('Validations | same', function () {
     const data = {password: 'foo', password_confirm: 'foo'}
     const field = 'password_confirm'
     const message = 'password should match'
-    const get = _.get
+    const get = prop
     const args = ['password']
     const passes = await validations.same(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -654,7 +966,7 @@ test.group('Validations | same', function () {
     const data = {password: 'foo'}
     const field = 'password_confirm'
     const message = 'password should match'
-    const get = _.get
+    const get = prop
     const args = ['password']
     const passes = await validations.same(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -666,7 +978,7 @@ test.group('Validations | equals', function () {
     const data = {title: 'foo'}
     const field = 'title'
     const message = 'title should be bar'
-    const get = _.get
+    const get = prop
     const args = ['bar']
     try {
       const passes = await validations.equals(data, field, message, args, get)
@@ -680,7 +992,7 @@ test.group('Validations | equals', function () {
     const data = {}
     const field = 'title'
     const message = 'title should be bar'
-    const get = _.get
+    const get = prop
     const args = ['bar']
     const passes = await validations.equals(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -690,7 +1002,7 @@ test.group('Validations | equals', function () {
     const data = {title: undefined}
     const field = 'title'
     const message = 'title should be bar'
-    const get = _.get
+    const get = prop
     const args = ['bar']
     const passes = await validations.equals(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -700,7 +1012,7 @@ test.group('Validations | equals', function () {
     const data = {title: 'bar'}
     const field = 'title'
     const message = 'title should be bar'
-    const get = _.get
+    const get = prop
     const args = ['bar']
     const passes = await validations.equals(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -710,7 +1022,7 @@ test.group('Validations | equals', function () {
     const data = {age: 18}
     const field = 'age'
     const message = 'age should be 18'
-    const get = _.get
+    const get = prop
     const args = ['18']
     const passes = await validations.equals(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -722,7 +1034,7 @@ test.group('Validations | notEquals', function () {
     const data = {title: 'bar'}
     const field = 'title'
     const message = 'title should not be bar'
-    const get = _.get
+    const get = prop
     const args = ['bar']
     try {
       const passes = await validations.notEquals(data, field, message, args, get)
@@ -736,7 +1048,7 @@ test.group('Validations | notEquals', function () {
     const data = {}
     const field = 'title'
     const message = 'title should not be bar'
-    const get = _.get
+    const get = prop
     const args = ['bar']
     const passes = await validations.notEquals(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -746,7 +1058,7 @@ test.group('Validations | notEquals', function () {
     const data = {title: undefined}
     const field = 'title'
     const message = 'title should not be bar'
-    const get = _.get
+    const get = prop
     const args = ['bar']
     const passes = await validations.notEquals(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -756,7 +1068,7 @@ test.group('Validations | notEquals', function () {
     const data = {title: 'foo'}
     const field = 'title'
     const message = 'title should not be bar'
-    const get = _.get
+    const get = prop
     const args = ['bar']
     const passes = await validations.notEquals(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -768,7 +1080,7 @@ test.group('Validations | different', function () {
     const data = {dob: '2011-20-10', 'enrollment_date': '2011-20-10'}
     const field = 'enrollment_date'
     const message = 'enrollment date should be different from dob'
-    const get = _.get
+    const get = prop
     const args = ['dob']
     try {
       const passes = await validations.different(data, field, message, args, get)
@@ -782,7 +1094,7 @@ test.group('Validations | different', function () {
     const data = {'enrollment_date': '2011-20-10'}
     const field = 'enrollment_date'
     const message = 'enrollment date should be different from dob'
-    const get = _.get
+    const get = prop
     const args = ['dob']
     const passes = await validations.different(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -792,7 +1104,7 @@ test.group('Validations | different', function () {
     const data = {}
     const field = 'enrollment_date'
     const message = 'enrollment date should be different from dob'
-    const get = _.get
+    const get = prop
     const args = ['dob']
     const passes = await validations.different(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -802,7 +1114,7 @@ test.group('Validations | different', function () {
     const data = {dob: '2011-20-10', 'enrollment_date': '2011-20-20'}
     const field = 'enrollment_date'
     const message = 'enrollment date should be different from dob'
-    const get = _.get
+    const get = prop
     const args = ['dob']
     const passes = await validations.different(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -812,7 +1124,7 @@ test.group('Validations | different', function () {
     const data = {dob: '2011-20-10'}
     const field = 'enrollment_date'
     const message = 'enrollment date should be different from dob'
-    const get = _.get
+    const get = prop
     const args = ['dob']
     const passes = await validations.different(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -824,7 +1136,7 @@ test.group('Validations | range', function () {
     const data = {age: 16}
     const field = 'age'
     const message = 'only adults less than 60 years of age are allowed'
-    const get = _.get
+    const get = prop
     const args = [18, 60]
     try {
       const passes = await validations.range(data, field, message, args, get)
@@ -838,7 +1150,7 @@ test.group('Validations | range', function () {
     const data = {age: 61}
     const field = 'age'
     const message = 'only adults less than 60 years of age are allowed'
-    const get = _.get
+    const get = prop
     const args = [18, 60]
     try {
       const passes = await validations.range(data, field, message, args, get)
@@ -852,7 +1164,7 @@ test.group('Validations | range', function () {
     const data = {age: 61}
     const field = 'age'
     const message = 'only adults less than 60 years of age are allowed'
-    const get = _.get
+    const get = prop
     const args = [null, 60]
     try {
       const passes = await validations.range(data, field, message, args, get)
@@ -866,7 +1178,7 @@ test.group('Validations | range', function () {
     const data = {age: 61}
     const field = 'age'
     const message = 'only adults less than 60 years of age are allowed'
-    const get = _.get
+    const get = prop
     const args = [18]
     try {
       const passes = await validations.range(data, field, message, args, get)
@@ -880,7 +1192,7 @@ test.group('Validations | range', function () {
     const data = {}
     const field = 'age'
     const message = 'only adults less than 60 years of age are allowed'
-    const get = _.get
+    const get = prop
     const args = [18, 60]
     const passes = await validations.range(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -890,7 +1202,7 @@ test.group('Validations | range', function () {
     const data = {age: undefined}
     const field = 'age'
     const message = 'only adults less than 60 years of age are allowed'
-    const get = _.get
+    const get = prop
     const args = [18, 60]
     const passes = await validations.range(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -900,7 +1212,7 @@ test.group('Validations | range', function () {
     const data = {age: 20}
     const field = 'age'
     const message = 'only adults less than 60 years of age are allowed'
-    const get = _.get
+    const get = prop
     const args = [18, 60]
     const passes = await validations.range(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -912,7 +1224,7 @@ test.group('Validations | min', function () {
     const data = {password: 'foo'}
     const field = 'password'
     const message = 'password should be over 6 characters'
-    const get = _.get
+    const get = prop
     const args = [6]
     try {
       const passes = await validations.min(data, field, message, args, get)
@@ -926,7 +1238,7 @@ test.group('Validations | min', function () {
     const data = {password: 990}
     const field = 'password'
     const message = 'password should be over 6 characters'
-    const get = _.get
+    const get = prop
     const args = [6]
     try {
       const passes = await validations.min(data, field, message, args, get)
@@ -940,7 +1252,7 @@ test.group('Validations | min', function () {
     const data = {}
     const field = 'password'
     const message = 'password should be over 6 characters'
-    const get = _.get
+    const get = prop
     const args = [6]
     const passes = await validations.min(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -950,7 +1262,7 @@ test.group('Validations | min', function () {
     const data = {password: undefined}
     const field = 'password'
     const message = 'password should be over 6 characters'
-    const get = _.get
+    const get = prop
     const args = [6]
     const passes = await validations.min(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -960,7 +1272,7 @@ test.group('Validations | min', function () {
     const data = {password: 'foobarbaz'}
     const field = 'password'
     const message = 'password should be over 6 characters'
-    const get = _.get
+    const get = prop
     const args = [6]
     const passes = await validations.min(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -970,7 +1282,7 @@ test.group('Validations | min', function () {
     const data = {password: 'foobar'}
     const field = 'password'
     const message = 'password should be over 6 characters'
-    const get = _.get
+    const get = prop
     const args = [6]
     const passes = await validations.min(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -982,7 +1294,7 @@ test.group('Validations | max', function () {
     const data = {password: 'foobarbaz'}
     const field = 'password'
     const message = 'password should be less than 6 characters'
-    const get = _.get
+    const get = prop
     const args = [6]
     try {
       const passes = await validations.max(data, field, message, args, get)
@@ -996,7 +1308,7 @@ test.group('Validations | max', function () {
     const data = {password: 1990909990}
     const field = 'password'
     const message = 'password should be less than 6 characters'
-    const get = _.get
+    const get = prop
     const args = [6]
     try {
       const passes = await validations.max(data, field, message, args, get)
@@ -1010,7 +1322,7 @@ test.group('Validations | max', function () {
     const data = {}
     const field = 'password'
     const message = 'password should be less than 6 characters'
-    const get = _.get
+    const get = prop
     const args = [6]
     const passes = await validations.max(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1020,7 +1332,7 @@ test.group('Validations | max', function () {
     const data = {password: undefined}
     const field = 'password'
     const message = 'password should be less than 6 characters'
-    const get = _.get
+    const get = prop
     const args = [6]
     const passes = await validations.max(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1030,7 +1342,7 @@ test.group('Validations | max', function () {
     const data = {password: 'foo'}
     const field = 'password'
     const message = 'password should be less than 6 characters'
-    const get = _.get
+    const get = prop
     const args = [6]
     const passes = await validations.max(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1040,7 +1352,7 @@ test.group('Validations | max', function () {
     const data = {password: 'foobar'}
     const field = 'password'
     const message = 'password should be less than 6 characters'
-    const get = _.get
+    const get = prop
     const args = [6]
     const passes = await validations.max(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1052,7 +1364,7 @@ test.group('Validations | above', function () {
     const data = {age: 16}
     const field = 'age'
     const message = 'age should be over 17 years'
-    const get = _.get
+    const get = prop
     const args = [17]
     try {
       const passes = await validations.above(data, field, message, args, get)
@@ -1066,7 +1378,7 @@ test.group('Validations | above', function () {
     const data = {age: 17}
     const field = 'age'
     const message = 'age should be over 17 years'
-    const get = _.get
+    const get = prop
     const args = [17]
     try {
       const passes = await validations.above(data, field, message, args, get)
@@ -1080,7 +1392,7 @@ test.group('Validations | above', function () {
     const data = {}
     const field = 'age'
     const message = 'age should be over 17 years'
-    const get = _.get
+    const get = prop
     const args = [17]
     const passes = await validations.above(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1090,7 +1402,7 @@ test.group('Validations | above', function () {
     const data = {age: undefined}
     const field = 'age'
     const message = 'age should be over 17 years'
-    const get = _.get
+    const get = prop
     const args = [17]
     const passes = await validations.above(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1100,10 +1412,54 @@ test.group('Validations | above', function () {
     const data = {age: 18}
     const field = 'age'
     const message = 'age should be over 17 years'
-    const get = _.get
+    const get = prop
     const args = [17]
     const passes = await validations.above(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
+  })
+
+  test('throw exception when comparison value is not defined', async function (assert) {
+    assert.plan(1)
+
+    const data = {age: 18}
+    const field = 'age'
+    const message = 'age should be over 17 years'
+    const get = prop
+    const args = []
+
+    try {
+      await validations.above(data, field, message, args, get)
+    } catch ({ message }) {
+      assert.equal(message, 'above:make sure to define minValue')
+    }
+  })
+
+  test('pass when values are in strings and user value is over expected value', async function (assert) {
+    const data = {age: '18'}
+    const field = 'age'
+    const message = 'age should be over 17 years'
+    const get = prop
+    const args = ['17']
+
+    const passes = await validations.above(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('fail when values are in strings and user value is under expected value', async function (assert) {
+    assert.plan(1)
+
+    const data = {age: 16}
+    const field = 'age'
+    const message = 'age should be over 17 years'
+    const get = prop
+    const args = ['17']
+
+    try {
+      const passes = await validations.above(data, field, message, args, get)
+      assert.notExist(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
   })
 })
 
@@ -1112,7 +1468,7 @@ test.group('Validations | under', function () {
     const data = {age: 11}
     const field = 'age'
     const message = 'age should be less than 10 years for junior idol'
-    const get = _.get
+    const get = prop
     const args = [10]
     try {
       const passes = await validations.under(data, field, message, args, get)
@@ -1126,7 +1482,7 @@ test.group('Validations | under', function () {
     const data = {age: 10}
     const field = 'age'
     const message = 'age should be less than 10 years for junior idol'
-    const get = _.get
+    const get = prop
     const args = [10]
     try {
       const passes = await validations.under(data, field, message, args, get)
@@ -1140,7 +1496,7 @@ test.group('Validations | under', function () {
     const data = {}
     const field = 'age'
     const message = 'age should be less than 10 years for junior idol'
-    const get = _.get
+    const get = prop
     const args = [10]
     const passes = await validations.under(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1150,7 +1506,7 @@ test.group('Validations | under', function () {
     const data = {age: undefined}
     const field = 'age'
     const message = 'age should be less than 10 years for junior idol'
-    const get = _.get
+    const get = prop
     const args = [10]
     const passes = await validations.under(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1160,7 +1516,7 @@ test.group('Validations | under', function () {
     const data = {age: 8}
     const field = 'age'
     const message = 'age should be less than 10 years for junior idol'
-    const get = _.get
+    const get = prop
     const args = [10]
     const passes = await validations.under(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1172,7 +1528,7 @@ test.group('Validations | includes', function () {
     const data = {dpath: 'foo/bar'}
     const field = 'dpath'
     const message = 'path should include app directory'
-    const get = _.get
+    const get = prop
     const args = ['app']
     try {
       const passes = await validations.includes(data, field, message, args, get)
@@ -1186,7 +1542,7 @@ test.group('Validations | includes', function () {
     const data = {}
     const field = 'dpath'
     const message = 'path should include app directory'
-    const get = _.get
+    const get = prop
     const args = ['app']
     const passes = await validations.includes(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1196,7 +1552,7 @@ test.group('Validations | includes', function () {
     const data = {dpath: undefined}
     const field = 'dpath'
     const message = 'path should include app directory'
-    const get = _.get
+    const get = prop
     const args = ['app']
     const passes = await validations.includes(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1206,7 +1562,7 @@ test.group('Validations | includes', function () {
     const data = {dpath: '/app/bar'}
     const field = 'dpath'
     const message = 'path should include app directory'
-    const get = _.get
+    const get = prop
     const args = ['app']
     const passes = await validations.includes(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1218,7 +1574,7 @@ test.group('Validations | startsWith', function () {
     const data = {username: 'foo'}
     const field = 'username'
     const message = 'username should start with D'
-    const get = _.get
+    const get = prop
     const args = ['D']
     try {
       const passes = await validations.startsWith(data, field, message, args, get)
@@ -1232,7 +1588,7 @@ test.group('Validations | startsWith', function () {
     const data = {}
     const field = 'username'
     const message = 'username should start with D'
-    const get = _.get
+    const get = prop
     const args = ['D']
     const passes = await validations.startsWith(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1242,7 +1598,7 @@ test.group('Validations | startsWith', function () {
     const data = {username: undefined}
     const field = 'username'
     const message = 'username should start with D'
-    const get = _.get
+    const get = prop
     const args = ['D']
     const passes = await validations.startsWith(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1252,7 +1608,7 @@ test.group('Validations | startsWith', function () {
     const data = {username: 'Doe'}
     const field = 'username'
     const message = 'username should start with D'
-    const get = _.get
+    const get = prop
     const args = ['D']
     const passes = await validations.startsWith(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1264,7 +1620,7 @@ test.group('Validations | endsWith', function () {
     const data = {username: 'foo'}
     const field = 'username'
     const message = 'username should end with e'
-    const get = _.get
+    const get = prop
     const args = ['e']
     try {
       const passes = await validations.endsWith(data, field, message, args, get)
@@ -1278,7 +1634,7 @@ test.group('Validations | endsWith', function () {
     const data = {}
     const field = 'username'
     const message = 'username should end with e'
-    const get = _.get
+    const get = prop
     const args = ['e']
     const passes = await validations.endsWith(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1288,7 +1644,7 @@ test.group('Validations | endsWith', function () {
     const data = {username: undefined}
     const field = 'username'
     const message = 'username should end with e'
-    const get = _.get
+    const get = prop
     const args = ['e']
     const passes = await validations.endsWith(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1298,7 +1654,7 @@ test.group('Validations | endsWith', function () {
     const data = {username: 'Doe'}
     const field = 'username'
     const message = 'username should end with e'
-    const get = _.get
+    const get = prop
     const args = ['e']
     const passes = await validations.endsWith(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1310,7 +1666,7 @@ test.group('Validations | regex', function () {
     const data = {email: 'foo'}
     const field = 'email'
     const message = 'email should match given regex'
-    const get = _.get
+    const get = prop
     const args = [/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0, 66})\.([a-z]{2, 6}(?:\.[a-z]{2})?)$/]
     try {
       const passes = await validations.regex(data, field, message, args, get)
@@ -1324,7 +1680,7 @@ test.group('Validations | regex', function () {
     const data = {}
     const field = 'country'
     const message = 'country should be India with I as uppercase'
-    const get = _.get
+    const get = prop
     const args = ['[a-z]']
     const passes = await validations.regex(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1334,7 +1690,7 @@ test.group('Validations | regex', function () {
     const data = {country: undefined}
     const field = 'country'
     const message = 'country should be India with I as uppercase'
-    const get = _.get
+    const get = prop
     const args = ['[a-z]']
     const passes = await validations.regex(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1344,7 +1700,7 @@ test.group('Validations | regex', function () {
     const data = {country: 'India'}
     const field = 'country'
     const message = 'country should be India with I as uppercase'
-    const get = _.get
+    const get = prop
     const args = ['[a-z]', 'i']
     const passes = await validations.regex(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1356,7 +1712,7 @@ test.group('Validations | alphaNumeric', function () {
     const data = {username: 'virk@123'}
     const field = 'username'
     const message = 'username must letters and numbers only'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.alphaNumeric(data, field, message, args, get)
@@ -1370,7 +1726,7 @@ test.group('Validations | alphaNumeric', function () {
     const data = {username: 'virk123'}
     const field = 'username'
     const message = 'username must letters and numbers only'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.alphaNumeric(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1380,7 +1736,7 @@ test.group('Validations | alphaNumeric', function () {
     const data = {}
     const field = 'username'
     const message = 'username must letters and numbers only'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.alphaNumeric(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1390,7 +1746,7 @@ test.group('Validations | alphaNumeric', function () {
     const data = {username: undefined}
     const field = 'username'
     const message = 'username must letters and numbers only'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.alphaNumeric(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1402,7 +1758,7 @@ test.group('Validations | array', function () {
     const data = {users: 'foo'}
     const field = 'users'
     const message = 'users list must be an array'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.array(data, field, message, args, get)
@@ -1416,7 +1772,7 @@ test.group('Validations | array', function () {
     const data = {users: ['doe', 'foo', 'bar']}
     const field = 'users'
     const message = 'users list must be an array'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.array(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1426,7 +1782,7 @@ test.group('Validations | array', function () {
     const data = {}
     const field = 'users'
     const message = 'users list must be an array'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.array(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1436,7 +1792,7 @@ test.group('Validations | array', function () {
     const data = {users: undefined}
     const field = 'users'
     const message = 'users list must be an array'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.array(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1446,7 +1802,7 @@ test.group('Validations | array', function () {
     const data = {users: {name: 'foo'}}
     const field = 'users'
     const message = 'users list must be an array'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.array(data, field, message, args, get)
@@ -1462,7 +1818,7 @@ test.group('Validations | url', function () {
     const data = {github_profile: 'foo'}
     const field = 'github_profile'
     const message = 'github profile must point to a valid url '
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.url(data, field, message, args, get)
@@ -1476,7 +1832,7 @@ test.group('Validations | url', function () {
     const data = {github_profile: 'http://github.com/thetutlage'}
     const field = 'github_profile'
     const message = 'github profile must point to a valid url '
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.url(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1486,7 +1842,7 @@ test.group('Validations | url', function () {
     const data = {}
     const field = 'github_profile'
     const message = 'github profile must point to a valid url '
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.url(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1496,7 +1852,7 @@ test.group('Validations | url', function () {
     const data = {github_profile: undefined}
     const field = 'github_profile'
     const message = 'github profile must point to a valid url '
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.url(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1508,7 +1864,7 @@ test.group('Validations | ip', function () {
     const data = {user_ip: '909090909'}
     const field = 'user_ip'
     const message = 'invalid ip address'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.ip(data, field, message, args, get)
@@ -1522,7 +1878,7 @@ test.group('Validations | ip', function () {
     const data = {user_ip: '127.0.0.1'}
     const field = 'user_ip'
     const message = 'invalid ip address'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.ip(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1532,7 +1888,7 @@ test.group('Validations | ip', function () {
     const data = {}
     const field = 'user_ip'
     const message = 'invalid ip address'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.ip(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1542,7 +1898,7 @@ test.group('Validations | ip', function () {
     const data = {user_ip: undefined}
     const field = 'user_ip'
     const message = 'invalid ip address'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.ip(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1554,7 +1910,7 @@ test.group('Validations | integer', function () {
     const data = {marks: '10'}
     const field = 'marks'
     const message = 'marks should be an integer'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.integer(data, field, message, args, get)
@@ -1568,7 +1924,7 @@ test.group('Validations | integer', function () {
     const data = {marks: 10.1}
     const field = 'marks'
     const message = 'marks should be an integer'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.integer(data, field, message, args, get)
@@ -1582,7 +1938,7 @@ test.group('Validations | integer', function () {
     const data = {}
     const field = 'marks'
     const message = 'marks should be an integer'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.integer(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1592,7 +1948,7 @@ test.group('Validations | integer', function () {
     const data = {marks: undefined}
     const field = 'marks'
     const message = 'marks should be an integer'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.integer(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1602,7 +1958,7 @@ test.group('Validations | integer', function () {
     const data = {marks: 10}
     const field = 'marks'
     const message = 'marks should be an integer'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.integer(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1612,7 +1968,7 @@ test.group('Validations | integer', function () {
     const data = {marks: 10.0}
     const field = 'marks'
     const message = 'marks should be an integer'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.integer(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1624,7 +1980,7 @@ test.group('Validations | boolean', function () {
     const data = {is_admin: 20}
     const field = 'is_admin'
     const message = 'admin identifier should be boolean indicator'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.boolean(data, field, message, args, get)
@@ -1638,7 +1994,7 @@ test.group('Validations | boolean', function () {
     const data = {is_admin: '20'}
     const field = 'is_admin'
     const message = 'admin identifier should be boolean indicator'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.boolean(data, field, message, args, get)
@@ -1652,7 +2008,7 @@ test.group('Validations | boolean', function () {
     const data = {}
     const field = 'is_admin'
     const message = 'admin identifier should be boolean indicator'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.boolean(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1662,7 +2018,7 @@ test.group('Validations | boolean', function () {
     const data = {is_admin: undefined}
     const field = 'is_admin'
     const message = 'admin identifier should be boolean indicator'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.boolean(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1672,7 +2028,7 @@ test.group('Validations | boolean', function () {
     const data = {is_admin: true}
     const field = 'is_admin'
     const message = 'admin identifier should be boolean indicator'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.boolean(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1682,7 +2038,7 @@ test.group('Validations | boolean', function () {
     const data = {is_admin: false}
     const field = 'is_admin'
     const message = 'admin identifier should be boolean indicator'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.boolean(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1692,7 +2048,7 @@ test.group('Validations | boolean', function () {
     const data = {is_admin: 1}
     const field = 'is_admin'
     const message = 'admin identifier should be boolean indicator'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.boolean(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1702,7 +2058,7 @@ test.group('Validations | boolean', function () {
     const data = {is_admin: 0}
     const field = 'is_admin'
     const message = 'admin identifier should be boolean indicator'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.boolean(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1712,7 +2068,7 @@ test.group('Validations | boolean', function () {
     const data = {is_admin: '0'}
     const field = 'is_admin'
     const message = 'admin identifier should be boolean indicator'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.boolean(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1722,7 +2078,27 @@ test.group('Validations | boolean', function () {
     const data = {is_admin: '1'}
     const field = 'is_admin'
     const message = 'admin identifier should be boolean indicator'
-    const get = _.get
+    const get = prop
+    const args = []
+    const passes = await validations.boolean(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should work fine when value is a string representation of true', async function (assert) {
+    const data = {is_admin: 'true'}
+    const field = 'is_admin'
+    const message = 'admin identifier should be boolean indicator'
+    const get = prop
+    const args = []
+    const passes = await validations.boolean(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should work fine when value is a string representation of false', async function (assert) {
+    const data = {is_admin: 'false'}
+    const field = 'is_admin'
+    const message = 'admin identifier should be boolean indicator'
+    const get = prop
     const args = []
     const passes = await validations.boolean(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1734,7 +2110,7 @@ test.group('Validations | object', function () {
     const data = {profile: 'foo'}
     const field = 'profile'
     const message = 'profile must be an object'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.object(data, field, message, args, get)
@@ -1748,7 +2124,7 @@ test.group('Validations | object', function () {
     const data = {profile: {username: 'foo'}}
     const field = 'profile'
     const message = 'profile must be an object'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.object(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1758,7 +2134,7 @@ test.group('Validations | object', function () {
     const data = {}
     const field = 'profile'
     const message = 'profile must be an object'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.object(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1768,7 +2144,7 @@ test.group('Validations | object', function () {
     const data = {profile: undefined}
     const field = 'profile'
     const message = 'profile must be an object'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.object(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1778,7 +2154,7 @@ test.group('Validations | object', function () {
     const data = {profile: ['username']}
     const field = 'profile'
     const message = 'profile must be an object'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.object(data, field, message, args, get)
@@ -1794,7 +2170,7 @@ test.group('Validations | json', function () {
     const data = {profile: 'foo'}
     const field = 'profile'
     const message = 'profile must be in json'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.json(data, field, message, args, get)
@@ -1808,7 +2184,7 @@ test.group('Validations | json', function () {
     const data = {profile: JSON.stringify({name: 'foo'})}
     const field = 'profile'
     const message = 'profile must be in json'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.json(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1818,7 +2194,7 @@ test.group('Validations | json', function () {
     const data = {}
     const field = 'profile'
     const message = 'profile must be in json'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.json(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1828,7 +2204,7 @@ test.group('Validations | json', function () {
     const data = {profile: undefined}
     const field = 'profile'
     const message = 'profile must be in json'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.json(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1840,7 +2216,7 @@ test.group('Validations | ipv4', function () {
     const data = {user_ip: '2001:DB8:0:0:1::1'}
     const field = 'user_ip'
     const message = 'invalid ipv4 address'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.ipv4(data, field, message, args, get)
@@ -1854,7 +2230,7 @@ test.group('Validations | ipv4', function () {
     const data = {user_ip: '127.0.0.1'}
     const field = 'user_ip'
     const message = 'invalid ipv4 address'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.ipv4(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1864,7 +2240,7 @@ test.group('Validations | ipv4', function () {
     const data = {}
     const field = 'user_ip'
     const message = 'invalid ipv4 address'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.ipv4(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1874,7 +2250,7 @@ test.group('Validations | ipv4', function () {
     const data = {user_ip: undefined}
     const field = 'user_ip'
     const message = 'invalid ipv4 address'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.ipv4(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1886,7 +2262,7 @@ test.group('Validations | ipv6', function () {
     const data = {user_ip: '127.0.0.1'}
     const field = 'user_ip'
     const message = 'invalid ipv6 address'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.ipv6(data, field, message, args, get)
@@ -1900,7 +2276,7 @@ test.group('Validations | ipv6', function () {
     const data = {user_ip: '2001:DB8:0:0:1::1'}
     const field = 'user_ip'
     const message = 'invalid ipv6 address'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.ipv6(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1910,7 +2286,7 @@ test.group('Validations | ipv6', function () {
     const data = {}
     const field = 'user_ip'
     const message = 'invalid ipv6 address'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.ipv6(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1920,7 +2296,7 @@ test.group('Validations | ipv6', function () {
     const data = {user_ip: undefined}
     const field = 'user_ip'
     const message = 'invalid ipv6 address'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.ipv6(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1932,7 +2308,7 @@ test.group('Validations | requiredWhen', function () {
     const data = {}
     const field = 'state'
     const message = 'state is required'
-    const get = _.get
+    const get = prop
     const args = ['country', 'US']
     const passes = await validations.requiredWhen(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1942,7 +2318,7 @@ test.group('Validations | requiredWhen', function () {
     const data = {country: 'US'}
     const field = 'state'
     const message = 'state is required'
-    const get = _.get
+    const get = prop
     const args = ['country', 'US']
     try {
       const passes = await validations.requiredWhen(data, field, message, args, get)
@@ -1952,11 +2328,11 @@ test.group('Validations | requiredWhen', function () {
     }
   })
 
-  test('should skip validation when of value of conditional field does not match', async function (assert) {
+  test('should skip validation when value of conditional field does not match', async function (assert) {
     const data = {country: 'UK'}
     const field = 'state'
     const message = 'state is required'
-    const get = _.get
+    const get = prop
     const args = ['country', 'US']
     const passes = await validations.requiredWhen(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1966,7 +2342,7 @@ test.group('Validations | requiredWhen', function () {
     const data = {country: null}
     const field = 'state'
     const message = 'state is required'
-    const get = _.get
+    const get = prop
     const args = ['country', 'US']
     const passes = await validations.requiredWhen(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1976,9 +2352,193 @@ test.group('Validations | requiredWhen', function () {
     const data = {country: 'US', state: 'NewYork'}
     const field = 'state'
     const message = 'state is required'
-    const get = _.get
+    const get = prop
     const args = ['country', 'US']
     const passes = await validations.requiredWhen(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('throw exception when expected value is falsy and actual value is missing', async function (assert) {
+    assert.plan(1)
+
+    const data = { source: false }
+    const field = 'password'
+    const message = 'password is required'
+    const get = prop
+    const args = ['source', 'false']
+    try {
+      await validations.requiredWhen(data, field, message, args, get)
+    } catch (e) {
+      assert.equal(e, 'password is required')
+    }
+  })
+
+  test('work fine when expected value is falsy and field value exists', async function (assert) {
+    assert.plan(1)
+
+    const data = { source: false, password: 'foo' }
+    const field = 'password'
+    const message = 'password is required'
+    const get = prop
+    const args = ['source', false]
+    const passes = await validations.requiredWhen(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+})
+
+test.group('Validations | afterOffsetOf', function () {
+  test('throw exception when offset unit is missing', async function (assert) {
+    assert.plan(1)
+
+    const data = {renewal: new Date()}
+    const field = 'renewal'
+    const message = 'packages are renewed after 12 months'
+    const get = prop
+    const args = []
+
+    try {
+      await validations.afterOffsetOf(data, field, message, args, get)
+    } catch ({ message }) {
+      assert.equal(message, 'afterOffsetOf:make sure to define offset unit and key')
+    }
+  })
+
+  test('throw exception when offset unit is key', async function (assert) {
+    assert.plan(1)
+
+    const data = {renewal: new Date()}
+    const field = 'renewal'
+    const message = 'packages are renewed after 12 months'
+    const get = prop
+    const args = [12]
+
+    try {
+      await validations.afterOffsetOf(data, field, message, args, get)
+    } catch ({ message }) {
+      assert.equal(message, 'afterOffsetOf:make sure to define offset unit and key')
+    }
+  })
+
+  test('should throw an error when date is not after defined offset', async function (assert) {
+    const data = {renewal: new Date()}
+    const field = 'renewal'
+    const message = 'packages are renewed after 12 months'
+    const get = prop
+    const args = ['12', 'months']
+    try {
+      const passes = await validations.afterOffsetOf(data, field, message, args, get)
+      assert.notExist(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('should work fine when value is after defined offset', async function (assert) {
+    const data = {renewal: addMonths(new Date(), 13)}
+    const field = 'renewal'
+    const message = 'packages are renewed after 12 months'
+    const get = prop
+    const args = ['12', 'months']
+    const passes = await validations.afterOffsetOf(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when field is not defined', async function (assert) {
+    const data = {}
+    const field = 'renewal'
+    const message = 'packages are renewed after 12 months'
+    const get = prop
+    const args = ['12', 'months']
+    const passes = await validations.afterOffsetOf(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when field value is undefined', async function (assert) {
+    const data = {renewal: undefined}
+    const field = 'renewal'
+    const message = 'packages are renewed after 12 months'
+    const get = prop
+    const args = ['12', 'months']
+    const passes = await validations.afterOffsetOf(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+})
+
+test.group('Validations | beforeOffsetOf', function () {
+  test('throw exception when offset unit is missing', async function (assert) {
+    assert.plan(1)
+
+    const data = {subscription: new Date()}
+    const field = 'subscription'
+    const message = '12 months old subscriptions are upgradable'
+    const get = prop
+    const args = []
+
+    try {
+      await validations.beforeOffsetOf(data, field, message, args, get)
+    } catch ({ message }) {
+      assert.equal(message, 'beforeOffsetOf:make sure to define offset unit and key')
+    }
+  })
+
+  test('throw exception when offset unit is key', async function (assert) {
+    assert.plan(1)
+
+    const data = {subscription: new Date()}
+    const field = 'subscription'
+    const message = '12 months old subscriptions are upgradable'
+    const get = prop
+    const args = ['12']
+
+    try {
+      await validations.beforeOffsetOf(data, field, message, args, get)
+    } catch ({ message }) {
+      assert.equal(message, 'beforeOffsetOf:make sure to define offset unit and key')
+    }
+  })
+
+  test('should throw an error when date is not before defined offset', async function (assert) {
+    const data = {subscription: new Date()}
+    const field = 'subscription'
+    const message = '12 months old subscriptions are upgradable'
+    const get = prop
+    const args = ['12', 'months']
+
+    try {
+      const passes = await validations.beforeOffsetOf(data, field, message, args, get)
+      assert.notExist(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('should work fine when value is before defined offset', async function (assert) {
+    const data = {subscription: subYears(new Date(), 2)}
+    const field = 'subscription'
+    const message = '12 months old subscriptions are upgradable'
+    const get = prop
+    const args = ['12', 'months']
+    const passes = await validations.beforeOffsetOf(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when field is not defined', async function (assert) {
+    const data = {}
+    const field = 'subscription'
+    const message = '12 months old subscriptions are upgradable'
+    const get = prop
+    const args = ['12', 'months']
+    const passes = await validations.beforeOffsetOf(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when field value is undefined', async function (assert) {
+    const data = {subscription: undefined}
+    const field = 'subscription'
+    const message = '12 months old subscriptions are upgradable'
+    const get = prop
+    const args = ['12', 'months']
+    const passes = await validations.beforeOffsetOf(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
   })
 })
@@ -1988,7 +2548,7 @@ test.group('Validations | Confirmation', function () {
     const data = { password: '1234', password_confirmation: '1234' }
     const field = 'password'
     const message = 'Password does not match!'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.confirmed(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -1998,7 +2558,7 @@ test.group('Validations | Confirmation', function () {
     const data = { password: '1234', password_confirmation: '12345' }
     const field = 'password'
     const message = 'Password does not match!'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.confirmed(data, field, message, args, get)
@@ -2012,7 +2572,7 @@ test.group('Validations | Confirmation', function () {
     const data = { password: '1234', password_confirmation: undefined }
     const field = 'password'
     const message = 'Password does not match!'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.confirmed(data, field, message, args, get)
@@ -2026,7 +2586,7 @@ test.group('Validations | Confirmation', function () {
     const data = { }
     const field = 'password'
     const message = 'Password does not match!'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.confirmed(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -2036,7 +2596,7 @@ test.group('Validations | Confirmation', function () {
     const data = { password: undefined, password_confirmation: undefined }
     const field = 'password'
     const message = 'Password does not match!'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.confirmed(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -2048,7 +2608,7 @@ test.group('Validations | String', function () {
     const data = { username: 'david' }
     const field = 'username'
     const message = 'Username should be a string'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.string(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -2058,7 +2618,7 @@ test.group('Validations | String', function () {
     const data = { username: 1234 }
     const field = 'username'
     const message = 'Username should be a string'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.string(data, field, message, args, get)
@@ -2072,7 +2632,7 @@ test.group('Validations | String', function () {
     const data = { username: true }
     const field = 'username'
     const message = 'Username should be a string'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.string(data, field, message, args, get)
@@ -2086,7 +2646,7 @@ test.group('Validations | String', function () {
     const data = { }
     const field = 'username'
     const message = 'Username should be a string'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.string(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -2096,7 +2656,7 @@ test.group('Validations | String', function () {
     const data = { username: undefined }
     const field = 'username'
     const message = 'Username should be a string'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.string(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -2108,7 +2668,7 @@ test.group('Validations | Number', function () {
     const data = { price: 12.01 }
     const field = 'price'
     const message = 'Price should be a number'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.number(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -2118,7 +2678,7 @@ test.group('Validations | Number', function () {
     const data = { age: 47 }
     const field = 'age'
     const message = 'Age should be a number'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.number(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -2128,7 +2688,7 @@ test.group('Validations | Number', function () {
     const data = { price: 'AnError' }
     const field = 'price'
     const message = 'Price should be a number'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.number(data, field, message, args, get)
@@ -2142,7 +2702,7 @@ test.group('Validations | Number', function () {
     const data = { price: true }
     const field = 'price'
     const message = 'Price should be a number'
-    const get = _.get
+    const get = prop
     const args = []
     try {
       const passes = await validations.number(data, field, message, args, get)
@@ -2156,7 +2716,7 @@ test.group('Validations | Number', function () {
     const data = { }
     const field = 'price'
     const message = 'Price should be a number'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.number(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
@@ -2166,7 +2726,7 @@ test.group('Validations | Number', function () {
     const data = { price: undefined }
     const field = 'price'
     const message = 'Price should be a number'
-    const get = _.get
+    const get = prop
     const args = []
     const passes = await validations.number(data, field, message, args, get)
     assert.equal(passes, 'validation passed')

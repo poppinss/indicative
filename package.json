@@ -2,14 +2,15 @@
   "name": "indicative",
   "version": "3.0.6",
   "description": "Intentionally beautiful schema and raw validator for nodejs",
-  "main": "dist/indicative-umd.js",
+  "main": "builds/main.js",
   "types": "index.d.ts",
   "scripts": {
     "lint": "standard src/**/*.js test/**/*.js",
     "pretest": "npm run lint",
     "test:node": "japa",
     "test:browser": "karma start",
-    "test": "npm run test:local"
+    "test": "npm run test:local",
+    "build": "rollup -c"
   },
   "author": "amanvirk",
   "license": "MIT",
@@ -18,33 +19,34 @@
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "benchmark": "^2.1.4",
     "cz-conventional-changelog": "^2.1.0",
+    "fs-extra": "^5.0.0",
     "japa": "^1.0.5",
     "japa-cli": "^1.0.1",
     "karma": "^1.7.1",
     "karma-chrome-launcher": "^2.2.0",
     "karma-japa": "^1.0.2",
     "karma-rollup-preprocessor": "^5.0.2",
+    "klaw": "^2.1.1",
     "nyc": "^11.3.0",
-    "rollup": "^0.52.0",
+    "rollup": "^0.52.1",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-uglify": "^2.0.1",
-    "semver": "^5.4.1",
     "standard": "^10.0.3",
-    "uglify-es": "^3.2.0"
+    "uglify-es": "^3.2.2"
   },
   "dependencies": {
     "@slynova/slug": "^1.0.1",
+    "clone": "^2.1.1",
     "date-fns": "^1.29.0",
-    "haye": "git+https://github.com/poppinss/haye.git#develop",
-    "p-lazy": "^1.0.0",
-    "p-series": "^1.0.0",
-    "p-settle": "^2.0.0",
-    "pope": "^2.0.0"
+    "haye": "^2.0.1",
+    "pluralize": "^7.0.0",
+    "pope": "^2.0.2",
+    "striptags": "^3.1.1",
+    "validator": "^9.2.0"
   },
   "directories": {
     "doc": "docs",
@@ -68,6 +70,12 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "standard": {
+    "globals": [
+      "test",
+      "group"
+    ]
   },
   "nyc": {
     "exclude": [

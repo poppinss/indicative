@@ -11,6 +11,8 @@
 
 import * as validations from '../../../src/validations'
 import { prop } from 'pope'
+import subYears from 'date-fns/sub_years'
+import addMonths from 'date-fns/add_months'
 
 group('Validations | required', function () {
   test('should reject promise when field is not defined', async function (assert) {
@@ -190,6 +192,67 @@ group('Validations | Accepted', function () {
   })
 })
 
+group('Validations | after', function () {
+  test('throw exception when after value is not defined', async function (assert) {
+    assert.plan(1)
+
+    const data = {dob: '1980-11-20'}
+    const field = 'dob'
+    const message = 'dob should be after 2010'
+    const get = prop
+    const args = []
+    try {
+      await validations.after(data, field, message, args, get)
+    } catch ({ message }) {
+      assert.equal(message, 'after:make sure to define the after date')
+    }
+  })
+
+  test('should throw an error when date is not after defined date', async function (assert) {
+    const data = {dob: '1980-11-20'}
+    const field = 'dob'
+    const message = 'dob should be after 2010'
+    const get = prop
+    const args = ['2010-11-20']
+    try {
+      const passes = await validations.after(data, field, message, args, get)
+      assert.notExist(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('should work fine when value is after defined date', async function (assert) {
+    const data = {dob: '2011-01-01'}
+    const field = 'dob'
+    const message = 'dob should be after 2010'
+    const get = prop
+    const args = ['2010-11-20']
+    const passes = await validations.after(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when dob is not defined', async function (assert) {
+    const data = {}
+    const field = 'dob'
+    const message = 'dob should be after 2010'
+    const get = prop
+    const args = ['2010-11-20']
+    const passes = await validations.after(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when dob is undefined', async function (assert) {
+    const data = {dob: undefined}
+    const field = 'dob'
+    const message = 'dob should be after 2010'
+    const get = prop
+    const args = ['2010-11-20']
+    const passes = await validations.after(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+})
+
 group('Validations | alpha', function () {
   test('should throw an error when value is not alpha', async function (assert) {
     const data = {username: 'virk1234'}
@@ -232,6 +295,253 @@ group('Validations | alpha', function () {
     const get = prop
     const args = []
     const passes = await validations.alpha(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+})
+
+group('Validations | before', function () {
+  test('throw exception when before value is missing', async function (assert) {
+    assert.plan(1)
+
+    const data = {dob: '2012-11-20'}
+    const field = 'dob'
+    const message = 'dob should be before 2010'
+    const get = prop
+    const args = []
+
+    try {
+      await validations.before(data, field, message, args, get)
+    } catch ({ message }) {
+      assert.equal(message, 'before:make sure to define the before date')
+    }
+  })
+
+
+  test('should throw an error when date is not before defined date', async function (assert) {
+    const data = {dob: '2012-11-20'}
+    const field = 'dob'
+    const message = 'dob should be before 2010'
+    const get = prop
+    const args = ['2010-11-20']
+    try {
+      const passes = await validations.before(data, field, message, args, get)
+      assert.notExist(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('should work fine when value is before defined date', async function (assert) {
+    const data = {dob: '2009-01-01'}
+    const field = 'dob'
+    const message = 'dob should be before 2010'
+    const get = prop
+    const args = ['2010-11-20']
+    const passes = await validations.before(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when dob is not defined', async function (assert) {
+    const data = {}
+    const field = 'dob'
+    const message = 'dob should be before 2010'
+    const get = prop
+    const args = ['2010-11-20']
+    const passes = await validations.before(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when dob is undefined', async function (assert) {
+    const data = {dob: undefined}
+    const field = 'dob'
+    const message = 'dob should be before 2010'
+    const get = prop
+    const args = ['2010-11-20']
+    const passes = await validations.before(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+})
+
+group('Validations | date', function () {
+  test('should throw an error when field value is not a valid date', async function (assert) {
+    const data = {dob: '10th'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = []
+    try {
+      const passes = await validations.date(data, field, message, args, get)
+      assert.notExist(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('should work fine when value of field is a valid date', async function (assert) {
+    const data = {dob: '2015-10-20'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = []
+    const passes = await validations.date(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should work fine when value of field is a valid date but with a differen date format', async function (assert) {
+    const data = {dob: '10/20/2015'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = []
+    const passes = await validations.date(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when field does not exists', async function (assert) {
+    const data = {}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = []
+    const passes = await validations.date(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when field value is undefined', async function (assert) {
+    const data = {dob: undefined}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = []
+    const passes = await validations.date(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+})
+
+group('Validations | dateFormat', function () {
+  test('throw exception when date format is not defined', async function (assert) {
+    assert.plan(1)
+
+    const data = {dob: '10th'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = []
+    try {
+      await validations.dateFormat(data, field, message, args, get)
+    } catch ({ message }) {
+      assert.equal(message, 'dateFormat:make sure to define atleast one date format')
+    }
+  })
+
+  test('should throw an error when field value is not a valid date', async function (assert) {
+    const data = {dob: '10th'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY/MM/DD']
+    try {
+      const passes = await validations.dateFormat(data, field, message, args, get)
+      assert.notExist(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('should throw an error when field value is a valid date but not according to defined format', async function (assert) {
+    const data = {dob: '10-20-2015'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY/MM/DD']
+    try {
+      const passes = await validations.dateFormat(data, field, message, args, get)
+      assert.notExist(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('should work fine when field value is a valid date according to given format', async function (assert) {
+    const data = {dob: '2015/10/20'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY/MM/DD']
+    const passes = await validations.dateFormat(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should match against multiple formats', async function (assert) {
+    const data = {dob: '2015/10/20'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY-MM-DD', 'YYYY/MM/DD']
+    const passes = await validations.dateFormat(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when field is not available', async function (assert) {
+    const data = {}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY/MM/DD']
+    const passes = await validations.dateFormat(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when field is undefined', async function (assert) {
+    const data = {dob: undefined}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY/MM/DD']
+    const passes = await validations.dateFormat(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('return error when time is missing from date', async function (assert) {
+    assert.plan(1)
+
+    const data = {dob: '2015/10/20'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY/MM/DD hh:mm:ss']
+
+    try {
+      await validations.dateFormat(data, field, message, args, get)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('return error when time format is different', async function (assert) {
+    assert.plan(1)
+
+    const data = {dob: '2015/10/20 23:33:34'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY/MM/DD hh:mm:ss']
+
+    try {
+      await validations.dateFormat(data, field, message, args, get)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('should pass when time is in correct format', async function (assert) {
+    const data = {dob: '2015/10/20 23:33:34'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY/MM/DD HH:mm:ss']
+
+    const passes = await validations.dateFormat(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
   })
 })
@@ -446,28 +756,30 @@ group('Validations | requiredWithAll', function () {
   })
 
   test('should thrown an error when all of the targeted fields are present but actual field is missing', async function (assert) {
+    assert.plan(1)
+
     const data = {username: 'foo', 'email': 'foo@bar.com'}
     const field = 'password'
     const message = 'password is required after username or email'
     const get = prop
     const args = ['username', 'email']
     try {
-      const passes = await validations.requiredWithAll(data, field, message, args, get)
-      assert.notExist(passes)
+      await validations.requiredWithAll(data, field, message, args, get)
     } catch (e) {
       assert.equal(e, message)
     }
   })
 
-  test('should thrown an error when all of the targeted fields are present but actual field is value is async null', async function (assert) {
+  test('should thrown an error when all of the targeted fields are present but actual field is value is null', async function (assert) {
+    assert.plan(1)
+
     const data = {username: 'foo', email: 'foo@bar.com', password: null}
     const field = 'password'
     const message = 'password is required after username or email'
     const get = prop
     const args = ['username', 'email']
     try {
-      const passes = await validations.requiredWithAll(data, field, message, args, get)
-      assert.notExist(passes)
+      await validations.requiredWithAll(data, field, message, args, get)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -483,7 +795,7 @@ group('Validations | requiredWithAll', function () {
     assert.equal(passes, 'validation passed')
   })
 
-  test('should work fine when any of the targeted fields are missings and actual field value is missing async too', async function (assert) {
+  test('should work fine when any of the targeted fields are missings and actual field value is missing too', async function (assert) {
     const data = {username: 'foo'}
     const field = 'password'
     const message = 'password is required after username or email'
@@ -1103,6 +1415,50 @@ group('Validations | above', function () {
     const args = [17]
     const passes = await validations.above(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
+  })
+
+  test('throw exception when comparison value is not defined', async function (assert) {
+    assert.plan(1)
+
+    const data = {age: 18}
+    const field = 'age'
+    const message = 'age should be over 17 years'
+    const get = prop
+    const args = []
+
+    try {
+      await validations.above(data, field, message, args, get)
+    } catch ({ message }) {
+      assert.equal(message, 'above:make sure to define minValue')
+    }
+  })
+
+  test('pass when values are in strings and user value is over expected value', async function (assert) {
+    const data = {age: '18'}
+    const field = 'age'
+    const message = 'age should be over 17 years'
+    const get = prop
+    const args = ['17']
+
+    const passes = await validations.above(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('fail when values are in strings and user value is under expected value', async function (assert) {
+    assert.plan(1)
+
+    const data = {age: 16}
+    const field = 'age'
+    const message = 'age should be over 17 years'
+    const get = prop
+    const args = ['17']
+
+    try {
+      const passes = await validations.above(data, field, message, args, get)
+      assert.notExist(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
   })
 })
 
@@ -1726,6 +2082,26 @@ group('Validations | boolean', function () {
     const passes = await validations.boolean(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
   })
+
+  test('should work fine when value is a string representation of true', async function (assert) {
+    const data = {is_admin: 'true'}
+    const field = 'is_admin'
+    const message = 'admin identifier should be boolean indicator'
+    const get = prop
+    const args = []
+    const passes = await validations.boolean(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should work fine when value is a string representation of false', async function (assert) {
+    const data = {is_admin: 'false'}
+    const field = 'is_admin'
+    const message = 'admin identifier should be boolean indicator'
+    const get = prop
+    const args = []
+    const passes = await validations.boolean(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
 })
 
 group('Validations | object', function () {
@@ -1951,7 +2327,7 @@ group('Validations | requiredWhen', function () {
     }
   })
 
-  test('should skip validation when of value of conditional field does not match', async function (assert) {
+  test('should skip validation when value of conditional field does not match', async function (assert) {
     const data = {country: 'UK'}
     const field = 'state'
     const message = 'state is required'
@@ -1978,6 +2354,190 @@ group('Validations | requiredWhen', function () {
     const get = prop
     const args = ['country', 'US']
     const passes = await validations.requiredWhen(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('throw exception when expected value is falsy and actual value is missing', async function (assert) {
+    assert.plan(1)
+
+    const data = { source: false }
+    const field = 'password'
+    const message = 'password is required'
+    const get = prop
+    const args = ['source', 'false']
+    try {
+      await validations.requiredWhen(data, field, message, args, get)
+    } catch (e) {
+      assert.equal(e, 'password is required')
+    }
+  })
+
+  test('work fine when expected value is falsy and field value exists', async function (assert) {
+    assert.plan(1)
+
+    const data = { source: false, password: 'foo' }
+    const field = 'password'
+    const message = 'password is required'
+    const get = prop
+    const args = ['source', false]
+    const passes = await validations.requiredWhen(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+})
+
+group('Validations | afterOffsetOf', function () {
+  test('throw exception when offset unit is missing', async function (assert) {
+    assert.plan(1)
+
+    const data = {renewal: new Date()}
+    const field = 'renewal'
+    const message = 'packages are renewed after 12 months'
+    const get = prop
+    const args = []
+
+    try {
+      await validations.afterOffsetOf(data, field, message, args, get)
+    } catch ({ message }) {
+      assert.equal(message, 'afterOffsetOf:make sure to define offset unit and key')
+    }
+  })
+
+  test('throw exception when offset unit is key', async function (assert) {
+    assert.plan(1)
+
+    const data = {renewal: new Date()}
+    const field = 'renewal'
+    const message = 'packages are renewed after 12 months'
+    const get = prop
+    const args = [12]
+
+    try {
+      await validations.afterOffsetOf(data, field, message, args, get)
+    } catch ({ message }) {
+      assert.equal(message, 'afterOffsetOf:make sure to define offset unit and key')
+    }
+  })
+
+  test('should throw an error when date is not after defined offset', async function (assert) {
+    const data = {renewal: new Date()}
+    const field = 'renewal'
+    const message = 'packages are renewed after 12 months'
+    const get = prop
+    const args = ['12', 'months']
+    try {
+      const passes = await validations.afterOffsetOf(data, field, message, args, get)
+      assert.notExist(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('should work fine when value is after defined offset', async function (assert) {
+    const data = {renewal: addMonths(new Date(), 13)}
+    const field = 'renewal'
+    const message = 'packages are renewed after 12 months'
+    const get = prop
+    const args = ['12', 'months']
+    const passes = await validations.afterOffsetOf(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when field is not defined', async function (assert) {
+    const data = {}
+    const field = 'renewal'
+    const message = 'packages are renewed after 12 months'
+    const get = prop
+    const args = ['12', 'months']
+    const passes = await validations.afterOffsetOf(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when field value is undefined', async function (assert) {
+    const data = {renewal: undefined}
+    const field = 'renewal'
+    const message = 'packages are renewed after 12 months'
+    const get = prop
+    const args = ['12', 'months']
+    const passes = await validations.afterOffsetOf(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+})
+
+group('Validations | beforeOffsetOf', function () {
+  test('throw exception when offset unit is missing', async function (assert) {
+    assert.plan(1)
+
+    const data = {subscription: new Date()}
+    const field = 'subscription'
+    const message = '12 months old subscriptions are upgradable'
+    const get = prop
+    const args = []
+
+    try {
+      await validations.beforeOffsetOf(data, field, message, args, get)
+    } catch ({ message }) {
+      assert.equal(message, 'beforeOffsetOf:make sure to define offset unit and key')
+    }
+  })
+
+  test('throw exception when offset unit is key', async function (assert) {
+    assert.plan(1)
+
+    const data = {subscription: new Date()}
+    const field = 'subscription'
+    const message = '12 months old subscriptions are upgradable'
+    const get = prop
+    const args = ['12']
+
+    try {
+      await validations.beforeOffsetOf(data, field, message, args, get)
+    } catch ({ message }) {
+      assert.equal(message, 'beforeOffsetOf:make sure to define offset unit and key')
+    }
+  })
+
+  test('should throw an error when date is not before defined offset', async function (assert) {
+    const data = {subscription: new Date()}
+    const field = 'subscription'
+    const message = '12 months old subscriptions are upgradable'
+    const get = prop
+    const args = ['12', 'months']
+
+    try {
+      const passes = await validations.beforeOffsetOf(data, field, message, args, get)
+      assert.notExist(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('should work fine when value is before defined offset', async function (assert) {
+    const data = {subscription: subYears(new Date(), 2)}
+    const field = 'subscription'
+    const message = '12 months old subscriptions are upgradable'
+    const get = prop
+    const args = ['12', 'months']
+    const passes = await validations.beforeOffsetOf(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when field is not defined', async function (assert) {
+    const data = {}
+    const field = 'subscription'
+    const message = '12 months old subscriptions are upgradable'
+    const get = prop
+    const args = ['12', 'months']
+    const passes = await validations.beforeOffsetOf(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should skip validation when field value is undefined', async function (assert) {
+    const data = {subscription: undefined}
+    const field = 'subscription'
+    const message = '12 months old subscriptions are upgradable'
+    const get = prop
+    const args = ['12', 'months']
+    const passes = await validations.beforeOffsetOf(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
   })
 })

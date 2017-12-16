@@ -1,3 +1,5 @@
+'use strict'
+
 /*
 * indicative
 *
@@ -56,6 +58,7 @@ import starToIndex from './starToIndex'
  */
 function parseRules (fields, data) {
   data = data || {}
+
   return Object.keys(fields).reduce((result, field) => {
     let rules = fields[field]
 
@@ -85,6 +88,5 @@ function parseRules (fields, data) {
     return result
   }, {})
 }
-
 
 export default parseRules

@@ -1,1 +1,1 @@
-export default (input) => typeof (input) === 'number'
+export default (input) => typeof (input) === 'number' && !isNaN(input)

@@ -1,3 +1,5 @@
+'use strict'
+
 /*
 * indicative
 *
@@ -55,9 +57,10 @@ function getMessage (messages, field, validation, args) {
   field = field.replace(/\.\d/g, '.*')
 
   const message = messages[`${field}.${validation}`] || messages[validation] || '{{validation}} validation failed on {{ field }}'
+
   return typeof (message) === 'function'
   ? message(field, validation, args)
-  : pope(message, { field, validation: validation, argument: args })
+  : pope(message, { field, validation, argument: args })
 }
 
 export default getMessage

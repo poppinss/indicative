@@ -2,31 +2,14 @@ import uglify from 'rollup-plugin-uglify'
 import { minify } from 'uglify-es'
 
 const plugins = require('./rollupPlugins')
+const pkg = require('./package.json')
 plugins.push(uglify({}, minify))
 
 export default [
   {
     input: './index',
     output: {
-      file: 'build/main.es.js',
-      format: 'es',
-      name: 'indicative'
-    },
-    plugins: plugins
-  },
-  {
-    input: './index',
-    output: {
-      file: 'build/main.js',
-      format: 'cjs',
-      name: 'indicative'
-    },
-    plugins: plugins
-  },
-  {
-    input: './index',
-    output: {
-      file: 'build/main.umd.js',
+      file: pkg.main,
       format: 'umd',
       name: 'indicative'
     },
@@ -35,17 +18,26 @@ export default [
   {
     input: 'src/core/validator',
     output: {
-      file: 'build/core.js',
-      format: 'es',
-      name: 'indicative'
+      file: 'builds/core.js',
+      format: 'umd',
+      name: 'indicative.validator'
+    },
+    plugins: plugins
+  },
+  {
+    input: 'src/formatters/index',
+    output: {
+      file: 'builds/formatters.js',
+      format: 'umd',
+      name: 'indicative.formatters'
     },
     plugins: plugins
   },
   {
     input: 'src/raw/index',
     output: {
-      file: 'build/raw.js',
-      format: 'es',
+      file: 'builds/raw.js',
+      format: 'umd',
       name: 'indicative.is'
     },
     plugins: plugins
@@ -53,9 +45,27 @@ export default [
   {
     input: 'src/validations/index',
     output: {
-      file: 'build/validations.js',
-      format: 'es',
+      file: 'builds/validations.js',
+      format: 'umd',
       name: 'indicative.validations'
+    },
+    plugins: plugins
+  },
+  {
+    input: 'src/core/sanitizor',
+    output: {
+      file: 'builds/sanitizor.js',
+      format: 'umd',
+      name: 'indicative.sanitizor'
+    },
+    plugins: plugins
+  },
+  {
+    input: 'src/sanitizations/index',
+    output: {
+      file: 'builds/sanitizations.js',
+      format: 'umd',
+      name: 'indicative.sanitizations'
     },
     plugins: plugins
   }
