@@ -16,6 +16,24 @@ export default [
     plugins: plugins
   },
   {
+    input: 'src/core/configure',
+    output: {
+      file: 'builds/configure.js',
+      format: 'umd',
+      name: 'indicative.configure'
+    },
+    plugins: plugins
+  },
+  {
+    input: 'src/core/rule',
+    output: {
+      file: 'builds/rule.js',
+      format: 'umd',
+      name: 'indicative.rule'
+    },
+    plugins: plugins
+  },
+  {
     input: 'src/core/validator',
     output: {
       file: 'builds/core.js',

@@ -1,5 +1,5 @@
 import toPromise from '../../lib/toPromise'
-import skippable from '../../lib/skippable'
+import skippable from '../core/skippable'
 
 /**
  * Ensure the value of field under validation ends with a certain substr. This

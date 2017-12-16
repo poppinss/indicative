@@ -16,6 +16,7 @@ import pSeries from './pSeries'
 import parse from './parse'
 import getMessage from './getMessage'
 import snakeToCamelCase from './snakeToCamelCase'
+import config from './config'
 
 /**
  * Returns a lazy promise which runs the validation on a field
@@ -166,7 +167,7 @@ export default (validations, formatters) => {
      * @returns {Promise} Promise is rejected with an array of errors or resolved with original data
      */
     validate (data, fields, messages, formatter) {
-      formatter = new formatters[formatter || 'Vanilla']()
+      formatter = new formatters[formatter || config.DEFAULT_FORMATTER]()
       return validate(validations, true, data, fields, messages, formatter)
     },
 
@@ -182,7 +183,7 @@ export default (validations, formatters) => {
      * @returns {Promise} Promise is rejected with an array of errors or resolved with original data
      */
     validateAll (data, fields, messages, formatter) {
-      formatter = new formatters[formatter || 'Vanilla']()
+      formatter = new formatters[formatter || config.DEFAULT_FORMATTER]()
       return validate(validations, false, data, fields, messages, formatter)
     }
   }
