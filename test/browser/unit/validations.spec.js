@@ -316,7 +316,6 @@ group('Validations | before', function () {
     }
   })
 
-
   test('should throw an error when date is not before defined date', async function (assert) {
     const data = {dob: '2012-11-20'}
     const field = 'dob'
