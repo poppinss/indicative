@@ -9,7 +9,7 @@
     "pretest": "npm run lint",
     "test:node": "japa",
     "test:browser": "karma start",
-    "test": "npm run test:local",
+    "test": "npm run test:node",
     "build": "rollup -c"
   },
   "author": "amanvirk",
