@@ -1,5 +1,5 @@
 import toPromise from '../../lib/toPromise'
-import skippable from '../../lib/skippable'
+import skippable from '../core/skippable'
 import isString from '../raw/isString'
 
 /**

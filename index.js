@@ -16,6 +16,7 @@ import * as sanitizations from './src/sanitizations'
 import * as raw from './src/raw'
 import * as formatters from './src/formatters'
 import rule from './src/core/rule'
+import configure from './src/core/configure'
 
 const validatorInstance = validator(validations, formatters)
 const sanitizorInstance = sanitizor(sanitizations)
@@ -27,5 +28,6 @@ export default {
   sanitize: sanitizorInstance.sanitize.bind(sanitizorInstance),
   sanitizor: sanitizations,
   rule: rule,
-  formatters: formatters
+  formatters: formatters,
+  configure: configure
 }

@@ -1,4 +1,4 @@
-import skippable from '../../lib/skippable'
+import skippable from '../core/skippable'
 import toPromise from '../../lib/toPromise'
 import ipv6 from '../raw/ipv6'
 
