@@ -1,1 +1,1 @@
-export default (input, comparsionInput) => typeof (input) === typeof (comparsionInput)
+export default (input, comparsionInput) => input === comparsionInput

@@ -1,7 +1,70 @@
-import PLazy from '../../../src/core/pLazy'
+'use strict'
+
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
+import PLazy from '../../../src/core/PLazy'
 import pSeries from '../../../src/core/pSeries'
 
 group('Promise series', () => {
+  test('do not invoke promise unless .then or .catch is called', (assert) => {
+    const responses = []
+
+    const promise = function () {
+      return new PLazy((resolve) => {
+        responses.push('invoked')
+        setTimeout(() => {
+          resolve()
+        })
+      })
+    }
+
+    promise()
+    assert.deepEqual(responses, [])
+  })
+
+  test('calling .then on PLazy should invoke promise', (assert) => {
+    const responses = []
+
+    const promise = function () {
+      return new PLazy((resolve) => {
+        responses.push('invoked')
+        setTimeout(() => {
+          resolve()
+        })
+      })
+    }
+
+    return promise()
+    .then(() => {
+      assert.deepEqual(responses, ['invoked'])
+    })
+  })
+
+  test('calling .catch on PLazy should invoke promise', (assert) => {
+    const responses = []
+
+    const promise = function () {
+      return new PLazy((resolve, reject) => {
+        responses.push('invoked')
+        setTimeout(() => {
+          reject(new Error('dummy'))
+        })
+      })
+    }
+
+    return promise()
+    .catch(() => {
+      assert.deepEqual(responses, ['invoked'])
+    })
+  })
+
   test('run promises in series', async (assert) => {
     const responses = []
 

@@ -1,3 +1,5 @@
+'use strict'
+
 /*
 * indicative
 *
@@ -48,8 +50,14 @@ function starToIndex (pairs, data, i, out) {
     curr = ''
   }
 
+  /**
+   *  Keep on adding to the out array. The reason we call reduce
+   *  operation, as we have to modify the existing keys inside
+   *  the `out` array.
+   */
   out = out.reduce((result, existingNode) => {
     const nName = curr ? `${existingNode}.${curr}` : existingNode
+
     /**
      * We pull childs when `next` is not undefined, otherwise
      * we assume the end of `*` expression
@@ -68,7 +76,11 @@ function starToIndex (pairs, data, i, out) {
     return result
   }, [])
 
-  return (i) === pairs.length ? out : starToIndex(pairs, data, i, out)
+  /**
+   *  Recursively call this method until we loop through the entire
+   *  array.
+   */
+  return i === pairs.length ? out : starToIndex(pairs, data, i, out)
 }
 
 export default starToIndex

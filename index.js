@@ -10,13 +10,22 @@
 */
 
 import validator from './src/core/validator'
+import sanitizor from './src/core/sanitizor'
 import * as validations from './src/validations'
+import * as sanitizations from './src/sanitizations'
 import * as raw from './src/raw'
+import * as formatters from './src/formatters'
+import rule from './src/core/rule'
 
-const validatorInstance = validator(validations)
+const validatorInstance = validator(validations, formatters)
+const sanitizorInstance = sanitizor(sanitizations)
 
 export default {
   validate: validatorInstance.validate,
   validateAll: validatorInstance.validateAll,
-  is: raw
+  is: raw,
+  sanitize: sanitizorInstance.sanitize.bind(sanitizorInstance),
+  sanitizor: sanitizations,
+  rule: rule,
+  formatters: formatters
 }

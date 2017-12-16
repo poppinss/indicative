@@ -1,22 +1,28 @@
 import toPromise from '../../lib/toPromise'
 import empty from '../raw/empty'
+import existy from '../raw/existy'
 
+/**
+ * Ensures the field is required when all of the other fields has empty values.
+ *
+ * [source, js]
+ * ----
+ * const rules = {
+ *   email: 'required_without_any:username,account_id'
+ * }
+ *
+ * // or
+ * const rules = {
+ *   email: [
+ *     rule('required_without_any', ['username', 'account_id'])
+ *   ]
+ * }
+ * ----
+ */
 export default (data, field, message, args, get) => {
   return toPromise(() => {
-    let expectedFieldMissing = false
-
-    /**
-     * looping through all items to make sure
-     * one of them is present
-     */
-    for (let i = 0; i < args.length; i++) {
-      if (!get(data, args[i])) {
-        expectedFieldMissing = true
-        break
-      }
-    }
-
-    if (expectedFieldMissing && empty(get(data, field))) {
+    const hasAnyField = args.some((item) => !existy(get(data, item)))
+    if (hasAnyField && empty(get(data, field))) {
       return message
     }
   })

@@ -1,6 +1,6 @@
 module.exports = function (config) {
   config.set({
-    basePath: './',
+    basePath: '',
     files: [
       'node_modules/babel-polyfill/dist/polyfill.js',
       'test/browser/**/*.spec.js'
@@ -14,6 +14,10 @@ module.exports = function (config) {
       sourcemap: 'inline',
       plugins: require('./rollupPlugins')
     },
-    frameworks: ['japa']
+    port: 9876,
+    reporters: ['dots'],
+    frameworks: ['japa'],
+    browsers: ['Chrome'],
+    singleRun: true
   })
 }

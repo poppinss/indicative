@@ -1,3 +1,5 @@
+'use strict'
+
 /**
  * This method creates a lazy promise which is only executed
  * when `.then` or `.catch` are called on the PLazy instance.
@@ -20,7 +22,7 @@
  * })
  */
 function PLazy (fn) {
-	this.fn = fn
+  this.fn = fn
   this._promise = null
 }
 

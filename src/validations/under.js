@@ -1,14 +1,31 @@
 import toPromise from '../../lib/toPromise'
 import skippable from '../../lib/skippable'
 
-export default (data, field, message, [minValue], get) => {
+/**
+ * Ensures the value of a field is under a certain value. All values
+ * will be casted to `Number`.
+ *
+ * [source, js]
+ * ----
+ * const rules = {
+ *   age: 'under:60'
+ * }
+ *
+ * // or
+ * const rules = {
+ *   password_confirmation: [
+ *     rule('age', 60)
+ *   ]
+ * }
+ * ----
+ */
+export default (data, field, message, [maxValue], get) => {
   return toPromise(() => {
-    const fieldValue = get(data, field)
-    if (skippable(fieldValue)) {
-      return
+    if (!maxValue) {
+      throw new Error('under:make sure to pass the max value')
     }
-
-    if (Number(fieldValue) >= minValue) {
+    const fieldValue = get(data, field)
+    if (!skippable(fieldValue) && Number(fieldValue) >= Number(maxValue)) {
       return message
     }
   })

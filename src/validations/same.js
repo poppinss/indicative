@@ -1,19 +1,30 @@
 import toPromise from '../../lib/toPromise'
 import skippable from '../../lib/skippable'
+import existy from '../raw/existy'
 
-export default (data, field, message, args, get) => {
+/**
+ * Ensures the value of 2 fields are same.
+ *
+ * [source, js]
+ * ----
+ * const rules = {
+ *   password_confirmation: 'same:password'
+ * }
+ *
+ * // or
+ * const rules = {
+ *   password_confirmation: [
+ *     rule('same', ['password'])
+ *   ]
+ * }
+ * ----
+ */
+export default (data, field, message, [targetedField], get) => {
   return toPromise(() => {
     const fieldValue = get(data, field)
-    if (skippable(fieldValue)) {
-      return
-    }
+    const targetedFieldValue = get(data, targetedField)
 
-    const targetedFieldValue = get(data, args[0])
-    if (!targetedFieldValue) {
-      return
-    }
-
-    if (targetedFieldValue !== fieldValue) {
+    if (!skippable(fieldValue) && existy(targetedFieldValue) && targetedFieldValue !== fieldValue) {
       return message
     }
   })
