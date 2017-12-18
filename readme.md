@@ -2,6 +2,8 @@
 
 > Bit of docs. The final readme and docs will be different.
 
+![](https://saucelabs.com/browser-matrix/indicative.svg)
+
 ## Customized build for validator
 Indicative offers customized builds, which are helpful when writing apps for the browser, since every byte matters.
 
@@ -61,4 +63,3 @@ const data = {
 
 const sanitizedData = appSanitizor.sanitize(data, rules)
 ```
-

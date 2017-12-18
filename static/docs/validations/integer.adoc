@@ -1,0 +1,15 @@
+Ensures the value is a valid integer.
+ 
+[source, js]
+----
+const rules = {
+  age: 'integer'
+}
+ 
+// or
+const rules = {
+  age: [
+    rule('integer')
+  ]
+}
+----

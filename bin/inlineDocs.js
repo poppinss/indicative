@@ -1,52 +1,121 @@
 const klaw = require('klaw')
 const path = require('path')
-const fs = require('fs')
+const fs = require('fs-extra')
+const docsFor = ['validations', 'sanitizations']
+const srcPath = path.join(__dirname, '..', 'src')
+const docsDir = path.join(__dirname, '..', 'static', 'docs')
 
-function readSourceFiles () {
+/**
+ * Walks over a location and reads all .js files
+ *
+ * @method getFiles
+ *
+ * @param  {String} location
+ * @param  {Function} filterFn
+ *
+ * @return {Array}
+ */
+function getFiles (location, filterFn) {
   return new Promise((resolve, reject) => {
-    const fns = []
-    klaw(path.join(__dirname, '../src/validations'))
+    const files = []
+    klaw(location)
     .on('data', (item) => {
-      if (!item.path.endsWith('index.js') && !item.stats.isDirectory()) {
-        fns.push(item.path)
+      if (!item.stats.isDirectory() && filterFn(item)) {
+        files.push(item.path)
       }
     })
-    .on('end', () => resolve(fns))
+    .on('end', () => resolve(files))
     .on('error', reject)
   })
 }
 
-function extractComments (files) {
-  return files.map((file) => {
-    let context = 'idle'
-    const lines = []
-    fs.readFileSync(file, 'utf-8').split('\n').forEach((line) => {
-      if (line.trim() === '/**') {
-        context = 'in'
-        return
-      }
-
-      if (line.trim() === '*/') {
-        context = 'out'
-        return
-      }
-
-      if (context === 'in') {
-        lines.push(line.replace(/\*/g, '').replace(/^\s\s/, ''))
-      }
-    })
-    return { file, comment: lines.join('\n') }
-  })
+/**
+ * Returns an array of files in parallel
+ *
+ * @method readFiles
+ *
+ * @param  {Array}  locations
+ *
+ * @return {Array}
+ */
+async function readFiles (locations) {
+  return Promise.all(locations.map((location) => {
+    return fs.readFile(location, 'utf-8')
+  }))
 }
 
-function generateDocFiles (commentsMap) {
-  commentsMap.forEach((item) => {
-    const fileName = path.basename(item.file).replace('.js', '')
-    fs.writeFileSync(path.join(__dirname, '../docs/validations/', `${fileName}.adoc`), item.comment)
+/**
+ * Extract comments from the top of the file. Also this method
+ * assumes, each block of content has only one top of comments
+ * section.
+ *
+ * @method extractComments
+ *
+ * @param  {String}        contents
+ *
+ * @return {String}
+ */
+function extractComments (contents) {
+  let context = 'idle'
+  const lines = []
+  contents.split('\n').forEach((line) => {
+    if (line.trim() === '/**') {
+      context = 'in'
+      return
+    }
+
+    if (line.trim() === '*/') {
+      context = 'out'
+      return
+    }
+
+    if (context === 'in') {
+      lines.push(line.replace(/\*/g, '').replace(/^\s\s/, ''))
+    }
   })
+  return lines.join('\n')
 }
 
-readSourceFiles()
-.then((files) => {
-  generateDocFiles(extractComments(files))
-}).catch(console.error)
+/**
+ * Writes all docs to their respective files
+ *
+ * @method writeDocs
+ *
+ * @param  {String}  basePath
+ * @param  {Array}  nodes
+ *
+ * @return {void}
+ */
+async function writeDocs (basePath, nodes) {
+  Promise.all(nodes.map((node) => {
+    const location = path.join(basePath, node.location.replace(srcPath, '').replace(/\.js$/, '.adoc'))
+    return fs.outputFile(location, node.comments)
+  }))
+}
+
+/**
+ * Converts all source files inside a directory to `.adoc`
+ * files inside docs directory
+ *
+ * @method srcToDocs
+ *
+ * @param  {String}  dir
+ *
+ * @return {void}
+ */
+async function srcToDocs (dir) {
+  const location = path.join(srcPath, dir)
+  const srcFiles = await getFiles(location, (item) => item.path.endsWith('.js') && !item.path.endsWith('index.js'))
+  const filesContents = await readFiles(srcFiles)
+  const filesComments = srcFiles.map((location, index) => {
+    return { comments: extractComments(filesContents[index]), location }
+  })
+  await writeDocs(docsDir, filesComments)
+}
+
+Promise
+  .all(docsFor.map((dir) => srcToDocs(dir)))
+  .then(() => {
+    console.log(`Generated docs inside ${docsDir}`)
+  })
+  .catch(console.error)
