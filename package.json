@@ -6,21 +6,25 @@
   "types": "index.d.ts",
   "scripts": {
     "lint": "standard src/**/*.js test/**/*.js",
+    "build": "rollup -c",
+    "docs": "node bin/inlineDocs",
     "pretest": "npm run lint",
     "test:node": "japa",
-    "test:browser": "karma start",
-    "test": "npm run test:node",
-    "build": "rollup -c"
+    "test:karma": "karma start",
+    "test:qunit": "node bin/qunit",
+    "test:all": "npm run test:node && npm run test:karma && npm run test:qunit",
+    "test": "node bin/test"
   },
   "author": "amanvirk",
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-plugin-external-helpers": "^6.22.0",
-    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "chalk": "^2.3.0",
     "cz-conventional-changelog": "^2.1.0",
     "fs-extra": "^5.0.0",
+    "got": "^8.0.1",
     "japa": "^1.0.5",
     "japa-cli": "^1.0.1",
     "karma": "^1.7.1",
@@ -29,6 +33,9 @@
     "karma-rollup-preprocessor": "^5.0.2",
     "klaw": "^2.1.1",
     "nyc": "^11.3.0",
+    "opn": "^5.1.0",
+    "promise-polyfill": "^6.1.0",
+    "regenerator-runtime": "^0.11.1",
     "rollup": "^0.52.1",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-commonjs": "^8.2.6",
@@ -43,6 +50,7 @@
     "clone": "^2.1.1",
     "date-fns": "^1.29.0",
     "haye": "^2.0.1",
+    "ngrok": "^2.2.24",
     "pluralize": "^7.0.0",
     "pope": "^2.0.2",
     "striptags": "^3.1.1",
@@ -74,7 +82,8 @@
   "standard": {
     "globals": [
       "test",
-      "group"
+      "group",
+      "QUnit"
     ]
   },
   "nyc": {

@@ -1,1 +1,574 @@
-!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?module.exports=t():"function"==typeof define&&define.amd?define(t):(e.indicative=e.indicative||{},e.indicative.sanitizor=t())}(this,function(){"use strict";function e(e,t){if(!function(e){return null!==e&&"object"==typeof e}(e)||"string"!=typeof t)return e;for(var r=t.split("."),n=0;n<r.length;n++){var o=r[n];if(null===(e=e.hasOwnProperty(o)?e[o]:null))break}return e}function t(r,n,o,i){if(!n)return[];o=o||0;var u=r[o++],f=r[o];return i||(i=[u],u=""),i=i.reduce(function(t,r){var o=u?r+"."+u:r;if(void 0!==f){var i=e(n,o);if(Array.isArray(i))for(var c=i.length,a=0;a<c;a++)t.push(o+"."+a)}else t.push(o);return t},[]),o===r.length?i:t(r,n,o,i)}function r(e){return null!==e&&"object"===(void 0===e?"undefined":f(e))}var n=function(e,t){return t={exports:{}},e(t,t.exports),t.exports}(function(e){var t=function(){function e(e,t){return null!=t&&e instanceof t}function t(r,f,c,a,s){function l(r,c){if(null===r)return null;if(0===c)return r;var b,g;if("object"!=typeof r)return r;if(e(r,o))b=new o;else if(e(r,i))b=new i;else if(e(r,u))b=new u(function(e,t){r.then(function(t){e(l(t,c-1))},function(e){t(l(e,c-1))})});else if(t.__isArray(r))b=[];else if(t.__isRegExp(r))b=new RegExp(r.source,n(r)),r.lastIndex&&(b.lastIndex=r.lastIndex);else if(t.__isDate(r))b=new Date(r.getTime());else{if(d&&Buffer.isBuffer(r))return b=new Buffer(r.length),r.copy(b),b;e(r,Error)?b=Object.create(r):void 0===a?(g=Object.getPrototypeOf(r),b=Object.create(g)):(b=Object.create(a),g=a)}if(f){var h=p.indexOf(r);if(-1!=h)return y[h];p.push(r),y.push(b)}e(r,o)&&r.forEach(function(e,t){var r=l(t,c-1),n=l(e,c-1);b.set(r,n)}),e(r,i)&&r.forEach(function(e){var t=l(e,c-1);b.add(t)});for(var v in r){var m;g&&(m=Object.getOwnPropertyDescriptor(g,v)),m&&null==m.set||(b[v]=l(r[v],c-1))}if(Object.getOwnPropertySymbols){var j=Object.getOwnPropertySymbols(r);for(v=0;v<j.length;v++){var O=j[v];(!(_=Object.getOwnPropertyDescriptor(r,O))||_.enumerable||s)&&(b[O]=l(r[O],c-1),_.enumerable||Object.defineProperty(b,O,{enumerable:!1}))}}if(s){var w=Object.getOwnPropertyNames(r);for(v=0;v<w.length;v++){var _,x=w[v];(_=Object.getOwnPropertyDescriptor(r,x))&&_.enumerable||(b[x]=l(r[x],c-1),Object.defineProperty(b,x,{enumerable:!1}))}}return b}"object"==typeof f&&(c=f.depth,a=f.prototype,s=f.includeNonEnumerable,f=f.circular);var p=[],y=[],d="undefined"!=typeof Buffer;return void 0===f&&(f=!0),void 0===c&&(c=1/0),l(r,c)}function r(e){return Object.prototype.toString.call(e)}function n(e){var t="";return e.global&&(t+="g"),e.ignoreCase&&(t+="i"),e.multiline&&(t+="m"),t}var o;try{o=Map}catch(e){o=function(){}}var i;try{i=Set}catch(e){i=function(){}}var u;try{u=Promise}catch(e){u=function(){}}return t.clonePrototype=function(e){if(null===e)return null;var t=function(){};return t.prototype=e,new t},t.__objToStr=r,t.__isDate=function(e){return"object"==typeof e&&"[object Date]"===r(e)},t.__isArray=function(e){return"object"==typeof e&&"[object Array]"===r(e)},t.__isRegExp=function(e){return"object"==typeof e&&"[object RegExp]"===r(e)},t.__getRegExpFlags=n,t}();e.exports&&(e.exports=t)}),o=function(e,t){t.add();const r=e.length;let n=0,o="name";for(;n<r;){const r=e[n++],i=r.charCodeAt(0);58===i||44===i?(o="arg",t.shiftValue()):124===i?(o="name",t.add()):"arg"===o?t.appendValue(r):t.appendKey(r,i)}return t.toJSON()},i=function(){return{nodes:[],currentNode:null,add(){this.currentNode={name:"",args:[]},this.nodes.push(this.currentNode)},appendKey(e,t){32!==t&&(this.currentNode.name+=e)},appendValue(e){this.currentNode.args[this.currentNode.args.length-1]+=e},shiftValue(){this.currentNode.args.push("")},toJSON(){return this.nodes}}},u=function(e){return e.replace(/_(\w)/g,function(e,t){return t.toUpperCase()})},f="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};return function(f){return{sanitize:function(c,a){var s=function(e,r){return r=r||{},Object.keys(e).reduce(function(n,u){var f=e[u];if("string"==typeof f)f=o(f,new i);else if(!Array.isArray(f))throw new Error("Rules must be defined as a string or an array");return u.includes("*")?t(u.split(/\.\*\.?/),r).forEach(function(e){n[e]=f}):n[u]=f,n},{})}(a,c);return Object.keys(s).reduce(function(t,n){var o=e(c,n);return null!==o&&function(e,t,n){function o(e,t){var u=i[t];if(t+1!==i.length)return isNaN(parseInt(i[t+1]))||Array.isArray(e[u])?r(e[u])||(e[u]={}):e[u]=[],o(e[u],t+1);e[u]=n}if(r(e)&&"string"==typeof t){var i=t.split(".");o(e,0)}}(t,n,function(e,t,r){var n=t;return r.forEach(function(t){var r=u(t.name);if("function"!=typeof e[r])throw new Error(r+" is not a sanitization method");n=e[r](n,t.args)}),n}(f,o,s[n])),t},n(c,!1))}}}});
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.indicative = global.indicative || {}, global.indicative.sanitizor = factory());
+}(this, (function () { 'use strict';
+
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+var clone_1 = createCommonjsModule(function (module) {
+var clone = (function() {
+function _instanceof(obj, type) {
+  return type != null && obj instanceof type;
+}
+
+var nativeMap;
+try {
+  nativeMap = Map;
+} catch(_) {
+  // maybe a reference error because no `Map`. Give it a dummy value that no
+  // value will ever be an instanceof.
+  nativeMap = function() {};
+}
+
+var nativeSet;
+try {
+  nativeSet = Set;
+} catch(_) {
+  nativeSet = function() {};
+}
+
+var nativePromise;
+try {
+  nativePromise = Promise;
+} catch(_) {
+  nativePromise = function() {};
+}
+
+/**
+ * Clones (copies) an Object using deep copying.
+ *
+ * This function supports circular references by default, but if you are certain
+ * there are no circular references in your object, you can save some CPU time
+ * by calling clone(obj, false).
+ *
+ * Caution: if `circular` is false and `parent` contains circular references,
+ * your program may enter an infinite loop and crash.
+ *
+ * @param `parent` - the object to be cloned
+ * @param `circular` - set to true if the object to be cloned may contain
+ *    circular references. (optional - true by default)
+ * @param `depth` - set to a number if the object is only to be cloned to
+ *    a particular depth. (optional - defaults to Infinity)
+ * @param `prototype` - sets the prototype to be used when cloning an object.
+ *    (optional - defaults to parent prototype).
+ * @param `includeNonEnumerable` - set to true if the non-enumerable properties
+ *    should be cloned as well. Non-enumerable properties on the prototype
+ *    chain will be ignored. (optional - false by default)
+*/
+function clone(parent, circular, depth, prototype, includeNonEnumerable) {
+  if (typeof circular === 'object') {
+    depth = circular.depth;
+    prototype = circular.prototype;
+    includeNonEnumerable = circular.includeNonEnumerable;
+    circular = circular.circular;
+  }
+  // maintain two arrays for circular references, where corresponding parents
+  // and children have the same index
+  var allParents = [];
+  var allChildren = [];
+
+  var useBuffer = typeof Buffer != 'undefined';
+
+  if (typeof circular == 'undefined')
+    circular = true;
+
+  if (typeof depth == 'undefined')
+    depth = Infinity;
+
+  // recurse this function so we don't reset allParents and allChildren
+  function _clone(parent, depth) {
+    // cloning null always returns null
+    if (parent === null)
+      return null;
+
+    if (depth === 0)
+      return parent;
+
+    var child;
+    var proto;
+    if (typeof parent != 'object') {
+      return parent;
+    }
+
+    if (_instanceof(parent, nativeMap)) {
+      child = new nativeMap();
+    } else if (_instanceof(parent, nativeSet)) {
+      child = new nativeSet();
+    } else if (_instanceof(parent, nativePromise)) {
+      child = new nativePromise(function (resolve, reject) {
+        parent.then(function(value) {
+          resolve(_clone(value, depth - 1));
+        }, function(err) {
+          reject(_clone(err, depth - 1));
+        });
+      });
+    } else if (clone.__isArray(parent)) {
+      child = [];
+    } else if (clone.__isRegExp(parent)) {
+      child = new RegExp(parent.source, __getRegExpFlags(parent));
+      if (parent.lastIndex) child.lastIndex = parent.lastIndex;
+    } else if (clone.__isDate(parent)) {
+      child = new Date(parent.getTime());
+    } else if (useBuffer && Buffer.isBuffer(parent)) {
+      child = new Buffer(parent.length);
+      parent.copy(child);
+      return child;
+    } else if (_instanceof(parent, Error)) {
+      child = Object.create(parent);
+    } else {
+      if (typeof prototype == 'undefined') {
+        proto = Object.getPrototypeOf(parent);
+        child = Object.create(proto);
+      }
+      else {
+        child = Object.create(prototype);
+        proto = prototype;
+      }
+    }
+
+    if (circular) {
+      var index = allParents.indexOf(parent);
+
+      if (index != -1) {
+        return allChildren[index];
+      }
+      allParents.push(parent);
+      allChildren.push(child);
+    }
+
+    if (_instanceof(parent, nativeMap)) {
+      parent.forEach(function(value, key) {
+        var keyChild = _clone(key, depth - 1);
+        var valueChild = _clone(value, depth - 1);
+        child.set(keyChild, valueChild);
+      });
+    }
+    if (_instanceof(parent, nativeSet)) {
+      parent.forEach(function(value) {
+        var entryChild = _clone(value, depth - 1);
+        child.add(entryChild);
+      });
+    }
+
+    for (var i in parent) {
+      var attrs;
+      if (proto) {
+        attrs = Object.getOwnPropertyDescriptor(proto, i);
+      }
+
+      if (attrs && attrs.set == null) {
+        continue;
+      }
+      child[i] = _clone(parent[i], depth - 1);
+    }
+
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(parent);
+      for (var i = 0; i < symbols.length; i++) {
+        // Don't need to worry about cloning a symbol because it is a primitive,
+        // like a number or string.
+        var symbol = symbols[i];
+        var descriptor = Object.getOwnPropertyDescriptor(parent, symbol);
+        if (descriptor && !descriptor.enumerable && !includeNonEnumerable) {
+          continue;
+        }
+        child[symbol] = _clone(parent[symbol], depth - 1);
+        if (!descriptor.enumerable) {
+          Object.defineProperty(child, symbol, {
+            enumerable: false
+          });
+        }
+      }
+    }
+
+    if (includeNonEnumerable) {
+      var allPropertyNames = Object.getOwnPropertyNames(parent);
+      for (var i = 0; i < allPropertyNames.length; i++) {
+        var propertyName = allPropertyNames[i];
+        var descriptor = Object.getOwnPropertyDescriptor(parent, propertyName);
+        if (descriptor && descriptor.enumerable) {
+          continue;
+        }
+        child[propertyName] = _clone(parent[propertyName], depth - 1);
+        Object.defineProperty(child, propertyName, {
+          enumerable: false
+        });
+      }
+    }
+
+    return child;
+  }
+
+  return _clone(parent, depth);
+}
+
+/**
+ * Simple flat clone using prototype, accepts only objects, usefull for property
+ * override on FLAT configuration object (no nested props).
+ *
+ * USE WITH CAUTION! This may not behave as you wish if you do not know how this
+ * works.
+ */
+clone.clonePrototype = function clonePrototype(parent) {
+  if (parent === null)
+    return null;
+
+  var c = function () {};
+  c.prototype = parent;
+  return new c();
+};
+
+// private utility functions
+
+function __objToStr(o) {
+  return Object.prototype.toString.call(o);
+}
+clone.__objToStr = __objToStr;
+
+function __isDate(o) {
+  return typeof o === 'object' && __objToStr(o) === '[object Date]';
+}
+clone.__isDate = __isDate;
+
+function __isArray(o) {
+  return typeof o === 'object' && __objToStr(o) === '[object Array]';
+}
+clone.__isArray = __isArray;
+
+function __isRegExp(o) {
+  return typeof o === 'object' && __objToStr(o) === '[object RegExp]';
+}
+clone.__isRegExp = __isRegExp;
+
+function __getRegExpFlags(re) {
+  var flags = '';
+  if (re.global) flags += 'g';
+  if (re.ignoreCase) flags += 'i';
+  if (re.multiline) flags += 'm';
+  return flags;
+}
+clone.__getRegExpFlags = __getRegExpFlags;
+
+return clone;
+})();
+
+if ('object' === 'object' && module.exports) {
+  module.exports = clone;
+}
+});
+
+function isObj$1(r){return null!==r&&"object"==typeof r}function prop(r,e){if(!isObj$1(r)||"string"!=typeof e)return r;for(var n=e.split("."),i=0;i<n.length;i++){var o=n[i];if(null===(r=r.hasOwnProperty(o)?r[o]:null))break}return r}
+
+function Pipe(e,t){t.add();const a=e.length;let n=0,d="name";for(;n<a;){const a=e[n++],o=a.charCodeAt(0);58===o||44===o?(d="arg", t.shiftValue()):124===o?(d="name", t.add()):"arg"===d?t.appendValue(a):t.appendKey(a,o);}return t.toJSON()}var hayePipe=Pipe;
+
+function ArrayPresenter(){return{nodes:[],currentNode:null,add(){this.currentNode={name:"",args:[]}, this.nodes.push(this.currentNode);},appendKey(e,r){32!==r&&(this.currentNode.name+=e);},appendValue(e){this.currentNode.args[this.currentNode.args.length-1]+=e;},shiftValue(){this.currentNode.args.push("");},toJSON(){return this.nodes}}}var hayeArrayPresenter=ArrayPresenter;
+
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
+/**
+ * This method loops over an array and build properties based upon
+ * values available inside the data object.
+ *
+ * This method is supposed to never throw any exceptions, and instead
+ * skip a property when data or pairs are not in right format.
+ *
+ * @method starToIndex
+ *
+ * @param {Array}  pairs
+ * @param {Object} data
+ * @param {Number} i
+ * @param {Out}    out
+ *
+ * @example
+ * const pairs = ['users', 'username']
+ * const data = { users: [ { username: 'foo' }, { username: 'bar' } ] }
+ *
+ * startToIndex(pairs, data)
+ * // output ['users.0.username', 'users.1.username']
+ */
+function starToIndex(pairs, data, i, out) {
+  if (!data) {
+    return [];
+  }
+
+  i = i || 0;
+  var curr = pairs[i++];
+  var next = pairs[i];
+
+  /**
+   * When out is not defined, then start
+   * with the current node
+   */
+  if (!out) {
+    out = [curr];
+    curr = '';
+  }
+
+  /**
+   *  Keep on adding to the out array. The reason we call reduce
+   *  operation, as we have to modify the existing keys inside
+   *  the `out` array.
+   */
+  out = out.reduce(function (result, existingNode) {
+    var nName = curr ? existingNode + '.' + curr : existingNode;
+
+    /**
+     * We pull childs when `next` is not undefined, otherwise
+     * we assume the end of `*` expression
+     */
+    if (next !== undefined) {
+      var value = prop(data, nName);
+      if (Array.isArray(value)) {
+        var dataLength = value.length;
+        for (var _i = 0; _i < dataLength; _i++) {
+          result.push(nName + '.' + _i);
+        }
+      }
+    } else {
+      result.push(nName);
+    }
+    return result;
+  }, []);
+
+  /**
+   *  Recursively call this method until we loop through the entire
+   *  array.
+   */
+  return i === pairs.length ? out : starToIndex(pairs, data, i, out);
+}
+
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
+/**
+ * This method parses the rules object into a new object with
+ * expanded field names and transformed rules.
+ *
+ * ### Expanding fields
+ * One can define `*` expression to denote an array of fields
+ * to be validated.
+ *
+ * The `*` expression is expanded based upon the available data.
+ * For example
+ *
+ * ```js
+ * const rules = {
+ *  'users.*.username': required
+ * }
+ *
+ * // ( users.length = 2 )
+ * const data = {
+ *  users: [{}, {}]
+ * }
+ *
+ * output = {
+ *  'users.0.username' : [{ name: 'required', args: [] }],
+ *  'users.1.username' : [{ name: 'required', args: [] }]
+ * }
+ * ```
+ *
+ * @param {Object} fields
+ * @param {Object} [data = {}]
+ *
+ * @method parseRules
+ *
+ * @example
+ * ```js
+ *  rules = { username: 'required|alpha' }
+ *
+ *  output = {
+ *    username: [{ name: 'required', args: [] }, { name: 'alpha',args: [] }]
+ *  }
+ * ```
+ *
+ * @throws {Error} when rules are not defined as a string or pre-expanded array
+ */
+function parseRules(fields, data) {
+  data = data || {};
+
+  return Object.keys(fields).reduce(function (result, field) {
+    var rules = fields[field];
+
+    /**
+     * Strings are passed to haye for further processing
+     * and if rules are not an array or a string, then
+     * we should blow.
+     */
+    if (typeof rules === 'string') {
+      rules = hayePipe(rules, new hayeArrayPresenter());
+    } else if (!Array.isArray(rules)) {
+      throw new Error('Rules must be defined as a string or an array');
+    }
+
+    /**
+     * When field name has a star in it, we need to do some heavy
+     * lifting and expand the field to dot properties based upon
+     * the available data inside the data object.
+     */
+    if (field.indexOf('*') > -1) {
+      var nodes = field.split(/\.\*\.?/);
+      starToIndex(nodes, data).forEach(function (f) {
+        result[f] = rules;
+      });
+    } else {
+      result[field] = rules;
+    }
+
+    return result;
+  }, {});
+}
+
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
+var snakeToCamelCase = (function (str) {
+  return str.replace(/_(\w)/g, function (match, group) {
+    return group.toUpperCase();
+  });
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+  return typeof obj;
+} : function (obj) {
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+};
+
+/**
+ * indicative
+ *
+ * (c) Harminder Virk <virk@adonisjs.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+*/
+
+/**
+ * Returns a boolean on whether param is an
+ * object or not.
+ *
+ * @method isObj
+ *
+ * @param  {Mixed} obj
+ *
+ * @return {Boolean}
+ */
+function isObj(obj) {
+  return obj !== null && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object';
+}
+
+/**
+ * Set nested values on a object, using `path` as
+ * the (dot) seperated string.
+ *
+ * @method setPath
+ *
+ * @param  {Object} obj
+ * @param  {String} itemPath
+ * @param  {Mixed}  value
+ *
+ * @return {void}
+ */
+function setPath(obj, itemPath, value) {
+  if (!isObj(obj) || typeof itemPath !== 'string') {
+    return;
+  }
+
+  var pathArr = itemPath.split('.');
+
+  function noop(obj, i) {
+    var item = pathArr[i];
+
+    /**
+     * Finally set the value when array is done
+     */
+    if (i + 1 === pathArr.length) {
+      obj[item] = value;
+      return;
+    }
+
+    if (!isNaN(parseInt(pathArr[i + 1])) && !Array.isArray(obj[item])) {
+      obj[item] = [];
+    } else if (!isObj(obj[item])) {
+      obj[item] = {};
+    }
+
+    /**
+     * Carry on recursively.
+     */
+    return noop(obj[item], i + 1);
+  }
+
+  /**
+   * Start recursion
+   */
+  return noop(obj, 0);
+}
+
+/**
+ * Runs a bunch of sanitization rules on a given value
+ *
+ * @method sanitizeField
+ *
+ * @param  {Object} sanitizations
+ * @param  {Mixed}  value
+ * @param  {Array}  rules
+ *
+ * @return {Mixed}
+ *
+ * @throws {Exception} If sanitization rule doesnt exists
+ */
+function sanitizeField(sanitizations, value, rules) {
+  var result = value;
+
+  rules.forEach(function (rule) {
+    var ruleFn = snakeToCamelCase(rule.name);
+    if (typeof sanitizations[ruleFn] !== 'function') {
+      throw new Error(ruleFn + ' is not a sanitization method');
+    }
+    result = sanitizations[ruleFn](result, rule.args);
+  });
+
+  return result;
+}
+
+var sanitizor = (function (sanitizations) {
+  return {
+    sanitize: function sanitize(data, fields) {
+      var parsedFields = parseRules(fields, data);
+
+      return Object.keys(parsedFields).reduce(function (result, field) {
+        var fieldValue = prop(data, field);
+        if (fieldValue !== null) {
+          setPath(result, field, sanitizeField(sanitizations, fieldValue, parsedFields[field]));
+        }
+        return result;
+      }, clone_1(data, false));
+    }
+  };
+});
+
+return sanitizor;
+
+})));

@@ -1,0 +1,16 @@
+Ensures the value of field under validation is not empty.
+`{}`, `[]`, `''`, `null`, `undefined` all will fail the required rule.
+ 
+[source, js]
+----
+const rules = {
+  username: 'required'
+}
+ 
+// or
+const rules = {
+  username: [
+    rule('required')
+  ]
+}
+----

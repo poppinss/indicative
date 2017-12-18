@@ -78,7 +78,7 @@ function parseRules (fields, data) {
      * lifting and expand the field to dot properties based upon
      * the available data inside the data object.
      */
-    if (field.includes('*')) {
+    if (field.indexOf('*') > -1) {
       const nodes = field.split(/\.\*\.?/)
       starToIndex(nodes, data).forEach((f) => { result[f] = rules })
     } else {

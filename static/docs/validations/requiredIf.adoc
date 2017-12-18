@@ -1,0 +1,15 @@
+The field is checked for required validation, when expected field exists.
+ 
+[source, js]
+----
+const rules = {
+  address: 'required_if:needs_delivery'
+}
+ 
+// or
+const rules = {
+  address: [
+    rule('required_if', 'needs_delivery')
+  ]
+}
+----

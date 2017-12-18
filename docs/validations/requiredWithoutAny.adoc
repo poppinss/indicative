@@ -1,2 +1,0 @@
-    looping through all items to make sure
-    one of them is present
