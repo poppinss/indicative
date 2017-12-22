@@ -16,7 +16,6 @@ import pSeries from './pSeries'
 import parse from './parse'
 import getMessage from './getMessage'
 import snakeToCamelCase from './snakeToCamelCase'
-import config from './config'
 
 /**
  * Returns a lazy promise which runs the validation on a field
@@ -131,7 +130,7 @@ function validate (validations, bail, data, fields, messages, formatter) {
  * `validateAll` methods.
  *
  * @param    {Object} validations
- * @param    {Object} formatters
+ * @param    {Object} defaultFormatter
  *
  * @method validator
  *
@@ -146,15 +145,16 @@ function validate (validations, bail, data, fields, messages, formatter) {
  * // later
  * validatorInstance.validate()
  */
-export default (validations, formatters) => {
+export default (validations, defaultFormatter) => {
   let message = 'Cannot instantiate validator without'
   if (!validations) {
     throw new Error(`${message} validations`)
   }
 
-  if (!formatters) {
-    throw new Error(`${message} formatters`)
+  if (!defaultFormatter) {
+    throw new Error(`${message} error formatter`)
   }
+
   return {
     /**
      * Run validations on a set of data with rules defined on fields.
@@ -167,7 +167,7 @@ export default (validations, formatters) => {
      * @returns {Promise} Promise is rejected with an array of errors or resolved with original data
      */
     validate (data, fields, messages, formatter) {
-      formatter = new formatters[formatter || config.DEFAULT_FORMATTER]()
+      formatter = new (formatter || defaultFormatter)()
       return validate(validations, true, data, fields, messages, formatter)
     },
 
@@ -183,7 +183,7 @@ export default (validations, formatters) => {
      * @returns {Promise} Promise is rejected with an array of errors or resolved with original data
      */
     validateAll (data, fields, messages, formatter) {
-      formatter = new formatters[formatter || config.DEFAULT_FORMATTER]()
+      formatter = new (formatter || defaultFormatter)()
       return validate(validations, false, data, fields, messages, formatter)
     }
   }

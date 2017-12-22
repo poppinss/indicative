@@ -21,15 +21,15 @@ group('Validator - Core', () => {
     assert.throw(fn, 'Cannot instantiate validator without validations')
   })
 
-  test('throw exception when initiated without formatters', async (assert) => {
+  test('throw exception when initiated without default formatter', async (assert) => {
     const fn = () => validator(validationsHash)
-    assert.throw(fn, 'Cannot instantiate validator without formatters')
+    assert.throw(fn, 'Cannot instantiate validator without error formatter')
   })
 
   test('run validations on data', async (assert) => {
     assert.plan(1)
 
-    const { validate } = validator(validationsHash, formatters)
+    const { validate } = validator(validationsHash, formatters.Vanilla)
     const data = {}
     const rules = {
       username: 'required'
@@ -51,7 +51,7 @@ group('Validator - Core', () => {
   test('stop validations after first failure', async (assert) => {
     assert.plan(1)
 
-    const { validate } = validator(validationsHash, formatters)
+    const { validate } = validator(validationsHash, formatters.Vanilla)
     const data = {}
     const rules = {
       username: 'required',
@@ -74,7 +74,7 @@ group('Validator - Core', () => {
   test('run all validations', async (assert) => {
     assert.plan(1)
 
-    const { validateAll } = validator(validationsHash, formatters)
+    const { validateAll } = validator(validationsHash, formatters.Vanilla)
     const data = {}
     const rules = {
       username: 'required',
@@ -102,7 +102,7 @@ group('Validator - Core', () => {
   test('run multiple validations on one field', async (assert) => {
     assert.plan(1)
 
-    const { validateAll } = validator(validationsHash, formatters)
+    const { validateAll } = validator(validationsHash, formatters.Vanilla)
     const data = { username: '$' }
     const rules = {
       username: 'alpha|alphaNumeric'
@@ -129,7 +129,7 @@ group('Validator - Core', () => {
   test('run one validation from multiple validations on one field', async (assert) => {
     assert.plan(1)
 
-    const { validate } = validator(validationsHash, formatters)
+    const { validate } = validator(validationsHash, formatters.Vanilla)
     const data = {}
     const rules = {
       age: 'required|integer'
@@ -149,7 +149,7 @@ group('Validator - Core', () => {
   })
 
   test('return original data when validation passes', async (assert) => {
-    const { validate } = validator(validationsHash, formatters)
+    const { validate } = validator(validationsHash, formatters.Vanilla)
     const data = {
       age: 22
     }
@@ -164,7 +164,7 @@ group('Validator - Core', () => {
   test('throw engine exception when validation doesn\'t exists', async (assert) => {
     assert.plan(1)
 
-    const { validate } = validator(validationsHash, formatters)
+    const { validate } = validator(validationsHash, formatters.Vanilla)
     const data = {
       age: 22
     }
@@ -186,7 +186,7 @@ group('Validator - Core', () => {
   })
 
   test('camelcase rules names', async (assert) => {
-    const { validate } = validator(validationsHash, formatters)
+    const { validate } = validator(validationsHash, formatters.Vanilla)
     const data = {
       username: 'foo123'
     }
