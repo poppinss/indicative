@@ -1,0 +1,26 @@
+---
+permalink: requiredWithoutAll
+title: requiredWithoutAll
+category: validations
+---
+
+Ensures the field is required when all of the other fields has empty values.
+ 
+[source, js]
+----
+const rules = {
+  zipcode: 'required_without_all:address,state'
+}
+ 
+// or
+const rules = {
+  zipcode: [
+    rule('required_without_all', ['address', 'state'])
+  ]
+}
+----
+For customized build, you can import this rule as follows.
+[source, js]
+----
+import { requiredWithoutAll } from 'indicative/builds/validations'
+----

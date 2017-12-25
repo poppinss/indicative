@@ -1,0 +1,56 @@
+---
+title: sanitize
+permalink: sanitize
+category: api
+---
+
+Run sanitizations on data using pre-defined rules. Following are some key points to note.
+
+[ol-shrinked]
+1. This method will never *mutate* the original data set.
+2. Sanitized data object has the same structure as the original data set.
+3. If value to be sanitized is in wrong format, it will be returned as it is.
+
+.Parameters
+[role="api", cols="20, 80"]
+|====
+| data | Object
+| rules | Object
+|====
+
+
+==== Imports
+The full build exports the `santize` method from the top level object.
+
+[source, js]
+----
+const { santize } = require('indicative')
+----
+
+When using customized build, you need to configure the *sanitizor instance* before you can make use of the `santize` method.
+
+[source, js]
+----
+import Sanitizor from 'indicative/builds/sanitizor'
+import { normalizeEmail, stripTags } from 'indicative/builds/sanitizations'
+
+const { sanitize } = Sanitizor({ normalizeEmail, stripTags })
+----
+
+==== Usage
+Sanitizing data is a synchronous operation and returns a new object with sanitized values.
+
+[source, js]
+----
+const rules = {
+  email: 'normalize_email',
+  bio: 'strip_tags'
+}
+
+const data = {
+  email: 'foo+bar@GMAIL.COM',
+  bio: 'Checkout my profile on <a href="">github.com</a>'
+}
+
+const sanitizedData = sanitize(data, rules)
+----

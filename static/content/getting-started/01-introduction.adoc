@@ -1,0 +1,75 @@
+---
+title: Introduction
+permalink: ../index
+category: getting-started
+---
+
+= Introduction
+
+Indicative is a simple yet powerful data validator for Node.js and browsers. It makes it so simple to write `async` validations on *nested set* of data.
+
+toc::[]
+
+== Features
+
+[ol-shrinked]
+1. First class support for `async` validations.
+2. Support for link:syntax-guide#_nested_data[nested validations].
+3. Support for custom link:formatters[error formatters].
+4. In built data sanitizor.
+5. Customized and smaller builds for browsers.
+
+== Browsers support
+Indicative works great on all modern browsers including `IE 10` and above. Following is the result of automated tests executed on selected platforms.
+
+image:https://saucelabs.com/browser-matrix/indicative.svg[saucelabs report]
+
+== Basic Example
+Let's start with a basic example of defining rules and run validations against data object.
+
+[source, js]
+----
+const { validate } = require('indicative')
+
+const rules = {
+  email: 'required|email|unique:users',
+  password: 'required|min:6|max:30'
+}
+
+const data = {
+  email: 'foo@bar.com',
+  password: 'weak'
+}
+
+validate(data, rules)
+  .then(() => {
+  })
+  .catch((errors) => {
+  })
+----
+
+As you can see the `rules` is an object ( called schema ), which defines a set of rules on a given key. The values will be picked from the `data` object and validated against the defined rules.
+
+Read the link:syntax-guide[syntax guide] to learn more about the schema definition.
+
+=== Please note
+1. Errors inside the `catch` block are an array of errors, instead of the Javascript Error object.
+2. The `validate` method stops after the first validation failure, in order to validate all the fields at once, you must use the `validateAll` method. +
++
+[source, js]
+-----
+const { validateAll } = require('indicative')
+
+const rules = {
+  email: 'required|email|unique:users',
+  password: 'required|min:6|max:30'
+}
+
+const data = {}
+
+validateAll(data, rules)
+  .then(() => {
+  })
+  .catch((errors) => {
+  })
+-----

@@ -1,0 +1,29 @@
+---
+permalink: after
+title: after
+category: validations
+---
+
+Ensures the value of the field is after the expected
+date.
+ 
+This method will import link:https://date-fns.org/docs/isAfter[isAfter] function of date-fns.
+ 
+[source, js]
+----
+const rules = {
+  confCall: `after:`${new Date()}
+}
+ 
+// or
+const rules = {
+  confCall: [
+    rule('after', new Date())
+  ]
+}
+----
+For customized build, you can import this rule as follows.
+[source, js]
+----
+import { after } from 'indicative/builds/validations'
+----

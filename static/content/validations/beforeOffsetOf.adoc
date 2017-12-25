@@ -1,0 +1,39 @@
+---
+permalink: beforeOffsetOf
+title: beforeOffsetOf
+category: validations
+---
+
+Ensures the date is before a given offset of a given
+time period. The `period` can be defined using
+following properties.
+ 
+[ul-shrinked]
+- years
+- quarters
+- months
+- weeks
+- days
+- hours
+- minutes
+- seconds
+- milliseconds
+ 
+[source, js]
+----
+const rules = {
+  confCall: 'before_offset_of:4,months'
+}
+ 
+// or
+const rules = {
+  confCall: [
+    rule('before_offset_of', [4, 'months'])
+  ]
+}
+----
+For customized build, you can import this rule as follows.
+[source, js]
+----
+import { beforeOffsetOf } from 'indicative/builds/validations'
+----

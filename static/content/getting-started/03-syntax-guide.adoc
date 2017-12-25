@@ -1,0 +1,160 @@
+---
+title: Syntax Guide
+permalink: syntax-guide
+category: getting-started
+description: Rules expression syntax guide
+---
+
+= Syntax Guide
+
+Rules in indicative are defined using a *string based expression* to keep your code concise and clean. This guide gives you an in-depth overview of same.
+
+toc::[]
+
+== Defining rules
+[source, js]
+----
+const rules = {
+  email: 'required|email|unique:users',
+  password: 'required|min:6|max:30'
+}
+----
+
+1. Multiple rules are seperated using a *Unix style* pipe `(|)` operator and executed in sequence as they are defined.
+2. Some rules like `unique`, `min` or `max` accepts additional arguments and these arguments are passed after a colon `:` sign.
+3. For multiple arguments, you can seperate them with a comma.
+
+A more complex rule defination will look as following.
+
+[source, js]
+----
+const rules = {
+  age: 'required|integer|range:16,65'
+}
+----
+
+As you can see the `range` rule accepts 2 arguments and they are seperated by a comma.
+
+== Limitations
+Since the validation rules are defined using a string based expression, it has certain limitations. You cannot use reserved keywords like `:` or a `|`, within arguments.
+
+The following rule defination will fail to parse.
+
+++++
+<div class="mb-10 -mt-4">
+  <div class="bg-red-light text-white rounded-t px-4 py-2">
+    Fails
+  </div>
+  <div class="border border-t-0 border-red-lighter rounded-b bg-red-lightest px-4 py-3 text-red-dark">
+    <pre class="fancy language-js"><code class="fancy language-js">const rules = {
+  standupHours: 'hours:hh:mm:ss'
+}</code></pre>
+  </div>
+</div>
+++++
+
+++++
+<div class="mb-10 -mt-4">
+  <div class="bg-green-light text-white rounded-t px-4 py-2">
+    Instead use
+  </div>
+  <div class="border border-t-0 border-green-light rounded-b bg-green-lightest px-4 py-3 text-green-dark">
+    <pre class="fancy language-js"><code class="fancy language-js">const { rule } = require('indicative')
+
+const rules = {
+  standupHours: [
+    rule('required'),
+    rule('hours', 'hh:mm:ss')
+  ]
+}</code></pre>
+  </div>
+</div>
+++++
+
+When defining advanced rules, it is feasible to use *Arrays* with the combination of `rule` method. The output of `rule` method is not processed any further and hence advanced configuration is allowed.
+
+== Nested data
+A real world application does deal with nested data and running async validations inside a loop is never fun.
+Indicative makes it so simple to define rules on nested data sets.
+
+[source, js]
+----
+const rules = {
+  'user.username': 'required'
+}
+----
+
+In the above rule, we are asking indicative to make sure the `username` is required inside the `user` object.
+
+[source, js]
+----
+const data = {
+  user: {
+    username: 'unicorn'
+  }
+}
+----
+
+NOTE: Indicative uses *dot notation* to target nested properties inside objects and arrays, which again keeps your code concise and easy to understand.
+
+
+=== Targeting arrays
+Just like *Objects*, you can also target indexes inside *Arrays* as follows.
+
+[source, js]
+----
+const rules = {
+  'users.0.username': 'required'
+}
+----
+
+Here we are instructing indicative to validate the `username` property inside the `users` array, but only for `0 index`.
+
+=== Unknown indexes
+Quite often you won't know, how many items does an array contains, making it impossible to hardcode the indexes. This is where the `*` keyword comes in handy.
+
+[source, js]
+----
+const rules = {
+  'users.*.username': 'required'
+}
+----
+
+The above rule, will validate all the `username` properties for all the objects inside the `users` array.
+
+== All together
+Below is an example, showing the usage of a complex schema object.
+
+[source, js]
+----
+const { rule } = require('indicative')
+
+const rules = {
+  'teams.*.name': 'required|alpha',
+  'teams.*.url': 'required|alpha',
+  'teams.*.standupTime': [
+	 rule('required'),
+     rule('hours', 'hh:mm')
+   ]
+}
+----
+
+Valid data set for above schema.
+
+[source, js]
+----
+const data = {
+  teams: [
+	{
+      name: 'paraffin',
+      url: 'http://paraffin.yourcompany.com',
+      standupTime: '10:20'
+    },
+	{
+      username: 'draculas',
+      url: 'http://draculas.yourcompany.com',
+      standupTime: '10:40'
+    }
+  ]
+}
+----

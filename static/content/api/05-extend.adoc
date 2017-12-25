@@ -1,0 +1,78 @@
+---
+title: extend
+permalink: extend
+category: api
+---
+
+= extend
+
+In this guide, we will learn about how to add new validation and sanitization rules to indicative.
+
+toc::[]
+
+== Adding validation rules
+Validation rules are added by defining a new `key/value` pair on the validations object.
+
+Let's start by creating a function to validate the time format.
+
+[source, js]
+----
+const timeRegex = /([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/
+
+const timeFn = function (data, field, message, args, get) {
+  return new Promise((resolve, reject) => {
+    const fieldValue = get(data, field)
+
+    if (fieldValue && !timeRegex.test(fieldValue)) {
+      return reject(message)
+    }
+
+    resolve('validation passed')
+  })
+}
+----
+
+Next, attach it to the existing validations object.
+
+[source, js]
+----
+const { validations } = require('indicative')
+validations.time = timeFn
+----
+
+With *custom build* it is as simple as passing a new key/value pair.
+
+[source, js]
+----
+import Validator from 'indicative/builds/validator'
+import { email, required } from 'indicative/builds/validations'
+
+const validatorInstance = Validator({ email, required, time: timeFn })
+----
+
+Now you can make use of the `time` rule as any other rule.
+
+== Adding sanitization rules
+The sanitization rules are attached to the `sanitizor` object when using the full build.
+
+[source, js]
+----
+const { sanitizor } = require('indicative')
+sanitizor.camelCase = function (value) {
+  return _.camelCase(value)
+}
+----
+
+For customized build, you can pass key/value pair when instantiating the *Sanitizor* instance.
+
+[source, js]
+----
+import Sanitizor from 'indicative/builds/sanitizor'
+import { normalizeEmail } from 'indicative/builds/sanitizations'
+
+const camelCase = function (value) {
+  return _.camelCase(value)
+}
+
+const sanitizorInstance = Sanitizor({ normalizeEmail, camelCase })
+----

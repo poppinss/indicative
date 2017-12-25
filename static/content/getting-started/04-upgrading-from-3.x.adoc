@@ -1,0 +1,11 @@
+---
+title: Upgrading from 3.x
+permalink: upgrading-from-3
+category: getting-started
+---
+
+Follow this guide, if you have been using Indicative 3.x, since it highlights the breaking changes and major modifications to the API.
+
+toc::[]
+
+== Rules

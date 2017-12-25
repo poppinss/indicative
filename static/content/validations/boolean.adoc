@@ -1,0 +1,35 @@
+---
+permalink: boolean
+title: boolean
+category: validations
+---
+
+Ensures the value of a field is a boolean. Also it will cast following
+strings to their boolean counter parts.
+ 
+[source, plain]
+----
+'0' -> 0
+'1' -> 1
+'true' -> true
+'false' -> false
+----
+ 
+[source, js]
+----
+const rules = {
+  remember_me: 'boolean'
+}
+ 
+// or
+const rules = {
+  remember_me: [
+    rule('boolean')
+  ]
+}
+----
+For customized build, you can import this rule as follows.
+[source, js]
+----
+import { boolean } from 'indicative/builds/validations'
+----
