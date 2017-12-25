@@ -1,0 +1,27 @@
+---
+permalink: toBoolean
+title: toBoolean
+category: sanitizations
+---
+
+Converts value to a boolean. If value is an `empty string`, `'false'` or `'0'`, it
+will be converted to `false`, otherwise to `true`.
+ 
+[source, js]
+----
+const sanitizationRules = {
+  is_admin: 'boolean'
+}
+ 
+// or
+const sanitizationRules = {
+  is_admin: [
+    rule('boolean')
+  ]
+}
+----
+For customized build, you can import this rule as follows.
+[source, js]
+----
+import { toBoolean } from 'indicative/builds/validations'
+----

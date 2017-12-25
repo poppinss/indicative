@@ -1,0 +1,26 @@
+---
+permalink: requiredWithAny
+title: requiredWithAny
+category: validations
+---
+
+Ensures the field is required when any of the other fields have non-empty values.
+ 
+[source, js]
+----
+const rules = {
+  password: 'required_with_any:username,email'
+}
+ 
+// or
+const rules = {
+  password: [
+    rule('required_with_any', ['username', 'email'])
+  ]
+}
+----
+For customized build, you can import this rule as follows.
+[source, js]
+----
+import { requiredWithAny } from 'indicative/builds/validations'
+----

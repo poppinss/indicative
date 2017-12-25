@@ -1,0 +1,70 @@
+---
+title: validateAll
+permalink: api/validate-all
+category: api
+---
+
+Run validations on a set of data using pre-defined rules. This method will run all the validations regardless of the validation failure.
+
+.Parameters
+[role="api", cols="20, 80"]
+|====
+| data | Object
+| rules | Object
+| messages | Object [description]#optional#
+| formatter | Formatter [description]#optional#
+|====
+
+==== Imports
+The full build exports the `validateAll` method from the top level object.
+
+[source, js]
+----
+const { validateAll } = require('indicative')
+----
+
+When using customized build, you need to configure the *validator instance* before you can make use of the `validateAll` method.
+
+[source, js]
+----
+import Validator from 'indicative/builds/validator'
+import { email } from 'indicative/builds/validations'
+
+import { Vanilla } from 'indicative/builds/formatters'
+const { validateAll } = Validator({ email }, Vanilla)
+----
+
+==== Usage
+A miminum of 2 parameters are required to call `validateAll` method.
+
+[source, js]
+----
+validateAll(data, rules)
+.then(() => {
+})
+.catch(() => {
+})
+----
+
+Optionally you can pass a link:/docs/custom-messages[custom set] of messages.
+
+[source, js]
+----
+const messages = {
+  'username.required': 'Username is required to continue'
+}
+
+validateAll(data, rules, messages)
+----
+
+Optionally pass an inbuilt or a custom formatter.
+
+[source, js]
+----
+import { JsonApi } from 'indicative/builds/formatters'
+validateAll(data, rules, messages, JsonApi)
+
+// full build
+const { formatters } = require('indicative')
+validateAll(data, rules, messages, formatters.JsonApi)
+----

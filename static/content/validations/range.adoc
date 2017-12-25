@@ -1,0 +1,27 @@
+---
+permalink: range
+title: range
+category: validations
+---
+
+Ensures the value of field under validation is under a given range. The values will
+be cased to `Number` automatically.
+ 
+[source, js]
+----
+const rules = {
+  age: 'range:16,60'
+}
+ 
+// or
+const rules = {
+  age: [
+    rule('range', [16, 60])
+  ]
+}
+----
+For customized build, you can import this rule as follows.
+[source, js]
+----
+import { range } from 'indicative/builds/validations'
+----

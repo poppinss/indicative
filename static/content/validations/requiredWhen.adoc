@@ -1,0 +1,29 @@
+---
+permalink: requiredWhen
+title: requiredWhen
+category: validations
+---
+
+The field is checked for required validation, when expected field value is same
+as the expected value.
+ 
+`{}`, `[]`, `''`, `null`, `undefined` are considered as empty values.
+ 
+[source, js]
+----
+const rules = {
+  state: 'required_when:country,US'
+}
+ 
+// or
+const rules = {
+  state: [
+    rule('required_when', ['country', 'US'])
+  ]
+}
+----
+For customized build, you can import this rule as follows.
+[source, js]
+----
+import { requiredWhen } from 'indicative/builds/validations'
+----

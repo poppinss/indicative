@@ -1,0 +1,314 @@
+
+/*=====  Generics  ======*/
+  h1, h2, h3, h4, h5 {
+    font-feature-settings: "dlig","liga","lnum","kern";
+  }
+  p {
+    font-feature-settings: "kern","onum","liga";
+  }
+
+/*=====  Document container  ======*/
+  .document {
+    @apply .text-text;
+    padding: 60px 40px 60px 100px;
+  }
+
+/*=====  Paragraph above the codeblock  ======*/
+  .document .paragraph + .listingblock pre {
+    margin-top: calc(config('margin.-vertical') + 10px);
+  }
+
+/*=====  The inline code block  ======*/
+  .document code:not([class*="language-"]) {
+    @apply .bg-inlineCode .px-inlinePre;
+    font-size: inherit;
+    color: inherit;
+    word-break: break-word;
+  }
+
+/*=====  Pre code block  ======*/
+  .document pre[class*="language-"] {
+    @apply .font-mono .mb-vertical;
+    padding: 30px;
+  }
+  .document code[class*="language-"], .document  pre[class*="language-"] {
+    @apply .text-sm .font-normal;
+  }
+
+/*=====  The small title above codeblocks  ======*/
+  .document .listingblock > .title, .document table.tableblock > .title {
+    @apply .text-anchor .font-semibold .text-left;
+    font-family: "Noto Serif", "DejaVu Serif", serif;
+    font-style: italic;
+  }
+  .document .listingblock > .title + .content pre[class*="language-"] {
+    margin-top: 5px;
+  }
+
+/*=====  Anchor tags inside doc content  ======*/
+  .document a:not(.link) {
+    @apply .text-anchor;
+    text-decoration: none;
+    background-image: linear-gradient(180deg, transparent 50%, config(textColors.anchor) 0);
+    background-position: 0 93%;
+    background-repeat: repeat-x;
+    background-size: 100% .15rem;
+  }
+
+/*=====  Doc heading  ======*/
+  .document h1 {
+    @apply .text-heading .mb-vertical;
+    font-size: 3.75rem;
+  }
+  .document h1 a.link, .document h2 a.link, .document h3 a.link, .document h4 a.link {
+    @apply .text-heading .no-underline;
+  }
+
+/*=====  Section level 1 ======*/
+  .document .sect1 {
+    border-top: 1px solid config(backgroundColors.border);
+    margin-top: 2.75rem;
+    padding-top: 2.5rem;
+  }
+
+/*=====  Section level 2 ======*/
+  .document .sect2 {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+  }
+
+/*=====  Section level 3 ======*/
+  .document .sect3 {
+    margin-top: 1.8rem;
+    padding-top: 1.5rem;
+  }
+
+/*=====  Section level 1 heading  ======*/
+  .document h2 {
+    margin-bottom: 10px;
+  }
+  .document h2 a.link {
+    font-size: 2.2rem;
+  }
+
+/*=====  Section level 2 heading  ======*/
+  .document h3 {
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .document h3 a.link {
+    font-size: 1.6rem;
+  }
+
+/*=====  Section level 3 heading ======*/
+  .document h4 {
+    position: relative;
+    margin-bottom: 5px;
+  }
+  .document h4:before {
+    @apply .bg-border;
+    position: absolute;
+    content: '';
+    height: 1px;
+    left: -6.25rem;
+    right: 0;
+    top: 18px;
+  }
+  .document h4 a.link {
+    font-size: 1.2rem;
+    background: #fff;
+    display: inline-block;
+    z-index: 1;
+    position: relative;
+    padding-right: 20px;
+    padding-left: 20px;
+    margin-left: -20px;
+  }
+
+/*=====  Ordered & Unordered list ======*/
+  .document .olist ol, .document .ulist ul {
+    list-style-type: none;
+  }
+
+  .document .olist ol > li, .document .ulist ul > li {
+    padding: 6px 0;
+    position: relative;
+  }
+
+/*=====  Unordered list ======*/
+  .document .paragraph, .document .ulist {
+    @apply .mb-vertical;
+  }
+  .document .ulist ul > li:before {
+    @apply text-grey-light;
+    content: "\25C6";
+    position: absolute;
+    margin-left: -25px;
+    text-align: right;
+    width: 15px;
+    top: 0;
+  }
+  .document .ulist.ul-shrinked {
+    margin-bottom: 20px;
+  }
+  .document .ulist.ul-shrinked ul > li {
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+  .document .ulist.ul-spaced ul > li {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+/*=====  Ordered list ======*/
+  .document .paragraph, .document .olist {
+    @apply .mb-vertical;
+  }
+  .document .olist ol > li {
+    counter-increment: top-level;
+  }
+  .document .olist ol > li:before {
+    content: counter(top-level) ".";
+    font-feature-settings: "lnum","tnum";
+    position: absolute;
+    margin-left: -25px;
+    text-align: right;
+    width: 15px;
+  }
+  .document .olist.ol-shrinked {
+    margin-bottom: 20px;
+  }
+  .document .olist.ol-shrinked ol > li {
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+  .document .olist.ol-spaced ol > li {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+/*=====  All images ======*/
+  .document img {
+    max-width: 100%;
+  }
+
+/*=====  First paragraph in the doc ======*/
+  .document #preamble .sectionbody .paragraph:first-child p {
+    @apply .font-light .text-2xl .text-fadedText;
+  }
+
+/*=====  Table of contents ======*/
+  .document .toc {
+    position: relative;
+    margin: 50px 0;
+  }
+  .document .toc:before {
+    @apply .bg-border;
+    position: absolute;
+    content: '';
+    height: 1px;
+    left: -6.25rem;
+    right: 0;
+    top: 14px;
+  }
+  .document .toc .title {
+    @apply .text-ligibleGray .uppercase .font-semibold .text-base;
+    letter-spacing: 1px;
+    display: inline-block;
+    background: #fff;
+    z-index: 1;
+    position: relative;
+    padding-right: 20px;
+    padding-left: 20px;
+    margin-left: -20px;
+    margin-bottom: 20px;
+  }
+  .document .toc ul {
+    list-style: none;
+  }
+  .document .toc li a {
+    @apply .font-medium .text-sm .no-underline;
+    background: none;
+    text-shadow: none;
+  }
+  .document .toc .sectlevel2, .document .toc .sectlevel3 {
+    padding-left: 20px;
+  }
+
+/*=====  Admonition block ======*/
+  .document .admonitionblock {
+    @apply .bg-adBlock;
+    border-radius: 4px 4px 6px 6px;
+    padding: 15px;
+    position: relative;
+    border-left: 1px solid config(backgroundColors.border);
+    border-right: 1px solid config(backgroundColors.border);
+    border-bottom: 1px solid config(backgroundColors.border);
+    margin: 10px 0 30px 0;
+  }
+  .document .admonitionblock:before {
+    content: "";
+    height: 5px;
+    position: absolute;
+    top: 0;
+    left: -1px;
+    width: calc(100% + 2px);
+    border-radius: 3px 3px 0 0;
+  }
+  .document .admonitionblock.tip:before {
+    @apply .bg-adTip;
+  }
+  .document .admonitionblock.note:before {
+    @apply .bg-adNote;
+  }
+  .document .admonitionblock table td, .document .admonitionblock table th {
+    vertical-align: middle;
+  }
+  .document .admonitionblock td {
+    padding: 15px;
+  }
+  .document .admonitionblock table td.icon {
+    display: table-cell;
+    width: auto;
+    height: auto;
+  }
+  .document .admonitionblock .fa {
+    width: 32px;
+    height: 32px;
+    display: block;
+    position: relative;
+    background-size: 90%;
+  }
+  .document .admonitionblock .fa.icon-tip {
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iMjVweCIgaGVpZ2h0PSIzMHB4IiB2aWV3Qm94PSIwIDAgMjUgMzAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxwYXRoIGQ9Ik0xMy4zNjMgMS45NzhsLTExLjM2IDE0LjQ4IDExIC4wMS0uODE4IDExLjUyMiAxMC44MTMtMTUuNTQ2LTExLjIzNC0uMDEgMS42LTEwLjQ1NnptLTIuNjUgMjcuMzc4Yy0uMzc3LS40MDYtLjU2My0uOTQtLjUyMi0xLjUwOGwuNjY2LTkuMzc4SDIuMDAyYy0uNzcyIDAtMS40Ni0uNDMzLTEuNzk3LTEuMTMtLjM0LS42OTctLjI1Mi0xLjUxLjIyNi0yLjEyTDExLjc5NS43MzZjLjc1Ny0uOTY2IDIuMzE1LS45NzIgMy4wOTYtLjA2LjM4LjQ0My41NCAxLjAxNC40NSAxLjYwNmwtMS4yNDYgOC4xNTNIMjNjLjc0NiAwIDEuNDI1LjQxMyAxLjc3IDEuMDc1LjM0OC42NjcuMjk4IDEuNDY0LS4xMzIgMi4wOEwxMy44MjQgMjkuMTRjLS4zOC41NDgtLjk3NC44Ni0xLjYyNy44Ni0uNTYyIDAtMS4xMDMtLjIzNC0xLjQ4My0uNjQ0eiIgZmlsbD0iIzRkYzBiNSIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+) no-repeat;
+  }
+  .document .admonitionblock .fa.icon-note {
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIzMHB4IiBoZWlnaHQ9IjMwcHgiIHZpZXdCb3g9IjAgMCAzMCAzMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGcgZmlsbC1ydWxlPSJub256ZXJvIiBmaWxsPSIjMTU5NGZkIj48cGF0aCBkPSJNMTUgMzBDNi43MTQgMzAgMCAyMy4yODYgMCAxNVM2LjcxNCAwIDE1IDBzMTUgNi43MTQgMTUgMTUtNi43MTQgMTUtMTUgMTV6bTAtMjguNTdDNy41IDEuNDMgMS40MyA3LjUgMS40MyAxNVM3LjUgMjguNTcgMTUgMjguNTcgMjguNTcgMjIuNSAyOC41NyAxNSAyMi41IDEuNDMgMTUgMS40M3oiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMy45MyA4LjIxNCkiPjxwYXRoIGQ9Ik0xLjA3IDEzLjU3Yy0uMzkgMC0uNzEzLS4zMi0uNzEzLS43MTNWNC42NDNjMC0uMzkzLjMyMi0uNzE0LjcxNC0uNzE0LjM5NCAwIC43MTYuMzIuNzE2LjcxM3Y4LjIxNGMwIC4zOTMtLjMyMi43MTQtLjcxNS43MTR6Ii8+PGNpcmNsZSBjeD0iMS4wNzE0Mjg1NyIgY3k9IjEuMDcxNDI4NTciIHI9IjEiLz48cGF0aCBkPSJNMS4wNyAyLjE0M0MuNDY1IDIuMTQzIDAgMS42OCAwIDEuMDcgMCAuNDY1LjQ2NCAwIDEuMDcgMGMuNjEgMCAxLjA3My40NjQgMS4wNzMgMS4wNyAwIC42MS0uNDY0IDEuMDczLTEuMDcyIDEuMDczem0wLTEuNDNjLS4yMTMgMC0uMzU2LjE0NC0uMzU2LjM1OCAwIC4yMTYuMTQzLjM2LjM1Ny4zNi4yMTYgMCAuMzYtLjE0NC4zNi0uMzYgMC0uMjEzLS4xNDQtLjM1Ni0uMzYtLjM1NnoiLz48L2c+PC9nPjwvc3ZnPg==) no-repeat;
+  }
+
+/*=====  Table ======*/
+  .document table.tableblock {
+    @apply .mb-vertical;
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  .document table.tableblock th, .document table.tableblock td {
+    @apply .border .border-border;
+    padding: 8px 15px;
+    text-align: left;
+  }
+  .document table.tableblock th {
+    @apply .bg-tableHead;
+  }
+  .document table.tableblock td {
+    vertical-align: middle;
+  }
+  .document table.tableblock td code {
+    @apply .text-sm;
+  }
+  .document table.tableblock td .description {
+    @apply .text-grey .text-xs;
+    display: block;
+    line-height: 1.35;
+  }
