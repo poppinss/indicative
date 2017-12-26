@@ -1,9 +1,41 @@
 const klaw = require('klaw')
 const path = require('path')
 const fs = require('fs-extra')
+
 const docsFor = ['validations', 'sanitizations']
 const srcPath = path.join(__dirname, '..', 'src')
-const docsDir = path.join(__dirname, '..', 'static', 'docs')
+const docsDir = path.join(__dirname, '..', 'static', 'content')
+
+/**
+ * Returns front matter for doc file
+ *
+ * @method getMatter
+ *
+ * @param  {String}  permalink
+ * @param  {String}  category
+ *
+ * @return {Array}
+ */
+function getMatter (permalink, category) {
+  return [
+    '---',
+    `permalink: ${permalink}`,
+    `title: ${permalink}`,
+    `category: ${category}`,
+    '---',
+    ''
+  ]
+}
+
+function getRuleImport (rule) {
+  return [
+    'For customized build, you can import this rule as follows.',
+    '[source, js]',
+    '----',
+    `import { ${rule} } from 'indicative/builds/validations'`,
+    '----'
+  ]
+}
 
 /**
  * Walks over a location and reads all .js files
@@ -108,7 +140,10 @@ async function srcToDocs (dir) {
   const srcFiles = await getFiles(location, (item) => item.path.endsWith('.js') && !item.path.endsWith('index.js'))
   const filesContents = await readFiles(srcFiles)
   const filesComments = srcFiles.map((location, index) => {
-    return { comments: extractComments(filesContents[index]), location }
+    const fnName = path.basename(location).replace(/\.js$/, '')
+    const matter = getMatter(fnName, dir)
+    const doc = matter.concat(extractComments(filesContents[index])).concat(getRuleImport(fnName))
+    return { comments: doc.join('\n'), location }
   })
   await writeDocs(docsDir, filesComments)
 }

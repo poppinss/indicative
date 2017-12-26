@@ -5,7 +5,6 @@ import isAbove from '../raw/above'
 /**
  * Makes sure the value provided by the end user is above the
  * expected value.
- *
  * This method will wrap both the values inside the `Number` function.
  *
  * [source, js]

@@ -17,17 +17,22 @@ import * as raw from './src/raw'
 import * as formatters from './src/formatters'
 import rule from './src/core/rule'
 import configure from './src/core/configure'
-
-const validatorInstance = validator(validations, formatters)
-const sanitizorInstance = sanitizor(sanitizations)
+import config from './src/core/config'
 
 export default {
-  validate: validatorInstance.validate,
-  validateAll: validatorInstance.validateAll,
+  validate: (...args) => {
+    return validator(validations, config.FORMATTER || formatters.Vanilla).validate(...args)
+  },
+  validateAll: (...args) => {
+    return validator(validations, config.FORMATTER || formatters.Vanilla).validateAll(...args)
+  },
+  sanitize: (...args) => {
+    return sanitizor(sanitizations).sanitize(...args)
+  },
   is: raw,
-  sanitize: sanitizorInstance.sanitize.bind(sanitizorInstance),
   sanitizor: sanitizations,
-  rule: rule,
-  formatters: formatters,
-  configure: configure
+  validations,
+  rule,
+  formatters,
+  configure
 }

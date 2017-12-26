@@ -6,10 +6,13 @@ import boolean from '../raw/boolean'
  * Ensures the value of a field is a boolean. Also it will cast following
  * strings to their boolean counter parts.
  *
- * - `'0'` will become `0`
- * - `'1'` will become `1`
- * - `'true'` will become `true`
- * - `'false'` will become `false`
+ * [source, plain]
+ * ----
+ * '0' -> 0
+ * '1' -> 1
+ * 'true' -> true
+ * 'false' -> false
+ * ----
  *
  * [source, js]
  * ----

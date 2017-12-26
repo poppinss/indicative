@@ -22,10 +22,10 @@ export default {
   EXISTY_STRICT: false,
 
   /**
-   * The default formatter to be used for formatting errors. Out of the box
-   * `JSONApi` and `Vanilla` are supported.
+   * The formatter to be used for formatting errors. If this value is `null` at
+   * runtime, indicative will use the vanilla formatter.
    *
-   * @type {String}
+   * @type {Class|Null}
    */
-  DEFAULT_FORMATTER: 'Vanilla'
+  FORMATTER: null
 }

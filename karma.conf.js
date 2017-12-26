@@ -14,13 +14,13 @@ module.exports = function (config) {
     basePath: '',
     files: [
       'node_modules/regenerator-runtime/runtime.js',
-      'test/karma/**/*.spec.js'
+      'test/karma/*.spec.js'
     ],
     preprocessors: {
-      'test/karma/**/*.js': ['rollup']
+      'test/karma/*.js': ['rollup']
     },
     rollupPreprocessor: {
-      format: 'iife',
+      format: 'umd',
       name: 'indicative',
       sourcemap: 'inline',
       plugins: require('./rollupPlugins')

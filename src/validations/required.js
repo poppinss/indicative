@@ -2,8 +2,13 @@ import toPromise from '../../lib/toPromise'
 import empty from '../raw/empty'
 
 /**
- * Ensures the value of field under validation is not empty.
- * `{}`, `[]`, `''`, `null`, `undefined` all will fail the required rule.
+ * Ensures the value of field under validation is not empty. All of the following
+ * values will be considered empty.
+ *
+ * [ul-shrinked]
+ * - An empty Object `{}`
+ * - Empty Array `[]`
+ * - Empty string, `null` or `undefined`
  *
  * [source, js]
  * ----

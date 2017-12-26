@@ -11,6 +11,13 @@
 
 import config from './config'
 
+/**
+ * Override configuration values
+ *
+ * @method setConfig
+ *
+ * @param {Object}
+ */
 function setConfig (options) {
   Object.keys(options).forEach((option) => {
     if (config[option] !== undefined) {
@@ -18,6 +25,10 @@ function setConfig (options) {
     }
   })
 }
+
+/**
+ * Copy config to `DEFAULTS` for reference.
+ */
 setConfig.DEFAULTS = Object.keys(config).reduce((result, key) => {
   result[key] = config[key]
   return result

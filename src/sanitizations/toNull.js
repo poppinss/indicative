@@ -1,8 +1,8 @@
 import existy from '../raw/existy'
 
 /**
- * Converts emptry strings and `undefineds` to `null`. It is super
- * helpful to keep data normalized at database level.
+ * Converts empty strings and `undefined` to `null`. It is
+ * handy to keep data normalized at database level.
  *
  * [source, js]
  * ----

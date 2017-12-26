@@ -2,11 +2,11 @@ import normalizeEmail from 'validator/lib/normalizeEmail'
 
 /**
  * Normalizes the email address by removing unwanted characters from it. For example
- * `foo+bar@gmai.com` will become `foobar@gmail.com` and also it will normalize
+ * `foo+bar@gmail.com` will become `foobar@gmail.com` and also it will normalize
  * the characters case too.
  *
  * If value is not a string, it will be returned as it is, otherwise it is passed to
- * link:https://github.com/chriso/validator.js[validator.js@normalizeEmail] method.
+ * link:https://github.com/chriso/validator.js[validator.js] normalizeEmail method.
  *
  * [source, js]
  * ----
