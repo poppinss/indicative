@@ -1,3 +1,13 @@
+<a name="4.0.1"></a>
+## [4.0.1](https://github.com/poppinss/indicative/compare/v4.0.0...v4.0.1) (2017-12-26)
+
+
+### Bug Fixes
+
+* **package:** remove bin section ([d3daef8](https://github.com/poppinss/indicative/commit/d3daef8))
+
+
+
 <a name="4.0.0"></a>
 # [4.0.0](https://github.com/poppinss/indicative/compare/v3.0.6...v4.0.0) (2017-12-26)
 
