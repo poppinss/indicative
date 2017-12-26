@@ -543,6 +543,87 @@ group('Validations | dateFormat', function () {
     const passes = await validations.dateFormat(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
   })
+
+  test('ignore timezone when Z identifier is defined', async function (assert) {
+    const data = {dob: '2015-10-20T23:33:34+05:30'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY-MM-DDTHH:mm:ssZ']
+
+    const passes = await validations.dateFormat(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('ignore timezone when ZZ identifier is defined', async function (assert) {
+    const data = {dob: '2015-10-20T23:33:34+0530'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY-MM-DDTHH:mm:ssZZ']
+
+    const passes = await validations.dateFormat(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('fail when timezone is missing and Z identifier is used', async function (assert) {
+    assert.plan(1)
+
+    const data = {dob: '2015-10-20T23:33:34'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY-MM-DDTHH:mm:ssZ']
+
+    try {
+      await validations.dateFormat(data, field, message, args, get)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('fail when timezone is defined wrongly', async function (assert) {
+    assert.plan(1)
+
+    const data = {dob: '2015-10-20T23:33:34+5030'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY-MM-DDTHH:mm:ssZ']
+
+    try {
+      await validations.dateFormat(data, field, message, args, get)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('pass when Z identifier is used instead of offset', async function (assert) {
+    const data = {dob: '2015-10-20T23:33:34Z'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY-MM-DDTHH:mm:ssZ']
+
+    const passes = await validations.dateFormat(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('fail when Z identifier is used but with wrong timezone identifier', async function (assert) {
+    assert.plan(1)
+
+    const data = {dob: '2015-10-20T23:33:34Z'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY-MM-DDTHH:mm:ssZZ']
+
+    try {
+      await validations.dateFormat(data, field, message, args, get)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
 })
 
 group('Validations | in', function () {
