@@ -26,6 +26,7 @@
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-env": "^1.6.1",
     "chalk": "^2.3.0",
+    "chul": "^1.0.3",
     "cz-conventional-changelog": "^2.1.0",
     "fs-extra": "^5.0.0",
     "got": "^8.0.1",
