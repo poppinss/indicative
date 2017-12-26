@@ -36,7 +36,6 @@
     "karma-japa": "^1.0.2",
     "karma-rollup-preprocessor": "^5.0.2",
     "klaw": "^2.1.1",
-    "ngrok": "^2.2.24",
     "nyc": "^11.3.0",
     "opn": "^5.1.0",
     "promise-polyfill": "^6.1.0",
