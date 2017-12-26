@@ -36,7 +36,7 @@ export default [
   {
     input: 'src/core/validator',
     output: {
-      file: 'builds/core.js',
+      file: 'builds/validator.js',
       format: 'umd',
       name: 'indicative.validator'
     },

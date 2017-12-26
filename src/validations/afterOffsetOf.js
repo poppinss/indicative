@@ -7,15 +7,16 @@ import afterOffsetOf from '../raw/afterOffsetOf'
  * time period. The `period` can be defined using
  * following properties.
  *
- * 1. years
- * 2. quarters
- * 3. months
- * 4. weeks
- * 5. days
- * 6. hours
- * 7. minutes
- * 8. seconds
- * 9. milliseconds
+ * [ul-shrinked]
+ * - years
+ * - quarters
+ * - months
+ * - weeks
+ * - days
+ * - hours
+ * - minutes
+ * - seconds
+ * - milliseconds
  *
  * [source, js]
  * ----

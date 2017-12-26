@@ -9,7 +9,7 @@
 * file that was distributed with this source code.
 */
 
-import indicative from '../../'
+import indicative from '../..'
 
 group('Indicative', () => {
   test('should be able to call validate with inbuilt rules', async (assert) => {
@@ -91,5 +91,36 @@ group('Indicative', () => {
 
   test('should be able to access formatters', async (assert) => {
     assert.property(indicative.formatters, 'Vanilla')
+  })
+
+  test('export configure method and update defaults', async (assert) => {
+    assert.plan(1)
+    indicative.configure({
+      EXISTY_STRICT: true
+    })
+
+    const data = {
+      email: null
+    }
+
+    const rules = {
+      username: 'required'
+    }
+
+    try {
+      await indicative.validate(data, rules)
+    } catch (errors) {
+      assert.deepEqual(errors, [
+        {
+          validation: 'required',
+          field: 'username',
+          message: 'required validation failed on username'
+        }
+      ])
+    }
+
+    indicative.configure({
+      EXISTY_STRICT: indicative.configure.DEFAULTS.EXISTY_STRICT
+    })
   })
 })
