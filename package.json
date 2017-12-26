@@ -95,8 +95,5 @@
       "bin",
       "test"
     ]
-  },
-  "bin": {
-    "indicative": "inlineDocs.js"
   }
 }
