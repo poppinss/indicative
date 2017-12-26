@@ -1,3 +1,16 @@
+<a name="4.0.0"></a>
+# [4.0.0](https://github.com/poppinss/indicative/compare/v3.0.6...v4.0.0) (2017-12-26)
+
+### Features
+
+* initial build for browser ([931442f](https://github.com/poppinss/indicative/commit/931442f))
+* **browser:** working state for browsers build ([9fde38c](https://github.com/poppinss/indicative/commit/9fde38c))
+* **builds:** bundle rule and configure fn ([1f808e2](https://github.com/poppinss/indicative/commit/1f808e2))
+* **formatters:** add JsonApi formatter ([4705fbb](https://github.com/poppinss/indicative/commit/4705fbb))
+* **validation:** add number validation ([c266160](https://github.com/poppinss/indicative/commit/c266160))
+
+
+
 <a name="3.0.6"></a>
 ## [3.0.6](https://github.com/poppinss/indicative/compare/v3.0.5...v3.0.6) (2017-11-17)
 
