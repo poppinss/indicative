@@ -1,6 +1,6 @@
 ---
 title: extend
-permalink: extend
+permalink: api/extend
 category: api
 ---
 
