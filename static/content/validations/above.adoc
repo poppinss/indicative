@@ -1,0 +1,28 @@
+---
+permalink: above
+title: above
+category: validations
+---
+
+Makes sure the value provided by the end user is above the
+expected value.
+This method will wrap both the values inside the `Number` function.
+ 
+[source, js]
+----
+const rules = {
+  age: 'above:20'
+}
+ 
+// or
+const rules = {
+  age: [
+    rule('above', 20)
+  ]
+}
+----
+For customized build, you can import this rule as follows.
+[source, js]
+----
+import { above } from 'indicative/builds/validations'
+----

@@ -1,43 +1,67 @@
 {
   "name": "indicative",
-  "version": "3.0.6",
-  "description": "Intentionally beautiful schema and raw validator for nodejs",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "version": "4.0.0",
+  "description": "Concise data validation library for Node.js and browsers",
+  "main": "builds/main.js",
+  "files": [
+    "builds"
+  ],
   "scripts": {
-    "lint": "standard",
+    "lint": "standard src/**/*.js test/**/*.js",
+    "build": "rollup -c",
+    "prepublishOnly": "npm run build",
+    "docs": "node bin/inlineDocs && cd static && chul build",
+    "docs:serve": "node bin/inlineDocs && cd static && chul serve",
     "pretest": "npm run lint",
-    "posttest": "npm run coverage",
-    "test:local": "FORCE_COLOR=true node bin/index.js --local",
-    "test": "nyc npm run test:local",
-    "test:win": "set FORCE_COLOR=true && node bin/index.js --win",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "test:node": "japa",
+    "test:karma": "karma start",
+    "test:qunit": "node bin/qunit",
+    "test:all": "npm run test:node && npm run test:karma && npm run test:qunit",
+    "test": "node bin/test"
   },
   "author": "amanvirk",
   "license": "MIT",
   "devDependencies": {
-    "benchmark": "^2.1.4",
-    "coveralls": "^3.0.0",
+    "babel-core": "^6.26.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-env": "^1.6.1",
+    "chalk": "^2.3.0",
     "cz-conventional-changelog": "^2.1.0",
+    "fs-extra": "^5.0.0",
+    "got": "^8.0.1",
     "japa": "^1.0.5",
     "japa-cli": "^1.0.1",
-    "nyc": "^11.2.1",
-    "semver": "^5.4.1",
-    "standard": "^10.0.3"
+    "karma": "^1.7.1",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-japa": "^1.0.2",
+    "karma-rollup-preprocessor": "^5.0.2",
+    "klaw": "^2.1.1",
+    "ngrok": "^2.2.24",
+    "nyc": "^11.3.0",
+    "opn": "^5.1.0",
+    "promise-polyfill": "^6.1.0",
+    "regenerator-runtime": "^0.11.1",
+    "rollup": "^0.52.1",
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-replace": "^2.0.0",
+    "rollup-plugin-uglify": "^2.0.1",
+    "standard": "^10.0.3",
+    "uglify-es": "^3.2.2"
   },
   "dependencies": {
-    "@slynova/slug": "^1.0.0",
+    "@slynova/slug": "^1.0.1",
+    "clone": "^2.1.1",
     "date-fns": "^1.29.0",
-    "haye": "^1.0.1",
-    "lodash": "^4.17.4",
-    "p-lazy": "^1.0.0",
-    "p-series": "^1.0.0",
-    "p-settle": "^2.0.0",
+    "haye": "^2.0.1",
     "pluralize": "^7.0.0",
-    "pope": "^1.0.4"
+    "pope": "^2.0.2",
+    "striptags": "^3.1.1",
+    "validator": "^9.2.0"
   },
   "directories": {
-    "doc": "docs",
+    "lib": "lib",
     "test": "test"
   },
   "repository": {
@@ -59,10 +83,20 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
+  "standard": {
+    "globals": [
+      "test",
+      "group",
+      "QUnit"
+    ]
+  },
   "nyc": {
     "exclude": [
       "bin",
       "test"
     ]
+  },
+  "bin": {
+    "indicative": "inlineDocs.js"
   }
 }

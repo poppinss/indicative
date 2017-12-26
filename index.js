@@ -8,24 +8,31 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
 */
-const Validator = require('./src/Validator')
-const Sanitization = require('./src/Sanitization')
-const Formatters = require('./src/Formatters')
-const Rule = require('./src/Rule')
 
-Formatters.register('vanilla', require('./src/Formatters/Vanilla'))
-Formatters.register('jsonapi', require('./src/Formatters/JSONAPI'))
-Formatters.default('vanilla')
+import validator from './src/core/validator'
+import sanitizor from './src/core/sanitizor'
+import * as validations from './src/validations'
+import * as sanitizations from './src/sanitizations'
+import * as raw from './src/raw'
+import * as formatters from './src/formatters'
+import rule from './src/core/rule'
+import configure from './src/core/configure'
+import config from './src/core/config'
 
-module.exports = {
-  validate: Validator.validate,
-  validateAll: Validator.validateAll,
-  extend: Validator.extend,
-  is: Validator.is,
-  'is.extend': Validator.is.extend,
-  sanitize: Sanitization.sanitize,
-  sanitizor: Sanitization.sanitizor,
-  rule: Rule,
-  'sanitizor.extend': Sanitization.sanitizor.extend,
-  formatters: Formatters
+export default {
+  validate: (...args) => {
+    return validator(validations, config.FORMATTER || formatters.Vanilla).validate(...args)
+  },
+  validateAll: (...args) => {
+    return validator(validations, config.FORMATTER || formatters.Vanilla).validateAll(...args)
+  },
+  sanitize: (...args) => {
+    return sanitizor(sanitizations).sanitize(...args)
+  },
+  is: raw,
+  sanitizor: sanitizations,
+  validations,
+  rule,
+  formatters,
+  configure
 }

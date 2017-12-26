@@ -1,0 +1,1 @@
+!function(e,i){"object"==typeof exports&&"undefined"!=typeof module?module.exports=i():"function"==typeof define&&define.amd?define(i):(e.indicative=e.indicative||{},e.indicative.rule=i())}(this,function(){"use strict";return function(e,i){return{name:e,args:i?Array.isArray(i)?i:[i]:[]}}});

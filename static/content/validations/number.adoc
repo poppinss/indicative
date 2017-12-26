@@ -1,0 +1,29 @@
+---
+permalink: number
+title: number
+category: validations
+---
+
+Makes sure that the value of field under validation is a valid
+number. The validation will pass for floats too, since it uses `typeof` internally.
+ 
+For strict integers, you must use the link:integer[integer] rule.
+ 
+[source, js]
+----
+const rules = {
+  game_points: 'number'
+}
+ 
+// or
+const rules = {
+  game_points: [
+    rule('number')
+  ]
+}
+----
+For customized build, you can import this rule as follows.
+[source, js]
+----
+import { number } from 'indicative/builds/validations'
+----

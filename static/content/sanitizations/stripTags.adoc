@@ -1,0 +1,43 @@
+---
+permalink: stripTags
+title: stripTags
+category: sanitizations
+---
+
+Strips HTML tags from a string. If value is not a string, it will be returned
+as it is.
+ 
+[source, js]
+----
+const sanitizationRules = {
+  message: 'strip_tags'
+}
+ 
+// or
+const sanitizationRules = {
+  message: [
+    rule('strip_tags')
+  ]
+}
+----
+ 
+Also you can pass an array of whitelisted tags.
+ 
+[source, js]
+----
+const sanitizationRules = {
+  message: 'strip_tags:a,img'
+}
+ 
+// or
+const sanitizationRules = {
+  message: [
+    rule('strip_tags', ['a', 'img'])
+  ]
+}
+----
+For customized build, you can import this rule as follows.
+[source, js]
+----
+import { stripTags } from 'indicative/builds/validations'
+----

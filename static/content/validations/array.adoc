@@ -1,0 +1,27 @@
+---
+permalink: array
+title: array
+category: validations
+---
+
+Ensure the value is a valid array. Also this validation will never
+validate the size of array.
+ 
+[source, js]
+----
+const rules = {
+  whiteListedUrls: 'array'
+}
+ 
+// or
+const rules = {
+  whiteListedUrls: [
+    rule('array')
+  ]
+}
+----
+For customized build, you can import this rule as follows.
+[source, js]
+----
+import { array } from 'indicative/builds/validations'
+----

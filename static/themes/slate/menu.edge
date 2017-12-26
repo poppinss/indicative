@@ -1,0 +1,7 @@
+<ul>
+  @each(item in menu)
+    <li class="{{ permalink(meta) === permalink(item) ? 'active' : '' }}">
+      <a href="{{ permalink(item) }}"> {{ item.title }} </a>
+    </li>
+  @endeach
+</ul>
