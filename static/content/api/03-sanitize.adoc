@@ -1,6 +1,6 @@
 ---
 title: sanitize
-permalink: sanitize
+permalink: api/sanitize
 category: api
 ---
 

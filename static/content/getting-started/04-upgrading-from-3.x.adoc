@@ -4,8 +4,104 @@ permalink: upgrading-from-3
 category: getting-started
 ---
 
-Follow this guide, if you have been using Indicative 3.x, since it highlights the breaking changes and major modifications to the API.
+Follow this guide, if you have been using Indicative 3.x. It highlights the breaking changes and major modifications to the API.
 
 toc::[]
 
 == Rules
+Following sanitization rules have been removed from indicative and you can use `lodash` directly for them.
+
+[ul-shrinked]
+- camelCase
+- capitalize
+- decapitalize
+- title
+- underscore
+- toDash
+- humanize
+
+=== Modifications
+Following rules behaves differently from the older versions.
+
+==== creditCard
+Indicative now uses link:https://github.com/chriso/validator.js/[validator.js, "window=_blank"] `isCreditCard` function to validate the credit cards. Due to the same, fake credit cards like `4444-4444-4444-4444` will fail the validation.
+
+==== stripTags
+The `stripTags` sanitization rule now accepts an array of whitelisted tags. link:stripTags[Read more]
+
+==== email
+Email validation also relies on validator.js and no longer validates the TLD (top level domain) length.
+
+== Modes
+The concept of modes has been removed from Indicative and you are supposed to make use of link:/docs/api/configure[configure] method for that.
+
+++++
+<div class="mb-10 -mt-4">
+  <div class="bg-red-light text-white rounded-t px-4 py-2">
+    Removed
+  </div>
+  <div class="border border-t-0 border-red-lighter rounded-b bg-red-lightest px-4 py-3 text-red-dark">
+    <pre class="fancy language-js"><code class="fancy language-js">indicative.setMode('strict')</code></pre>
+  </div>
+</div>
+++++
+
+++++
+<div class="mb-10 -mt-4">
+  <div class="bg-green-light text-white rounded-t px-4 py-2">
+    Instead use
+  </div>
+  <div class="border border-t-0 border-green-light rounded-b bg-green-lightest px-4 py-3 text-green-dark">
+    <pre class="fancy language-js"><code class="fancy language-js">const { configure } = require('indicative')
+
+configure({
+  EXISTY_STRICT: true
+})
+</code></pre>
+  </div>
+</div>
+++++
+
+== Formatters
+In previous version of Indicative, each formatter was given a name and can be referenced using name. From `4.0.0` formatters are supposed to be passed/used directly.
+
+++++
+<div class="mb-10 -mt-4">
+  <div class="bg-red-light text-white rounded-t px-4 py-2">
+    Earlier
+  </div>
+  <div class="border border-t-0 border-red-lighter rounded-b bg-red-lightest px-4 py-3 text-red-dark">
+    <pre class="fancy language-js"><code class="fancy language-js">const { validate, formatters } = require('indicative')
+
+// default
+formatters.default('jsonapi')
+
+// for individual validation
+indicative.validate(data, rules, messages, 'jsonapi')
+</code></pre>
+  </div>
+</div>
+++++
+
+++++
+<div class="mb-10 -mt-4">
+  <div class="bg-green-light text-white rounded-t px-4 py-2">
+    Now
+  </div>
+  <div class="border border-t-0 border-green-light rounded-b bg-green-lightest px-4 py-3 text-green-dark">
+    <pre class="fancy language-js"><code class="fancy language-js">const { formatters, validate, configure } = require('indicative')
+
+// default
+configure({
+  FORMATTER: formatters.JsonApi
+})
+
+// for individual validation
+validate(data, rules, messages, formatters.JsonApi)
+</code></pre>
+  </div>
+</div>
+++++
+
+
+
