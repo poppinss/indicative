@@ -9,6 +9,7 @@
   "scripts": {
     "lint": "standard src/**/*.js test/**/*.js",
     "build": "rollup -c",
+    "prepublishOnly": "npm run build",
     "docs": "node bin/inlineDocs && cd static && chul build",
     "docs:serve": "node bin/inlineDocs && cd static && chul serve",
     "pretest": "npm run lint",
