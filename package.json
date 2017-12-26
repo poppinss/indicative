@@ -1,9 +1,11 @@
 {
   "name": "indicative",
   "version": "3.0.6",
-  "description": "Intentionally beautiful schema and raw validator for nodejs",
+  "description": "Concise data validation library for Node.js and browsers",
   "main": "builds/main.js",
-  "types": "index.d.ts",
+  "files": [
+    "builds"
+  ],
   "scripts": {
     "lint": "standard src/**/*.js test/**/*.js",
     "build": "rollup -c",
@@ -33,6 +35,7 @@
     "karma-japa": "^1.0.2",
     "karma-rollup-preprocessor": "^5.0.2",
     "klaw": "^2.1.1",
+    "ngrok": "^2.2.24",
     "nyc": "^11.3.0",
     "opn": "^5.1.0",
     "promise-polyfill": "^6.1.0",
@@ -51,14 +54,13 @@
     "clone": "^2.1.1",
     "date-fns": "^1.29.0",
     "haye": "^2.0.1",
-    "ngrok": "^2.2.24",
     "pluralize": "^7.0.0",
     "pope": "^2.0.2",
     "striptags": "^3.1.1",
     "validator": "^9.2.0"
   },
   "directories": {
-    "doc": "docs",
+    "lib": "lib",
     "test": "test"
   },
   "repository": {
@@ -92,5 +94,8 @@
       "bin",
       "test"
     ]
+  },
+  "bin": {
+    "indicative": "inlineDocs.js"
   }
 }
