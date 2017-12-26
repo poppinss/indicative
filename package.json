@@ -7,7 +7,8 @@
   "scripts": {
     "lint": "standard src/**/*.js test/**/*.js",
     "build": "rollup -c",
-    "docs": "node bin/inlineDocs",
+    "docs": "node bin/inlineDocs && cd static && chul build",
+    "docs:serve": "node bin/inlineDocs && cd static && chul serve",
     "pretest": "npm run lint",
     "test:node": "japa",
     "test:karma": "karma start",
