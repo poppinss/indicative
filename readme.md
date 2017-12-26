@@ -1,65 +1,48 @@
-# Indicative
+<h1 align="center">Indicative</h1>
 
-> Bit of docs. The final readme and docs will be different.
+<div align="center">🚀</div>
+<div align="center">
+  <strong>Concise data validation library for Node.js and browsers.</strong>
+  <p>Indicative is a simple yet powerful data validator for Node.js and browsers. It makes it so simple to write <code>async</code> validations on <strong>nested set</strong> of data.</p>
+</div>
 
-![](https://saucelabs.com/browser-matrix/indicative.svg)
+<br />
 
-## Customized build for validator
-Indicative offers customized builds, which are helpful when writing apps for the browser, since every byte matters.
+<div align="center">
+  <a href="https://travis-ci.org/poppinss/indicative">
+    <img src="https://img.shields.io/travis/poppinss/indicative.svg?style=for-the-badge" alt="Travis" />
+  </a>
+  <a href="https://www.npmjs.com/package/indicative">
+    <img src="https://img.shields.io/npm/dt/indicative.svg?style=for-the-badge" alt="Downloads" />
+  </a>
+</div>
 
-```js
-import validator from 'indicative/builds/validator'
+<br />
 
-import {
-  email,
-  required,
-  exists,
-  min,
-  max
-} from 'indicative/builds/validations'
+<div align="center">
+  <img src="https://saucelabs.com/browser-matrix/indicative.svg" alt="">
+</div>
 
-const appValidator = validator({
-  email,
-  required,
-  exists,
-  min,
-  max
-})
-```
+<div align="center">
+  <h3>
+    <a href="https://indicative.adonisjs.com">
+      Website
+    </a>
+    <span> | </span>
+    <a href="https://indicative.adonisjs.com/docs/api/validate">
+      Api Reference
+    </a>
+    <span> | </span>
+    <a href="https://indicative.adonisjs.com/docs/installation#_build_sizes">
+      Build sizes
+    </a>
+    <span> | </span>
+    <a href="https://github.com/poppinss/indicative/blob/master/.github/CONTRIBUTING.md">
+      Contributing
+    </a>
+  </h3>
+</div>
 
-Now `appValidator` is ready to validate data, based upon the imported rules.
-
-```js
-appValidator
-  .validate(data, rules, messages)
-  .then(() => {
-  })
-  .catch((errors) => {
-    // array of errors
-  })
-```
-
-## Customized build for sanitizor
-
-Just like validations, indicative also let you sanitize data by piping it through multiple sanitisation's.
-
-```js
-import sanitizor from 'indicative/builds/sanitizor'
-
-import {
- normalizeEmail,
- stripTags
-} from 'indicative/builds/sanitizations'
-
-const appSanitizor = sanitizor({ normalizeEmail, stripTags })
-
-const rules = {
-  email: 'normalizeEmail',
-  bio: 'stripTags'
-}
-
-const data = {
-}
-
-const sanitizedData = appSanitizor.sanitize(data, rules)
-```
+<div align="center">
+  <sub>Used by adonisjs.com. Built with ❤︎ by <a href="https://github.com/thetutlage">Harminder Virk</a>
+</div>
