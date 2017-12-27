@@ -11,7 +11,6 @@
 
 const sauceLabs = exports = module.exports = {}
 const http = require('http')
-const ngrok = require('ngrok')
 const got = require('got')
 const util = require('util')
 
@@ -84,6 +83,7 @@ sauceLabs.serve = function (html, port) {
  * @return {String}
  */
 sauceLabs.getPublicUrl = function (port) {
+  const ngrok = require('ngrok')
   return util.promisify(ngrok.connect)({ proto: 'http', addr: port })
 }
 

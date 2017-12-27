@@ -1,3 +1,19 @@
+<a name="4.0.2"></a>
+## [4.0.2](https://github.com/poppinss/indicative/compare/v4.0.1...v4.0.2) (2017-12-27)
+
+
+### Bug Fixes
+
+* **dateFormat:** handle timezones carefully ([c5dcb19](https://github.com/poppinss/indicative/commit/c5dcb19)), closes [#160](https://github.com/poppinss/indicative/issues/160)
+* **package:** add missing dependency to generate docs ([9a4653e](https://github.com/poppinss/indicative/commit/9a4653e))
+
+
+### Features
+
+* **sanitizations:** add escape and stripLinks sanitizations ([8c03548](https://github.com/poppinss/indicative/commit/8c03548))
+
+
+
 <a name="4.0.1"></a>
 ## [4.0.1](https://github.com/poppinss/indicative/compare/v4.0.0...v4.0.1) (2017-12-26)
 

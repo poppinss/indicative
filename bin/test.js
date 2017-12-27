@@ -10,7 +10,7 @@ function runTest () {
 }
 
 if ('TRAVIS' in process.env && 'CI' in process.env) {
-  const downloadPuppeteer = spawn('npm', ['install', 'puppeteer'])
+  const downloadPuppeteer = spawn('npm', ['install', 'puppeteer', 'ngrok'])
   downloadPuppeteer.stdout.on('data', (data) => (process.stdout.write(data)))
   downloadPuppeteer.stderr.on('data', (data) => (process.stderr.write(data)))
   downloadPuppeteer.on('exit', (code) => {

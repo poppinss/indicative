@@ -27,7 +27,6 @@ const path = require('path')
 const rollup = require('rollup')
 const sauceLabs = require('./sauceLabs')
 const chalk = require('chalk')
-const ngrok = require('ngrok')
 const opn = require('opn')
 
 /**
@@ -110,6 +109,7 @@ async function start () {
     return
   }
 
+  const ngrok = require('ngrok')
   try {
     /**
      * Ngrok url
