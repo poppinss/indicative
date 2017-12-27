@@ -624,6 +624,33 @@ group('Validations | dateFormat', function () {
       assert.equal(e, message)
     }
   })
+
+  test('pass when milliseconds are expected with timezone offset', async function (assert) {
+    const data = {dob: '2015-10-20T23:33:34.231Z'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY-MM-DDTHH:mm:ss.SSSZ']
+
+    const passes = await validations.dateFormat(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('fail when milliseconds are expected but they are incorrect', async function (assert) {
+    assert.plan(1)
+
+    const data = {dob: '2015-10-20T23:33:34.1050Z'}
+    const field = 'dob'
+    const message = 'dob should be a valid date'
+    const get = prop
+    const args = ['YYYY-MM-DDTHH:mm:ss.SSSZ']
+
+    try {
+      await validations.dateFormat(data, field, message, args, get)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
 })
 
 group('Validations | in', function () {
