@@ -127,7 +127,7 @@ Here's the list of build size for each build.
 [options="header", cols="60,20,20"]
 |====
 | Build | Minified | Gzip
-| Full [description]#builds/main.js# | 50KB | 17KB
+| Full [description]#builds/main.js# | 51KB | 17KB
 | Validator [description]#builds/validator.js# | 3.6KB | 1.6KB
 | Sanitizor [description]#builds/sanitizor.js# | 4.7KB | 1.97KB
 | Validations [description]#builds/validations.js# | 21KB | 5.95KB
