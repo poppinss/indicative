@@ -1,7 +1,8 @@
 /**
  * Escapes HTML entities. Useful when you want to avoid XSS attacks.
  *
- * This method will only remove `&`, `"`, `'`, `<` and `>` characters.
+ * This method will only remove `&`, `"`, `'`, `<` and `>` characters. For advance escaping
+ * make use of a 3rd party library like link:https://github.com/mathiasbynens/he[he].
  *
  * [source, js]
  * ----
