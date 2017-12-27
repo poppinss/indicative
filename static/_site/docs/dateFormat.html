@@ -100,10 +100,12 @@
                 </div>
                 <div class="menu-group mb-6">
                   <h4 class="text-fadedText mb-2 text-xs uppercase font-semibold">Sanitizations</h4>
+                    <a href="/docs/escape" class="text-heading no-underline block text-sm">escape</a>
                     <a href="/docs/normalizeEmail" class="text-heading no-underline block text-sm">normalizeEmail</a>
                     <a href="/docs/plural" class="text-heading no-underline block text-sm">plural</a>
                     <a href="/docs/singular" class="text-heading no-underline block text-sm">singular</a>
                     <a href="/docs/slug" class="text-heading no-underline block text-sm">slug</a>
+                    <a href="/docs/stripLinks" class="text-heading no-underline block text-sm">stripLinks</a>
                     <a href="/docs/stripTags" class="text-heading no-underline block text-sm">stripTags</a>
                     <a href="/docs/toBoolean" class="text-heading no-underline block text-sm">toBoolean</a>
                     <a href="/docs/toDate" class="text-heading no-underline block text-sm">toDate</a>
@@ -119,6 +121,36 @@
 </div>
 <div class="paragraph">
 <p>This method will import <a href="https://date-fns.org/v1.29.0/docs/format">format</a> method from dateFns.</p>
+</div>
+<div class="sect2">
+<h3 id="_note"><a class="anchor" href="#_note"></a><a class="link" href="#_note">Note</a></h3>
+<div class="paragraph">
+<p>Following steps are performed to strip the timezone from the actual date
+and then format the date. Keeping timezones on will result in different
+output, though the format is correct.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Timezone is only stripped when the date format expects timezone to
+be present.</p>
+</li>
+<li>
+<p><code>Z</code> and <code>ZZ</code> identifiers replaces their expected counter parts.</p>
+</li>
+<li>
+<p>Also date can have <code>Z</code>, which is equivalent to <code>+00:00</code>.</p>
+</li>
+<li>
+<p>If we will not strip the timezone offset from the actual date, then
+dateFns will format it in local timezone causing invalid date
+comparison.</p>
+</li>
+<li>
+<p>Validation will also fail, when format expects a timezone but missing
+in original date.</p>
+</li>
+</ol>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -137,6 +169,7 @@ const rules = {
 <div class="listingblock">
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">import { dateFormat } from 'indicative/builds/validations'</code></pre>
+</div>
 </div>
 </div>
             </div>

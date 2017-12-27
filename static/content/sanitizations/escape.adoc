@@ -1,0 +1,28 @@
+---
+permalink: escape
+title: escape
+category: sanitizations
+---
+
+Escapes HTML entities. Useful when you want to avoid XSS attacks.
+ 
+This method will only remove `&`, `"`, `'`, `<` and `>` characters.
+ 
+[source, js]
+----
+const sanitizationRules = {
+  message: 'escape'
+}
+ 
+// or
+const sanitizationRules = {
+  message: [
+    rule('escape')
+  ]
+}
+----
+For customized build, you can import this rule as follows.
+[source, js]
+----
+import { escape } from 'indicative/builds/validations'
+----
