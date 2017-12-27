@@ -205,3 +205,23 @@ group('Sanitizations | toNull', () => {
     assert.isArray(sanitizations.toNull([]))
   })
 })
+
+group('Sanitizations | escape', () => {
+  test('escape HTML string', (assert) => {
+    assert.equal(sanitizations.escape('<div> hello </div>'), '&lt;div&gt; hello &lt;/div&gt;')
+  })
+
+  test('return same value when it\'s not a string', (assert) => {
+    assert.equal(sanitizations.escape(22), 22)
+  })
+})
+
+group('Sanitizations | stripLinks', () => {
+  test('remove anchor tags from a string', (assert) => {
+    assert.equal(sanitizations.stripLinks('<a href=""> google.com </a>'), 'google.com')
+  })
+
+  test('return same value when it\'s not a string', (assert) => {
+    assert.equal(sanitizations.stripLinks(22), 22)
+  })
+})

@@ -19,6 +19,7 @@ Following sanitization rules have been removed from indicative and you can use `
 - underscore
 - toDash
 - humanize
+- toFloat ( use `parseFloat` directly )
 
 === Modifications
 Following rules behaves differently from the older versions.
