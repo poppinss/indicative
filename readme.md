@@ -20,8 +20,10 @@ Indicative is an expressive Javascript validator for humans. Improve your workfl
 
 Installing indicative requires node 4.0 or greater with npm installed.
 
+> Checkout the newer version of indicative at indicative.adonisjs.com
+
 ```javascript
-npm i --save indicative
+npm i --save indicative@3.0.6
 ```
 
 ## Basics
