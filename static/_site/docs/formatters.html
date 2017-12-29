@@ -131,11 +131,12 @@
 <ul class="sectlevel2">
 <li><a href="#_vanilla">Vanilla</a></li>
 <li><a href="#_jsonapi">JsonApi</a></li>
+<li><a href="#_raw">Raw</a></li>
 </ul>
 </li>
 <li><a href="#_creating_your_own">Creating your own</a>
 <ul class="sectlevel3">
-<li><a href="#_adderror_error_field_validation">addError(error, field, validation)</a></li>
+<li><a href="#_adderror_error_field_validation_args">addError(error, field, validation, args)</a></li>
 <li><a href="#_tojson">toJSON()</a></li>
 </ul>
 </li>
@@ -233,6 +234,37 @@ const validator = Validator(validations, JsonApi)</code></pre>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_raw"><a class="anchor" href="#_raw"></a><a class="link" href="#_raw">Raw</a></h3>
+<div class="paragraph">
+<p>A simple formatter which returns only necessary information about the errors without any localized messages.
+Such formatter can be very useful when you want to handle and localize server validation errors on the client-side only.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">[
+  {
+    field: 'email',
+    errors: [
+      {
+        name: 'required,
+        params: []
+      }
+    ]
+  },
+  {
+    field: 'password',
+    errors: [
+      {
+        name: 'min',
+        params: [6]
+      }
+    ]
+  }
+]</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -248,7 +280,7 @@ const validator = Validator(validations, JsonApi)</code></pre>
     this.errors = []
   }
 
-  addError (error, field, validation) {
+  addError (error, field, validation, args) {
     let message = error
 
     if (error instanceof Error) {
@@ -256,7 +288,7 @@ const validator = Validator(validations, JsonApi)</code></pre>
       message = error.message
     }
 
-    this.errors.push({ field, validation, message })
+    this.errors.push({ field, validation, message, args })
   }
 
   toJSON () {
@@ -266,7 +298,7 @@ const validator = Validator(validations, JsonApi)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_adderror_error_field_validation"><a class="anchor" href="#_adderror_error_field_validation"></a><a class="link" href="#_adderror_error_field_validation">addError(error, field, validation)</a></h4>
+<h4 id="_adderror_error_field_validation_args"><a class="anchor" href="#_adderror_error_field_validation_args"></a><a class="link" href="#_adderror_error_field_validation_args">addError(error, field, validation, args)</a></h4>
 <div class="paragraph">
 <p>Add a new error to be returned later. If <code>error</code> is an instance of the <code>Error</code> object, then it is not a validation error but instead something bad caused validation to fail.</p>
 </div>

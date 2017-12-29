@@ -76,6 +76,34 @@ The link:http://jsonapi.org/format/#error-objects[JSON API] formatter will retur
 ]
 ----
 
+=== Raw
+A simple formatter which returns only necessary information about the errors without any localized messages.
+Such formatter can be very useful when you want to handle and localize server validation errors on the client-side only.
+
+[source, js]
+----
+[
+  {
+    field: 'email',
+    errors: [
+      {
+        name: 'required,
+        params: []
+      }
+    ]
+  },
+  {
+    field: 'password',
+    errors: [
+      {
+        name: 'min',
+        params: [6]
+      }
+    ]
+  }
+]
+----
+
 == Creating your own
 Also you can create your own formatter by defining a class with following methods.
 
@@ -86,7 +114,7 @@ class MyFormatter {
     this.errors = []
   }
 
-  addError (error, field, validation) {
+  addError (error, field, validation, args) {
     let message = error
 
     if (error instanceof Error) {
@@ -94,7 +122,7 @@ class MyFormatter {
       message = error.message
     }
 
-    this.errors.push({ field, validation, message })
+    this.errors.push({ field, validation, message, args })
   }
 
   toJSON () {
@@ -103,7 +131,7 @@ class MyFormatter {
 }
 ----
 
-==== addError(error, field, validation)
+==== addError(error, field, validation, args)
 Add a new error to be returned later. If `error` is an instance of the `Error` object, then it is not a validation error but instead something bad caused validation to fail.
 
 

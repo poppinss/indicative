@@ -11,3 +11,4 @@
 
 export { default as Vanilla } from './Vanilla'
 export { default as JsonApi } from './JsonApi'
+export { default as Raw } from './Raw'
