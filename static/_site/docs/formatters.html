@@ -131,7 +131,6 @@
 <ul class="sectlevel2">
 <li><a href="#_vanilla">Vanilla</a></li>
 <li><a href="#_jsonapi">JsonApi</a></li>
-<li><a href="#_raw">Raw</a></li>
 </ul>
 </li>
 <li><a href="#_creating_your_own">Creating your own</a>
@@ -229,37 +228,6 @@ const validator = Validator(validations, JsonApi)</code></pre>
     },
     title: 'required',
     detail: 'required validation failed on username'
-  }
-]</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_raw"><a class="anchor" href="#_raw"></a><a class="link" href="#_raw">Raw</a></h3>
-<div class="paragraph">
-<p>A simple formatter which returns only necessary information about the errors without any localized messages.
-Such formatter can be very useful when you want to handle and localize server validation errors on the client-side only.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight line-numbers"><code class="language-js" data-lang="js">[
-  {
-    field: 'email',
-    errors: [
-      {
-        name: 'required,
-        params: []
-      }
-    ]
-  },
-  {
-    field: 'password',
-    errors: [
-      {
-        name: 'min',
-        params: [6]
-      }
-    ]
   }
 ]</code></pre>
 </div>

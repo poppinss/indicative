@@ -76,34 +76,6 @@ The link:http://jsonapi.org/format/#error-objects[JSON API] formatter will retur
 ]
 ----
 
-=== Raw
-A simple formatter which returns only necessary information about the errors without any localized messages.
-Such formatter can be very useful when you want to handle and localize server validation errors on the client-side only.
-
-[source, js]
-----
-[
-  {
-    field: 'email',
-    errors: [
-      {
-        name: 'required,
-        params: []
-      }
-    ]
-  },
-  {
-    field: 'password',
-    errors: [
-      {
-        name: 'min',
-        params: [6]
-      }
-    ]
-  }
-]
-----
-
 == Creating your own
 Also you can create your own formatter by defining a class with following methods.
 
