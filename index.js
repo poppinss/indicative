@@ -19,19 +19,33 @@ import rule from './src/core/rule'
 import configure from './src/core/configure'
 import config from './src/core/config'
 
+/**
+ * Named exports are freezed and hence we need to create
+ * a copy, so that it can be extended.
+ */
+const validationsCopy = Object.keys(validations).reduce((result, name) => {
+  result[name] = validations[name]
+  return result
+}, {})
+
+const sanitizationsCopy = Object.keys(sanitizations).reduce((result, name) => {
+  result[name] = sanitizations[name]
+  return result
+}, {})
+
 export default {
   validate: (...args) => {
-    return validator(validations, config.FORMATTER || formatters.Vanilla).validate(...args)
+    return validator(validationsCopy, config.FORMATTER || formatters.Vanilla).validate(...args)
   },
   validateAll: (...args) => {
-    return validator(validations, config.FORMATTER || formatters.Vanilla).validateAll(...args)
+    return validator(validationsCopy, config.FORMATTER || formatters.Vanilla).validateAll(...args)
   },
   sanitize: (...args) => {
-    return sanitizor(sanitizations).sanitize(...args)
+    return sanitizor(sanitizationsCopy).sanitize(...args)
   },
   is: raw,
-  sanitizor: sanitizations,
-  validations,
+  sanitizor: sanitizationsCopy,
+  validations: validationsCopy,
   rule,
   formatters,
   configure
