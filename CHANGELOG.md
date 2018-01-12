@@ -1,3 +1,13 @@
+<a name="4.0.4"></a>
+## [4.0.4](https://github.com/poppinss/indicative/compare/v4.0.3...v4.0.4) (2018-01-12)
+
+
+### Bug Fixes
+
+* **main:** allows validations & sanitizor to be extend ([55158cd](https://github.com/poppinss/indicative/commit/55158cd))
+
+
+
 <a name="4.0.3"></a>
 ## [4.0.3](https://github.com/poppinss/indicative/compare/v4.0.2...v4.0.3) (2017-12-27)
 

@@ -123,4 +123,44 @@ group('Indicative', () => {
       EXISTY_STRICT: indicative.configure.DEFAULTS.EXISTY_STRICT
     })
   })
+
+  test('add new validation rules', async (assert) => {
+    assert.plan(1)
+    indicative.validations.time = function () {
+      return new Promise((resolve, reject) => {
+        resolve('validation passed')
+      })
+    }
+
+    const data = {
+      call: '10:20'
+    }
+
+    const rules = {
+      call: 'time'
+    }
+
+    const result = await indicative.validate(data, rules)
+    assert.deepEqual(result, data)
+  })
+
+  test('add new sanitization rules', async (assert) => {
+    assert.plan(1)
+    indicative.sanitizor.stringToNull = function () {
+      return null
+    }
+
+    const data = {
+      username: ''
+    }
+
+    const rules = {
+      username: 'string_to_null'
+    }
+
+    const result = indicative.sanitize(data, rules)
+    assert.deepEqual(result, {
+      username: null
+    })
+  })
 })
