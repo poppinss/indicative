@@ -1,4 +1,5 @@
 let browsers = ['Chrome']
+let customLaunchers = {}
 
 /**
  * If karma tests are executed via `node bin/test.js` file. It will automatically
@@ -6,7 +7,13 @@ let browsers = ['Chrome']
  */
 if ('TRAVIS' in process.env && 'CI' in process.env) {
   process.env.CHROME_BIN = require('puppeteer').executablePath()
-  browsers = ['ChromeHeadless']
+  browsers = ['Chrome_without_security']
+  customLaunchers = {
+    Chrome_without_security: {
+      base: 'ChromeHeadless',
+      flags: ['--no-sandbox']
+    }
+  }
 }
 
 module.exports = function (config) {
@@ -25,6 +32,7 @@ module.exports = function (config) {
       sourcemap: 'inline',
       plugins: require('./rollupPlugins')
     },
+    customLaunchers: customLaunchers,
     port: 9876,
     reporters: ['dots'],
     frameworks: ['japa'],
