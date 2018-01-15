@@ -298,6 +298,7 @@ Indicative uses <strong>dot notation</strong> to target nested properties inside
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { rule } = require('indicative')
 
 const rules = {
+  'teams.*': 'required|object',
   'teams.*.name': 'required|alpha',
   'teams.*.url': 'required|alpha',
   'teams.*.standupTime': [
