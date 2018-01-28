@@ -64,7 +64,9 @@ JsonApiFormatter.prototype.addError = function (error, field, validation, args) 
  * @return {Object}
  */
 JsonApiFormatter.prototype.toJSON = function () {
-  return this.errors
+  return {
+    errors: this.errors
+  }
 }
 
 export default JsonApiFormatter

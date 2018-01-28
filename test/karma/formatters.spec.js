@@ -29,12 +29,14 @@ group('JsonApi Formatter', () => {
   test('add new error', (assert) => {
     const formatter = new formatters.JsonApi()
     formatter.addError('validation failed', 'username', 'required', [])
-    assert.deepEqual(formatter.toJSON(), [
-      {
-        source: { pointer: 'username' },
-        detail: 'validation failed',
-        title: 'required'
-      }
-    ])
+    assert.deepEqual(formatter.toJSON(), {
+      errors: [
+        {
+          source: { pointer: 'username' },
+          detail: 'validation failed',
+          title: 'required'
+        }
+      ]
+    })
   })
 })
