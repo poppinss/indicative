@@ -1,3 +1,24 @@
+<a name="5.0.0"></a>
+# [5.0.0](https://github.com/poppinss/indicative/compare/v4.0.4...v5.0.0) (2018-01-28)
+
+
+### Bug Fixes
+
+* **formatters:** fix jsonapi formatter to return errors in right format ([eb74497](https://github.com/poppinss/indicative/commit/eb74497))
+
+
+### Features
+
+* **formatter:** now receives additional args argument ([8826d27](https://github.com/poppinss/indicative/commit/8826d27))
+
+
+### BREAKING CHANGES
+
+* **formatters:** Instead of returning an array, an object with key `error` is returned containing an
+array of errors
+
+
+
 <a name="4.0.4"></a>
 ## [4.0.4](https://github.com/poppinss/indicative/compare/v4.0.3...v4.0.4) (2018-01-12)
 
