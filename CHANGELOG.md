@@ -1,3 +1,13 @@
+<a name="5.0.1"></a>
+## [5.0.1](https://github.com/poppinss/indicative/compare/v5.0.0...v5.0.1) (2018-01-28)
+
+
+### Bug Fixes
+
+* **validator:** checks for errors length when it's an array ([5119ea9](https://github.com/poppinss/indicative/commit/5119ea9))
+
+
+
 <a name="5.0.0"></a>
 # [5.0.0](https://github.com/poppinss/indicative/compare/v4.0.4...v5.0.0) (2018-01-28)
 
