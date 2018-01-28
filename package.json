@@ -1,6 +1,6 @@
 {
   "name": "indicative",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "Concise data validation library for Node.js and browsers",
   "main": "builds/main.js",
   "files": [
