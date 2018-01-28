@@ -65,15 +65,19 @@ The link:http://jsonapi.org/format/#error-objects[JSON API] formatter will retur
 
 [source, js]
 ----
-[
-  {
-    source: {
-      pointer: 'username'
-    },
-    title: 'required',
-    detail: 'required validation failed on username'
+{
+  errors: {
+    [
+      {
+        source: {
+          pointer: 'username'
+        },
+        title: 'required',
+        detail: 'required validation failed on username'
+      }
+    ]
   }
-]
+}
 ----
 
 == Creating your own

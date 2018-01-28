@@ -221,15 +221,19 @@ const validator = Validator(validations, JsonApi)</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-js" data-lang="js">[
-  {
-    source: {
-      pointer: 'username'
-    },
-    title: 'required',
-    detail: 'required validation failed on username'
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">{
+  errors: {
+    [
+      {
+        source: {
+          pointer: 'username'
+        },
+        title: 'required',
+        detail: 'required validation failed on username'
+      }
+    ]
   }
-]</code></pre>
+}</code></pre>
 </div>
 </div>
 </div>
