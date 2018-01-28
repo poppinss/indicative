@@ -15,7 +15,7 @@ import * as formatters from '../../src/formatters'
 test.group('Vanilla Formatter', () => {
   test('add new error', (assert) => {
     const formatter = new formatters.Vanilla()
-    formatter.addError('validation failed', 'username', 'required')
+    formatter.addError('validation failed', 'username', 'required', [])
     assert.deepEqual(formatter.toJSON(), [
       {
         field: 'username',
@@ -29,13 +29,15 @@ test.group('Vanilla Formatter', () => {
 test.group('JsonApi Formatter', () => {
   test('add new error', (assert) => {
     const formatter = new formatters.JsonApi()
-    formatter.addError('validation failed', 'username', 'required')
-    assert.deepEqual(formatter.toJSON(), [
-      {
-        source: { pointer: 'username' },
-        detail: 'validation failed',
-        title: 'required'
-      }
-    ])
+    formatter.addError('validation failed', 'username', 'required', [])
+    assert.deepEqual(formatter.toJSON(), {
+      errors: [
+        {
+          source: { pointer: 'username' },
+          detail: 'validation failed',
+          title: 'required'
+        }
+      ]
+    })
   })
 })
