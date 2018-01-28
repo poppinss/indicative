@@ -116,7 +116,7 @@ function validate (validations, bail, data, fields, messages, formatter) {
     pSeries(validationsStack, bail)
     .then((response) => {
       const errors = formatter.toJSON()
-      if (errors && (Array.isArray(errors) && errors.length)) {
+      if ((!Array.isArray(errors) && errors) || errors.length) {
         return reject(errors)
       }
       resolve(data)
