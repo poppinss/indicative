@@ -130,6 +130,7 @@ Below is an example, showing the usage of a complex schema object.
 const { rule } = require('indicative')
 
 const rules = {
+  'teams.*': 'required|object',
   'teams.*.name': 'required|alpha',
   'teams.*.url': 'required|alpha',
   'teams.*.standupTime': [

@@ -12,10 +12,10 @@
 import test from 'japa'
 
 import validator from '../../src/core/validator'
-import { required, integer, alpha, alphaNumeric } from '../../src/validations'
+import { required, integer, alpha, alphaNumeric, array } from '../../src/validations'
 import * as formatters from '../../src/formatters'
 
-const validationsHash = { required, integer, alpha, alphaNumeric }
+const validationsHash = { required, integer, alpha, alphaNumeric, array }
 
 test.group('Validator - Core', () => {
   test('throw exception when initiated without validations', async (assert) => {
@@ -198,5 +198,49 @@ test.group('Validator - Core', () => {
 
     const response = await validate(data, rules)
     assert.deepEqual(response, data)
+  })
+
+  test('array sub-elements should be validated', async (assert) => {
+    const { validate, validateAll } = validator(validationsHash, formatters.Vanilla)
+    const rules = {
+      'roles': 'array',
+      'roles.*': 'required',
+      'roles.*.code': 'alpha'
+    }
+
+    const dataValid = {
+      roles: [
+        {code: 'first'},
+        {code: 'second', label: 'any'},
+        {code: 'third', date: new Date()}
+      ]
+    }
+    const responseValid = await validate(dataValid, rules)
+    assert.deepEqual(responseValid, dataValid)
+
+    const dataInvalid = {
+      roles: [
+        {code: 42},
+        null,
+        {missingCodeAttr: 'any'}
+      ]
+    }
+    try {
+      await validateAll(dataInvalid, rules)
+      assert.fail('Must fail')
+    } catch (errors) {
+      assert.deepEqual(errors, [
+        {
+          message: 'required validation failed on roles.*',
+          field: 'roles.1',
+          validation: 'required'
+        },
+        {
+          message: 'alpha validation failed on roles.*.code',
+          field: 'roles.0.code',
+          validation: 'alpha'
+        }
+      ])
+    }
   })
 })
