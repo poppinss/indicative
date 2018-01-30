@@ -40,7 +40,7 @@ function validationFn (validations, {name, args}, field, data, messages, formatt
     name = snakeToCamelCase(name)
     if (typeof (validations[name]) !== 'function') {
       const error = new Error(`${name} is not defined as a validation rule`)
-      formatter.addError(error, field, name)
+      formatter.addError(error, field, name, args)
       reject(error)
       return
     }
@@ -49,7 +49,7 @@ function validationFn (validations, {name, args}, field, data, messages, formatt
     validations[name](data, field, message, args, prop)
       .then(resolve)
       .catch((error) => {
-        formatter.addError(error, field, name)
+        formatter.addError(error, field, name, args)
         reject(error)
       })
   })
@@ -116,7 +116,7 @@ function validate (validations, bail, data, fields, messages, formatter) {
     pSeries(validationsStack, bail)
     .then((response) => {
       const errors = formatter.toJSON()
-      if (errors.length) {
+      if ((!Array.isArray(errors) && errors) || errors.length) {
         return reject(errors)
       }
       resolve(data)

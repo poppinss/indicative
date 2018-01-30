@@ -39,10 +39,11 @@ function VanillaFormatter () {
  * @param {Object} error
  * @param {String} field
  * @param {String} validation
+ * @param {Array} args
  *
  * @return {void}
  */
-VanillaFormatter.prototype.addError = function (error, field, validation) {
+VanillaFormatter.prototype.addError = function (error, field, validation, args) {
   let message = error
   if (error instanceof Error) {
     validation = 'ENGINE_EXCEPTION'

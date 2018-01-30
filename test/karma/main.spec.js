@@ -163,4 +163,27 @@ group('Indicative', () => {
       username: null
     })
   })
+
+  test('use jsonapi formatter', async (assert) => {
+    assert.plan(1)
+
+    const data = {}
+    const rules = {
+      username: 'required'
+    }
+
+    try {
+      await indicative.validate(data, rules, null, indicative.formatters.JsonApi)
+    } catch (errors) {
+      assert.deepEqual(errors, {
+        errors: [
+          {
+            title: 'required',
+            source: { pointer: 'username' },
+            detail: 'required validation failed on username'
+          }
+        ]
+      })
+    }
+  })
 })

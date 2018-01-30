@@ -65,15 +65,19 @@ The link:http://jsonapi.org/format/#error-objects[JSON API] formatter will retur
 
 [source, js]
 ----
-[
-  {
-    source: {
-      pointer: 'username'
-    },
-    title: 'required',
-    detail: 'required validation failed on username'
+{
+  errors: {
+    [
+      {
+        source: {
+          pointer: 'username'
+        },
+        title: 'required',
+        detail: 'required validation failed on username'
+      }
+    ]
   }
-]
+}
 ----
 
 == Creating your own
@@ -86,7 +90,7 @@ class MyFormatter {
     this.errors = []
   }
 
-  addError (error, field, validation) {
+  addError (error, field, validation, args) {
     let message = error
 
     if (error instanceof Error) {
@@ -94,7 +98,7 @@ class MyFormatter {
       message = error.message
     }
 
-    this.errors.push({ field, validation, message })
+    this.errors.push({ field, validation, message, args })
   }
 
   toJSON () {
@@ -103,7 +107,7 @@ class MyFormatter {
 }
 ----
 
-==== addError(error, field, validation)
+==== addError(error, field, validation, args)
 Add a new error to be returned later. If `error` is an instance of the `Error` object, then it is not a validation error but instead something bad caused validation to fail.
 
 

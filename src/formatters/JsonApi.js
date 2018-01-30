@@ -35,10 +35,11 @@ function JsonApiFormatter () {
  * @param {Object} error
  * @param {String} field
  * @param {String} validation
+ * @param {Array} args
  *
  * @return {void}
  */
-JsonApiFormatter.prototype.addError = function (error, field, validation) {
+JsonApiFormatter.prototype.addError = function (error, field, validation, args) {
   let message = error
   if (error instanceof Error) {
     validation = 'ENGINE_EXCEPTION'
@@ -63,7 +64,9 @@ JsonApiFormatter.prototype.addError = function (error, field, validation) {
  * @return {Object}
  */
 JsonApiFormatter.prototype.toJSON = function () {
-  return this.errors
+  return {
+    errors: this.errors
+  }
 }
 
 export default JsonApiFormatter
