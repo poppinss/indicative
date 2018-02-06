@@ -60,7 +60,7 @@ VanillaFormatter.prototype.addError = function (error, field, validation, args) 
  * @return {Array}
  */
 VanillaFormatter.prototype.toJSON = function () {
-  return this.errors
+  return this.errors.length ? this.errors : null
 }
 
 export default VanillaFormatter

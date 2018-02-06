@@ -16,15 +16,6 @@ export default [
     plugins: plugins
   },
   {
-    input: './index',
-    output: {
-      file: pkg.module,
-      format: 'cjs',
-      name: 'indicative'
-    },
-    plugins: rollupPlugins
-  },
-  {
     input: 'src/core/configure',
     output: {
       file: 'builds/configure.js',
