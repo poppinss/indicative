@@ -1,9 +1,9 @@
 import uglify from 'rollup-plugin-uglify'
 import { minify } from 'uglify-es'
 
-const plugins = require('./rollupPlugins')
+const rollupPlugins = require('./rollupPlugins')
 const pkg = require('./package.json')
-plugins.push(uglify({}, minify))
+const plugins = rollupPlugins.concat([uglify({}, minify)])
 
 export default [
   {
@@ -14,6 +14,15 @@ export default [
       name: 'indicative'
     },
     plugins: plugins
+  },
+  {
+    input: './index',
+    output: {
+      file: pkg.module,
+      format: 'cjs',
+      name: 'indicative'
+    },
+    plugins: rollupPlugins
   },
   {
     input: 'src/core/configure',
