@@ -54,12 +54,12 @@ function getMessage (messages, field, validation, args) {
    * current field to be replaced with `.*`, so that we get the
    * right message.
    */
-  field = field.replace(/\.\d/g, '.*')
+  const originalField = field.replace(/\.\d/g, '.*')
 
-  const message = messages[`${field}.${validation}`] || messages[validation] || '{{validation}} validation failed on {{ field }}'
+  const message = messages[`${originalField}.${validation}`] || messages[validation] || '{{validation}} validation failed on {{ field }}'
 
   return typeof (message) === 'function'
-  ? message(field, validation, args)
+  ? message(originalField, validation, args)
   : pope(message, { field, validation, argument: args })
 }
 

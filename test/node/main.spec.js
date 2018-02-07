@@ -187,4 +187,28 @@ test.group('Indicative', () => {
       })
     }
   })
+
+  test('validate array expressions', async (assert) => {
+    assert.plan(1)
+
+    const data = {
+      names: [22]
+    }
+
+    const rules = {
+      'names.*': 'string'
+    }
+
+    try {
+      await indicative.validate(data, rules, null)
+    } catch (errors) {
+      assert.deepEqual(errors, [
+        {
+          validation: 'string',
+          field: 'names.0',
+          message: 'string validation failed on names.0'
+        }
+      ])
+    }
+  })
 })

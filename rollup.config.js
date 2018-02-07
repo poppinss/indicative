@@ -1,9 +1,9 @@
 import uglify from 'rollup-plugin-uglify'
 import { minify } from 'uglify-es'
 
-const plugins = require('./rollupPlugins')
+const rollupPlugins = require('./rollupPlugins')
 const pkg = require('./package.json')
-plugins.push(uglify({}, minify))
+const plugins = rollupPlugins.concat([uglify({}, minify)])
 
 export default [
   {

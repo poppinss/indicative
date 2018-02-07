@@ -106,7 +106,7 @@ function validate (validations, bail, data, fields, messages, formatter) {
      * This is expanded form of fields and rules
      * applied on them
      */
-    const parsedFields = parse(fields)
+    const parsedFields = parse(fields, data)
 
     /**
      * A flat validations stack, each node is a lazy promise
@@ -116,7 +116,7 @@ function validate (validations, bail, data, fields, messages, formatter) {
     pSeries(validationsStack, bail)
     .then((response) => {
       const errors = formatter.toJSON()
-      if ((!Array.isArray(errors) && errors) || errors.length) {
+      if (errors) {
         return reject(errors)
       }
       resolve(data)
