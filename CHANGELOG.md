@@ -1,3 +1,19 @@
+<a name="5.0.3"></a>
+## [5.0.3](https://github.com/poppinss/indicative/compare/v5.0.2...v5.0.3) (2018-02-07)
+
+
+### Bug Fixes
+
+* **formatter:** jsonapi formatter return null in case no errors ([69a8e10](https://github.com/poppinss/indicative/commit/69a8e10))
+* **validator:** handle array expressions properly ([6201721](https://github.com/poppinss/indicative/commit/6201721)), closes [#165](https://github.com/poppinss/indicative/issues/165)
+
+
+### Features
+
+* **build:** generate es module for tree-shaking ([c80feea](https://github.com/poppinss/indicative/commit/c80feea)), closes [#168](https://github.com/poppinss/indicative/issues/168)
+
+
+
 <a name="5.0.2"></a>
 ## [5.0.2](https://github.com/poppinss/indicative/compare/v5.0.1...v5.0.2) (2018-01-28)
 
