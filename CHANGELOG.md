@@ -1,3 +1,13 @@
+<a name="5.0.4"></a>
+## [5.0.4](https://github.com/poppinss/indicative/compare/v5.0.3...v5.0.4) (2018-02-07)
+
+
+### Bug Fixes
+
+* **builds:** remove module build ([e1fabd2](https://github.com/poppinss/indicative/commit/e1fabd2))
+
+
+
 <a name="5.0.3"></a>
 ## [5.0.3](https://github.com/poppinss/indicative/compare/v5.0.2...v5.0.3) (2018-02-07)
 
