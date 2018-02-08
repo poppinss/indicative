@@ -37,19 +37,20 @@ import snakeToCamelCase from './snakeToCamelCase'
  */
 function validationFn (validations, {name, args}, field, data, messages, formatter) {
   return new PLazy((resolve, reject) => {
-    name = snakeToCamelCase(name)
-    if (typeof (validations[name]) !== 'function') {
-      const error = new Error(`${name} is not defined as a validation rule`)
-      formatter.addError(error, field, name, args)
+    const camelizedName = snakeToCamelCase(name)
+    const validation = validations[camelizedName]
+
+    if (typeof (validation) !== 'function') {
+      const error = new Error(`${camelizedName} is not defined as a validation rule`)
+      formatter.addError(error, field, camelizedName, args)
       reject(error)
       return
     }
 
-    const message = getMessage(messages, field, name, args)
-    validations[name](data, field, message, args, prop)
+    validation(data, field, getMessage(messages, field, name, args), args, prop)
       .then(resolve)
       .catch((error) => {
-        formatter.addError(error, field, name, args)
+        formatter.addError(error, field, camelizedName, args)
         reject(error)
       })
   })

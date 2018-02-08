@@ -50,7 +50,7 @@ validate(data, rules)
 
 As you can see the `rules` is an object ( called schema ), which defines a set of rules on a given key. The values will be picked from the `data` object and validated against the defined rules.
 
-Read the link:syntax-guide[syntax guide] to learn more about the schema definition.
+Read the link:/docs/syntax-guide[syntax guide] to learn more about the schema definition.
 
 === Please note
 1. Errors inside the `catch` block are an array of errors, instead of the Javascript Error object.

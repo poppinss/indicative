@@ -46,6 +46,14 @@ validate(data, rules, null, formatters.JsonApi)
 == Available formatters
 Below is the list of formatters shipped with Indicative by default.
 
+[source, js]
+----
+const { formatters } = require('indicative')
+
+formatters.Vanilla
+formatters.JsonApi
+----
+
 === Vanilla
 The default formatter (known as vanilla) returns errors in following structure.
 

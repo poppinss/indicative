@@ -57,4 +57,20 @@ group('Message Bag', () => {
     }, 'age', 'between', [10, 20])
     assert.equal(message, 'age must be between 10 and 20')
   })
+
+  test('work fine when message is defined in camelCase', (assert) => {
+    const message = getMessage({
+      'arrayIncludes': 'This field is required'
+    }, 'username', 'array_includes')
+
+    assert.equal(message, 'This field is required')
+  })
+
+  test('work fine when message is defined in snake case', (assert) => {
+    const message = getMessage({
+      'array_includes': 'This field is required'
+    }, 'username', 'array_includes')
+
+    assert.equal(message, 'This field is required')
+  })
 })
