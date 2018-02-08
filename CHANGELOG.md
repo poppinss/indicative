@@ -1,3 +1,13 @@
+<a name="5.0.5"></a>
+## [5.0.5](https://github.com/poppinss/indicative/compare/v5.0.4...v5.0.5) (2018-02-08)
+
+
+### Bug Fixes
+
+* **messages:** allow snake_case rule name in custom messages ([d5ee3cb](https://github.com/poppinss/indicative/commit/d5ee3cb))
+
+
+
 <a name="5.0.4"></a>
 ## [5.0.4](https://github.com/poppinss/indicative/compare/v5.0.3...v5.0.4) (2018-02-07)
 
