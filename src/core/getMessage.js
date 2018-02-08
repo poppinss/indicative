@@ -10,6 +10,7 @@
 */
 
 import { pope } from 'pope'
+import snakeToCamelCase from './snakeToCamelCase'
 
 /**
  * Returns message for a given field and a validation rule. The priority is
@@ -55,8 +56,13 @@ function getMessage (messages, field, validation, args) {
    * right message.
    */
   const originalField = field.replace(/\.\d/g, '.*')
+  const camelizedValidation = snakeToCamelCase(validation)
 
-  const message = messages[`${originalField}.${validation}`] || messages[validation] || '{{validation}} validation failed on {{ field }}'
+  const message = messages[`${originalField}.${validation}`] ||
+    messages[`${originalField}.${camelizedValidation}`] ||
+    messages[validation] ||
+    messages[camelizedValidation] ||
+    '{{validation}} validation failed on {{ field }}'
 
   return typeof (message) === 'function'
   ? message(originalField, validation, args)

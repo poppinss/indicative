@@ -19,7 +19,7 @@
     "test:all": "npm run test:node && npm run test:karma && npm run test:qunit",
     "test": "node bin/test"
   },
-  "author": "amanvirk",
+  "author": "virk",
   "license": "MIT",
   "devDependencies": {
     "@slynova/slug": "^1.0.1",

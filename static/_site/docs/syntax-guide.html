@@ -125,6 +125,7 @@
 <div id="toctitle" class="title">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_defining_rules">Defining rules</a></li>
+<li><a href="#_camel_snake_case">Camel &amp; snake case</a></li>
 <li><a href="#_limitations">Limitations</a></li>
 <li><a href="#_nested_data">Nested data</a>
 <ul class="sectlevel2">
@@ -173,6 +174,34 @@
 </div>
 <div class="paragraph">
 <p>As you can see the <code>range</code> rule accepts 2 arguments and they are seperated by a comma.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_camel_snake_case"><a class="anchor" href="#_camel_snake_case"></a><a class="link" href="#_camel_snake_case">Camel &amp; snake case</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For readability, Indicative allows you to reference the rule names in <code>snake_case</code>. For example</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const rules = {
+  password: 'requiredWhen:email'
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>is same as</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const rules = {
+  password: 'required_when:email'
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For longer rule definations, <code>required_when</code> is more readable than <code>requiredWhen</code>.</p>
 </div>
 </div>
 </div>

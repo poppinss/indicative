@@ -35,6 +35,27 @@ const rules = {
 
 As you can see the `range` rule accepts 2 arguments and they are seperated by a comma.
 
+== Camel & snake case
+For readability, Indicative allows you to reference the rule names in `snake_case`. For example
+
+[source, js]
+----
+const rules = {
+  password: 'requiredWhen:email'
+}
+----
+
+is same as
+
+[source, js]
+----
+const rules = {
+  password: 'required_when:email'
+}
+----
+
+For longer rule definations, `required_when` is more readable than `requiredWhen`.
+
 == Limitations
 Since the validation rules are defined using a string based expression, it has certain limitations. You cannot use reserved keywords like `:` or a `|`, within arguments.
 
