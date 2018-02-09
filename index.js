@@ -23,6 +23,11 @@ import config from './src/core/config'
  * Named exports are freezed and hence we need to create
  * a copy, so that it can be extended.
  */
+const rawCopy = Object.keys(raw).reduce((result, name) => {
+  result[name] = raw[name]
+  return result
+}, {})
+
 const validationsCopy = Object.keys(validations).reduce((result, name) => {
   result[name] = validations[name]
   return result
@@ -43,7 +48,7 @@ export default {
   sanitize: (...args) => {
     return sanitizor(sanitizationsCopy).sanitize(...args)
   },
-  is: raw,
+  is: rawCopy,
   sanitizor: sanitizationsCopy,
   validations: validationsCopy,
   rule,
