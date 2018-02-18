@@ -1,4 +1,8 @@
-export default (input, min, max) => {
+export default (input, min, max, inclusive) => {
   input = Number(input)
-  return (input > Number(min)) && (input < Number(max))
+  if (!inclusive) {
+    return (input > Number(min)) && (input < Number(max))
+  }
+
+  return (input >= Number(min)) && (input <= Number(max))
 }
