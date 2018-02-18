@@ -1318,7 +1318,17 @@ test.group('Validations | range', function () {
   test('should work fine when field value is under defined range', async function (assert) {
     const data = {age: 20}
     const field = 'age'
-    const message = 'only adults less than 60 years of age are allowed'
+    const message = 'only adults less or equal than 60 years of age are allowed'
+    const get = prop
+    const args = [18, 60]
+    const passes = await validations.range(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should work fine when field value is equal to minimum defined range', async function (assert) {
+    const data = {age: 18}
+    const field = 'age'
+    const message = 'only adults with or more 18 years of age are allowed'
     const get = prop
     const args = [18, 60]
     const passes = await validations.range(data, field, message, args, get)
