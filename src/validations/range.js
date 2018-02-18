@@ -28,7 +28,7 @@ export default (data, field, message, [min, max], get) => {
 
     const fieldValue = get(data, field)
 
-    if (!skippable(fieldValue) && !between(fieldValue, min, max)) {
+    if (!skippable(fieldValue) && !between(fieldValue, min, max, true)) {
       return message
     }
   })
