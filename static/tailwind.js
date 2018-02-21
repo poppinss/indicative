@@ -211,7 +211,11 @@ module.exports = {
       'sans-serif'
     ],
     'mono': [
-      'operator mono'
+      'operator mono',
+      'Menlo',
+      'Monaco',
+      'Consolas',
+      'monospace'
     ]
   },
 
