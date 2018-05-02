@@ -14,8 +14,8 @@ toc::[]
 
 [ol-shrinked]
 1. First class support for `async` validations.
-2. Support for link:syntax-guide#_nested_data[nested validations].
-3. Support for custom link:formatters[error formatters].
+2. Support for link:docs/syntax-guide#_nested_data[nested validations].
+3. Support for custom link:docs/formatters[error formatters].
 4. In built data sanitizor.
 5. Customized and smaller builds for browsers.
 
