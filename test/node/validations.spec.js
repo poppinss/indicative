@@ -1281,6 +1281,17 @@ test.group('Validations | range', function () {
     }
   })
 
+  // https://github.com/poppinss/indicative/issues/184 test case for min=0
+  test('should not throw an error when min value is zero', async function (assert) {
+    const data = {age: 20}
+    const field = 'age'
+    const message = 'only persons less than 60 years of age are allowed'
+    const get = prop
+    const args = [0, 60]
+    const passes = await validations.range(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
   test('should throw an error when max value is not defined', async function (assert) {
     const data = {age: 61}
     const field = 'age'
@@ -1293,6 +1304,17 @@ test.group('Validations | range', function () {
     } catch (e) {
       assert.match(e, /min and max values are required/)
     }
+  })
+
+  // https://github.com/poppinss/indicative/issues/184 test case for max=0
+  test('should not throw an error when max value is zero', async function (assert) {
+    const data = {temp: -5}
+    const field = 'temp'
+    const message = 'only negative temperature greater than -10 is allowed'
+    const get = prop
+    const args = [-10, 0]
+    const passes = await validations.range(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
   })
 
   test('should skip validation when field does not exists', async function (assert) {
