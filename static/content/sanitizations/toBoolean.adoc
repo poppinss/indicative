@@ -10,13 +10,13 @@ will be converted to `false`, otherwise to `true`.
 [source, js]
 ----
 const sanitizationRules = {
-  is_admin: 'boolean'
+  is_admin: 'to_boolean'
 }
  
 // or
 const sanitizationRules = {
   is_admin: [
-    rule('boolean')
+    rule('to_boolean')
   ]
 }
 ----
