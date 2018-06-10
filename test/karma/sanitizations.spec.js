@@ -225,3 +225,13 @@ group('Sanitizations | stripLinks', () => {
     assert.equal(sanitizations.stripLinks(22), 22)
   })
 })
+
+group('Sanitizations | trim', () => {
+  test('remove whitespace from both sides of a given string.', (assert) => {
+    assert.equal(sanitizations.trim(' joe '), 'joe')
+  })
+
+  test('return same value when it\'s not a string', (assert) => {
+    assert.equal(sanitizations.trim(22), 22)
+  })
+})
