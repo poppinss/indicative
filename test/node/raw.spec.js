@@ -28,7 +28,7 @@ test.group('Raw | Types', function () {
   })
 
   test('return false when input is an object', function (assert) {
-    assert.equal(Is.array({age: 22}), false)
+    assert.equal(Is.array({ age: 22 }), false)
   })
 
   test('return false when input is a string', function (assert) {
@@ -103,24 +103,32 @@ test.group('Raw | Types', function () {
     assert.equal(Is.isNumber(Number('10')), true)
   })
 
-  test('return false when input is a string', function (assert) {
-    assert.equal(Is.isNumber('10'), false)
+  test('return false when input is a string and strict is enabled', function (assert) {
+    assert.equal(Is.isNumber('10', true), false)
+  })
+
+  test('return true when input is a string representation of a number', function (assert) {
+    assert.equal(Is.isNumber('10'), true)
+  })
+
+  test('return false when input is not a string representation of a number', function (assert) {
+    assert.equal(Is.isNumber('virk'), false)
   })
 
   test('return true when input is an object', function (assert) {
-    assert.equal(Is.isObject({name: 'virk'}), true)
+    assert.equal(Is.isObject({ name: 'virk' }), true)
   })
 
   test('return false when input is not a stringify object', function (assert) {
-    assert.equal(Is.isObject(JSON.stringify({name: 'virk'})), false)
+    assert.equal(Is.isObject(JSON.stringify({ name: 'virk' })), false)
   })
 
   test('return true when input is json', function (assert) {
-    assert.equal(Is.json(JSON.stringify({name: 'virk'})), true)
+    assert.equal(Is.json(JSON.stringify({ name: 'virk' })), true)
   })
 
   test('return false when input is an object', function (assert) {
-    assert.equal(Is.json({name: 'virk'}), false)
+    assert.equal(Is.json({ name: 'virk' }), false)
   })
 
   test('return true when input is null', function (assert) {
@@ -266,14 +274,18 @@ test.group('Raw | Regexp', function () {
 
   test('return true when input contains 63 characters TLD', function (assert) {
     assert.equal(
-      Is.url('https://example.abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijk'),
+      Is.url(
+        'https://example.abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijk'
+      ),
       true
     )
   })
 
   test('return false when input contains more than 63 characters TLD', function (assert) {
     assert.equal(
-      Is.url('https://example.abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijkl'),
+      Is.url(
+        'https://example.abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijkl'
+      ),
       false
     )
   })
@@ -307,7 +319,12 @@ test.group('Raw | Regexp', function () {
   })
 
   test('return true when input is a valid email address with 63 characters TLD', function (assert) {
-    assert.equal(Is.email('someone@example.abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijk'), true)
+    assert.equal(
+      Is.email(
+        'someone@example.abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijk'
+      ),
+      true
+    )
   })
 
   test('return true when input is a valid phone number', function (assert) {
@@ -600,17 +617,29 @@ test.group('Raw | Dates', function () {
   })
 
   test('return true when date between 2 dates', function (assert) {
-    const isInDateRange = Is.inDateRange('2015-11-20', '2015-11-10', '2015-11-30')
+    const isInDateRange = Is.inDateRange(
+      '2015-11-20',
+      '2015-11-10',
+      '2015-11-30'
+    )
     assert.equal(isInDateRange, true)
   })
 
   test('return false when min date expectation failed', function (assert) {
-    const isInDateRange = Is.inDateRange('2015-11-20', '2015-11-22', '2015-11-30')
+    const isInDateRange = Is.inDateRange(
+      '2015-11-20',
+      '2015-11-22',
+      '2015-11-30'
+    )
     assert.equal(isInDateRange, false)
   })
 
   test('return false when max date expectation failed', function (assert) {
-    const isInDateRange = Is.inDateRange('2015-11-20', '2015-11-10', '2015-11-15')
+    const isInDateRange = Is.inDateRange(
+      '2015-11-20',
+      '2015-11-10',
+      '2015-11-15'
+    )
     assert.equal(isInDateRange, false)
   })
 
@@ -625,7 +654,11 @@ test.group('Raw | Dates', function () {
   })
 
   test('return true when date is after defined offset months', function (assert) {
-    const isAfterOffset = Is.afterOffsetOf(addMonths(new Date(), 13), 12, 'months')
+    const isAfterOffset = Is.afterOffsetOf(
+      addMonths(new Date(), 13),
+      12,
+      'months'
+    )
     assert.equal(isAfterOffset, true)
   })
 
@@ -635,12 +668,20 @@ test.group('Raw | Dates', function () {
   })
 
   test('return true when date is after defined offset minutes', function (assert) {
-    const isAfterOffset = Is.afterOffsetOf(addMinutes(new Date(), 30), 20, 'minutes')
+    const isAfterOffset = Is.afterOffsetOf(
+      addMinutes(new Date(), 30),
+      20,
+      'minutes'
+    )
     assert.equal(isAfterOffset, true)
   })
 
   test('return true when date is after defined offset seconds', function (assert) {
-    const isAfterOffset = Is.afterOffsetOf(addSeconds(new Date(), 30), 20, 'seconds')
+    const isAfterOffset = Is.afterOffsetOf(
+      addSeconds(new Date(), 30),
+      20,
+      'seconds'
+    )
     assert.equal(isAfterOffset, true)
   })
 
@@ -660,32 +701,55 @@ test.group('Raw | Dates', function () {
   })
 
   test('return true when date is before defined offset', function (assert) {
-    const isBeforeOffset = Is.beforeOffsetOf(subMonths(new Date(), 13), 12, 'months')
+    const isBeforeOffset = Is.beforeOffsetOf(
+      subMonths(new Date(), 13),
+      12,
+      'months'
+    )
     assert.equal(isBeforeOffset, true)
   })
 
   test('return true when date is before defined offset milliseconds', function (assert) {
-    const isBeforeOffset = Is.beforeOffsetOf(subMilliseconds(new Date(), 40), 12, 'milliseconds')
+    const isBeforeOffset = Is.beforeOffsetOf(
+      subMilliseconds(new Date(), 40),
+      12,
+      'milliseconds'
+    )
     assert.equal(isBeforeOffset, true)
   })
 
   test('return true when date is before defined offset weeks', function (assert) {
-    const isBeforeOffset = Is.beforeOffsetOf(subWeeks(new Date(), 2), 1, 'weeks')
+    const isBeforeOffset = Is.beforeOffsetOf(
+      subWeeks(new Date(), 2),
+      1,
+      'weeks'
+    )
     assert.equal(isBeforeOffset, true)
   })
 
   test('return true when date is before defined offset quaters', function (assert) {
-    const isBeforeOffset = Is.beforeOffsetOf(subQuarters(new Date(), 2), 1, 'quarters')
+    const isBeforeOffset = Is.beforeOffsetOf(
+      subQuarters(new Date(), 2),
+      1,
+      'quarters'
+    )
     assert.equal(isBeforeOffset, true)
   })
 
   test('return true when date is before defined offset years', function (assert) {
-    const isBeforeOffset = Is.beforeOffsetOf(subMonths(new Date(), 16), 1, 'years')
+    const isBeforeOffset = Is.beforeOffsetOf(
+      subMonths(new Date(), 16),
+      1,
+      'years'
+    )
     assert.equal(isBeforeOffset, true)
   })
 
   test('return true when valid format is valid as per allowed format', function (assert) {
-    const isFormatted = Is.dateFormat(format(new Date(), 'YYYY-MM-DD'), 'YYYY-MM-DD')
+    const isFormatted = Is.dateFormat(
+      format(new Date(), 'YYYY-MM-DD'),
+      'YYYY-MM-DD'
+    )
     assert.equal(isFormatted, true)
   })
 
@@ -700,7 +764,10 @@ test.group('Raw | Dates', function () {
   })
 
   test('return true when date is valid as per any given format', function (assert) {
-    const isFormatted = Is.dateFormat(format(new Date(), 'YYYY-MM-DD'), ['YYYY/MM/DD', 'YYYY-MM-DD'])
+    const isFormatted = Is.dateFormat(format(new Date(), 'YYYY-MM-DD'), [
+      'YYYY/MM/DD',
+      'YYYY-MM-DD'
+    ])
     assert.isTrue(isFormatted)
   })
 
