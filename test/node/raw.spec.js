@@ -103,8 +103,16 @@ test.group('Raw | Types', function () {
     assert.equal(Is.isNumber(Number('10')), true)
   })
 
-  test('return false when input is a string', function (assert) {
-    assert.equal(Is.isNumber('10'), false)
+  test('return false when input is a string and strict is enabled', function (assert) {
+    assert.equal(Is.isNumber('10', true), false)
+  })
+
+  test('return true when input is a string representation of a number', function (assert) {
+    assert.equal(Is.isNumber('10'), true)
+  })
+
+  test('return false when input is not a string representation of a number', function (assert) {
+    assert.equal(Is.isNumber('virk'), false)
   })
 
   test('return true when input is an object', function (assert) {
