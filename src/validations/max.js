@@ -2,7 +2,7 @@ import toPromise from '../../lib/toPromise'
 import skippable from '../core/skippable'
 
 /**
- * Ensures the length of a string is not greater than
+ * Ensures the length of a string or array is not greater than
  * the defined length.
  *
  * [source, js]
@@ -24,9 +24,11 @@ export default (data, field, message, [maxLength], get) => {
     if (!maxLength) {
       throw new Error('max:make sure to define max length')
     }
-    const fieldValue = get(data, field)
 
-    if (!skippable(fieldValue) && String(fieldValue).length > maxLength) {
+    const fieldValue = get(data, field)
+    const transformedValue = Array.isArray(fieldValue) ? fieldValue : String(fieldValue)
+
+    if (!skippable(fieldValue) && transformedValue.length > maxLength) {
       return message
     }
   })
