@@ -115,13 +115,13 @@ function validate (validations, bail, data, fields, messages, formatter) {
     const validationsStack = getValidationsStack(validations, parsedFields, data, messages, formatter)
 
     pSeries(validationsStack, bail)
-    .then((response) => {
-      const errors = formatter.toJSON()
-      if (errors) {
-        return reject(errors)
-      }
-      resolve(data)
-    })
+      .then((response) => {
+        const errors = formatter.toJSON()
+        if (errors) {
+          return reject(errors)
+        }
+        resolve(data)
+      })
   })
 }
 

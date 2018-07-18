@@ -27,9 +27,11 @@ module.exports = function (config) {
       'test/karma/*.js': ['rollup']
     },
     rollupPreprocessor: {
-      format: 'umd',
-      name: 'indicative',
-      sourcemap: 'inline',
+      output: {
+        name: 'indicative',
+        format: 'umd',
+        sourcemap: 'inline'
+      },
       plugins: require('./rollupPlugins')
     },
     customLaunchers: customLaunchers,

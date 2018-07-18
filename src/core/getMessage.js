@@ -65,8 +65,8 @@ function getMessage (messages, field, validation, args) {
     '{{validation}} validation failed on {{ field }}'
 
   return typeof (message) === 'function'
-  ? message(originalField, validation, args)
-  : pope(message, { field, validation, argument: args })
+    ? message(originalField, validation, args)
+    : pope(message, { field, validation, argument: args })
 }
 
 export default getMessage

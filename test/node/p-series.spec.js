@@ -44,9 +44,9 @@ test.group('Promise series', () => {
     }
 
     return promise()
-    .then(() => {
-      assert.deepEqual(responses, ['invoked'])
-    })
+      .then(() => {
+        assert.deepEqual(responses, ['invoked'])
+      })
   })
 
   test('calling .catch on PLazy should invoke promise', (assert) => {
@@ -62,9 +62,9 @@ test.group('Promise series', () => {
     }
 
     return promise()
-    .catch(() => {
-      assert.deepEqual(responses, ['invoked'])
-    })
+      .catch(() => {
+        assert.deepEqual(responses, ['invoked'])
+      })
   })
 
   test('run promises in series', async (assert) => {
