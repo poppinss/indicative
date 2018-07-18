@@ -4,7 +4,7 @@ title: max
 category: validations
 ---
 
-Ensures the length of a string is not greater than
+Ensures the length of a string or array is not greater than
 the defined length.
  
 [source, js]

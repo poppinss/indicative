@@ -4,7 +4,7 @@ title: min
 category: validations
 ---
 
-Ensures the length of a string is not is not less than
+Ensures the length of a string or array is not is not less than
 the expected length
  
 [source, js]

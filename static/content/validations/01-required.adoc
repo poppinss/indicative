@@ -1,7 +1,0 @@
----
-title: required
-permalink: required
-category: validations
----
-
-The field under validation must be present.

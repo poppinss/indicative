@@ -4,7 +4,12 @@ title: integer
 category: validations
 ---
 
-Ensures the value is a valid integer.
+Ensures the value is a valid integer. Also string representation of a number
+will return true.
+ 
+integer(10) // true
+integer('10') // true
+integer('foo') // false
  
 [source, js]
 ----
