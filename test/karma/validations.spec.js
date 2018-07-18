@@ -2082,18 +2082,14 @@ group('Validations | ip', function () {
 })
 
 group('Validations | integer', function () {
-  test('should throw an error when value is a string', async function (assert) {
+  test('should work fine when string value can be casted to a string', async function (assert) {
     const data = {marks: '10'}
     const field = 'marks'
     const message = 'marks should be an integer'
     const get = prop
     const args = []
-    try {
-      const passes = await validations.integer(data, field, message, args, get)
-      assert.notExists(passes)
-    } catch (e) {
-      assert.equal(e, message)
-    }
+    const passes = await validations.integer(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
   })
 
   test('should throw an error when value is a float', async function (assert) {
@@ -2840,7 +2836,7 @@ group('Validations | String', function () {
 })
 
 group('Validations | Number', function () {
-  test('should work fine when the confirmed field is a number (float)', async function (assert) {
+  test('should work fine when the field value is a number (float)', async function (assert) {
     const data = { price: 12.01 }
     const field = 'price'
     const message = 'Price should be a number'
@@ -2850,7 +2846,7 @@ group('Validations | Number', function () {
     assert.equal(passes, 'validation passed')
   })
 
-  test('should work fine when the confirmed field is a number (integer)', async function (assert) {
+  test('should work fine when the field value is a number (integer)', async function (assert) {
     const data = { age: 47 }
     const field = 'age'
     const message = 'Age should be a number'
@@ -2860,7 +2856,17 @@ group('Validations | Number', function () {
     assert.equal(passes, 'validation passed')
   })
 
-  test('should throw an error when the confirmed field is a string', async function (assert) {
+  test('should work fine when string value is castable to number', async function (assert) {
+    const data = { price: '10' }
+    const field = 'price'
+    const message = 'Price should be a number'
+    const get = prop
+    const args = []
+    const passes = await validations.number(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should throw an error when the field value is a string', async function (assert) {
     const data = { price: 'AnError' }
     const field = 'price'
     const message = 'Price should be a number'
@@ -2874,7 +2880,7 @@ group('Validations | Number', function () {
     }
   })
 
-  test('should throw an error when the confirmed field is a boolean', async function (assert) {
+  test('should throw an error when the field value is a boolean', async function (assert) {
     const data = { price: true }
     const field = 'price'
     const message = 'Price should be a number'
