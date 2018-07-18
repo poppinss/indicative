@@ -1,3 +1,23 @@
+<a name="5.0.6"></a>
+## [5.0.6](https://github.com/poppinss/indicative/compare/v5.0.5...v5.0.6) (2018-07-18)
+
+
+### Bug Fixes
+
+* **number:** cast value to number when strict is true ([34e67cd](https://github.com/poppinss/indicative/commit/34e67cd)), closes [#178](https://github.com/poppinss/indicative/issues/178)
+* **range:** add null and non-numbers check ([4888887](https://github.com/poppinss/indicative/commit/4888887)), closes [#184](https://github.com/poppinss/indicative/issues/184)
+* **striptags:** compile striptags module via babel ([04035e5](https://github.com/poppinss/indicative/commit/04035e5)), closes [#177](https://github.com/poppinss/indicative/issues/177) [#194](https://github.com/poppinss/indicative/issues/194)
+* **validations:** cast value to number for integer & number validations ([35b5ee7](https://github.com/poppinss/indicative/commit/35b5ee7)), closes [#178](https://github.com/poppinss/indicative/issues/178)
+
+
+### Features
+
+* **raw:** allow raw validations to be extended ([d8dfde0](https://github.com/poppinss/indicative/commit/d8dfde0))
+* **trim:** add trim sanitization ([80c0cb9](https://github.com/poppinss/indicative/commit/80c0cb9))
+* **validations:** validate arrays with min&max rules ([5bbb828](https://github.com/poppinss/indicative/commit/5bbb828))
+
+
+
 <a name="5.0.5"></a>
 ## [5.0.5](https://github.com/poppinss/indicative/compare/v5.0.4...v5.0.5) (2018-02-08)
 
