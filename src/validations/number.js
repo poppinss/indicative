@@ -25,7 +25,9 @@ import isNumber from '../raw/isNumber'
 export default (data, field, message, args, get) => {
   return toPromise(() => {
     const fieldValue = get(data, field)
-    if (!skippable(fieldValue) && !isNumber(fieldValue)) {
+    const transformedValue = typeof (fieldValue) === 'string' ? Number(fieldValue) : fieldValue
+
+    if (!skippable(fieldValue) && !isNumber(transformedValue)) {
       return message
     }
   })
