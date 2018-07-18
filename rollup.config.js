@@ -1,4 +1,4 @@
-import uglify from 'rollup-plugin-uglify'
+import { uglify } from 'rollup-plugin-uglify'
 import { minify } from 'uglify-es'
 
 const rollupPlugins = require('./rollupPlugins')
