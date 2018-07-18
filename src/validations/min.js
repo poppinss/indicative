@@ -2,7 +2,7 @@ import toPromise from '../../lib/toPromise'
 import skippable from '../core/skippable'
 
 /**
- * Ensures the length of a string is not is not less than
+ * Ensures the length of a string or array is not is not less than
  * the expected length
  *
  * [source, js]
@@ -26,7 +26,9 @@ export default (data, field, message, [minLength], get) => {
     }
 
     const fieldValue = get(data, field)
-    if (!skippable(fieldValue) && String(fieldValue).length < minLength) {
+    const transformedValue = Array.isArray(fieldValue) ? fieldValue : String(fieldValue)
+
+    if (!skippable(fieldValue) && transformedValue.length < minLength) {
       return message
     }
   })

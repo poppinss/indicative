@@ -81,7 +81,7 @@ group('Validations | email', function () {
     const args = []
     try {
       const passes = await validations.email(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -95,7 +95,7 @@ group('Validations | email', function () {
     const args = []
     try {
       const passes = await validations.email(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -109,7 +109,7 @@ group('Validations | email', function () {
     const args = []
     try {
       const passes = await validations.email(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -155,7 +155,7 @@ group('Validations | Accepted', function () {
     const args = []
     try {
       const passes = await validations.accepted(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -216,7 +216,7 @@ group('Validations | after', function () {
     const args = ['2010-11-20']
     try {
       const passes = await validations.after(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -262,7 +262,7 @@ group('Validations | alpha', function () {
     const args = []
     try {
       const passes = await validations.alpha(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -324,7 +324,7 @@ group('Validations | before', function () {
     const args = ['2010-11-20']
     try {
       const passes = await validations.before(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -370,7 +370,7 @@ group('Validations | date', function () {
     const args = []
     try {
       const passes = await validations.date(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -441,7 +441,7 @@ group('Validations | dateFormat', function () {
     const args = ['YYYY/MM/DD']
     try {
       const passes = await validations.dateFormat(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -455,7 +455,7 @@ group('Validations | dateFormat', function () {
     const args = ['YYYY/MM/DD']
     try {
       const passes = await validations.dateFormat(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -662,7 +662,7 @@ group('Validations | in', function () {
     const args = ['F', 'M', 'O']
     try {
       const passes = await validations.in(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -718,7 +718,7 @@ group('Validations | notIn', function () {
     const args = ['admin', 'super', 'root']
     try {
       const passes = await validations.notIn(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -774,7 +774,7 @@ group('Validations | requiredIf', function () {
     const args = ['password']
     try {
       const passes = await validations.requiredIf(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -820,7 +820,7 @@ group('Validations | requiredWithAny', function () {
     const args = ['username', 'email']
     try {
       const passes = await validations.requiredWithAny(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -834,7 +834,7 @@ group('Validations | requiredWithAny', function () {
     const args = ['username', 'email']
     try {
       const passes = await validations.requiredWithAny(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -982,7 +982,7 @@ group('Validations | requiredWithoutAll', function () {
     const args = ['username', 'email']
     try {
       const passes = await validations.requiredWithoutAll(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -996,7 +996,7 @@ group('Validations | requiredWithoutAll', function () {
     const args = ['username', 'email']
     try {
       const passes = await validations.requiredWithoutAll(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1032,7 +1032,7 @@ group('Validations | same', function () {
     const args = ['password']
     try {
       const passes = await validations.same(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1088,7 +1088,7 @@ group('Validations | equals', function () {
     const args = ['bar']
     try {
       const passes = await validations.equals(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1144,7 +1144,7 @@ group('Validations | notEquals', function () {
     const args = ['bar']
     try {
       const passes = await validations.notEquals(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1190,7 +1190,7 @@ group('Validations | different', function () {
     const args = ['dob']
     try {
       const passes = await validations.different(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1246,7 +1246,7 @@ group('Validations | range', function () {
     const args = [18, 60]
     try {
       const passes = await validations.range(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1260,7 +1260,7 @@ group('Validations | range', function () {
     const args = [18, 60]
     try {
       const passes = await validations.range(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1274,10 +1274,21 @@ group('Validations | range', function () {
     const args = [null, 60]
     try {
       const passes = await validations.range(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.match(e, /min and max values are required/)
     }
+  })
+
+  // https://github.com/poppinss/indicative/issues/184 test case for min=0
+  test('should not throw an error when min value is zero', async function (assert) {
+    const data = {age: 20}
+    const field = 'age'
+    const message = 'only persons less than 60 years of age are allowed'
+    const get = prop
+    const args = [0, 60]
+    const passes = await validations.range(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
   })
 
   test('should throw an error when max value is not defined', async function (assert) {
@@ -1288,10 +1299,21 @@ group('Validations | range', function () {
     const args = [18]
     try {
       const passes = await validations.range(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.match(e, /min and max values are required/)
     }
+  })
+
+  // https://github.com/poppinss/indicative/issues/184 test case for max=0
+  test('should not throw an error when max value is zero', async function (assert) {
+    const data = {temp: -5}
+    const field = 'temp'
+    const message = 'only negative temperature greater than -10 is allowed'
+    const get = prop
+    const args = [-10, 0]
+    const passes = await validations.range(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
   })
 
   test('should skip validation when field does not exists', async function (assert) {
@@ -1334,7 +1356,7 @@ group('Validations | min', function () {
     const args = [6]
     try {
       const passes = await validations.min(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1348,7 +1370,7 @@ group('Validations | min', function () {
     const args = [6]
     try {
       const passes = await validations.min(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1393,6 +1415,30 @@ group('Validations | min', function () {
     const passes = await validations.min(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
   })
+
+  test('should throw error when length of array is less than defined number', async function (assert) {
+    const data = {options: ['yes']}
+    const field = 'options'
+    const message = 'minimum of 2 options are required for the poll'
+    const get = prop
+    const args = [2]
+    try {
+      const passes = await validations.min(data, field, message, args, get)
+      assert.notExists(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('work fine when length of array is equal or over than defined number', async function (assert) {
+    const data = {options: ['yes', 'no']}
+    const field = 'options'
+    const message = 'minimum of 2 options are required for the poll'
+    const get = prop
+    const args = [2]
+    const passes = await validations.min(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
 })
 
 group('Validations | max', function () {
@@ -1404,7 +1450,7 @@ group('Validations | max', function () {
     const args = [6]
     try {
       const passes = await validations.max(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1418,7 +1464,7 @@ group('Validations | max', function () {
     const args = [6]
     try {
       const passes = await validations.max(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1463,6 +1509,30 @@ group('Validations | max', function () {
     const passes = await validations.max(data, field, message, args, get)
     assert.equal(passes, 'validation passed')
   })
+
+  test('throw error when array length exceeds the max number', async function (assert) {
+    const data = {users: ['virk', 'nikk', 'joe']}
+    const field = 'users'
+    const message = 'max 2 users are allowed'
+    const get = prop
+    const args = [2]
+    try {
+      const passes = await validations.max(data, field, message, args, get)
+      assert.notExists(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('work fine when array length is within the max number', async function (assert) {
+    const data = {users: ['virk', 'nikk']}
+    const field = 'users'
+    const message = 'max 2 users are allowed'
+    const get = prop
+    const args = [2]
+    const passes = await validations.max(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
 })
 
 group('Validations | above', function () {
@@ -1474,7 +1544,7 @@ group('Validations | above', function () {
     const args = [17]
     try {
       const passes = await validations.above(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1488,7 +1558,7 @@ group('Validations | above', function () {
     const args = [17]
     try {
       const passes = await validations.above(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1562,7 +1632,7 @@ group('Validations | above', function () {
 
     try {
       const passes = await validations.above(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1578,7 +1648,7 @@ group('Validations | under', function () {
     const args = [10]
     try {
       const passes = await validations.under(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1592,7 +1662,7 @@ group('Validations | under', function () {
     const args = [10]
     try {
       const passes = await validations.under(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1638,7 +1708,7 @@ group('Validations | includes', function () {
     const args = ['app']
     try {
       const passes = await validations.includes(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1684,7 +1754,7 @@ group('Validations | startsWith', function () {
     const args = ['D']
     try {
       const passes = await validations.startsWith(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1730,7 +1800,7 @@ group('Validations | endsWith', function () {
     const args = ['e']
     try {
       const passes = await validations.endsWith(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1776,7 +1846,7 @@ group('Validations | regex', function () {
     const args = [/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0, 66})\.([a-z]{2, 6}(?:\.[a-z]{2})?)$/]
     try {
       const passes = await validations.regex(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1822,7 +1892,7 @@ group('Validations | alphaNumeric', function () {
     const args = []
     try {
       const passes = await validations.alphaNumeric(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1868,7 +1938,7 @@ group('Validations | array', function () {
     const args = []
     try {
       const passes = await validations.array(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1912,7 +1982,7 @@ group('Validations | array', function () {
     const args = []
     try {
       const passes = await validations.array(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1928,7 +1998,7 @@ group('Validations | url', function () {
     const args = []
     try {
       const passes = await validations.url(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -1974,7 +2044,7 @@ group('Validations | ip', function () {
     const args = []
     try {
       const passes = await validations.ip(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -2020,7 +2090,7 @@ group('Validations | integer', function () {
     const args = []
     try {
       const passes = await validations.integer(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -2034,7 +2104,7 @@ group('Validations | integer', function () {
     const args = []
     try {
       const passes = await validations.integer(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -2090,7 +2160,7 @@ group('Validations | boolean', function () {
     const args = []
     try {
       const passes = await validations.boolean(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -2104,7 +2174,7 @@ group('Validations | boolean', function () {
     const args = []
     try {
       const passes = await validations.boolean(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -2220,7 +2290,7 @@ group('Validations | object', function () {
     const args = []
     try {
       const passes = await validations.object(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -2264,7 +2334,7 @@ group('Validations | object', function () {
     const args = []
     try {
       const passes = await validations.object(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -2280,7 +2350,7 @@ group('Validations | json', function () {
     const args = []
     try {
       const passes = await validations.json(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -2326,7 +2396,7 @@ group('Validations | ipv4', function () {
     const args = []
     try {
       const passes = await validations.ipv4(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -2372,7 +2442,7 @@ group('Validations | ipv6', function () {
     const args = []
     try {
       const passes = await validations.ipv6(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -2428,7 +2498,7 @@ group('Validations | requiredWhen', function () {
     const args = ['country', 'US']
     try {
       const passes = await validations.requiredWhen(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -2533,7 +2603,7 @@ group('Validations | afterOffsetOf', function () {
     const args = ['12', 'months']
     try {
       const passes = await validations.afterOffsetOf(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -2612,7 +2682,7 @@ group('Validations | beforeOffsetOf', function () {
 
     try {
       const passes = await validations.beforeOffsetOf(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -2668,7 +2738,7 @@ group('Validations | Confirmation', function () {
     const args = []
     try {
       const passes = await validations.confirmed(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -2682,7 +2752,7 @@ group('Validations | Confirmation', function () {
     const args = []
     try {
       const passes = await validations.confirmed(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -2728,7 +2798,7 @@ group('Validations | String', function () {
     const args = []
     try {
       const passes = await validations.string(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -2742,7 +2812,7 @@ group('Validations | String', function () {
     const args = []
     try {
       const passes = await validations.string(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -2798,7 +2868,7 @@ group('Validations | Number', function () {
     const args = []
     try {
       const passes = await validations.number(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
@@ -2812,7 +2882,7 @@ group('Validations | Number', function () {
     const args = []
     try {
       const passes = await validations.number(data, field, message, args, get)
-      assert.notExist(passes)
+      assert.notExists(passes)
     } catch (e) {
       assert.equal(e, message)
     }
