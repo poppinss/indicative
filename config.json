@@ -1,0 +1,10 @@
+{
+  "core": true,
+  "ts": false,
+  "license": "MIT",
+  "services": [
+    "travis",
+    "coveralls"
+  ],
+  "minNodeVersion": "8.0.0"
+}
