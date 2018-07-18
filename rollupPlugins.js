@@ -10,7 +10,7 @@ module.exports = [
   commonjs(),
   babel({
     babelrc: false,
-    exclude: 'node_modules/**',
+    include: ['src/**/*.js', 'lib/*.js', 'node_modules/striptags/**'],
     presets: [
       [
         'env',
