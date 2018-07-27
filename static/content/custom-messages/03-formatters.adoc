@@ -109,8 +109,11 @@ class MyFormatter {
     this.errors.push({ field, validation, message, args })
   }
 
+  // return null if no errors are present,
+  // otherwise validate will be rejected with an empty
+  // error
   toJSON () {
-    return this.errors
+    return this.errors.length ? this.errors : null
   }
 }
 ----
@@ -120,4 +123,4 @@ Add a new error to be returned later. If `error` is an instance of the `Error` o
 
 
 ==== toJSON()
-This method should return the collection of errors and they are passed to the end-user.
+This method should return the collection of errors and they are passed to the end-user. If no errors are present, return `null`.
