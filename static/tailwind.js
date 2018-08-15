@@ -207,11 +207,20 @@ module.exports = {
       'sans-serif'
     ],
     'serif': [
-      'Rajdhani',
+      '-apple-system',
+      'BlinkMacSystemFont',
+      'Segoe UI',
+      'Roboto',
+      'Oxygen',
+      'Ubuntu',
+      'Cantarell',
+      'Fira Sans',
+      'Droid Sans',
+      'Helvetica Neue',
       'sans-serif'
     ],
     'mono': [
-      'operator mono',
+      'fira-mono',
       'Menlo',
       'Monaco',
       'Consolas',
