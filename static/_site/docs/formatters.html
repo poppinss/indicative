@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <title>Formatters</title>
-     <link href="https://fonts.googleapis.com/css?family=Rajdhani:400,500,600,700" rel="stylesheet">
+     <link rel="stylesheet" href="https://use.typekit.net/lhb5uzf.css">
     <!-- Required meta tags -->
 
     <meta charset="utf-8">
@@ -52,7 +52,6 @@
                 </div>
                 <div class="menu-group mb-6">
                   <h4 class="text-fadedText mb-2 text-xs uppercase font-semibold">Validations</h4>
-                    <a href="/docs/required" class="text-heading no-underline block text-sm">required</a>
                     <a href="/docs/above" class="text-heading no-underline block text-sm">above</a>
                     <a href="/docs/accepted" class="text-heading no-underline block text-sm">accepted</a>
                     <a href="/docs/after" class="text-heading no-underline block text-sm">after</a>
@@ -111,6 +110,7 @@
                     <a href="/docs/toDate" class="text-heading no-underline block text-sm">toDate</a>
                     <a href="/docs/toInt" class="text-heading no-underline block text-sm">toInt</a>
                     <a href="/docs/toNull" class="text-heading no-underline block text-sm">toNull</a>
+                    <a href="/docs/trim" class="text-heading no-underline block text-sm">trim</a>
                 </div>
             </aside>
 
@@ -271,8 +271,11 @@ formatters.JsonApi</code></pre>
     this.errors.push({ field, validation, message, args })
   }
 
+  // return null if no errors are present,
+  // otherwise validate will be rejected with an empty
+  // error
   toJSON () {
-    return this.errors
+    return this.errors.length ? this.errors : null
   }
 }</code></pre>
 </div>
@@ -286,7 +289,7 @@ formatters.JsonApi</code></pre>
 <div class="sect3">
 <h4 id="_tojson"><a class="anchor" href="#_tojson"></a><a class="link" href="#_tojson">toJSON()</a></h4>
 <div class="paragraph">
-<p>This method should return the collection of errors and they are passed to the end-user.</p>
+<p>This method should return the collection of errors and they are passed to the end-user. If no errors are present, return <code>null</code>.</p>
 </div>
 </div>
 </div>

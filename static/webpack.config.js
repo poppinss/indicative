@@ -1,8 +1,9 @@
 const path = require('path')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
   entry: [path.join(__dirname, 'static/app.js'), path.join(__dirname, 'static/style.css')],
+  mode: 'production',
   output: {
     path: path.join(__dirname, '_site/public'),
     filename: 'app.js'
@@ -11,14 +12,17 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: 'postcss-loader'
-        })
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          "postcss-loader"
+        ]
       }
     ]
   },
   plugins: [
-    new ExtractTextPlugin('style.css')
+    new MiniCssExtractPlugin({
+      filename: 'style.css'
+    })
   ]
 }

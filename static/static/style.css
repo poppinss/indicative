@@ -9,7 +9,7 @@ html {
 
 body {
   @apply .font-sans .text-text;
-  -webkit-font-smoothing: anti-alias;
+  -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: auto;
   font-weight: 400;
   font-style: normal;
@@ -75,4 +75,3 @@ body > header {
 }
 
 @tailwind utilities;
-
