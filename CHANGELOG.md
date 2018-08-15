@@ -1,3 +1,8 @@
+<a name="5.0.8"></a>
+## [5.0.8](https://github.com/poppinss/indicative/compare/v5.0.7...v5.0.8) (2018-08-15)
+
+
+
 <a name="5.0.7"></a>
 ## [5.0.7](https://github.com/poppinss/indicative/compare/v5.0.5...v5.0.7) (2018-08-15)
 

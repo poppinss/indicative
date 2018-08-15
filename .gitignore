@@ -7,3 +7,4 @@ out
 .nyc_output
 test/tmp
 static/_site
+builds
