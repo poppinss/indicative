@@ -1990,6 +1990,42 @@ test.group('Validations | array', function () {
   })
 })
 
+test.group('Validations | subset', function () {
+  test('should work fine when value is a subset of given superset', async function (assert) {
+    const data = { include: ['author'] }
+    const field = 'include'
+    const message = 'include list must be any of: [author, comments, related-articles]'
+    const get = prop
+    const args = ['author', 'comments', 'related-articles']
+    const passes = await validations.subset(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should work fine when value is a comma delimited string', async function (assert) {
+    const data = { include: 'author,comments' }
+    const field = 'include'
+    const message = 'include list must be any of: [author, comments, related-articles]'
+    const get = prop
+    const args = ['author', 'comments', 'related-articles']
+    const passes = await validations.subset(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
+  test('should throw an error when value is not a subset of given superset', async function (assert) {
+    const data = { include: ['author', 'comments', 'invalid-relationship'] }
+    const field = 'include'
+    const message = 'include list must be any of: [author, comments, related-articles]'
+    const get = prop
+    const args = ['author', 'comments', 'related-articles']
+    try {
+      const passes = await validations.subset(data, field, message, args, get)
+      assert.notExists(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+})
+
 test.group('Validations | url', function () {
   test('should throw an error when value is not a valid url', async function (assert) {
     const data = {github_profile: 'foo'}
