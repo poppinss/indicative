@@ -533,6 +533,14 @@ test.group('Raw | Array', function () {
   test('return false when target value is not an array', function (assert) {
     assert.equal(Is.intersectAll([10, 20], 10), false)
   })
+
+  test('return true when input is a subset of another array', function (assert) {
+    assert.isTrue(Is.subset(['foo', 'qux', 'baz'], ['foo', 'bar', 'baz', 'qux', 'quux', 'quuz']))
+  })
+
+  test('return false when input is not a subset of another array', function (assert) {
+    assert.isFalse(Is.subset(['foo', 'wubba', 'lubba', 'dub'], ['foo', 'bar', 'baz', 'qux', 'quux', 'quuz']))
+  })
 })
 
 test.group('Raw | Dates', function () {
