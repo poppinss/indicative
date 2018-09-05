@@ -540,6 +540,10 @@ group('Raw | Array', function () {
   test('return false when input is not a subset of another array', function (assert) {
     assert.isFalse(Is.subset(['foo', 'wubba', 'lubba', 'dub'], ['foo', 'bar', 'baz', 'qux', 'quux', 'quuz']))
   })
+
+  test('return true when input is an empty array', function (assert) {
+    assert.isTrue(Is.subset([], ['foo', 'bar', 'baz']))
+  })
 })
 
 group('Raw | Dates', function () {
