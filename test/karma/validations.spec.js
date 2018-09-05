@@ -2024,6 +2024,21 @@ group('Validations | subset', function () {
       assert.equal(e, message)
     }
   })
+
+  test('should throw TypeError when value is neither a string nor an array', async function (assert) {
+    const data = { foo: { bar: 'baz' } }
+    const field = 'foo'
+    const message = 'subset:field value must be a comma delimited string or an array'
+    const get = prop
+    const args = ['foo', 'bar', 'baz']
+    try {
+      const passes = await validations.subset(data, field, message, args, get)
+      assert.notExists(passes)
+    } catch (e) {
+      assert.instanceOf(e, TypeError)
+      assert.equal(e.message, message)
+    }
+  })
 })
 
 group('Validations | url', function () {
