@@ -236,3 +236,23 @@ test.group('Sanitizations | trim', () => {
     assert.equal(sanitizations.trim(22), 22)
   })
 })
+
+test.group('Sanitizations | lowerCase', () => {
+  test('converts string to lower case', (assert) => {
+    assert.equal(sanitizations.lowerCase('İstanbul'), 'i̇stanbul')
+  })
+
+  test('locale awareness', (assert) => {
+    assert.equal(sanitizations.lowerCase('İstanbul', 'tr'), 'istanbul')
+  })
+})
+
+test.group('Sanitizations | uppwerCase', () => {
+  test('converts string to upper case', (assert) => {
+    assert.equal(sanitizations.upperCase('istanbul'), 'ISTANBUL')
+  })
+
+  test('locale awareness', (assert) => {
+    assert.equal(sanitizations.upperCase('istanbul', 'tr'), 'İSTANBUL')
+  })
+})
