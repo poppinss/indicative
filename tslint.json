@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "@adonisjs/mrm-preset/_tslint"
+  ],
+  "rules": {
+    "max-line-length": [
+      true,
+      {
+        "limit": 120,
+        "ignore-pattern": "^const \\w+Regex = "
+      }
+    ]
+  }
+}
