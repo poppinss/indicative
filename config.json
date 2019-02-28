@@ -1,10 +1,10 @@
 {
-  "core": true,
-  "ts": false,
+  "core": false,
+  "ts": true,
   "license": "MIT",
   "services": [
     "travis",
     "coveralls"
   ],
-  "minNodeVersion": "8.0.0"
+  "minNodeVersion": "10.0.0"
 }

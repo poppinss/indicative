@@ -1,5 +1,6 @@
-require('babel-register')
-require('regenerator-runtime/runtime')
+require('ts-node/register')
 
-const cli = require('japa/cli')
-cli.run('test/node/**/*.spec.js')
+const { configure } = require('japa')
+configure({
+  files: ['test/node/**/*.spec.ts']
+})
