@@ -10,7 +10,7 @@
 */
 
 import * as test from 'japa'
-import indicative from '../../index'
+import * as indicative from '../../index'
 
 test.group('Indicative', () => {
   test('should be able to call validate with inbuilt rules', async (assert) => {
