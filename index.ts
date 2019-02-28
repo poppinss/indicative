@@ -39,35 +39,33 @@ import { IndicativeFormatterConstructor, DataNode, RulesNode, MessagesNode } fro
 //   return result
 // }, {})
 
-export default {
-  validate: (
-    data: DataNode,
-    fields: RulesNode,
-    messages?: MessagesNode,
-    formatter?: IndicativeFormatterConstructor,
-  ) => {
-    return validator(validations, config.FORMATTER || formatters.Vanilla)
-      .validate(data, fields, messages, formatter)
-  },
-
-  validateAll: (
-    data: DataNode,
-    fields: RulesNode,
-    messages?: MessagesNode,
-    formatter?: IndicativeFormatterConstructor,
-  ) => {
-    return validator(validations, config.FORMATTER || formatters.Vanilla)
-      .validateAll(data, fields, messages, formatter)
-  },
-
-  sanitize: (data, fields) => {
-    return sanitizor(sanitizations).sanitize(data, fields)
-  },
-
-  is: raw,
-  sanitizor: sanitizations,
-  validations: validations,
-  rule,
-  formatters,
-  configure,
+export function validate (
+  data: DataNode,
+  fields: RulesNode,
+  messages?: MessagesNode,
+  formatter?: IndicativeFormatterConstructor,
+) {
+  return validator(validations, config.FORMATTER || formatters.Vanilla)
+    .validate(data, fields, messages, formatter)
 }
+
+export function validateAll (
+  data: DataNode,
+  fields: RulesNode,
+  messages?: MessagesNode,
+  formatter?: IndicativeFormatterConstructor,
+) {
+  return validator(validations, config.FORMATTER || formatters.Vanilla)
+    .validateAll(data, fields, messages, formatter)
+}
+
+export function sanitize (data, fields) {
+  return sanitizor(sanitizations).sanitize(data, fields)
+}
+
+export { raw as is }
+export { sanitizations as sanitizor }
+export { validations }
+export { rule }
+export { formatters }
+export { configure }
