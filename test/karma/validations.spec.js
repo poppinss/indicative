@@ -780,6 +780,30 @@ group('Validations | requiredIf', function () {
     }
   })
 
+  test('should throw error when conditional field exists and conditional value is equal to the given value', async function (assert) {
+    const data = {password: 'foobar', required_confirmation: 1}
+    const field = 'password_confirm'
+    const message = 'please confirm password'
+    const get = prop
+    const args = ['required_confirmation', 1]
+    try {
+      const passes = await validations.requiredIf(data, field, message, args, get)
+      assert.notExists(passes)
+    } catch (e) {
+      assert.equal(e, message)
+    }
+  })
+
+  test('should skip validation when conditional exists and conditional value is not equal to the given value', async function (assert) {
+    const data = {password: null, required_confirmation: 0}
+    const field = 'password_confirm'
+    const message = 'please confirm password'
+    const get = prop
+    const args = ['required_confirmation', 1]
+    const passes = await validations.requiredIf(data, field, message, args, get)
+    assert.equal(passes, 'validation passed')
+  })
+
   test('should skip validation when conditional field is null', async function (assert) {
     const data = {password: null}
     const field = 'password_confirm'
