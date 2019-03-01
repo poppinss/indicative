@@ -1,6 +1,7 @@
 import toPromise from '../../lib/toPromise'
 import skippable from '../core/skippable'
 import isAbove from '../raw/above'
+import { ValidationFn, ArgComparison } from '../contracts'
 
 /**
  * Makes sure the value provided by the end user is above the
@@ -21,15 +22,17 @@ import isAbove from '../raw/above'
  * }
  * ----
  */
-export default (data, field, message,args, get) => {
+const above: ValidationFn = (data, field, message, [comparisonValue]: ArgComparison, get) => {
   return toPromise(() => {
-    if (!args.length) {
+    if (!comparisonValue) {
       return new Error('above:make sure to define minValue')
     }
 
     const fieldValue = get(data, field)
-    if (!skippable(fieldValue) && !isAbove(fieldValue, args[0])) {
+    if (!skippable(fieldValue) && !isAbove(fieldValue, comparisonValue)) {
       return message
     }
   })
 }
+
+export { above as default }

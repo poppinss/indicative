@@ -15,11 +15,7 @@ import { IndicativeConfig } from '../contracts'
  * can access original defaults using `configure.DEFAULTS`
  */
 export function configure (options: Partial<IndicativeConfig>) {
-  Object.keys(options).forEach((option) => {
-    if (config[option] !== undefined) {
-      config[option] = options[option]
-    }
-  })
+  Object.assign(config, options)
 }
 
 /**

@@ -27,11 +27,13 @@ import { DataNode } from '../contracts'
  * @param {Out}    out
  *
  * @example
+ * ```
  * const pairs = ['users', 'username']
  * const data = { users: [ { username: 'foo' }, { username: 'bar' } ] }
  *
  * startToIndex(pairs, data)
  * // output ['users.0.username', 'users.1.username']
+ * ```
  */
 function starToIndex (pairs: string[], data?: DataNode, i?: number, out?: string[]): string[] {
   if (!data) {

@@ -1,6 +1,7 @@
 import skippable from '../core/skippable'
 import toPromise from '../../lib/toPromise'
-import ipv4 from '../raw/ipv4'
+import isIpv4 from '../raw/ipv4'
+import { ValidationFn } from '../contracts'
 
 /**
  * Ensures the value is a valid ip address as per `ipv4` spec only.
@@ -19,11 +20,13 @@ import ipv4 from '../raw/ipv4'
  * }
  * ----
  */
-export default (data, field, message, _args, get) => {
+const ipv4: ValidationFn = (data, field, message, _args, get) => {
   return toPromise(() => {
     const fieldValue = get(data, field)
-    if (!skippable(fieldValue) && !ipv4(fieldValue)) {
+    if (!skippable(fieldValue) && !isIpv4(fieldValue)) {
       return message
     }
   })
 }
+
+export { ipv4 as default }

@@ -9,44 +9,25 @@
  * file that was distributed with this source code.
 */
 
-import validator from './src/core/validator'
-import sanitizor from './src/core/sanitizor'
+import { validator } from './src/core/validator'
+import { sanitizor } from './src/core/sanitizor'
 import * as validations from './src/validations'
 import * as sanitizations from './src/sanitizations'
 import * as raw from './src/raw'
 import * as formatters from './src/formatters'
-import rule from './src/core/rule'
+import { rule } from './src/core/rule'
 import { configure } from './src/core/configure'
 import { config } from './src/core/config'
 import { IndicativeFormatterConstructor, DataNode, RulesNode, MessagesNode } from './src/contracts'
 
-/**
- * Named exports are freezed and hence we need to create
- * a copy, so that it can be extended.
- */
-// const rawCopy = Object.keys(raw).reduce((result, name) => {
-//   result[name] = raw[name]
-//   return result
-// }, {})
-
-// const validationsCopy = Object.keys(validations).reduce((result, name) => {
-//   result[name] = validations[name]
-//   return result
-// }, {})
-
-// const sanitizationsCopy = Object.keys(sanitizations).reduce((result, name) => {
-//   result[name] = sanitizations[name]
-//   return result
-// }, {})
-
-export function validate (
-  data: DataNode,
+export function validate <T extends DataNode> (
+  data: T,
   fields: RulesNode,
   messages?: MessagesNode,
   formatter?: IndicativeFormatterConstructor,
-) {
+): Promise<T> {
   return validator(validations, config.FORMATTER || formatters.Vanilla)
-    .validate(data, fields, messages, formatter)
+    .validate<T>(data, fields, messages, formatter)
 }
 
 export function validateAll (

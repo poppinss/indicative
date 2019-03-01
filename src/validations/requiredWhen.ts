@@ -1,5 +1,6 @@
 import toPromise from '../../lib/toPromise'
 import empty from '../raw/empty'
+import { ValidationFn } from '../contracts'
 
 /**
  * The field is checked for required validation, when expected field value is same
@@ -21,12 +22,15 @@ import empty from '../raw/empty'
  * }
  * ----
  */
-export default function requiredWhen (data, field, message, args, get) {
+const requiredWhen: ValidationFn = (data, field, message, [otherField, expectedValue]: [string, any], get) => {
   return toPromise(() => {
-    const [otherField, expectedValue] = args
     const otherValue = get(data, otherField)
-    if (String(expectedValue) === String(otherValue) && empty(get(data, field))) {
+
+    // tslint:disable-next-line:triple-equals
+    if (expectedValue == otherValue && empty(get(data, field))) {
       return message
     }
   })
 }
+
+export { requiredWhen as default }

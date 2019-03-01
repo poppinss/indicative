@@ -1,3 +1,12 @@
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
 /**
  * Escapes HTML entities. Useful when you want to avoid XSS attacks.
  *
@@ -18,7 +27,7 @@
  * }
  * ----
  */
-export default (value) => {
+export default<T extends any> (value: T): T => {
   if (typeof (value) !== 'string') {
     return value
   }

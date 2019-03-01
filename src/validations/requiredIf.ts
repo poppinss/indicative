@@ -1,6 +1,7 @@
 import toPromise from '../../lib/toPromise'
 import empty from '../raw/empty'
 import existy from '../raw/existy'
+import { ValidationFn } from '../contracts'
 
 /**
  * The field is checked for required validation, when expected field exists.
@@ -19,10 +20,12 @@ import existy from '../raw/existy'
  * }
  * ----
  */
-export default (data, field, message, args, get) => {
+const requiredIf: ValidationFn = (data, field, message, [targetedField]: [string], get) => {
   return toPromise(() => {
-    if (existy(get(data, args[0])) && empty(get(data, field))) {
+    if (existy(get(data, targetedField)) && empty(get(data, field))) {
       return message
     }
   })
 }
+
+export { requiredIf as default }

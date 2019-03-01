@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-import { LazyPromiseResultNode } from '../contracts'
+import { PromiseResultNode } from '../contracts'
 
 /**
  * Returns an object containing enough info about
@@ -19,7 +19,7 @@ import { LazyPromiseResultNode } from '../contracts'
  *
  * @returns {Object}
  */
-function onResolved (result: any): LazyPromiseResultNode {
+function onResolved (result: any): PromiseResultNode {
   return {
     fullFilled: true,
     rejected: false,
@@ -38,7 +38,7 @@ function onResolved (result: any): LazyPromiseResultNode {
  *
  * @returns {Object}
  */
-function onRejected (error: Error | string): LazyPromiseResultNode {
+function onRejected (error: Error | string): PromiseResultNode {
   return {
     fullFilled: false,
     rejected: true,
@@ -96,8 +96,8 @@ function onRejected (error: Error | string): LazyPromiseResultNode {
  *  }
  * })
  */
-function pSeries<T> (iterable: Promise<T>[], bail: boolean): Promise<LazyPromiseResultNode[]> {
-  const result: LazyPromiseResultNode[] = []
+function pSeries<T> (iterable: Promise<T>[], bail: boolean): Promise<PromiseResultNode[]> {
+  const result: PromiseResultNode[] = []
   const iterableLength = iterable.length
 
   function noop (index: number, bail: boolean) {

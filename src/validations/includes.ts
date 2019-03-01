@@ -1,5 +1,6 @@
 import toPromise from '../../lib/toPromise'
 import skippable from '../core/skippable'
+import { ValidationFn } from '../contracts'
 
 /**
  * Ensures the value of field under validation contains a given substring.
@@ -18,13 +19,13 @@ import skippable from '../core/skippable'
  * }
  * ----
  */
-export default (data, field, message, args, get) => {
+const includes: ValidationFn = (data, field, message, [substring]: [string], get) => {
   return toPromise(() => {
-    const substring = args[0]
-
     const fieldValue = get(data, field)
     if (!skippable(fieldValue) && String(fieldValue).indexOf(substring) === -1) {
       return message
     }
   })
 }
+
+export { includes as default }

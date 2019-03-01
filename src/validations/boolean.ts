@@ -1,6 +1,7 @@
 import skippable from '../core/skippable'
 import toPromise from '../../lib/toPromise'
-import boolean from '../raw/boolean'
+import isBoolean from '../raw/boolean'
+import { ValidationFn } from '../contracts'
 
 /**
  * Ensures the value of a field is a boolean. Also it will cast following
@@ -28,11 +29,13 @@ import boolean from '../raw/boolean'
  * }
  * ----
  */
-export default (data, field, message, _args, get) => {
+const boolean: ValidationFn = (data, field, message, _args, get) => {
   return toPromise(() => {
     const fieldValue = get(data, field)
-    if (!skippable(fieldValue) && !boolean(fieldValue, false)) {
+    if (!skippable(fieldValue) && !isBoolean(fieldValue, false)) {
       return message
     }
   })
 }
+
+export { boolean as default }

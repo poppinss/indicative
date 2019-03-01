@@ -1,6 +1,7 @@
 import toPromise from '../../lib/toPromise'
 import skippable from '../core/skippable'
-import beforeOffsetOf from '../raw/beforeOffsetOf'
+import isBeforeOffsetOf from '../raw/beforeOffsetOf'
+import { ValidationFn, ArgOffset } from '../contracts'
 
 /**
  * Ensures the date is before a given offset of a given
@@ -32,17 +33,17 @@ import beforeOffsetOf from '../raw/beforeOffsetOf'
  * }
  * ----
  */
-export default (data, field, message, args, get) => {
+const beforeOffsetOf: ValidationFn = (data, field, message, [ diffUnit, key ]: ArgOffset, get) => {
   return toPromise(() => {
-    const [diffUnit, key] = args
-
     if (!diffUnit || !key) {
       return new Error('beforeOffsetOf:make sure to define offset unit and key')
     }
 
     const fieldValue = get(data, field)
-    if (!skippable(fieldValue) && !beforeOffsetOf(fieldValue, diffUnit, key)) {
+    if (!skippable(fieldValue) && !isBeforeOffsetOf(fieldValue, diffUnit, key)) {
       return message
     }
   })
 }
+
+export { beforeOffsetOf as default }

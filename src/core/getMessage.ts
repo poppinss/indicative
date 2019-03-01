@@ -50,6 +50,15 @@ export function getMessage
   const normalized = field.replace(/\.\d/g, '.*')
   const camelizedValidation = snakeToCamelCase(validation)
 
+  /**
+   * Find the best possible message for the given field under
+   * validation. We start with the
+   *
+   * 1. Actual field name
+   * 2. Then field name with wildcard for arrays
+   * 3. Then message for just the validation
+   * 4. Finally fallback to custom string
+   */
   const message = messages[`${field}.${validation}`]
     || messages[`${field}.${camelizedValidation}`]
     || messages[`${normalized}.${validation}`]
@@ -59,6 +68,6 @@ export function getMessage
     || '{{validation}} validation failed on {{ field }}'
 
   return typeof (message) === 'function'
-    ? message(normalized, validation, args)
+    ? message(field, validation, args)
     : pope(message, { field, validation, argument: args })
 }

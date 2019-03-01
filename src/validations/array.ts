@@ -1,5 +1,6 @@
 import skippable from '../core/skippable'
 import toPromise from '../../lib/toPromise'
+import { ValidationFn } from '../contracts'
 
 /**
  * Ensure the value is a valid array. Also this validation will never
@@ -19,7 +20,7 @@ import toPromise from '../../lib/toPromise'
  * }
  * ----
  */
-export default (data, field, message, _args, get) => {
+const array: ValidationFn = (data, field, message, _args, get) => {
   return toPromise(() => {
     const fieldValue = get(data, field)
     if (!skippable(fieldValue) && !Array.isArray(fieldValue)) {
@@ -27,3 +28,5 @@ export default (data, field, message, _args, get) => {
     }
   })
 }
+
+export { array as default }

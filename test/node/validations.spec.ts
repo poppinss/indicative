@@ -2581,21 +2581,6 @@ test.group('Validations | requiredWhen', () => {
     assert.equal(passes, 'validation passed')
   })
 
-  test('throw exception when expected value is falsy and actual value is missing', async (assert) => {
-    assert.plan(1)
-
-    const data = { source: false }
-    const field = 'password'
-    const message = 'password is required'
-    const get = prop
-    const args = ['source', 'false']
-    try {
-      await validations.requiredWhen(data, field, message, args, get)
-    } catch (e) {
-      assert.equal(e, 'password is required')
-    }
-  })
-
   test('work fine when expected value is falsy and field value exists', async (assert) => {
     assert.plan(1)
 

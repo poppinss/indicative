@@ -1,6 +1,7 @@
 import skippable from '../core/skippable'
 import toPromise from '../../lib/toPromise'
-import ipv6 from '../raw/ipv6'
+import isIpv6 from '../raw/ipv6'
+import { ValidationFn } from '../contracts'
 
 /**
  * Ensures the value is a valid ip address as per `ipv6` spec only.
@@ -19,11 +20,13 @@ import ipv6 from '../raw/ipv6'
  * }
  * ----
  */
-export default (data, field, message, _args, get) => {
+const ipv6: ValidationFn = (data, field, message, _args, get) => {
   return toPromise(() => {
     const fieldValue = get(data, field)
-    if (!skippable(fieldValue) && !ipv6(fieldValue)) {
+    if (!skippable(fieldValue) && !isIpv6(fieldValue)) {
       return message
     }
   })
 }
+
+export { ipv6 as default }

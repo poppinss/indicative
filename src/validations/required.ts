@@ -1,5 +1,6 @@
 import toPromise from '../../lib/toPromise'
 import empty from '../raw/empty'
+import { ValidationFn } from '../contracts'
 
 /**
  * Ensures the value of field under validation is not empty. All of the following
@@ -24,10 +25,12 @@ import empty from '../raw/empty'
  * }
  * ----
  */
-export default (data, field, message, _args, get) => {
+const required: ValidationFn = (data, field, message, _args, get) => {
   return toPromise(() => {
     if (empty(get(data, field))) {
       return message
     }
   })
 }
+
+export { required as default }

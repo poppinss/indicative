@@ -2,6 +2,7 @@ import toPromise from '../../lib/toPromise'
 import skippable from '../core/skippable'
 import between from '../raw/between'
 import isNull from '../raw/isNull'
+import { ValidationFn, ArgMinMax } from '../contracts'
 
 /**
  * Ensures the value of field under validation is under a given range. The values will
@@ -21,11 +22,9 @@ import isNull from '../raw/isNull'
  * }
  * ----
  */
-export default (data, field, message, args, get) => {
+const range: ValidationFn = (data, field, message, [min, max]: ArgMinMax, get) => {
   return toPromise(() => {
-    const [min, max] = args
-
-    if ([min, max].some(value => isNull(value) || isNaN(value))) {
+    if ([min, max].some(value => isNull(value) || isNaN(Number(value)))) {
       return new Error('range:min and max values are required for range validation')
     }
 
@@ -36,3 +35,5 @@ export default (data, field, message, args, get) => {
     }
   })
 }
+
+export { range as default }

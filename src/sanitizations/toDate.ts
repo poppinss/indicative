@@ -1,3 +1,12 @@
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
 /**
  * Converts value to a date. If value is already an instance of `Date`, then it
  * is returned as it is.
@@ -19,7 +28,7 @@
  * }
  * ----
  */
-export default (value) => {
+export default (value: any): Date | null => {
   if (value instanceof Date) {
     return value
   }

@@ -11,7 +11,7 @@
 
 import * as test from 'japa'
 import parse from '../../src/core/parse'
-import rule from '../../src/core/rule'
+import { rule } from '../../src/core/rule'
 
 test.group('Parser', () => {
   test('parse simple field rules', (assert) => {

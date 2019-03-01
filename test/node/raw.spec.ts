@@ -50,7 +50,7 @@ test.group('Raw | Types', () => {
   })
 
   test('return false when input is a string', (assert) => {
-    assert.equal(Is.boolean('true'), false)
+    assert.equal(Is.boolean('true', true), false)
   })
 
   test('return true when input is a date', (assert) => {
@@ -246,7 +246,7 @@ test.group('Raw | Regexp', () => {
   })
 
   test('throw exception when 2argument is not regex', (assert) => {
-    const fn = () => Is.regex(/[a-z]/, 'virk')
+    const fn = () => (Is.regex as any)(/[a-z]/, 'virk')
     assert.throw(fn, 'You must pass regex as the 2nd argument')
   })
 
@@ -356,8 +356,8 @@ test.group('Raw | Regexp', () => {
     assert.equal(Is.alphaNumeric('hello123'), true)
   })
 
-  test('return true when input letters only', (assert) => {
-    assert.equal(Is.alphaNumeric(123), true)
+  test('return true when input are numbers only', (assert) => {
+    assert.equal(Is.alphaNumeric('123'), true)
   })
 
   test('return true when input is yes', (assert) => {
@@ -472,10 +472,6 @@ test.group('Raw | Array', () => {
     assert.equal(Is.inArray(2, [1, 2, 3]), true)
   })
 
-  test('return false when comparison array is not an array', (assert) => {
-    assert.equal(Is.inArray(2, 3), false)
-  })
-
   test('return false when value does not fall in an array', (assert) => {
     assert.equal(Is.inArray(2, [1, 3, 5]), false)
   })
@@ -493,7 +489,7 @@ test.group('Raw | Array', () => {
   })
 
   test('return false when input is not an array', (assert) => {
-    assert.equal(Is.sorted(1), false)
+    assert.equal((Is.sorted as any)(1), false)
   })
 
   test('return true when array is sorted', (assert) => {
@@ -509,11 +505,11 @@ test.group('Raw | Array', () => {
   })
 
   test('return false when input value is not an array', (assert) => {
-    assert.equal(Is.intersectAny(10, [30, 10, 50]), false)
+    assert.equal((Is.intersectAny as any)(10, [30, 10, 50]), false)
   })
 
   test('return false when target value is not an array', (assert) => {
-    assert.equal(Is.intersectAny([10, 20], 10), false)
+    assert.equal((Is.intersectAny as any)([10, 20], 10), false)
   })
 
   test('return false when input array values are not in targeted array', (assert) => {
@@ -529,11 +525,11 @@ test.group('Raw | Array', () => {
   })
 
   test('return false when input value is not an array', (assert) => {
-    assert.equal(Is.intersectAll(10, [30, 10, 50]), false)
+    assert.equal((Is.intersectAll as any)(10, [30, 10, 50]), false)
   })
 
   test('return false when target value is not an array', (assert) => {
-    assert.equal(Is.intersectAll([10, 20], 10), false)
+    assert.equal((Is.intersectAll as any)([10, 20], 10), false)
   })
 
   test('return true when input is a subset of another array', (assert) => {
@@ -649,11 +645,6 @@ test.group('Raw | Dates', () => {
     assert.equal(isAfterOffset, false)
   })
 
-  test('return false when offset key is invalid', (assert) => {
-    const isAfterOffset = Is.afterOffsetOf(new Date(), 12, 'foo')
-    assert.equal(isAfterOffset, false)
-  })
-
   test('return true when date is after defined offset months', (assert) => {
     const isAfterOffset = Is.afterOffsetOf(addMonths(new Date(), 13), 12, 'months')
     assert.equal(isAfterOffset, true)
@@ -681,11 +672,6 @@ test.group('Raw | Dates', () => {
 
   test('return false when date is not before defined offset', (assert) => {
     const isBeforeOffset = Is.beforeOffsetOf(new Date(), 12, 'months')
-    assert.equal(isBeforeOffset, false)
-  })
-
-  test('return false when offset key is invalid', (assert) => {
-    const isBeforeOffset = Is.beforeOffsetOf(new Date(), 12, 'foo')
     assert.equal(isBeforeOffset, false)
   })
 

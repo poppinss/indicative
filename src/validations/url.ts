@@ -1,6 +1,7 @@
 import skippable from '../core/skippable'
 import toPromise from '../../lib/toPromise'
-import url from '../raw/url'
+import isUrl from '../raw/url'
+import { ValidationFn } from '../contracts'
 
 /**
  * Ensures the value is a valid URL format.
@@ -19,11 +20,13 @@ import url from '../raw/url'
  * }
  * ----
  */
-export default (data, field, message, _args, get) => {
+const url: ValidationFn = (data, field, message, _args, get) => {
   return toPromise(() => {
     const fieldValue = get(data, field)
-    if (!skippable(fieldValue) && !url(fieldValue)) {
+    if (!skippable(fieldValue) && !isUrl(fieldValue)) {
       return message
     }
   })
 }
+
+export { url as default }

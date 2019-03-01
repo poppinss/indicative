@@ -1,6 +1,7 @@
 import skippable from '../core/skippable'
 import toPromise from '../../lib/toPromise'
 import inArray from '../raw/inArray'
+import { ValidationFn } from '../contracts'
 
 /**
  * Makes sure that the value of field under validation is not
@@ -20,7 +21,7 @@ import inArray from '../raw/inArray'
  * }
  * ----
  */
-export default (data, field, message, args, get) => {
+const notIn: ValidationFn = (data, field, message, args, get) => {
   return toPromise(() => {
     const fieldValue = get(data, field)
     if (!skippable(fieldValue) && inArray(fieldValue, args)) {
@@ -28,3 +29,5 @@ export default (data, field, message, args, get) => {
     }
   })
 }
+
+export { notIn as default }

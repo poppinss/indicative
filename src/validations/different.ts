@@ -1,5 +1,6 @@
 import toPromise from '../../lib/toPromise'
 import skippable from '../core/skippable'
+import { ValidationFn } from '../contracts'
 
 /**
  * Ensures the value of the field under validation is always different from
@@ -19,18 +20,18 @@ import skippable from '../core/skippable'
  * }
  * ----
  */
-export default (data, field, message, args, get) => {
+const different: ValidationFn = (data, field, message, [targetedField]: [string], get) => {
   return toPromise(() => {
-    const targetedField = args[0]
-
     if (!targetedField) {
       throw new Error('different:make sure to define target field for comparison')
     }
+
     const fieldValue = get(data, field)
     const targetedFieldValue = get(data, targetedField)
-
     if (!skippable(fieldValue) && targetedFieldValue && targetedFieldValue === fieldValue) {
       return message
     }
   })
 }
+
+export { different as default }

@@ -1,3 +1,12 @@
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
 /**
  * Converts value to an integer using `parseInt`.
  *
@@ -15,7 +24,6 @@
  * }
  * ----
  */
-export default (value, args?) => {
-  const radix = Array.isArray(args) && args[0] ? args[0] : 10
+export default (value: any, [radix]: [number] = [10]): number => {
   return parseInt(value, radix)
 }

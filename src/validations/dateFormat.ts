@@ -1,6 +1,7 @@
 import toPromise from '../../lib/toPromise'
 import skippable from '../core/skippable'
-import dateFormat from '../raw/dateFormat'
+import matchFormat from '../raw/dateFormat'
+import { ValidationFn } from '../contracts'
 
 /**
  * Ensures the date or date time is valid as the one of the defined formats.
@@ -33,15 +34,17 @@ import dateFormat from '../raw/dateFormat'
  * }
  * ----
  */
-export default (data, field, message, args, get) => {
+const dateFormat: ValidationFn = (data, field, message, args: string[], get) => {
   return toPromise(() => {
     if (args.length === 0) {
       throw new Error('dateFormat:make sure to define atleast one date format')
     }
 
     const fieldValue = get(data, field)
-    if (!skippable(fieldValue) && !dateFormat(fieldValue, args)) {
+    if (!skippable(fieldValue) && !matchFormat(fieldValue, args)) {
       return message
     }
   })
 }
+
+export { dateFormat as default }

@@ -1,5 +1,6 @@
 import toPromise from '../../lib/toPromise'
 import skippable from '../core/skippable'
+import { ValidationFn } from '../contracts'
 
 /**
  * Ensures 2 values are lossely same. This validation will not check for the same type, but
@@ -21,14 +22,15 @@ import skippable from '../core/skippable'
  * }
  * ----
  */
-export default (data, field, message, args, get) => {
-  const targetedValue = args[0]
+const equals: ValidationFn = (data, field, message, [comparisonValue]: [string], get) => {
   return toPromise(() => {
     const fieldValue = get(data, field)
 
     // tslint:disable-next-line:triple-equals
-    if (!skippable(fieldValue) && targetedValue != fieldValue) {
+    if (!skippable(fieldValue) && comparisonValue != fieldValue) {
       return message
     }
   })
 }
+
+export { equals as default }

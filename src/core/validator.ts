@@ -166,10 +166,10 @@ function validate<T extends DataNode> (
  * validatorInstance.validate()
  * ```
  */
-export default (
+export function validator (
   validations: ValidationsNode,
   defaultFormatter: IndicativeFormatterConstructor,
-) => {
+) {
   return {
     /**
      * Run validations on a set of data with rules defined on fields.

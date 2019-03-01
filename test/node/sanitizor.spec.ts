@@ -1,6 +1,6 @@
 'use strict'
 
-/**
+/*
  * indicative
  *
  * (c) Harminder Virk <virk@adonisjs.com>
@@ -10,9 +10,9 @@
 */
 
 import * as test from 'japa'
-import sanitizor from '../../src/core/sanitizor'
+import { sanitizor } from '../../src/core/sanitizor'
 import * as sanizations from '../../src/sanitizations'
-import rule from '../../src/core/rule'
+import { rule } from '../../src/core/rule'
 
 test.group('Sanitizor', () => {
   test('should sanitize values using sanitize method', (assert) => {
