@@ -1,6 +1,7 @@
 import skippable from '../core/skippable'
 import toPromise from '../../lib/toPromise'
-import alphaNumeric from '../raw/alphaNumeric'
+import isAlphaNumeric from '../raw/alphaNumeric'
+import { ValidationFn } from '../contracts'
 
 /**
  * Makes sure the field under validation is alpha numeric only.
@@ -20,11 +21,13 @@ import alphaNumeric from '../raw/alphaNumeric'
  * }
  * ----
  */
-export default (data, field, message, _args, get) => {
+const alphaNumeric: ValidationFn = (data, field, message, _args, get) => {
   return toPromise(() => {
     const fieldValue = get(data, field)
-    if (!skippable(fieldValue) && !alphaNumeric(fieldValue)) {
+    if (!skippable(fieldValue) && !isAlphaNumeric(fieldValue)) {
       return message
     }
   })
 }
+
+export { alphaNumeric as default }

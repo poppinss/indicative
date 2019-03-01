@@ -9,6 +9,9 @@
 * file that was distributed with this source code.
 */
 
+/**
+ * Converts a string from snake case to camel case
+ */
 export default (str: string): string => {
   return str.replace(/_(\w)/g, (_match, group) => group.toUpperCase())
 }

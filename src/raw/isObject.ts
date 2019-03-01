@@ -1,1 +1,10 @@
-export default (input) => input instanceof Object && !Array.isArray(input)
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
+export default (input: any): boolean => input instanceof Object && !Array.isArray(input)

@@ -1,5 +1,6 @@
 import toPromise from '../../lib/toPromise'
 import skippable from '../core/skippable'
+import { ValidationFn } from '../contracts'
 
 /**
  * Ensure the value of field under validation ends with a certain substr. This
@@ -19,10 +20,8 @@ import skippable from '../core/skippable'
  * }
  * ----
  */
-export default (data, field, message, args, get) => {
+const endsWith: ValidationFn = (data, field, message, [substring]: [string], get) => {
   return toPromise(() => {
-    const substring = args[0]
-
     if (!substring) {
       throw new Error('endsWith:make sure to define the matching substring')
     }
@@ -33,3 +32,5 @@ export default (data, field, message, args, get) => {
     }
   })
 }
+
+export { endsWith as default }

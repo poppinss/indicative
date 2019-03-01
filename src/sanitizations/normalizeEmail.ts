@@ -1,4 +1,27 @@
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
 import normalizeEmail from 'validator/lib/normalizeEmail'
+
+type EmailOptions = {
+  all_lowercase: boolean,
+  gmail_lowercase: boolean,
+  gmail_remove_dots: boolean,
+  gmail_remove_subaddress: boolean,
+  gmail_convert_googlemaildotcom: boolean,
+  outlookdotcom_lowercase: boolean,
+  outlookdotcom_remove_subaddress: boolean,
+  yahoo_lowercase: boolean,
+  yahoo_remove_subaddress: boolean,
+  icloud_lowercase: boolean,
+  icloud_remove_subaddress: boolean,
+}
 
 /**
  * Normalizes the email address by removing unwanted characters from it. For example
@@ -27,10 +50,10 @@ import normalizeEmail from 'validator/lib/normalizeEmail'
  * }
  * ----
  */
-export default (email, args?) => {
+export default<T extends any> (email: T, [options]: [Partial<EmailOptions>] = [{}]): T => {
   if (typeof (email) === 'string') {
-    const options = args && args.length ? args[0] : {}
     return normalizeEmail(email, options)
   }
+
   return email
 }

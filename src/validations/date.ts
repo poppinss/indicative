@@ -1,6 +1,7 @@
 import toPromise from '../../lib/toPromise'
 import skippable from '../core/skippable'
-import date from '../raw/date'
+import isDate from '../raw/date'
+import { ValidationFn } from '../contracts'
 
 /**
  * Ensures the field under validation is a valid date. The value can be a
@@ -22,11 +23,13 @@ import date from '../raw/date'
  * }
  * ----
  */
-export default (data, field, message, _args, get) => {
+const date: ValidationFn = (data, field, message, _args, get) => {
   return toPromise(() => {
     const fieldValue = get(data, field)
-    if (!skippable(fieldValue) && !date(fieldValue, false)) {
+    if (!skippable(fieldValue) && !isDate(fieldValue, false)) {
       return message
     }
   })
 }
+
+export { date as default }

@@ -1,5 +1,6 @@
 import toPromise from '../../lib/toPromise'
 import skippable from '../core/skippable'
+import { ValidationFn, ArgRegex } from '../contracts'
 
 /**
  * Ensures the value of field under validation, passes the regex test. The regex
@@ -23,9 +24,8 @@ import skippable from '../core/skippable'
  * }
  * ----
  */
-export default (data, field, message, args, get) => {
+const regex: ValidationFn = (data, field, message, [regexExp, regexFlags]: ArgRegex, get) => {
   return toPromise(() => {
-    const [regexExp, regexFlags] = args
     const fieldValue = get(data, field)
 
     const expression = regexExp instanceof RegExp ? regexExp : new RegExp(regexExp, regexFlags)
@@ -34,3 +34,5 @@ export default (data, field, message, args, get) => {
     }
   })
 }
+
+export { regex as default }

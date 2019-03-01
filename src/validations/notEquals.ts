@@ -1,5 +1,6 @@
 import toPromise from '../../lib/toPromise'
 import skippable from '../core/skippable'
+import { ValidationFn } from '../contracts'
 
 /**
  * Makes sure that the value of field under validation is not
@@ -19,13 +20,19 @@ import skippable from '../core/skippable'
  * }
  * ----
  */
-export default (data, field, message, args, get) => {
+const notEquals: ValidationFn = (data, field, message, [comparisonValue]: [any], get) => {
   return toPromise(() => {
     const fieldValue = get(data, field)
 
+    if (!comparisonValue) {
+      throw new Error('rule:notEquals comparisonValue is required')
+    }
+
     // tslint:disable-next-line:triple-equals
-    if (!skippable(fieldValue) && args[0] && args[0] == fieldValue) {
+    if (!skippable(fieldValue) && comparisonValue == fieldValue) {
       return message
     }
   })
 }
+
+export { notEquals as default }

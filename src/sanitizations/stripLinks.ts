@@ -1,3 +1,12 @@
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
 const linksRegex = /<a\b[^>]*>(.*?)<\/a>/g
 
 /**
@@ -17,9 +26,10 @@ const linksRegex = /<a\b[^>]*>(.*?)<\/a>/g
  * }
  * ----
  */
-export default (value) => {
+export default<T extends any> (value: T): T => {
   if (typeof (value) !== 'string') {
     return value
   }
-  return value.replace(linksRegex, (_match, group) => group.trim())
+
+  return value.replace(linksRegex, (_match: string, group: string) => group.trim())
 }

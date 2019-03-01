@@ -11,7 +11,7 @@
 
 import * as test from 'japa'
 
-import validator from '../../src/core/validator'
+import { validator } from '../../src/core/validator'
 import { required, integer, alpha, alphaNumeric } from '../../src/validations'
 import * as formatters from '../../src/formatters'
 

@@ -1,5 +1,6 @@
 import skippable from '../core/skippable'
 import toPromise from '../../lib/toPromise'
+import { ValidationFn } from '../contracts'
 
 /**
  * Ensures the value is a valid integer. Also string representation of a number
@@ -23,7 +24,7 @@ import toPromise from '../../lib/toPromise'
  * }
  * ----
  */
-export default (data, field, message, _args, get) => {
+const integer: ValidationFn = (data, field, message, _args, get) => {
   return toPromise(() => {
     const fieldValue = get(data, field)
     if (!skippable(fieldValue) && !Number.isInteger(Number(fieldValue))) {
@@ -31,3 +32,5 @@ export default (data, field, message, _args, get) => {
     }
   })
 }
+
+export { integer as default }

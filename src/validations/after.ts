@@ -1,6 +1,7 @@
 import toPromise from '../../lib/toPromise'
 import skippable from '../core/skippable'
-import after from '../raw/after'
+import isAfter from '../raw/after'
+import { ValidationFn, ArgComparisonDate } from '../contracts'
 
 /**
  * Ensures the value of the field is after the expected
@@ -22,15 +23,17 @@ import after from '../raw/after'
  * }
  * ----
  */
-export default (data, field, message, args, get) => {
+const after: ValidationFn = (data, field, message, [comparisonDate]: ArgComparisonDate, get) => {
   return toPromise(() => {
-    if (!args.length) {
+    if (!comparisonDate) {
       return new Error('after:make sure to define the after date')
     }
 
     const fieldValue = get(data, field)
-    if (!skippable(fieldValue) && !after(fieldValue, args[0])) {
+    if (!skippable(fieldValue) && !isAfter(fieldValue, comparisonDate)) {
       return message
     }
   })
 }
+
+export { after as default }

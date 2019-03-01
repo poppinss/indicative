@@ -1,6 +1,7 @@
 import skippable from '../core/skippable'
 import toPromise from '../../lib/toPromise'
-import alpha from '../raw/alpha'
+import isAlpha from '../raw/alpha'
+import { ValidationFn } from '../contracts'
 
 /**
  * Makes sure the field under validation is alpha only. The regex used is `/^[a-z]+$/i`.
@@ -19,11 +20,13 @@ import alpha from '../raw/alpha'
  * }
  * ----
  */
-export default (data, field, message, _args, get) => {
+const alpha: ValidationFn = (data, field, message, _args, get) => {
   return toPromise(() => {
     const fieldValue = get(data, field)
-    if (!skippable(fieldValue) && !alpha(fieldValue)) {
+    if (!skippable(fieldValue) && !isAlpha(fieldValue)) {
       return message
     }
   })
 }
+
+export { alpha as default }

@@ -1,3 +1,12 @@
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
 import existy from '../raw/existy'
 
 /**
@@ -18,7 +27,7 @@ import existy from '../raw/existy'
  * }
  * ----
  */
-export default (value?) => {
+export default<T extends any> (value: T): T | null => {
   if (!existy(value)) {
     return null
   }

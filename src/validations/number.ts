@@ -1,6 +1,7 @@
 import toPromise from '../../lib/toPromise'
 import skippable from '../core/skippable'
 import isNumber from '../raw/isNumber'
+import { ValidationFn } from '../contracts'
 
 /**
  * Makes sure that the value of field under validation is a valid
@@ -22,7 +23,7 @@ import isNumber from '../raw/isNumber'
  * }
  * ----
  */
-export default (data, field, message, _args, get) => {
+const number: ValidationFn = (data, field, message, _args, get) => {
   return toPromise(() => {
     const fieldValue = get(data, field)
     const transformedValue = typeof (fieldValue) === 'string' ? Number(fieldValue) : fieldValue
@@ -32,3 +33,5 @@ export default (data, field, message, _args, get) => {
     }
   })
 }
+
+export { number as default }

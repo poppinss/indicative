@@ -1,6 +1,15 @@
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
 import { format } from 'date-fns'
 
-export default (input, formats) => {
+export default (input: string, formats: string | string[]): boolean => {
   return (Array.isArray(formats) ? formats : [formats]).some(pattern => {
     let sanitizedInput = input
     let hasTimeZone = false

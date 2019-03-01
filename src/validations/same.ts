@@ -1,6 +1,7 @@
 import toPromise from '../../lib/toPromise'
 import skippable from '../core/skippable'
 import existy from '../raw/existy'
+import { ValidationFn } from '../contracts'
 
 /**
  * Ensures the value of 2 fields are same.
@@ -19,7 +20,7 @@ import existy from '../raw/existy'
  * }
  * ----
  */
-export default (data, field, message, args, get) => {
+const same: ValidationFn = (data, field, message, args: [string], get) => {
   return toPromise(() => {
     const fieldValue = get(data, field)
     const targetedFieldValue = get(data, args[0])
@@ -29,3 +30,5 @@ export default (data, field, message, args, get) => {
     }
   })
 }
+
+export { same as default }

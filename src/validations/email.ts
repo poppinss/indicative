@@ -1,6 +1,7 @@
 import skippable from '../core/skippable'
 import toPromise from '../../lib/toPromise'
-import email from '../raw/email'
+import isEmail from '../raw/email'
+import { ValidationFn } from '../contracts'
 
 /**
  * Ensures the field under validation is a valid email format.
@@ -21,11 +22,13 @@ import email from '../raw/email'
  * }
  * ----
  */
-export default (data, field, message, _args, get) => {
+const email: ValidationFn = (data, field, message, _args, get) => {
   return toPromise(() => {
     const fieldValue = get(data, field)
-    if (!skippable(fieldValue) && !email(fieldValue)) {
+    if (!skippable(fieldValue) && !isEmail(fieldValue)) {
       return message
     }
   })
 }
+
+export { email as default }

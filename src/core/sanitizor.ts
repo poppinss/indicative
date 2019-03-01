@@ -102,7 +102,7 @@ function sanitizeField (sanitizations, value, rules) {
   return result
 }
 
-export default (sanitizations) => {
+export function sanitizor (sanitizations) {
   return {
     sanitize (data, fields) {
       const parsedFields = parse(fields, data)

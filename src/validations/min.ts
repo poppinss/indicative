@@ -1,5 +1,6 @@
 import toPromise from '../../lib/toPromise'
 import skippable from '../core/skippable'
+import { ValidationFn, ArgComparison } from '../contracts'
 
 /**
  * Ensures the length of a string or array is not is not less than
@@ -19,17 +20,19 @@ import skippable from '../core/skippable'
  * }
  * ----
  */
-export default (data, field, message, args, get) => {
+const min: ValidationFn = (data, field, message, [minValue]: ArgComparison, get) => {
   return toPromise(() => {
-    if (!args[0]) {
+    if (!minValue) {
       throw new Error('min:make sure to define min length')
     }
 
     const fieldValue = get(data, field)
     const transformedValue = Array.isArray(fieldValue) ? fieldValue : String(fieldValue)
 
-    if (!skippable(fieldValue) && transformedValue.length < args[0]) {
+    if (!skippable(fieldValue) && transformedValue.length < Number(minValue)) {
       return message
     }
   })
 }
+
+export { min as default }

@@ -1,3 +1,12 @@
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
 import existy from './existy'
 
 /**
@@ -13,7 +22,7 @@ import existy from './existy'
  *    empty(null)
  *    empty(undefined)
  */
-export default (input) => {
+export default (input: any): boolean => {
   if (!existy(input)) {
     return true
   }

@@ -199,7 +199,7 @@ test.group('Sanitizations | toNull', () => {
   })
 
   test('convert undefined to null', (assert) => {
-    assert.isNull(sanitizations.toNull())
+    assert.isNull(sanitizations.toNull(undefined))
   })
 
   test('convert null to null', (assert) => {

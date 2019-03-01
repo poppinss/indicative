@@ -1,5 +1,6 @@
 import toPromise from '../../lib/toPromise'
 import skippable from '../core/skippable'
+import { ValidationFn } from '../contracts'
 
 /**
  * Ensures the value of a field is under a certain value. All values
@@ -19,16 +20,18 @@ import skippable from '../core/skippable'
  * }
  * ----
  */
-export default (data, field, message, args, get) => {
+const under: ValidationFn = (data, field, message, [maxValue]: [string | number], get) => {
   return toPromise(() => {
-    const maxValue = args[0]
 
     if (!maxValue) {
       throw new Error('under:make sure to pass the max value')
     }
+
     const fieldValue = get(data, field)
     if (!skippable(fieldValue) && Number(fieldValue) >= Number(maxValue)) {
       return message
     }
   })
 }
+
+export { under as default }

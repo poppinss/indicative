@@ -1,6 +1,7 @@
 import skippable from '../core/skippable'
 import toPromise from '../../lib/toPromise'
 import isObject from '../raw/isObject'
+import { ValidationFn } from '../contracts'
 
 /**
  * Ensures the value of field under validation is a valid Javascript
@@ -22,7 +23,7 @@ import isObject from '../raw/isObject'
  * }
  * ----
  */
-export default (data, field, message, _args, get) => {
+const obj: ValidationFn = (data, field, message, _args, get) => {
   return toPromise(() => {
     const fieldValue = get(data, field)
     if (!skippable(fieldValue) && !isObject(fieldValue)) {
@@ -30,3 +31,5 @@ export default (data, field, message, _args, get) => {
     }
   })
 }
+
+export { obj as default }

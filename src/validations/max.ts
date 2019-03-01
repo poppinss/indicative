@@ -1,5 +1,6 @@
 import toPromise from '../../lib/toPromise'
 import skippable from '../core/skippable'
+import { ValidationFn, ArgComparison } from '../contracts'
 
 /**
  * Ensures the length of a string or array is not greater than
@@ -19,17 +20,19 @@ import skippable from '../core/skippable'
  * }
  * ----
  */
-export default (data, field, message, args, get) => {
+const max: ValidationFn = (data, field, message, [maxValue]: ArgComparison, get) => {
   return toPromise(() => {
-    if (!args[0]) {
+    if (!maxValue) {
       throw new Error('max:make sure to define max length')
     }
 
     const fieldValue = get(data, field)
     const transformedValue = Array.isArray(fieldValue) ? fieldValue : String(fieldValue)
 
-    if (!skippable(fieldValue) && transformedValue.length > args[0]) {
+    if (!skippable(fieldValue) && transformedValue.length > Number(maxValue)) {
       return message
     }
   })
 }
+
+export { max as default }

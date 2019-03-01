@@ -1,6 +1,7 @@
 import skippable from '../core/skippable'
 import toPromise from '../../lib/toPromise'
 import truthy from '../raw/truthy'
+import { ValidationFn } from '../contracts'
 
 /**
  * Ensures that the field under validation is accepted.
@@ -21,7 +22,7 @@ import truthy from '../raw/truthy'
  * }
  * ----
  */
-export default (data, field, message, _args, get) => {
+const accepted: ValidationFn = (data, field, message, _args, get) => {
   return toPromise(() => {
     const fieldValue = get(data, field)
     if (!skippable(fieldValue) && !truthy(fieldValue)) {
@@ -29,3 +30,5 @@ export default (data, field, message, _args, get) => {
     }
   })
 }
+
+export { accepted as default }

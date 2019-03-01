@@ -32,8 +32,6 @@ import { ParsedRuleNode } from '../contracts'
  *   email: 'email'
  * }
  */
-function rule (name: string, args: any | any[]): ParsedRuleNode {
+export function rule (name: string, args: any | any[]): ParsedRuleNode {
   return { name, args: !args ? [] : (Array.isArray(args) ? args : [args]) }
 }
-
-export default rule

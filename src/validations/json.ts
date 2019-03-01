@@ -1,6 +1,7 @@
 import skippable from '../core/skippable'
 import toPromise from '../../lib/toPromise'
-import json from '../raw/json'
+import isJson from '../raw/json'
+import { ValidationFn } from '../contracts'
 
 /**
  * Ensures the value of field under validation is safe to be parsed
@@ -20,12 +21,14 @@ import json from '../raw/json'
  * }
  * ----
  */
-export default (data, field, message, _args, get) => {
+const json: ValidationFn = (data, field, message, _args, get) => {
   return toPromise(() => {
     const fieldValue = get(data, field)
 
-    if (!skippable(fieldValue) && !json(fieldValue)) {
+    if (!skippable(fieldValue) && !isJson(fieldValue)) {
       return message
     }
   })
 }
+
+export { json as default }

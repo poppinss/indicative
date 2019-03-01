@@ -1,6 +1,7 @@
 import toPromise from '../../lib/toPromise'
 import skippable from '../core/skippable'
-import before from '../raw/before'
+import isBefore from '../raw/before'
+import { ValidationFn, ArgComparisonDate } from '../contracts'
 
 /**
  * Ensures the value of field under validation is before a given
@@ -22,15 +23,17 @@ import before from '../raw/before'
  * }
  * ----
  */
-export default (data, field, message, args, get) => {
+const before: ValidationFn = (data, field, message, [beforeDate]: ArgComparisonDate, get) => {
   return toPromise(() => {
-    if (!args.length) {
+    if (!beforeDate) {
       return new Error('before:make sure to define the before date')
     }
 
     const fieldValue = get(data, field)
-    if (!skippable(fieldValue) && !before(fieldValue, args[0])) {
+    if (!skippable(fieldValue) && !isBefore(fieldValue, beforeDate)) {
       return message
     }
   })
 }
+
+export { before as default }
