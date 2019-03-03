@@ -35,8 +35,9 @@ function setLiteral (source: ParsedSchema, key: string, rules: ParsedRule[]): Sc
  * is patched on existing nodes as well
  */
 function setObject (source: ParsedSchema, key: string): SchemaNodeObject {
-  const item = (source[key] || { children: {}, rules: [] }) as SchemaNodeObject
+  const item = (source[key] || { rules: [] }) as SchemaNodeObject
   item.type = 'object'
+  item.children = item.children || {}
   source[key] = item
   return item
 }
