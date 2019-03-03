@@ -141,16 +141,18 @@ test.group('Parser', () => {
         type: 'array',
         rules: [],
         each: {
-          rules: [],
-          children: {
-            username: {
-              type: 'literal',
-              rules: [
-                {
-                  name: 'required',
-                  args: [],
-                },
-              ],
+          '*': {
+            rules: [],
+            children: {
+              username: {
+                type: 'literal',
+                rules: [
+                  {
+                    name: 'required',
+                    args: [],
+                  },
+                ],
+              },
             },
           },
         },
@@ -166,18 +168,20 @@ test.group('Parser', () => {
         type: 'array',
         rules: [],
         each: {
-          rules: [],
-          children: {
-            profile: {
-              type: 'object',
-              rules: [],
-              children: {
-                username: {
-                  type: 'literal',
-                  rules: [{
-                    name: 'required',
-                    args: [],
-                  }],
+          '*': {
+            rules: [],
+            children: {
+              profile: {
+                type: 'object',
+                rules: [],
+                children: {
+                  username: {
+                    type: 'literal',
+                    rules: [{
+                      name: 'required',
+                      args: [],
+                    }],
+                  },
                 },
               },
             },
@@ -195,11 +199,13 @@ test.group('Parser', () => {
         type: 'array',
         rules: [],
         each: {
-          rules: [{
-            name: 'required',
-            args: [],
-          }],
-          children: {},
+          '*': {
+            rules: [{
+              name: 'required',
+              args: [],
+            }],
+            children: {},
+          },
         },
       },
     })
@@ -219,11 +225,13 @@ test.group('Parser', () => {
           args: [],
         }],
         each: {
-          rules: [{
-            name: 'required',
-            args: [],
-          }],
-          children: {},
+          '*': {
+            rules: [{
+              name: 'required',
+              args: [],
+            }],
+            children: {},
+          },
         },
       },
     })
@@ -245,30 +253,32 @@ test.group('Parser', () => {
           args: [],
         }],
         each: {
-          rules: [{
-            name: 'required',
-            args: [],
-          }],
-          children: {
-            profile: {
-              type: 'object',
-              rules: [{
-                name: 'object',
-                args: [],
-              }],
-              children: {
-                age: {
-                  type: 'literal',
-                  rules: [
-                    {
-                      name: 'required',
-                      args: [],
-                    },
-                    {
-                      name: 'max',
-                      args: ['60'],
-                    },
-                  ],
+          '*': {
+            rules: [{
+              name: 'required',
+              args: [],
+            }],
+            children: {
+              profile: {
+                type: 'object',
+                rules: [{
+                  name: 'object',
+                  args: [],
+                }],
+                children: {
+                  age: {
+                    type: 'literal',
+                    rules: [
+                      {
+                        name: 'required',
+                        args: [],
+                      },
+                      {
+                        name: 'max',
+                        args: ['60'],
+                      },
+                    ],
+                  },
                 },
               },
             },
@@ -342,6 +352,62 @@ test.group('Parser', () => {
                     args: [],
                   },
                 ],
+              },
+            },
+          },
+        },
+      },
+    })
+  })
+
+  test('parse array expression with defined indexes', (assert) => {
+    const output = parse({ 'users.0.username': 'required' })
+
+    assert.deepEqual(output, {
+      users: {
+        type: 'array',
+        rules: [],
+        each: {
+          '0': {
+            rules: [],
+            children: {
+              username: {
+                type: 'literal',
+                rules: [{
+                  name: 'required',
+                  args: [],
+                }],
+              },
+            },
+          },
+        },
+      },
+    })
+  })
+
+  test('parse array expression with and without childs on defined indexes', (assert) => {
+    const output = parse({
+      'users.0.username': 'required',
+      'users.0': 'required',
+    })
+
+    assert.deepEqual(output, {
+      users: {
+        type: 'array',
+        rules: [],
+        each: {
+          '0': {
+            rules: [{
+              name: 'required',
+              args: [],
+            }],
+            children: {
+              username: {
+                type: 'literal',
+                rules: [{
+                  name: 'required',
+                  args: [],
+                }],
               },
             },
           },
