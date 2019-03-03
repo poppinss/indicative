@@ -22,8 +22,10 @@ export type SchemaNodeArray = {
   type: 'array',
   rules: ParsedRule[],
   each: {
-    rules: ParsedRule[],
-    children: ParsedSchema,
+    [index: string]: {
+      rules: ParsedRule[],
+      children: ParsedSchema,
+    },
   },
 }
 

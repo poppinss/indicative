@@ -46,10 +46,11 @@ function setObject (source: ParsedSchema, key: string): SchemaNodeObject {
  * Sets the array node to the source object for the given key. `type`
  * and `each` properties are patched on existing nodes as well.
  */
-function setArray (source: ParsedSchema, key: string): SchemaNodeArray {
+function setArray (source: ParsedSchema, key: string, index: string): SchemaNodeArray {
   const item = (source[key] || { rules: [] }) as SchemaNodeArray
   item.type = 'array'
-  item.each = item.each || { children: {}, rules: [] }
+  item.each = item.each || {}
+  item.each[index] = item.each[index] || { children: {}, rules: [] }
   source[key] = item
   return item
 }
@@ -65,17 +66,18 @@ function parseField (
 ) {
   const token = tokens[index++]
   const isLast = tokens.length === index
-  const isArray = tokens[index] === '*'
+  const isIndexedArray = /^\d+$/.test(tokens[index])
+  const isArray = tokens[index] === '*' || isIndexedArray
 
   /**
    * Last item was an array
    */
-  if (token === '*') {
+  if (token === '*' || /^\d+$/.test(token)) {
     if (isLast) {
-      (out as SchemaNodeArray).each.rules = rules
+      (out as SchemaNodeArray).each[token].rules = rules
       return
     }
-    return parseField(tokens, rules, (out as SchemaNodeArray).each.children, index)
+    return parseField(tokens, rules, (out as SchemaNodeArray).each[token].children, index)
   }
 
   /**
@@ -91,7 +93,7 @@ function parseField (
    * Current item as an array
    */
   if (isArray) {
-    const item = setArray(out as ParsedSchema, token)
+    const item = setArray(out as ParsedSchema, token, isIndexedArray ? tokens[index] : '*')
     return parseField(tokens, rules, item, index)
   }
 
