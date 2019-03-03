@@ -277,4 +277,76 @@ test.group('Parser', () => {
       },
     })
   })
+
+  test('add rules to deeply nested child', (assert) => {
+    const output = parse({
+      'user.profile': 'required',
+      'user.profile.type': 'required',
+    })
+
+    assert.deepEqual(output, {
+      user: {
+        type: 'object',
+        rules: [],
+        children: {
+          profile: {
+            type: 'object',
+            rules: [
+              {
+                name: 'required',
+                args: [],
+              },
+            ],
+            children: {
+              type: {
+                type: 'literal',
+                rules: [
+                  {
+                    name: 'required',
+                    args: [],
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+    })
+  })
+
+  test('add rules to deeply nested child with parent added at later stage', (assert) => {
+    const output = parse({
+      'user.profile.type': 'required',
+      'user.profile': 'required',
+    })
+
+    assert.deepEqual(output, {
+      user: {
+        type: 'object',
+        rules: [],
+        children: {
+          profile: {
+            type: 'object',
+            rules: [
+              {
+                name: 'required',
+                args: [],
+              },
+            ],
+            children: {
+              type: {
+                type: 'literal',
+                rules: [
+                  {
+                    name: 'required',
+                    args: [],
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+    })
+  })
 })

@@ -8,3 +8,11 @@
 */
 
 export { rule, parser } from './src/main'
+export {
+  Schema,
+  ParsedRule,
+  SchemaNodeArray,
+  SchemaNodeObject,
+  SchemaNodeLiteral,
+  ParsedSchema,
+} from './src/contracts'
