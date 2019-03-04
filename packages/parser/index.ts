@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-export { rule, parser } from './src/main'
+export { rule, schemaParser, messagesParser } from './src/main'
 export {
   Schema,
   ParsedRule,
@@ -15,4 +15,7 @@ export {
   SchemaNodeObject,
   SchemaNodeLiteral,
   ParsedSchema,
+  Messages,
+  ParsedMessagesNode,
+  ParsedMessages,
 } from './src/contracts'

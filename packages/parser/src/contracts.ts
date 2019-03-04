@@ -20,10 +20,10 @@ export type ParsedRule = {
  */
 export type SchemaNodeArray = {
   type: 'array',
-  rules: ParsedRule[],
+  rhs: ParsedRule[] | ParsedMessagesNode,
   each: {
     [index: string]: {
-      rules: ParsedRule[],
+      rhs: ParsedRule[] | ParsedMessagesNode,
       children: ParsedSchema,
     },
   },
@@ -34,7 +34,7 @@ export type SchemaNodeArray = {
  */
 export type SchemaNodeObject = {
   type: 'object',
-  rules: ParsedRule[],
+  rhs: ParsedRule[] | ParsedMessagesNode,
   children: ParsedSchema,
 }
 
@@ -43,7 +43,7 @@ export type SchemaNodeObject = {
  */
 export type SchemaNodeLiteral = {
   type: 'literal',
-  rules: ParsedRule[],
+  rhs: ParsedRule[] | ParsedMessagesNode,
 }
 
 /**
@@ -58,4 +58,31 @@ export type Schema = {
  */
 export type ParsedSchema = {
   [field: string]: SchemaNodeArray | SchemaNodeLiteral | SchemaNodeObject,
+}
+
+/**
+ * Shape of a single validation message
+ */
+export type MessageNode = string | ((field: string, validation: string, args: any[]) => string)
+
+/**
+ * Shape of messages
+ */
+export type Messages = {
+  [field: string]: MessageNode,
+}
+
+/**
+ * Parsed messages node for a given field
+ */
+export type ParsedMessagesNode = { [rule: string]: MessageNode }
+
+/**
+ * Parsed messages tree
+ */
+export type ParsedMessages = {
+  rules: ParsedMessagesNode,
+  named: {
+    [field: string]: SchemaNodeArray | SchemaNodeLiteral | SchemaNodeObject,
+  },
 }
