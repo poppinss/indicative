@@ -35,6 +35,10 @@ function setLiteral (source: ParsedSchema, key: string, rules: ParsedRule[]): Sc
  * is patched on existing nodes as well
  */
 function setObject (source: ParsedSchema, key: string): SchemaNodeObject {
+  if (source[key] && source[key].type === 'array') {
+    throw new Error(`cannot reshape ${key} array to an object`)
+  }
+
   const item = (source[key] || { rules: [] }) as SchemaNodeObject
   item.type = 'object'
   item.children = item.children || {}
@@ -47,6 +51,10 @@ function setObject (source: ParsedSchema, key: string): SchemaNodeObject {
  * and `each` properties are patched on existing nodes as well.
  */
 function setArray (source: ParsedSchema, key: string, index: string): SchemaNodeArray {
+  if (source[key] && source[key].type === 'object') {
+    throw new Error(`cannot reshape ${key} object to an array`)
+  }
+
   const item = (source[key] || { rules: [] }) as SchemaNodeArray
   item.type = 'array'
   item.each = item.each || {}

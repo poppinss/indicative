@@ -415,4 +415,22 @@ test.group('Parser', () => {
       },
     })
   })
+
+  test('raise error when object is reshaped as an array', (assert) => {
+    const output = () => parse({
+      'user.username': 'required',
+      'user.*': 'required',
+    })
+
+    assert.throw(output, 'cannot reshape user object to an array')
+  })
+
+  test('raise error when array is reshaped as an object', (assert) => {
+    const output = () => parse({
+      'user.*': 'required',
+      'user.username': 'required',
+    })
+
+    assert.throw(output, 'cannot reshape user array to an object')
+  })
 })
