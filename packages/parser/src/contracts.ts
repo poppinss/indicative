@@ -38,7 +38,7 @@ export type MessagesNodeArray = {
   each: {
     [index: string]: {
       messages: MessagesRulesMap,
-      children: ParsedMessages,
+      children: ParsedNamedMessages,
     },
   },
 }
@@ -58,7 +58,7 @@ export type SchemaNodeObject = {
 export type MessagesNodeObject = {
   type: 'object',
   messages: MessagesRulesMap,
-  children: ParsedMessages,
+  children: ParsedNamedMessages,
 }
 
 /**
@@ -97,20 +97,29 @@ export type ParsedSchema = {
 export type MessageNode = string | ((field: string, validation: string, args: any[]) => string)
 
 /**
- * Shape of messages
+ * Shape of user defined messages
  */
 export type Messages = {
   [field: string]: MessageNode,
 }
 
 /**
- * Parsed messages node for a given field
+ * Shape of parsed messages for a given node
  */
 export type MessagesRulesMap = { [rule: string]: MessageNode }
 
 /**
  * Parsed messages tree
  */
-export type ParsedMessages = {
+export type ParsedNamedMessages = {
   [field: string]: MessagesNodeArray | MessagesNodeLiteral | MessagesNodeObject,
+}
+
+/**
+ * Final tree for messages. The `rules` object has flat list of messages
+ * for a given rule. However, `named` has recursive tree
+ */
+export type ParsedMessages = {
+  named: ParsedNamedMessages,
+  rules: MessagesRulesMap,
 }
