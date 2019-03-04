@@ -17,6 +17,7 @@ import {
   SchemaNodeLiteral,
   SchemaNodeArray,
   SchemaNodeObject,
+  ParsedNamedMessages,
   ParsedMessages,
   MessageNode,
   Messages,
@@ -27,8 +28,7 @@ import {
 } from './contracts'
 
 /**
- * Sets literal value for [[SchemaNodeLiteral]] or [[MesssagesNodeLiteral]]
- * based upon the `forMessage` param.
+ * Overload for rules schema
  */
 function setLiteral (
   source: ParsedSchema,
@@ -37,40 +37,55 @@ function setLiteral (
   forMessage: false,
 ): SchemaNodeLiteral
 
+/**
+ * Overload for messages schema
+ */
 function setLiteral (
-  source: ParsedMessages,
+  source: ParsedNamedMessages,
   key: string,
   rhs: MessagesRulesMap,
   forMessage: true,
 ): MessagesNodeLiteral
 
+/**
+ * Updates `messages` or `rules` property on the input tree based
+ * upon it's shape
+ */
 function setLiteral (
-  source: ParsedSchema | ParsedMessages,
+  source: ParsedSchema | ParsedNamedMessages,
   key: string,
   rhs: ParsedRule[] | MessagesRulesMap,
   forMessage: boolean,
 ): SchemaNodeLiteral | MessagesNodeLiteral {
+  let item = (source[key] || { type: 'literal' })
+
   if (forMessage) {
-    const item = (source[key] || { type: 'literal' }) as MessagesNodeLiteral
+    item = item as MessagesNodeLiteral
     item.messages = rhs as MessagesRulesMap
-    source[key] = item
-    return item
+  } else {
+    item = item as SchemaNodeLiteral
+    item.rules = rhs as ParsedRule[]
   }
 
-  const item = (source[key] || { type: 'literal' }) as SchemaNodeLiteral
-  item.rules = rhs as ParsedRule[]
   source[key] = item
   return item
 }
 
 /**
- * Sets the object node to the source object for the given key. `type`
- * is patched on existing nodes as well
+ * Overload for rules schema
  */
 function setObject (source: ParsedSchema, key: string, forMessage: false): SchemaNodeObject
-function setObject (source: ParsedMessages, key: string, forMessage: true): MessagesNodeObject
+
+/**
+ * Overload for messages schema
+ */
+function setObject (source: ParsedNamedMessages, key: string, forMessage: true): MessagesNodeObject
+
+/**
+ * Update node `type=object`
+ */
 function setObject (
-  source: ParsedSchema | ParsedMessages,
+  source: ParsedSchema | ParsedNamedMessages,
   key: string,
   forMessage: boolean,
 ): SchemaNodeObject | MessagesNodeObject {
@@ -78,15 +93,14 @@ function setObject (
     throw new Error(`cannot reshape ${key} array to an object`)
   }
 
+  let item
+
   if (forMessage) {
-    const item = (source[key] || { messages: {} }) as MessagesNodeObject
-    item.type = 'object'
-    item.children = item.children || {}
-    source[key] = item
-    return item
+    item = (source[key] || { messages: {} }) as MessagesNodeObject
+  } else {
+    item = (source[key] || { rules: [] }) as SchemaNodeObject
   }
 
-  const item = (source[key] || { rules: [] }) as SchemaNodeObject
   item.type = 'object'
   item.children = item.children || {}
   source[key] = item
@@ -94,13 +108,21 @@ function setObject (
 }
 
 /**
+ * Overload for rules schema
+ */
+function setArray (source: ParsedSchema, key: string, index: string, forMessage: false): SchemaNodeArray
+
+/**
+ * Overload for messages schema
+ */
+function setArray (source: ParsedNamedMessages, key: string, index: string, forMessage: true): MessagesNodeArray
+
+/**
  * Sets the array node to the source object for the given key. `type`
  * and `each` properties are patched on existing nodes as well.
  */
-function setArray (source: ParsedSchema, key: string, index: string, forMessage: false): SchemaNodeArray
-function setArray (source: ParsedMessages, key: string, index: string, forMessage: true): MessagesNodeArray
 function setArray (
-  source: ParsedSchema | ParsedMessages,
+  source: ParsedSchema | ParsedNamedMessages,
   key: string,
   index: string,
   forMessage: boolean,
@@ -109,25 +131,25 @@ function setArray (
     throw new Error(`cannot reshape ${key} object to an array`)
   }
 
+  let item
+
   if (forMessage) {
-    const item = (source[key] || { messages: {} }) as MessagesNodeArray
-    item.type = 'array'
+    item = (source[key] || { messages: {} }) as MessagesNodeArray
     item.each = item.each || {}
     item.each[index] = item.each[index] || { children: {}, messages: {} }
-    source[key] = item
-    return item
+  } else {
+    item = (source[key] || { rules: [] }) as SchemaNodeArray
+    item.each = item.each || {}
+    item.each[index] = item.each[index] || { children: {}, rules: [] }
   }
 
-  const item = (source[key] || { rules: [] }) as SchemaNodeArray
   item.type = 'array'
-  item.each = item.each || {}
-  item.each[index] = item.each[index] || { children: {}, rules: [] }
   source[key] = item
   return item
 }
 
 /**
- * Parses the field tokens to form the tree
+ * Parses field tokens recursively to a [[ParsedSchema]] tree
  */
 function parseFieldForRules (
   tokens: string[],
@@ -136,18 +158,39 @@ function parseFieldForRules (
   index = 0,
 ) {
   const token = tokens[index++]
+
+  /**
+   * Finding if we are on the last item. Last item defines
+   * the rules for the current node inside the tree
+   */
   const isLast = tokens.length === index
+
+  /**
+   * Indexed array have `digits` like `users.0.username`
+   */
   const isIndexedArray = /^\d+$/.test(tokens[index])
+
+  /**
+   * Is upcoming token an array
+   */
   const isArray = tokens[index] === '*' || isIndexedArray
 
   /**
-   * Last item was an array
+   * Last item was marked as array, since current token is a `*`
+   * or has defined index
    */
   if (token === '*' || /^\d+$/.test(token)) {
+    /**
+     * Last item must update rules for each item for the array
+     */
     if (isLast) {
       (out as SchemaNodeArray).each[token].rules = rules
       return
     }
+
+    /**
+     * Otherwise continue recursion
+     */
     return parseFieldForRules(tokens, rules, (out as SchemaNodeArray).each[token].children, index)
   }
 
@@ -181,12 +224,26 @@ function parseFieldForRules (
 function parseFieldForMessage (
   tokens: string[],
   message: MessageNode,
-  out: ParsedMessages | MessagesNodeArray,
+  out: ParsedNamedMessages | MessagesNodeArray,
   index = 0,
 ) {
   const token = tokens[index++]
+
+  /**
+   * Finding if we are on the last item. We need to increment the current
+   * index, since the last token is not part of the tree nodes, but
+   * instead is the rule for which message is defined
+   */
   const isLast = tokens.length === (index + 1)
+
+  /**
+   * Indexed array have `digits` like `users.0.username`
+   */
   const isIndexedArray = /^\d+$/.test(tokens[index])
+
+  /**
+   * Is upcoming token an array
+   */
   const isArray = tokens[index] === '*' || isIndexedArray
 
   /**
@@ -194,9 +251,7 @@ function parseFieldForMessage (
    */
   if (token === '*' || /^\d+$/.test(token)) {
     if (isLast) {
-      (out as MessagesNodeArray).each[token].messages = {
-        [tokens[index]]: message,
-      }
+      (out as MessagesNodeArray).each[token].messages = { [tokens[index]]: message }
       return
     }
     return parseFieldForMessage(tokens, message, (out as MessagesNodeArray).each[token].children, index)
@@ -207,7 +262,7 @@ function parseFieldForMessage (
    * patch the rules here.
    */
   if (isLast) {
-    setLiteral(out as ParsedMessages, token, { [tokens[index]]: message }, true)
+    setLiteral(out as ParsedNamedMessages, token, { [tokens[index]]: message }, true)
     return
   }
 
@@ -215,14 +270,14 @@ function parseFieldForMessage (
    * Current item as an array
    */
   if (isArray) {
-    const item = setArray(out as ParsedMessages, token, isIndexedArray ? tokens[index] : '*', true)
+    const item = setArray(out as ParsedNamedMessages, token, isIndexedArray ? tokens[index] : '*', true)
     return parseFieldForMessage(tokens, message, item, index)
   }
 
   /**
    * Falling back to object
    */
-  const item = setObject(out as ParsedMessages, token, true)
+  const item = setObject(out as ParsedNamedMessages, token, true)
   return parseFieldForMessage(tokens, message, item.children, index)
 }
 
@@ -311,13 +366,16 @@ export function schemaParser (schema: Schema): ParsedSchema {
  *   }
  * }
  */
-export function messagesParser (schema: Messages): { named: ParsedMessages, rules: MessagesRulesMap } {
+export function messagesParser (schema: Messages): ParsedMessages {
   return Object
     .keys(schema)
-    .reduce((result: { named: ParsedMessages, rules: MessagesRulesMap }, field: string) => {
+    .reduce((result: ParsedMessages, field: string) => {
       const message = schema[field]
       const tokens = field.split('.')
 
+      /**
+       * If token length is 1, then it is a plain rule vs `field.rule`
+       */
       if (tokens.length === 1) {
         result.rules = { [field]: message }
         return result

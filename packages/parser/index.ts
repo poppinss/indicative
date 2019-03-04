@@ -10,13 +10,17 @@
 export { rule, schemaParser, messagesParser } from './src/main'
 export {
   Schema,
+  ParsedSchema,
   ParsedRule,
+  SchemaNodeLiteral,
   SchemaNodeArray,
   SchemaNodeObject,
-  SchemaNodeLiteral,
-  ParsedSchema,
-  Messages,
-  MessagesRulesMap,
+  ParsedNamedMessages,
   ParsedMessages,
   MessageNode,
+  Messages,
+  MessagesNodeArray,
+  MessagesRulesMap,
+  MessagesNodeObject,
+  MessagesNodeLiteral,
 } from './src/contracts'
