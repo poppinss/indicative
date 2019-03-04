@@ -22,7 +22,7 @@ test.group('Parser | schema', () => {
     assert.deepEqual(output, {
       username: {
         type: 'literal',
-        rhs: [{
+        rules: [{
           name: 'required',
           args: [],
         }],
@@ -38,7 +38,7 @@ test.group('Parser | schema', () => {
     assert.deepEqual(output, {
       username: {
         type: 'literal',
-        rhs: [{
+        rules: [{
           name: 'required',
           args: [],
         }],
@@ -54,7 +54,7 @@ test.group('Parser | schema', () => {
     assert.deepEqual(output, {
       username: {
         type: 'literal',
-        rhs: [{
+        rules: [{
           name: 'min',
           args: [10],
         }],
@@ -70,7 +70,7 @@ test.group('Parser | schema', () => {
     assert.deepEqual(output, {
       username: {
         type: 'literal',
-        rhs: [
+        rules: [
           {
             name: 'required',
             args: [],
@@ -95,7 +95,7 @@ test.group('Parser | schema', () => {
     assert.deepEqual(output, {
       username: {
         type: 'literal',
-        rhs: [
+        rules: [
           {
             name: 'required',
             args: [],
@@ -117,10 +117,10 @@ test.group('Parser | schema', () => {
     assert.deepEqual(output, {
       user: {
         type: 'object',
-        rhs: [],
+        rules: [],
         children: {
           profile: {
-            rhs: [
+            rules: [
               {
                 name: 'required',
                 args: [],
@@ -139,14 +139,14 @@ test.group('Parser | schema', () => {
     assert.deepEqual(output, {
       'users': {
         type: 'array',
-        rhs: [],
+        rules: [],
         each: {
           '*': {
-            rhs: [],
+            rules: [],
             children: {
               username: {
                 type: 'literal',
-                rhs: [
+                rules: [
                   {
                     name: 'required',
                     args: [],
@@ -166,18 +166,18 @@ test.group('Parser | schema', () => {
     assert.deepEqual(output, {
       users: {
         type: 'array',
-        rhs: [],
+        rules: [],
         each: {
           '*': {
-            rhs: [],
+            rules: [],
             children: {
               profile: {
                 type: 'object',
-                rhs: [],
+                rules: [],
                 children: {
                   username: {
                     type: 'literal',
-                    rhs: [{
+                    rules: [{
                       name: 'required',
                       args: [],
                     }],
@@ -197,10 +197,10 @@ test.group('Parser | schema', () => {
     assert.deepEqual(output, {
       users: {
         type: 'array',
-        rhs: [],
+        rules: [],
         each: {
           '*': {
-            rhs: [{
+            rules: [{
               name: 'required',
               args: [],
             }],
@@ -220,13 +220,13 @@ test.group('Parser | schema', () => {
     assert.deepEqual(output, {
       users: {
         type: 'array',
-        rhs: [{
+        rules: [{
           name: 'array',
           args: [],
         }],
         each: {
           '*': {
-            rhs: [{
+            rules: [{
               name: 'required',
               args: [],
             }],
@@ -248,27 +248,27 @@ test.group('Parser | schema', () => {
     assert.deepEqual(output, {
       users: {
         type: 'array',
-        rhs: [{
+        rules: [{
           name: 'array',
           args: [],
         }],
         each: {
           '*': {
-            rhs: [{
+            rules: [{
               name: 'required',
               args: [],
             }],
             children: {
               profile: {
                 type: 'object',
-                rhs: [{
+                rules: [{
                   name: 'object',
                   args: [],
                 }],
                 children: {
                   age: {
                     type: 'literal',
-                    rhs: [
+                    rules: [
                       {
                         name: 'required',
                         args: [],
@@ -297,11 +297,11 @@ test.group('Parser | schema', () => {
     assert.deepEqual(output, {
       user: {
         type: 'object',
-        rhs: [],
+        rules: [],
         children: {
           profile: {
             type: 'object',
-            rhs: [
+            rules: [
               {
                 name: 'required',
                 args: [],
@@ -310,7 +310,7 @@ test.group('Parser | schema', () => {
             children: {
               type: {
                 type: 'literal',
-                rhs: [
+                rules: [
                   {
                     name: 'required',
                     args: [],
@@ -333,11 +333,11 @@ test.group('Parser | schema', () => {
     assert.deepEqual(output, {
       user: {
         type: 'object',
-        rhs: [],
+        rules: [],
         children: {
           profile: {
             type: 'object',
-            rhs: [
+            rules: [
               {
                 name: 'required',
                 args: [],
@@ -346,7 +346,7 @@ test.group('Parser | schema', () => {
             children: {
               type: {
                 type: 'literal',
-                rhs: [
+                rules: [
                   {
                     name: 'required',
                     args: [],
@@ -366,14 +366,14 @@ test.group('Parser | schema', () => {
     assert.deepEqual(output, {
       users: {
         type: 'array',
-        rhs: [],
+        rules: [],
         each: {
           '0': {
-            rhs: [],
+            rules: [],
             children: {
               username: {
                 type: 'literal',
-                rhs: [{
+                rules: [{
                   name: 'required',
                   args: [],
                 }],
@@ -394,17 +394,17 @@ test.group('Parser | schema', () => {
     assert.deepEqual(output, {
       users: {
         type: 'array',
-        rhs: [],
+        rules: [],
         each: {
           '0': {
-            rhs: [{
+            rules: [{
               name: 'required',
               args: [],
             }],
             children: {
               username: {
                 type: 'literal',
-                rhs: [{
+                rules: [{
                   name: 'required',
                   args: [],
                 }],
@@ -446,7 +446,7 @@ test.group('Parser | messages', () => {
       named: {
         username: {
           type: 'literal',
-          rhs: {
+          messages: {
             required: 'Username is required',
           },
         },
@@ -464,11 +464,11 @@ test.group('Parser | messages', () => {
       named: {
         username: {
           type: 'object',
-          rhs: {},
+          messages: {},
           children: {
             profile: {
               type: 'literal',
-              rhs: {
+              messages: {
                 required: 'Profile is required',
               },
             },
@@ -489,13 +489,13 @@ test.group('Parser | messages', () => {
       named: {
         username: {
           type: 'object',
-          rhs: {
+          messages: {
             required: 'Username is required',
           },
           children: {
             profile: {
               type: 'literal',
-              rhs: {
+              messages: {
                 required: 'Profile is required',
               },
             },
@@ -515,14 +515,14 @@ test.group('Parser | messages', () => {
       named: {
         users: {
           type: 'array',
-          rhs: {},
+          messages: {},
           each: {
             '*': {
-              rhs: {},
+              messages: {},
               children: {
                 username: {
                   type: 'literal',
-                  rhs: {
+                  messages: {
                     required: 'Username is required',
                   },
                 },
@@ -545,25 +545,25 @@ test.group('Parser | messages', () => {
       named: {
         users: {
           type: 'array',
-          rhs: {},
+          messages: {},
           each: {
             '0': {
-              rhs: {},
+              messages: {},
               children: {
                 username: {
                   type: 'literal',
-                  rhs: {
+                  messages: {
                     required: 'Main username is required',
                   },
                 },
               },
             },
             '*': {
-              rhs: {},
+              messages: {},
               children: {
                 username: {
                   type: 'literal',
-                  rhs: {
+                  messages: {
                     required: 'Username is required',
                   },
                 },
@@ -585,10 +585,10 @@ test.group('Parser | messages', () => {
       named: {
         users: {
           type: 'array',
-          rhs: {},
+          messages: {},
           each: {
             '*': {
-              rhs: {
+              messages: {
                 min: 'Array must have one item',
               },
               children: {},
