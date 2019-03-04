@@ -20,20 +20,45 @@ import {
   ParsedMessages,
   MessageNode,
   Messages,
-  ParsedMessagesNode,
+  MessagesNodeArray,
+  MessagesRulesMap,
+  MessagesNodeObject,
+  MessagesNodeLiteral,
 } from './contracts'
 
 /**
- * Sets the literal node to the source object for the given key. Rules
- * are patched on existing nodes as well
+ * Sets literal value for [[SchemaNodeLiteral]] or [[MesssagesNodeLiteral]]
+ * based upon the `forMessage` param.
  */
 function setLiteral (
   source: ParsedSchema,
   key: string,
-  rhs: ParsedRule[] | ParsedMessagesNode,
-): SchemaNodeLiteral {
+  rhs: ParsedRule[],
+  forMessage: false,
+): SchemaNodeLiteral
+
+function setLiteral (
+  source: ParsedMessages,
+  key: string,
+  rhs: MessagesRulesMap,
+  forMessage: true,
+): MessagesNodeLiteral
+
+function setLiteral (
+  source: ParsedSchema | ParsedMessages,
+  key: string,
+  rhs: ParsedRule[] | MessagesRulesMap,
+  forMessage: boolean,
+): SchemaNodeLiteral | MessagesNodeLiteral {
+  if (forMessage) {
+    const item = (source[key] || { type: 'literal' }) as MessagesNodeLiteral
+    item.messages = rhs as MessagesRulesMap
+    source[key] = item
+    return item
+  }
+
   const item = (source[key] || { type: 'literal' }) as SchemaNodeLiteral
-  item.rhs = rhs
+  item.rules = rhs as ParsedRule[]
   source[key] = item
   return item
 }
@@ -42,12 +67,26 @@ function setLiteral (
  * Sets the object node to the source object for the given key. `type`
  * is patched on existing nodes as well
  */
-function setObject (source: ParsedSchema, key: string, forMessage: boolean): SchemaNodeObject {
+function setObject (source: ParsedSchema, key: string, forMessage: false): SchemaNodeObject
+function setObject (source: ParsedMessages, key: string, forMessage: true): MessagesNodeObject
+function setObject (
+  source: ParsedSchema | ParsedMessages,
+  key: string,
+  forMessage: boolean,
+): SchemaNodeObject | MessagesNodeObject {
   if (source[key] && source[key].type === 'array') {
     throw new Error(`cannot reshape ${key} array to an object`)
   }
 
-  const item = (source[key] || { rhs: forMessage ? {} : [] }) as SchemaNodeObject
+  if (forMessage) {
+    const item = (source[key] || { messages: {} }) as MessagesNodeObject
+    item.type = 'object'
+    item.children = item.children || {}
+    source[key] = item
+    return item
+  }
+
+  const item = (source[key] || { rules: [] }) as SchemaNodeObject
   item.type = 'object'
   item.children = item.children || {}
   source[key] = item
@@ -58,15 +97,31 @@ function setObject (source: ParsedSchema, key: string, forMessage: boolean): Sch
  * Sets the array node to the source object for the given key. `type`
  * and `each` properties are patched on existing nodes as well.
  */
-function setArray (source: ParsedSchema, key: string, index: string, forMessage: boolean): SchemaNodeArray {
+function setArray (source: ParsedSchema, key: string, index: string, forMessage: false): SchemaNodeArray
+function setArray (source: ParsedMessages, key: string, index: string, forMessage: true): MessagesNodeArray
+function setArray (
+  source: ParsedSchema | ParsedMessages,
+  key: string,
+  index: string,
+  forMessage: boolean,
+): SchemaNodeArray | MessagesNodeArray {
   if (source[key] && source[key].type === 'object') {
     throw new Error(`cannot reshape ${key} object to an array`)
   }
 
-  const item = (source[key] || { rhs: forMessage ? {} : [] }) as SchemaNodeArray
+  if (forMessage) {
+    const item = (source[key] || { messages: {} }) as MessagesNodeArray
+    item.type = 'array'
+    item.each = item.each || {}
+    item.each[index] = item.each[index] || { children: {}, messages: {} }
+    source[key] = item
+    return item
+  }
+
+  const item = (source[key] || { rules: [] }) as SchemaNodeArray
   item.type = 'array'
   item.each = item.each || {}
-  item.each[index] = item.each[index] || { children: {}, rhs: forMessage ? {} : [] }
+  item.each[index] = item.each[index] || { children: {}, rules: [] }
   source[key] = item
   return item
 }
@@ -76,7 +131,7 @@ function setArray (source: ParsedSchema, key: string, index: string, forMessage:
  */
 function parseFieldForRules (
   tokens: string[],
-  rhs: ParsedRule[],
+  rules: ParsedRule[],
   out: ParsedSchema | SchemaNodeArray,
   index = 0,
 ) {
@@ -90,10 +145,10 @@ function parseFieldForRules (
    */
   if (token === '*' || /^\d+$/.test(token)) {
     if (isLast) {
-      (out as SchemaNodeArray).each[token].rhs = rhs
+      (out as SchemaNodeArray).each[token].rules = rules
       return
     }
-    return parseFieldForRules(tokens, rhs, (out as SchemaNodeArray).each[token].children, index)
+    return parseFieldForRules(tokens, rules, (out as SchemaNodeArray).each[token].children, index)
   }
 
   /**
@@ -101,7 +156,7 @@ function parseFieldForRules (
    * patch the rules here.
    */
   if (isLast) {
-    setLiteral(out as ParsedSchema, token, rhs)
+    setLiteral(out as ParsedSchema, token, rules, false)
     return
   }
 
@@ -110,14 +165,14 @@ function parseFieldForRules (
    */
   if (isArray) {
     const item = setArray(out as ParsedSchema, token, isIndexedArray ? tokens[index] : '*', false)
-    return parseFieldForRules(tokens, rhs, item, index)
+    return parseFieldForRules(tokens, rules, item, index)
   }
 
   /**
    * Falling back to object
    */
   const item = setObject(out as ParsedSchema, token, false)
-  return parseFieldForRules(tokens, rhs, item.children, index)
+  return parseFieldForRules(tokens, rules, item.children, index)
 }
 
 /**
@@ -125,10 +180,8 @@ function parseFieldForRules (
  */
 function parseFieldForMessage (
   tokens: string[],
-  rhs: MessageNode,
-  out: SchemaNodeArray | {
-    [field: string]: SchemaNodeArray | SchemaNodeLiteral | SchemaNodeObject,
-  },
+  message: MessageNode,
+  out: ParsedMessages | MessagesNodeArray,
   index = 0,
 ) {
   const token = tokens[index++]
@@ -141,12 +194,12 @@ function parseFieldForMessage (
    */
   if (token === '*' || /^\d+$/.test(token)) {
     if (isLast) {
-      (out as SchemaNodeArray).each[token].rhs = {
-        [tokens[index]]: rhs,
+      (out as MessagesNodeArray).each[token].messages = {
+        [tokens[index]]: message,
       }
       return
     }
-    return parseFieldForMessage(tokens, rhs, (out as SchemaNodeArray).each[token].children, index)
+    return parseFieldForMessage(tokens, message, (out as MessagesNodeArray).each[token].children, index)
   }
 
   /**
@@ -154,9 +207,7 @@ function parseFieldForMessage (
    * patch the rules here.
    */
   if (isLast) {
-    setLiteral(out as ParsedSchema, token, {
-      [tokens[index]]: rhs,
-    })
+    setLiteral(out as ParsedMessages, token, { [tokens[index]]: message }, true)
     return
   }
 
@@ -164,15 +215,15 @@ function parseFieldForMessage (
    * Current item as an array
    */
   if (isArray) {
-    const item = setArray(out as ParsedSchema, token, isIndexedArray ? tokens[index] : '*', true)
-    return parseFieldForMessage(tokens, rhs, item, index)
+    const item = setArray(out as ParsedMessages, token, isIndexedArray ? tokens[index] : '*', true)
+    return parseFieldForMessage(tokens, message, item, index)
   }
 
   /**
    * Falling back to object
    */
-  const item = setObject(out as ParsedSchema, token, true)
-  return parseFieldForMessage(tokens, rhs, item.children, index)
+  const item = setObject(out as ParsedMessages, token, true)
+  return parseFieldForMessage(tokens, message, item.children, index)
 }
 
 /**
@@ -260,10 +311,10 @@ export function schemaParser (schema: Schema): ParsedSchema {
  *   }
  * }
  */
-export function messagesParser (schema: Messages): ParsedMessages {
+export function messagesParser (schema: Messages): { named: ParsedMessages, rules: MessagesRulesMap } {
   return Object
     .keys(schema)
-    .reduce((result: ParsedMessages, field: string) => {
+    .reduce((result: { named: ParsedMessages, rules: MessagesRulesMap }, field: string) => {
       const message = schema[field]
       const tokens = field.split('.')
 
@@ -274,7 +325,7 @@ export function messagesParser (schema: Messages): ParsedMessages {
 
       parseFieldForMessage(tokens, message, result.named)
       return result
-    }, { rules: {}, named: {} })
+    }, { named: {}, rules: {} })
 }
 
 /**

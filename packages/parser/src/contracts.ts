@@ -20,11 +20,25 @@ export type ParsedRule = {
  */
 export type SchemaNodeArray = {
   type: 'array',
-  rhs: ParsedRule[] | ParsedMessagesNode,
+  rules: ParsedRule[],
   each: {
     [index: string]: {
-      rhs: ParsedRule[] | ParsedMessagesNode,
+      rules: ParsedRule[],
       children: ParsedSchema,
+    },
+  },
+}
+
+/**
+ * Shape of array node inside messages tree
+ */
+export type MessagesNodeArray = {
+  type: 'array',
+  messages: MessagesRulesMap,
+  each: {
+    [index: string]: {
+      messages: MessagesRulesMap,
+      children: ParsedMessages,
     },
   },
 }
@@ -34,8 +48,17 @@ export type SchemaNodeArray = {
  */
 export type SchemaNodeObject = {
   type: 'object',
-  rhs: ParsedRule[] | ParsedMessagesNode,
+  rules: ParsedRule[],
   children: ParsedSchema,
+}
+
+/**
+ * Shape of object node inside messages tree
+ */
+export type MessagesNodeObject = {
+  type: 'object',
+  messages: MessagesRulesMap,
+  children: ParsedMessages,
 }
 
 /**
@@ -43,7 +66,15 @@ export type SchemaNodeObject = {
  */
 export type SchemaNodeLiteral = {
   type: 'literal',
-  rhs: ParsedRule[] | ParsedMessagesNode,
+  rules: ParsedRule[],
+}
+
+/**
+ * Shape of literal node inside messages tree
+ */
+export type MessagesNodeLiteral = {
+  type: 'literal',
+  messages: MessagesRulesMap,
 }
 
 /**
@@ -75,14 +106,11 @@ export type Messages = {
 /**
  * Parsed messages node for a given field
  */
-export type ParsedMessagesNode = { [rule: string]: MessageNode }
+export type MessagesRulesMap = { [rule: string]: MessageNode }
 
 /**
  * Parsed messages tree
  */
 export type ParsedMessages = {
-  rules: ParsedMessagesNode,
-  named: {
-    [field: string]: SchemaNodeArray | SchemaNodeLiteral | SchemaNodeObject,
-  },
+  [field: string]: MessagesNodeArray | MessagesNodeLiteral | MessagesNodeObject,
 }
