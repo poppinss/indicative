@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-import { Runner } from './Runner/Runner'
+import { Runner } from './Runner'
 import { MessageBuilder } from './MessageBuilder'
 import { Executor } from './Executors/Executor'
 import { ArrayWrapper } from './Executors/ArrayWrapper'
