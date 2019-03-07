@@ -66,7 +66,7 @@ export class MessageBuilder implements MessageBuilderContract {
   public getBucket (field: string, dotPath: string[]): MessageBucket {
     const fullPath = this._buildPath(dotPath).concat(field).join('.')
     const named = this._messages.named[fullPath] || {}
-    return new MessageBucket(fullPath, named, this._messages.rules)
+    return new MessageBucket(fullPath, named, this._messages.generic)
   }
 
   /**
