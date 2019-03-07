@@ -188,6 +188,10 @@ export function schemaParser (schema: Schema): ParsedSchema {
       const rules = schema[field]
       let parsedRules: ParsedRule[] = []
 
+      if (!rules) {
+        throw new Error(`make sure to define rules for ${field}`)
+      }
+
       if (typeof (rules) === 'string') {
         parsedRules = new Pipe(rules, new ArrayPresenter())
       } else {

@@ -433,6 +433,14 @@ test.group('Parser | schema', () => {
 
     assert.throw(output, 'cannot reshape user array to an object')
   })
+
+  test('raise error when rule value is missing', (assert) => {
+    const output = () => parse({
+      'user.username': '',
+    })
+
+    assert.throw(output, 'make sure to define rules for user.username')
+  })
 })
 
 test.group('Parser | messages', () => {
