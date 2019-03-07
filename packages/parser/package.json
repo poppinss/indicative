@@ -1,7 +1,7 @@
 {
   "name": "indicative-parser",
   "version": "5.0.8",
-  "description": "Parses schema rules to a tree optimized for running validations",
+  "description": "Parser for indicative rules and messages schema",
   "main": "build/index.js",
   "files": [
     "build/src",
