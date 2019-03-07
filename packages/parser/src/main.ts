@@ -22,8 +22,9 @@ import {
 } from './contracts'
 
 /**
- * Updates `messages` or `rules` property on the input tree based
- * upon it's shape
+ * Updates rules on the given node. If node is missing, then a literal node is
+ * created automatically. Literal nodes can later transform into `object` and
+ * `array` nodes.
  */
 function setLiteral (source: ParsedSchema, key: string, rhs: ParsedRule[]): SchemaNodeLiteral {
   const item = (source[key] || { type: 'literal' }) as SchemaNodeLiteral
@@ -34,7 +35,12 @@ function setLiteral (source: ParsedSchema, key: string, rhs: ParsedRule[]): Sche
 }
 
 /**
- * Update node `type=object`
+ * Creates/updates literal node to an object node. Since `object` node
+ * properties are different from `literal` node, we need to set those
+ * properties (if missing).
+ *
+ * If node already exists and is an array node, then this method will raise an
+ * exception
  */
 function setObject (source: ParsedSchema, key: string): SchemaNodeObject {
   if (source[key] && source[key].type === 'array') {
@@ -50,8 +56,12 @@ function setObject (source: ParsedSchema, key: string): SchemaNodeObject {
 }
 
 /**
- * Sets the array node to the source object for the given key. `type`
- * and `each` properties are patched on existing nodes as well.
+ * Creates/updates literal node to an array node. Since `array` node
+ * properties are different from `literal` node, we need to set those
+ * properties (if missing).
+ *
+ * If node already exists and is an object node, then this method will raise an
+ * exception
  */
 function setArray (source: ParsedSchema, key: string, index: string): SchemaNodeArray {
   if (source[key] && source[key].type === 'object') {
@@ -190,9 +200,9 @@ export function schemaParser (schema: Schema): ParsedSchema {
 }
 
 /**
- * Parses an object of messages to a parsed schema tree. The output is
- * optimized for picking the message while iterating for the
- * schema tree.
+ * Parses an object of messages to [[ParsedMessages]] list. The messages list
+ * is simpler than rules tree, since compiler can use the schema tree to find the
+ * appropriate messages from the flat list of messages.
  *
  * @example
  * ```
@@ -203,23 +213,12 @@ export function schemaParser (schema: Schema): ParsedSchema {
  * // output
  *
  * {
- *   users: {
- *    type: 'array',
- *    messages: {},
- *    each: {
- *      '*': {
- *        messages: {},
- *        children: {
- *          username: {
- *            type: 'literal',
- *            messages: {
- *              required: 'Username is requried'
- *            }
- *          }
- *        }
- *      }
+ *   named: {
+ *    'users.*.username': {
+ *      required: 'Username is required'
  *    }
- *   }
+ *   },
+ *   generic: {},
  * }
  */
 export function messagesParser (schema: Messages): ParsedMessages {
@@ -247,7 +246,8 @@ export function messagesParser (schema: Messages): ParsedMessages {
 }
 
 /**
- * Returns parsed rule node
+ * Returns parsed rule node. Helpful when rules cannot be defined as
+ * string based expressions.
  */
 export function rule (name: string, args: any | any[]): ParsedRule {
   return { name, args: Array.isArray(args) ? args : [args] }
