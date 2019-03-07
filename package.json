@@ -1,98 +1,60 @@
 {
   "name": "indicative",
-  "version": "5.0.8",
-  "description": "Concise data validation library for Node.js and browsers",
-  "main": "builds/main.js",
-  "files": [
-    "builds"
-  ],
-  "scripts": {
-    "mrm": "mrm --preset=@adonisjs/mrm-preset",
-    "build": "npm run compile",
-    "prepublishOnly": "npm run build",
-    "docs": "node bin/inlineDocs && cd static && chul build",
-    "docs:serve": "node bin/inlineDocs && cd static && chul serve",
-    "pretest": "npm run lint",
-    "test": "node japaFile.js",
-    "lint": "tslint --project tsconfig.json",
-    "clean": "del build",
-    "compile": "npm run lint && npm run clean && tsc",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
-  },
-  "author": "virk",
-  "license": "MIT",
+  "private": true,
   "devDependencies": {
     "@adonisjs/mrm-preset": "^1.0.16",
-    "@types/node": "^11.9.5",
+    "@types/node": "^11.10.4",
     "chalk": "^2.4.2",
     "chul": "^1.0.3",
     "coveralls": "^3.0.3",
     "cz-conventional-changelog": "^2.1.0",
     "del-cli": "^1.1.0",
+    "extend": "^3.0.2",
     "fs-extra": "^7.0.1",
     "got": "^9.6.0",
     "japa": "^2.0.7",
     "japa-cli": "^1.0.1",
     "klaw": "^3.0.0",
+    "lerna": "^3.10.6",
     "mrm": "^1.2.1",
     "nyc": "^13.3.0",
     "opn": "^5.4.0",
     "pkg-ok": "^2.3.1",
     "ts-loader": "^5.3.3",
     "ts-node": "^8.0.2",
-    "tslint": "^5.13.0",
+    "tslint": "^5.13.1",
     "tslint-eslint-rules": "^5.4.0",
     "typescript": "^3.3.3333",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3"
   },
   "dependencies": {
+    "@commitlint/cli": "^7.5.2",
+    "@commitlint/config-conventional": "^7.5.0",
     "@slynova/slug": "^1.1.2",
     "clone": "^2.1.2",
     "date-fns": "^1.30.1",
     "haye": "^2.0.2",
+    "husky": "^1.3.1",
     "p-lazy": "^1.0.0",
     "pluralize": "^7.0.0",
     "pope": "^2.0.2",
     "striptags": "^3.1.1",
     "validator": "^10.11.0"
   },
-  "directories": {
-    "lib": "lib",
-    "test": "test"
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/poppinss/indicative.git"
-  },
-  "keywords": [
-    "node-validator",
-    "validator",
-    "schema-validator",
-    "quick-validations"
-  ],
-  "bugs": {
-    "url": "https://github.com/poppinss/indicative/issues"
-  },
-  "homepage": "https://github.com/poppinss/indicative#readme",
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
-  "standard": {
-    "globals": [
-      "test",
-      "group",
-      "QUnit"
-    ]
-  },
-  "nyc": {
-    "exclude": [
-      "test"
-    ],
-    "extension": [
-      ".ts"
-    ]
+  "scripts": {
+    "postinstall": "lerna bootstrap",
+    "test": "lerna run test",
+    "publish": "lerna run build && lerna publish"
   }
 }
