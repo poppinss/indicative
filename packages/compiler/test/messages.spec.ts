@@ -300,7 +300,7 @@ test.group('messages', () => {
       assert.deepEqual(error, [
         {
           field: 'users.0.username',
-          message: 'required validation failed on users.*.username',
+          message: 'required validation failed on users.0.username',
           validation: 'required',
         },
       ])

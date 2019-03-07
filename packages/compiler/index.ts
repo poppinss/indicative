@@ -13,5 +13,7 @@ export { VanillaFormatter } from './src/Formatters/VanillaFormatter'
 export {
   DataNode,
   ExecutorFn,
+  VanillaErrorNode,
   IndicativeFormatter,
+  DataRoot,
 } from './src/contracts'
