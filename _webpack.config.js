@@ -7,7 +7,8 @@ module.exports = function config (userConfig) {
     mode: 'production',
     output: {
       filename: 'index.js',
-      libraryTarget: 'umd'
+      libraryTarget: 'umd',
+      globalObject: 'this'
     },
     module: {
       rules: [
