@@ -101,5 +101,5 @@ export type ParsedNamedMessages = {
  */
 export type ParsedMessages = {
   named: ParsedNamedMessages,
-  rules: MessagesRulesMap,
+  generic: MessagesRulesMap,
 }
