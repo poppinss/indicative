@@ -8,7 +8,8 @@
 */
 
 /**
- * Shape of parsed rule
+ * Parsed rule is created by parsing a single rule defination
+ * like `required` or `min:4`
  */
 export type ParsedRule = {
   name: string,
@@ -16,7 +17,13 @@ export type ParsedRule = {
 }
 
 /**
- * Shape of array node inside schema tree
+ * Array node defines the fields which uses one of the following
+ * array expressions.
+ *
+ * 1. users.*.username
+ * 2. users.*
+ * 3. users.0.username
+ * 4. users.0
  */
 export type SchemaNodeArray = {
   type: 'array',
@@ -30,21 +37,10 @@ export type SchemaNodeArray = {
 }
 
 /**
- * Shape of array node inside messages tree
- */
-export type MessagesNodeArray = {
-  type: 'array',
-  messages: MessagesRulesMap,
-  each: {
-    [index: string]: {
-      messages: MessagesRulesMap,
-      children: ParsedNamedMessages,
-    },
-  },
-}
-
-/**
- * Shape of object node inside schema tree
+ * Object node defines the fields which uses one of the following
+ * object expressions.
+ *
+ * 1. user.username
  */
 export type SchemaNodeObject = {
   type: 'object',
@@ -53,16 +49,8 @@ export type SchemaNodeObject = {
 }
 
 /**
- * Shape of object node inside messages tree
- */
-export type MessagesNodeObject = {
-  type: 'object',
-  messages: MessagesRulesMap,
-  children: ParsedNamedMessages,
-}
-
-/**
- * Shape of literal node inside schema tree
+ * Literal are leaf nodes inside the tree. A literal can exist
+ * on an array or object or direct leafs of a flat tree
  */
 export type SchemaNodeLiteral = {
   type: 'literal',
@@ -70,34 +58,26 @@ export type SchemaNodeLiteral = {
 }
 
 /**
- * Shape of literal node inside messages tree
- */
-export type MessagesNodeLiteral = {
-  type: 'literal',
-  messages: MessagesRulesMap,
-}
-
-/**
- * User defined schema
+ * Shape of the schema defined by the end user
  */
 export type Schema = {
   [field: string]: string | ParsedRule[],
 }
 
 /**
- * Parsed schema tree
+ * The shape of schema after parser parses it
  */
 export type ParsedSchema = {
   [field: string]: SchemaNodeArray | SchemaNodeLiteral | SchemaNodeObject,
 }
 
 /**
- * Shape of a single validation message
+ * Shape of a single validation message. The functions are evaluated at runtime
  */
 export type MessageNode = string | ((field: string, validation: string, args: any[]) => string)
 
 /**
- * Shape of user defined messages
+ * Shape of user defined messages schema
  */
 export type Messages = {
   [field: string]: MessageNode,
@@ -112,7 +92,7 @@ export type MessagesRulesMap = { [rule: string]: MessageNode }
  * Parsed messages tree
  */
 export type ParsedNamedMessages = {
-  [field: string]: MessagesNodeArray | MessagesNodeLiteral | MessagesNodeObject,
+  [field: string]: MessagesRulesMap,
 }
 
 /**

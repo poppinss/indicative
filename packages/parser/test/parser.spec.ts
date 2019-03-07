@@ -445,10 +445,7 @@ test.group('Parser | messages', () => {
       rules: {},
       named: {
         username: {
-          type: 'literal',
-          messages: {
-            required: 'Username is required',
-          },
+          required: 'Username is required',
         },
       },
     })
@@ -462,17 +459,8 @@ test.group('Parser | messages', () => {
     assert.deepEqual(output, {
       rules: {},
       named: {
-        username: {
-          type: 'object',
-          messages: {},
-          children: {
-            profile: {
-              type: 'literal',
-              messages: {
-                required: 'Profile is required',
-              },
-            },
-          },
+        'username.profile': {
+          required: 'Profile is required',
         },
       },
     })
@@ -488,18 +476,10 @@ test.group('Parser | messages', () => {
       rules: {},
       named: {
         username: {
-          type: 'object',
-          messages: {
-            required: 'Username is required',
-          },
-          children: {
-            profile: {
-              type: 'literal',
-              messages: {
-                required: 'Profile is required',
-              },
-            },
-          },
+          required: 'Username is required',
+        },
+        'username.profile': {
+          required: 'Profile is required',
         },
       },
     })
@@ -513,87 +493,8 @@ test.group('Parser | messages', () => {
     assert.deepEqual(output, {
       rules: {},
       named: {
-        users: {
-          type: 'array',
-          messages: {},
-          each: {
-            '*': {
-              messages: {},
-              children: {
-                username: {
-                  type: 'literal',
-                  messages: {
-                    required: 'Username is required',
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    })
-  })
-
-  test('parse messages for indexed arrays', (assert) => {
-    const output = messagesParser({
-      'users.0.username.required': 'Main username is required',
-      'users.*.username.required': 'Username is required',
-    })
-
-    assert.deepEqual(output, {
-      rules: {},
-      named: {
-        users: {
-          type: 'array',
-          messages: {},
-          each: {
-            '0': {
-              messages: {},
-              children: {
-                username: {
-                  type: 'literal',
-                  messages: {
-                    required: 'Main username is required',
-                  },
-                },
-              },
-            },
-            '*': {
-              messages: {},
-              children: {
-                username: {
-                  type: 'literal',
-                  messages: {
-                    required: 'Username is required',
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    })
-  })
-
-  test('parse messages array literals', (assert) => {
-    const output = messagesParser({
-      'users.*.min': 'Array must have one item',
-    })
-
-    assert.deepEqual(output, {
-      rules: {},
-      named: {
-        users: {
-          type: 'array',
-          messages: {},
-          each: {
-            '*': {
-              messages: {
-                min: 'Array must have one item',
-              },
-              children: {},
-            },
-          },
+        'users.*.username': {
+          required: 'Username is required',
         },
       },
     })
