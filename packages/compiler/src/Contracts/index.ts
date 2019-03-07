@@ -85,11 +85,18 @@ export interface IndicativeFormatter {
   toJSON (): unknown,
 }
 
+/**
+ * Message builder returns the messages for a tree node
+ */
 export interface MessageBuilderContract {
   getBucket (field: string, dotPath: string[]): MessageBucketContract
   child (dotPath: string[]): MessageBuilderContract
 }
 
+/**
+ * Messages bucket has all the rules messages for a given tree
+ * node
+ */
 export interface MessageBucketContract {
   get (rule: ParsedRule): MessageNode
 }

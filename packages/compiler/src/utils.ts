@@ -27,6 +27,20 @@ export function dotProp (value: any, paths: string[], pathsSize: number): any {
   return value
 }
 
+/**
+ * Returns default error message at runtime. Another way is to have seperate
+ * strings as default messages for each field and validation, but that
+ * can be memory expensive and hence a function is a safe choice
+ * here.
+*/
+export function defaultMessage (field, validation) {
+  return `${validation} validation failed on ${field}`
+}
+
+/**
+ * Adds error to the formatter by normalizing runtime
+ * values.
+ */
 export function addError (
   formatter: IndicativeFormatter,
   field: string,
@@ -38,14 +52,23 @@ export function addError (
   let fullPath: string = ''
   let compiledMessage: string | Error = ''
 
-  if (root.arrayIndexes && root.arrayPaths) {
-    fullPath = root.arrayPaths.map((p, i) => {
-      return (p as any).concat([root.arrayIndexes![i]]).join('.')
+  /**
+   * Build full path to the field inside the user data
+   * object. In case of `arrayIndexes` and `paths`, we
+   * need to build the path by looping over them
+   */
+  if (root.arrayPaths && root.arrayIndexes) {
+    fullPath = root.arrayPaths.map((path, index) => {
+      return (path as any).concat([root.arrayIndexes![index]]).join('.')
     }).concat(dotPath).concat(field).join('.')
   } else {
-    fullPath = `${dotPath.concat(field).join('.')}`
+    fullPath = dotPath.concat(field).join('.')
   }
 
+  /**
+   * If message is a function, then execute it, otherwise use
+   * the message considering it as a string
+   */
   if (typeof (message) === 'function') {
     compiledMessage = message(fullPath, rule.name, rule.args)
   } else {

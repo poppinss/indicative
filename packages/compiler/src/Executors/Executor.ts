@@ -12,10 +12,13 @@ import { ValidationFn, DataRoot, DataNode, IndicativeFormatter } from '../Contra
 import { dotProp, addError } from '../utils'
 
 /**
- * Executor job is to execute a single validation function on a given field.
- * The consumer of this class decides whether to use `async` or `sync`
- * validation methods, which actually depends upon the underlying
- * validation function.
+ * Executor executes a validation function for a given rule and field
+ * at a time. Most of the values are computed on compile time and
+ * `exec` or `execAsync` methods are called with runtime values.
+ *
+ * The `exec` and `execAsync` are two different functions, since we don't want
+ * to call non-async functions as `async`, since it drops the peformance of
+ * the code drastically.
  */
 export class Executor {
   /**
@@ -48,23 +51,16 @@ export class Executor {
   }
 
   /**
-   * Executes the validation asynchronously
+   * Handles the validation result and returns a boolean with the final
+   * status of the test. In case of error, formatter is notified about
+   * it.
    */
-  public async execAsync (data: DataNode, formatter: IndicativeFormatter, root: DataRoot): Promise<boolean> {
-    let passed: boolean = false
-    let hardError: string | Error | null = null
-
-    /**
-     * Trying running the function and ignore errors. If actual method
-     * fails, then value `passed` will false and hence we collect
-     * error for the field
-     */
-    try {
-      passed = await this._exec(data, root)
-    } catch (error) {
-      hardError = error
-    }
-
+  private _handleResult (
+    passed: boolean,
+    formatter: IndicativeFormatter,
+    root: DataRoot,
+    hardError?: string | Error,
+  ): boolean {
     /**
      * Add error if not passed
      */
@@ -76,11 +72,27 @@ export class Executor {
   }
 
   /**
+   * Executes the validation asynchronously
+   */
+  public async execAsync (data: DataNode, formatter: IndicativeFormatter, root: DataRoot): Promise<boolean> {
+    let passed: boolean = false
+    let hardError: string | Error
+
+    try {
+      passed = await this._exec(data, root)
+    } catch (error) {
+      hardError = error
+    }
+
+    return this._handleResult(passed, formatter, root, hardError!)
+  }
+
+  /**
    * Executes the validation synchronously
    */
   public exec (data: DataNode, formatter: IndicativeFormatter, root: DataRoot): boolean {
     let passed: boolean = false
-    let hardError: string | Error | null = null
+    let hardError: string | Error
 
     try {
       passed = this._exec(data, root)
@@ -88,13 +100,6 @@ export class Executor {
       hardError = error
     }
 
-    /**
-     * Add error when validation fails with exception or by return false
-     */
-    if (!passed) {
-      addError(formatter, this._field, this._rule, hardError || this._message, this._dotPath, root)
-    }
-
-    return !!passed
+    return this._handleResult(passed, formatter, root, hardError!)
   }
 }

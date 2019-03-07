@@ -21,7 +21,7 @@ import { IndicativeFormatter, VanillaErrorNode } from '../Contracts'
  * const formatter = new VanillaFormatter()
  *
  * // add error as -> error, field, validation
- * formatter.addError('error message', 'username', 'required')
+ * formatter.addError(error, fieldName, validation, args?)
  *
  * // get errors
  * formatter.toJSON()
@@ -30,6 +30,9 @@ import { IndicativeFormatter, VanillaErrorNode } from '../Contracts'
 export class VanillaFormatter implements IndicativeFormatter {
   public errors: VanillaErrorNode[] = []
 
+  /**
+   * Add a new error to the errors stack
+   */
   public addError (error: Error | string, field: string, validation: string, _args: any[]): void {
     let message: string = ''
 
@@ -43,6 +46,9 @@ export class VanillaFormatter implements IndicativeFormatter {
     this.errors.push({ message, field, validation })
   }
 
+  /**
+   * Returns an array of errors or null, when there are no errors
+   */
   public toJSON (): VanillaErrorNode[] | null {
     return this.errors.length ? this.errors : null
   }
