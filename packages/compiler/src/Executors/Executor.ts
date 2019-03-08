@@ -95,7 +95,7 @@ export class Executor {
     let hardError: string | Error
 
     try {
-      passed = this._exec(data, root)
+      passed = this._exec(data, root) as boolean
     } catch (error) {
       hardError = error
     }
