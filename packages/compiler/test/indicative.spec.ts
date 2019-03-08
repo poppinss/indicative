@@ -574,17 +574,4 @@ test.group('indicative | corrupt data', () => {
     await compiler(schema, validations, {})(data, formatter)
     assert.deepEqual(stack.stack, [])
   })
-
-  test.skip('do not run validations when no rules are defined', async (assert) => {
-    const stack = new Stack()
-    const formatter = new VanillaFormatter()
-    const schema = {
-      'username': '',
-    }
-
-    const validations = getAsyncValidations(['required'], stack.asyncFn.bind(stack))
-    const data = {}
-    await compiler(schema, validations, {})(data, formatter)
-    assert.deepEqual(stack.stack, [])
-  })
 })
