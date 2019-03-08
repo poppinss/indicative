@@ -61,7 +61,7 @@ exports.rules = {
   'ordered-imports': false,
   'object-literal-sort-keys': false,
   'member-access': [true],
-  'max-line-length': [true, 120],
+  'max-line-length': [true, { limit: 120, 'ignore-pattern': "^const\\s\\w+Regex\\s=" }],
   'variable-name': [
     true,
     'check-format',
