@@ -46,6 +46,7 @@ export type ValidationFn = ((
   args: any[],
   type: 'object' | 'literal' | 'array',
   root: DataRoot,
+  config: IndicativeCompilerConfig,
 ) => boolean | Promise<boolean>)
 
 /**
@@ -57,6 +58,11 @@ export type ValidationsNode = {
     async: boolean,
     fn: ValidationFn,
   },
+}
+
+export type IndicativeCompilerConfig = {
+  EXISTY_STRICT: boolean,
+  CAST_VALUES: boolean,
 }
 
 /**

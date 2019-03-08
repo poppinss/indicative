@@ -10,6 +10,7 @@
 import { ParsedRule, MessageNode } from 'indicative-parser'
 import { ValidationFn, DataRoot, DataNode, IndicativeFormatter } from '../Contracts'
 import { dotProp, addError } from '../utils'
+import { config } from '../config'
 
 /**
  * Executor executes a validation function for a given rule and field
@@ -47,7 +48,7 @@ export class Executor {
       return true
     }
 
-    return this._validationFn(node, this._field, this._rule.args, this._type, root)
+    return this._validationFn(node, this._field, this._rule.args, this._type, root, config)
   }
 
   /**

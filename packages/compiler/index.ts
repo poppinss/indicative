@@ -9,6 +9,7 @@
 
 export { compiler } from './src/compiler'
 export { VanillaFormatter } from './src/Formatters/VanillaFormatter'
+export { config as compilerConfig } from './src/config'
 
 export {
   DataNode,
