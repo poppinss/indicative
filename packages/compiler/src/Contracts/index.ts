@@ -46,7 +46,7 @@ export type ValidationFn = ((
   args: any[],
   type: 'object' | 'literal' | 'array',
   root: DataRoot,
-) => any | Promise<any>)
+) => boolean | Promise<boolean>)
 
 /**
  * Shape of collection of validations. Validation functions have

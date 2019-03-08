@@ -16,4 +16,5 @@ export {
   VanillaErrorNode,
   IndicativeFormatter,
   DataRoot,
+  ValidationFn,
 } from './src/contracts'
