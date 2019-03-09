@@ -26,11 +26,11 @@ import {
  * created automatically. Literal nodes can later transform into `object` and
  * `array` nodes.
  */
-function setLiteral (source: ParsedSchema, key: string, rhs: ParsedRule[]): SchemaNodeLiteral {
+function setLiteral (source: ParsedSchema, key: string, rules: ParsedRule[]): SchemaNodeLiteral {
   const item = (source[key] || { type: 'literal' }) as SchemaNodeLiteral
-  item.rules = rhs as ParsedRule[]
-
+  item.rules = rules
   source[key] = item
+
   return item
 }
 
@@ -247,12 +247,4 @@ export function messagesParser (schema: Messages): ParsedMessages {
 
       return result
     }, { named: {}, generic: {} })
-}
-
-/**
- * Returns parsed rule node. Helpful when rules cannot be defined as
- * string based expressions.
- */
-export function rule (name: string, args: any | any[]): ParsedRule {
-  return { name, args: Array.isArray(args) ? args : [args] }
 }
