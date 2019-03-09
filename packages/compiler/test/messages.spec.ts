@@ -8,7 +8,7 @@
  */
 
 import * as test from 'japa'
-import { compiler } from '../src/compiler'
+import { compile } from '../src/compiler'
 import { VanillaFormatter } from '../src/Formatters/VanillaFormatter'
 import { getValidations, validationThatFails } from './helpers'
 
@@ -17,16 +17,18 @@ test.group('messages', () => {
     assert.plan(1)
 
     const formatter = new VanillaFormatter()
-    const schema = { username: 'required' }
+    const schema = {
+      username: 'required',
+    }
+
     const messages = {
       'username.required': 'Username is required',
     }
+
     const validations = getValidations(['required'], validationThatFails)
 
-    const exec = compiler(schema, validations, messages)
-
     try {
-      await exec({}, formatter)
+      await compile(schema, validations, messages)({}, formatter, {})
     } catch (error) {
       assert.deepEqual(error, [{
         field: 'username',
@@ -44,11 +46,11 @@ test.group('messages', () => {
     const messages = {
       'profile.username.required': 'Username is required',
     }
+
     const validations = getValidations(['required'], validationThatFails)
 
-    const exec = compiler(schema, validations, messages)
     try {
-      await exec({ profile: {} }, formatter)
+      await compile(schema, validations, messages)({ profile: {} }, formatter, {})
     } catch (error) {
       assert.deepEqual(error, [{
         field: 'profile.username',
@@ -68,9 +70,8 @@ test.group('messages', () => {
     }
     const validations = getValidations(['required'], validationThatFails)
 
-    const exec = compiler(schema, validations, messages)
     try {
-      await exec({ profile: { social: {} } }, formatter)
+      await compile(schema, validations, messages)({ profile: { social: {} } }, formatter, {})
     } catch (error) {
       assert.deepEqual(error, [{
         field: 'profile.social.type',
@@ -90,9 +91,8 @@ test.group('messages', () => {
     }
     const validations = getValidations(['required'], validationThatFails)
 
-    const exec = compiler(schema, validations, messages)
     try {
-      await exec({ users: [{}] }, formatter)
+      await compile(schema, validations, messages)({ users: [{}] }, formatter, {})
     } catch (error) {
       assert.deepEqual(error, [{
         field: 'users.0.username',
@@ -112,9 +112,8 @@ test.group('messages', () => {
     }
     const validations = getValidations(['required'], validationThatFails)
 
-    const exec = compiler(schema, validations, messages)
     try {
-      await exec({ users: [{ profiles: [{}] }] }, formatter)
+      await compile(schema, validations, messages)({ users: [{ profiles: [{}] }] }, formatter, {})
     } catch (error) {
       assert.deepEqual(error, [{
         field: 'users.0.profiles.0.username',
@@ -134,9 +133,8 @@ test.group('messages', () => {
     }
     const validations = getValidations(['required'], validationThatFails)
 
-    const exec = compiler(schema, validations, messages)
     try {
-      await exec({ user: { profiles: [{}] } }, formatter)
+      await compile(schema, validations, messages)({ user: { profiles: [{}] } }, formatter, {})
     } catch (error) {
       assert.deepEqual(error, [{
         field: 'user.profiles.0.username',
@@ -158,9 +156,8 @@ test.group('messages', () => {
     }
     const validations = getValidations(['required'], validationThatFails)
 
-    const exec = compiler(schema, validations, messages)
     try {
-      await exec({ user: { profiles: [{}] } }, formatter)
+      await compile(schema, validations, messages)({ user: { profiles: [{}] } }, formatter, {})
     } catch (error) {
       assert.deepEqual(error, [{
         field: 'user.profiles.0.username',
@@ -184,9 +181,8 @@ test.group('messages', () => {
     }
     const validations = getValidations(['required'], validationThatFails)
 
-    const exec = compiler(schema, validations, messages)
     try {
-      await exec({ user: { profiles: [{}, {}] } }, formatter)
+      await compile(schema, validations, messages)({ user: { profiles: [{}, {}] } }, formatter, {}, false)
     } catch (error) {
       assert.deepEqual(error, [
         {
@@ -209,12 +205,10 @@ test.group('messages', () => {
     const formatter = new VanillaFormatter()
     const schema = { 'username': 'required' }
     const messages = {}
-
     const validations = getValidations(['required'], validationThatFails)
 
-    const exec = compiler(schema, validations, messages)
     try {
-      await exec({}, formatter)
+      await compile(schema, validations, messages)({}, formatter, {})
     } catch (error) {
       assert.deepEqual(error, [{
         field: 'username',
@@ -232,16 +226,13 @@ test.group('messages', () => {
       'users': 'required',
       'users.*.name': 'required',
     }
-
     const messages = {
       'users.required': 'Users must be an array',
     }
-
     const validations = getValidations(['required'], validationThatFails)
 
-    const exec = compiler(schema, validations, messages)
     try {
-      await exec({ users: {} }, formatter)
+      await compile(schema, validations, messages)({ users: {} }, formatter, {})
     } catch (error) {
       assert.deepEqual(error, [{
         field: 'users',
@@ -260,12 +251,10 @@ test.group('messages', () => {
       'user.username': 'required',
     }
     const messages = { 'user.required': 'Users object must be defined' }
-
     const validations = getValidations(['required'], validationThatFails)
 
-    const exec = compiler(schema, validations, messages)
     try {
-      await exec({ user: {} }, formatter)
+      await compile(schema, validations, messages)({ user: {} }, formatter, {}, false)
     } catch (error) {
       assert.deepEqual(error, [
         {
@@ -290,12 +279,10 @@ test.group('messages', () => {
       'users.*.username': 'required',
     }
     const messages = {}
-
     const validations = getValidations(['required'], validationThatFails)
 
-    const exec = compiler(schema, validations, messages)
     try {
-      await exec({ users: [{}] }, formatter)
+      await compile(schema, validations, messages)({ users: [{}] }, formatter, {})
     } catch (error) {
       assert.deepEqual(error, [
         {
@@ -315,12 +302,10 @@ test.group('messages', () => {
       'user': 'required',
     }
     const messages = { 'user.object': 'Users must be object' }
-
     const validations = getValidations(['required'], validationThatFails)
 
-    const exec = compiler(schema, validations, messages)
     try {
-      await exec({ user: {} }, formatter)
+      await compile(schema, validations, messages)({ user: {} }, formatter, {})
     } catch (error) {
       assert.deepEqual(error, [
         {

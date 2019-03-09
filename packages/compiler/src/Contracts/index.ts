@@ -46,7 +46,7 @@ export type ValidationFn = ((
   args: any[],
   type: 'object' | 'literal' | 'array',
   root: DataRoot,
-  config: IndicativeCompilerConfig,
+  config: unknown,
 ) => boolean | Promise<boolean>)
 
 /**
@@ -54,15 +54,16 @@ export type ValidationFn = ((
  * to upfront define if there are async or not
  */
 export type ValidationsNode = {
-  [field: string]: {
-    async: boolean,
-    fn: ValidationFn,
-  },
+  [field: string]: ValidationNode,
 }
 
-export type IndicativeCompilerConfig = {
-  EXISTY_STRICT: boolean,
-  CAST_VALUES: boolean,
+/**
+ * Shape of a single validation function
+ */
+export type ValidationNode = {
+  async: boolean,
+  compile?: (args: any[]) => any[],
+  validate: ValidationFn,
 }
 
 /**
@@ -71,7 +72,13 @@ export type IndicativeCompilerConfig = {
  */
 export type ExecutorFn = {
   async: boolean,
-  fn: ((data: any, formatter: IndicativeFormatter, root: DataRoot, bail: boolean) => Promise<boolean> | boolean),
+  fn: ((
+    data: any,
+    formatter: IndicativeFormatter,
+    root: DataRoot,
+    config: unknown,
+    bail: boolean,
+  ) => Promise<boolean> | boolean),
 }
 
 /**
@@ -127,3 +134,13 @@ export type SchemaExecutorFn = (
   dotPath: string[],
   message: MessageBucketContract,
 ) => ExecutorFn[]
+
+/**
+ * The compiler output function
+ */
+export type CompilerFn = (<T extends DataNode>(
+  data: T,
+  formatter: IndicativeFormatter,
+  config: unknown,
+  bail?: boolean,
+) => Promise<T>)
