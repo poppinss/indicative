@@ -11,7 +11,6 @@
 
 import * as test from 'japa'
 import { schemaParser as parse, messagesParser } from '../src/main'
-import { rule } from '../src/main'
 
 test.group('Parser | schema', () => {
   test('parse simple field rules', (assert) => {
@@ -30,9 +29,9 @@ test.group('Parser | schema', () => {
     })
   })
 
-  test('parse simple rules defined via rule method', (assert) => {
+  test('do not parse pre-parsed rules', (assert) => {
     const output = parse({
-      username: [rule('required', [])],
+      username: [{ name: 'required', args: [] }],
     })
 
     assert.deepEqual(output, {
@@ -46,9 +45,9 @@ test.group('Parser | schema', () => {
     })
   })
 
-  test('parse rule with single arg using rule method', (assert) => {
+  test('do not parse pre-parsed rules with args', (assert) => {
     const output = parse({
-      username: [rule('min', 10)],
+      username: [{ name: 'min', args: [10] }],
     })
 
     assert.deepEqual(output, {
@@ -84,11 +83,11 @@ test.group('Parser | schema', () => {
     })
   })
 
-  test('parse multiple rules using the rule method', (assert) => {
+  test('do not parse multiple pre-parsed rules', (assert) => {
     const output = parse({
       username: [
-        rule('required', []),
-        rule('range', ['10', '20']),
+        { name: 'required', args: [] },
+        { name: 'range', args: ['10', '20'] },
       ],
     })
 
