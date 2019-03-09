@@ -8,6 +8,8 @@
 */
 
 import { addMonths, addDays, addMilliseconds } from 'date-fns'
+import { config } from './config'
+import { existy } from './raw/existy'
 import { CalcKeys } from '../src/contracts'
 
 const viaMonths = {
@@ -29,7 +31,7 @@ const viaMilliseconds = {
 }
 
 export const skippable = (value: any): boolean => {
-  return value === undefined
+  return config.existyStrict ? value === undefined : !existy(value)
 }
 
 /**
@@ -54,3 +56,15 @@ export const calcUnits = (diffUnit: number | string, key: CalcKeys, operator: st
     )
   }
 }
+
+export const allowedCalcKeys = [
+  'years',
+  'quarters',
+  'months',
+  'weeks',
+  'days',
+  'hours',
+  'minutes',
+  'seconds',
+  'milliseconds',
+]

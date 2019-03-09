@@ -18,11 +18,11 @@ export type CalcKeys =
 | 'seconds'
 | 'milliseconds'
 
-export type ArgComparison = [ string | number ]
-export type ArgComparisonDate = [ Date | string | number ]
-export type ArgOffset = [ string | number, CalcKeys ]
-export type ArgMinMax = [ string | number, string | number ]
-export type ArgRegex = [ string | RegExp, string? ]
+export type ArgComparison = [number]
+export type ArgComparisonDate = [Date | string | number]
+export type ArgOffset = [number, CalcKeys]
+export type ArgMinMax = [string | number, string | number]
+export type ArgRegex = [RegExp]
 
 export type EmailValidationOptions = {
   allow_display_name: boolean,
@@ -31,4 +31,9 @@ export type EmailValidationOptions = {
   require_tld: boolean,
   allow_ip_domain: boolean,
   domain_specific_validation: boolean,
+}
+
+export type RulesConfig = {
+  existyStrict: boolean,
+  castValues: boolean,
 }

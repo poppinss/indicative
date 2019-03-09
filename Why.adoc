@@ -1,0 +1,202 @@
+= Why indicative
+
+You search for Node.js data validation libraries to validate user data usually submitted over HTTP using forms. The search ended up with some popular libraries like link:https://ajv.js.org/#getting-started[ajv] and link:https://github.com/hapijs/joi[joi] along with Indicative.
+
+This guide shares why Indicative may be a better fit for you in comparison to other alternatives.
+
+== Checklist
+Checklist isn't a great way to compare tools or products. The user productivity, personal taste and many other factors are often left out when doing point to point comparison. However, they can be helpful for simple things as shown below.
+
+|=======
+| Feature |Joi |Ajv |Indicative
+| Async validations | ❌ | ✅ | ✅
+| Speed | 3,00,000 ops/sec | 58,00,000 ops/sec | 29,00,000 ops/sec
+| Extensible | ✅ | ✅ | ✅
+|=======
+
+As you can see, there isn't much contrast between all libraries when doing a checklist based comparison. Let's quickly jump into detailed comparisons to understand how these libraries differ from each other.
+
+== Schema syntax
+Schema is a way to tell the validator about the shape of the incoming data and how you want the validator to validate it.
+
+We will use a bit complex schema, since real world applications isn't about validating just `username` and `password`.
+
+=== Data set
+Our users can tell us to transfer a message to different modes. A valid set of data looks as follows:
+
+[source, js]
+----
+const data = {
+  transfer: {
+    modes: [
+      {
+        mode: 'ftp',
+        url: 'ftp://ftp.xyz.com'
+      },
+      {
+        mode: 'email',
+        address: 'foo@bar.com'
+      }
+    ]
+  }
+}
+----
+
+1. The `transfer` key is required and must be an object.
+2. It must have one or more `modes`.
+3. The value of each `mode` inside `modes` must be one of `ftp,email`.
+4. If `mode=ftp`, then `url` is required
+5. If `mode=email`, then `address` is required
+
+=== Ajv
+Ajv uses link:https://json-schema.org/[json schema] to define validations. Let's see the schema syntax to validate the given data as per our requirements
+
+[source, js]
+----
+const schema = {
+  type: 'object',
+  required: ['transfer'],
+  properties: {
+    'transfer': {
+      required: ['modes'],
+      type: 'object',
+      properties: {
+        modes: {
+          type: 'array',
+          minItems: 1,
+          items: {
+            type: 'object',
+            required: ['mode'],
+            properties: {
+              mode: {
+                type: 'string',
+                enum: ['ftp', 'email']
+              },
+            },
+            allOf: [
+              {
+                if: {
+                  properties: {
+                    mode: {
+                      const: 'email'
+                    }
+                  }
+                },
+                then: {
+                  required: ['address']
+                }
+              },
+              {
+                if: {
+                  properties: {
+                    mode: {
+                      const: 'ftp'
+                    }
+                  }
+                },
+                then: {
+                  required: ['url']
+                }
+              }
+            ]
+          },
+        }
+      }
+    }
+  }
+}
+----
+
+=== Joi
+Joi use `types` based validation. Which means, each data type like `object`, `array`, `string` and so on has multiple chain methods to define validations.
+
+[source, js]
+----
+joi.object().required().keys({
+  transfer: joi.object().required().keys({
+    modes: joi.array().items(joi.object().keys({
+      mode: joi.string().required().allow(['ftp', 'email']),
+      address: joi.string().when('mode', { is: 'email', then: joi.required() }),
+      url: joi.string().when('mode', { is: 'ftp', then: joi.required() })
+    }))
+  })
+})
+----
+
+=== Indicative
+Indicative has `rules` based validations. Which means, the schema itself makes no assumptions on how to validate the user data, instead the rule decides that (this makes a big difference, we will learn later how).
+
+[source, js]
+----
+{
+  'transfer': 'required|array',
+  'transfer.modes': 'required|object',
+  'transfer.modes.*.mode': 'required|in:ftp,email'
+  'transfer.modes.*.url': 'requiredWhen:mode,ftp',
+  'transfer.modes.*.address': 'requiredWhen:mode,email'
+}
+----
+
+== Custom error messages
+The last thing you would want to display to your users is cryptographic error messages. It was a bummer to find that both with `joi` and `ajv`, you have to define error messages within the validation schema.
+
+=== ajv
+For custom error messages, you have to install an additional plugin and then define each level can define an object of `errorMessage`.
+
+[source, js]
+----
+const schema = {
+  type: 'object',
+  required: ['transfer'],
+  errorMessage: {
+    type: 'Transfer must be defined as object',
+    required: 'Make sure to define transfer reciepents'
+  },
+  properties: {
+    transfer: {
+      required: ['modes']
+    },
+    errorMessage: {
+      type: 'ERROR MESSAGE'
+    },
+  }
+}
+----
+
+=== joi
+Just like `ajv`, `joi` also let you define error messages within the schema.
+
+[source, js]
+----
+joi.object().required().error('ERROR MESSAGE').keys({
+  transfer: joi.object().required().error('ERROR MESSAGE').keys({
+    ...
+  })
+})
+----
+
+=== Indicative
+Indicative treats messages as a different top level option. The schema has to be same as the rules schema.
+
+[source, js]
+----
+const messages = {
+  'transfer.required': 'Make sure to define transfer reciepents',
+  'transfer.object': 'Transfers must be defined as an object',
+}
+
+// pass to indicative
+indicative.validate(schema, data, messages)
+----
+
+== Error formatters
+When writing API's, you may want to stick to a standard like link:https://jsonapi.org/[jsonapi] for defining the shape of responses. Unfortunately, `joi` and `ajv` both, doesn't have out of the box support for formatting error messages shape.
+
+Indicative has first class support for formatters and ships with `Vanilla` and `jsonapi` formatter.
+
+[source, js]
+----
+indicative.validate(schema, data, messages, {
+  formatter: indicative.formatters.jsonapi
+})
+----
