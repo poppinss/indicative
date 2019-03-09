@@ -16,23 +16,38 @@ import { ExecutorFn, IndicativeFormatter, DataNode } from '../Contracts'
 export class Runner {
   constructor (private _stack: ExecutorFn[]) {}
 
-  public async exec (data: DataNode, formatter: IndicativeFormatter, bail: boolean) {
+  /**
+   * Execute all executor functions by passing it the runtime `data`, along
+   * with errors formatter.
+   */
+  public async exec (data: DataNode, formatter: IndicativeFormatter, config: unknown, bail: boolean = true) {
     const root = { original: data }
 
     for (let executor of this._stack) {
       let passed = false
 
+      /**
+       * Based upon executor type, run the function as async or
+       * non-async
+       */
       if (executor.async) {
-        passed = await executor.fn(data, formatter, root, bail)
+        passed = await executor.fn(data, formatter, root, config, bail)
       } else {
-        passed = executor.fn(data, formatter, root, bail) as boolean
+        passed = executor.fn(data, formatter, root, config, bail) as boolean
       }
 
+      /**
+       * Break if `bail=true`
+       */
       if (bail && !passed) {
         break
       }
     }
 
+    /**
+     * Reject promise in case formatter has one
+     * or more errors.
+     */
     const errors = formatter.toJSON()
     if (errors) {
       throw errors

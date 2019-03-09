@@ -7,8 +7,8 @@
 * file that was distributed with this source code.
 */
 
-import { ExecutorFn, IndicativeFormatter, DataNode, DataRoot } from '../Contracts'
 import { dotProp } from '../utils'
+import { ExecutorFn, IndicativeFormatter, DataNode, DataRoot } from '../Contracts'
 
 /**
  * The size of arrays is unknown unless we get the real data from the users. This wrapper
@@ -75,6 +75,7 @@ export class ArrayWrapper {
   private _buildRoot (root: DataRoot, arrayNode: any[]): DataRoot {
     let arrayPaths = (root.arrayPaths || []).concat([this._dotPath])
     let arrayIndexes = root.arrayIndexes ? root.arrayIndexes : []
+
     return { arrayPaths, arrayIndexes, original: root.original, parentArray: arrayNode }
   }
 
@@ -113,9 +114,14 @@ export class ArrayWrapper {
     data: DataNode,
     formatter: IndicativeFormatter,
     root: DataRoot,
+    config: unknown,
     bail: boolean,
   ): Promise<boolean> {
     const loopData = this._getLoopData(data, root)
+
+    /**
+     * Pass validation when loop data is missing
+     */
     if (!loopData) {
       return true
     }
@@ -135,20 +141,16 @@ export class ArrayWrapper {
      */
     for (let item of loopData.loopItems) {
       for (let executor of this._executors) {
+        const updatedRoot = this._updateIndexes(loopData.rootElements, i)
         let passed = false
 
         /**
          * Running validation and finding it's status
          */
         if (executor.async) {
-          passed = await executor.fn(item, formatter, this._updateIndexes(loopData.rootElements, i), bail)
+          passed = await executor.fn(item, formatter, updatedRoot, config, bail)
         } else {
-          passed = executor.fn(
-            item,
-            formatter,
-            this._updateIndexes(loopData.rootElements, i),
-            bail,
-          ) as boolean
+          passed = executor.fn(item, formatter, updatedRoot, config, bail) as boolean
         }
 
         if (!passed) {
@@ -176,8 +178,18 @@ export class ArrayWrapper {
   /**
    * Executes validations synchronously
    */
-  public exec (data: DataNode, formatter: IndicativeFormatter, root: DataRoot, bail: boolean): boolean {
+  public exec (
+    data: DataNode,
+    formatter: IndicativeFormatter,
+    root: DataRoot,
+    config: unknown,
+    bail: boolean,
+  ): boolean {
     const loopData = this._getLoopData(data, root)
+
+    /**
+     * Pass validation when loop data is missing
+     */
     if (!loopData) {
       return true
     }
@@ -192,7 +204,8 @@ export class ArrayWrapper {
 
     for (let item of loopData.loopItems) {
       for (let executor of this._executors) {
-        const passed = executor.fn(item, formatter, this._updateIndexes(loopData.rootElements, i), bail)
+        const updatedRoot = this._updateIndexes(loopData.rootElements, i)
+        const passed = executor.fn(item, formatter, updatedRoot, config, bail)
 
         if (!passed) {
           didFailed = true

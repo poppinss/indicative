@@ -39,14 +39,14 @@ export class Stack {
 
 export function getValidations (list: string[], fn: any) {
   return list.reduce((result, item) => {
-    result[item] = { async: false, fn }
+    result[item] = { async: false, validate: fn }
     return result
   }, {})
 }
 
 export function getAsyncValidations (list: string[], fn: any) {
   return list.reduce((result, item) => {
-    result[item] = { async: true, fn }
+    result[item] = { async: true, validate: fn }
     return result
   }, {})
 }

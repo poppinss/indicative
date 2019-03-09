@@ -7,9 +7,8 @@
 * file that was distributed with this source code.
 */
 
-export { compiler } from './src/compiler'
+export { compile } from './src/compiler'
 export { VanillaFormatter } from './src/Formatters/VanillaFormatter'
-export { config as compilerConfig } from './src/config'
 
 export {
   DataNode,
@@ -18,4 +17,6 @@ export {
   IndicativeFormatter,
   DataRoot,
   ValidationFn,
+  ValidationNode,
+  ValidationsNode,
 } from './src/contracts'

@@ -8,8 +8,9 @@
  */
 
 import * as test from 'japa'
-import { compiler } from '../src/compiler'
+import { compile } from '../src/compiler'
 import { VanillaFormatter } from '../src/Formatters/VanillaFormatter'
+
 import {
   Stack,
   getValidations,
@@ -35,7 +36,7 @@ test.group('indicative | bail:true', () => {
     }
 
     try {
-      await compiler(schema, validations, messages)({ username: '11h' }, formatter, true)
+      await compile(schema, validations, messages)({ username: '11h' }, formatter, {}, true)
     } catch (errors) {
       assert.deepEqual(errors, [{
         field: 'username',
@@ -64,7 +65,7 @@ test.group('indicative | bail:true', () => {
     }
 
     try {
-      await compiler(schema, validations, messages)({ username: '11h' }, formatter, true)
+      await compile(schema, validations, messages)({ username: '11h' }, formatter, {}, true)
     } catch (errors) {
       assert.deepEqual(errors, [{
         field: 'age',
@@ -93,7 +94,7 @@ test.group('indicative | bail:true', () => {
     }
 
     try {
-      await compiler(schema, validations, messages)({ username: '11h' }, formatter, true)
+      await compile(schema, validations, messages)({ username: '11h' }, formatter, {}, true)
     } catch (errors) {
       assert.deepEqual(errors, [{
         field: 'age',
@@ -118,7 +119,7 @@ test.group('indicative | bail:true', () => {
     }
 
     try {
-      await compiler(schema, validations, messages)({ users: [{}, {}] }, formatter, true)
+      await compile(schema, validations, messages)({ users: [{}, {}] }, formatter, {}, true)
     } catch (errors) {
       assert.deepEqual(errors, [{
         field: 'users.0.username',
@@ -141,9 +142,9 @@ test.group('indicative | bail:true', () => {
     }
 
     try {
-      await compiler(schema, validations, messages)({
+      await compile(schema, validations, messages)({
         users: [{ profiles: [{}, { profiles: {} }],
-      }] }, formatter, true)
+      }] }, formatter, {}, true)
     } catch (errors) {
       assert.deepEqual(errors, [{
         field: 'users.0.profiles.0.username',
@@ -166,7 +167,7 @@ test.group('indicative | bail:true', () => {
     }
 
     try {
-      await compiler(schema, validations, messages)({ users: [{}, {}] }, formatter, true)
+      await compile(schema, validations, messages)({ users: [{}, {}] }, formatter, {}, true)
     } catch (errors) {
       assert.deepEqual(errors, [{
         field: 'users.0.username',
@@ -195,7 +196,7 @@ test.group('indicative | bail:false', () => {
     }
 
     try {
-      await compiler(schema, validations, messages)(data, formatter, false)
+      await compile(schema, validations, messages)(data, formatter, {}, false)
     } catch (errors) {
       assert.deepEqual(errors, [{
         field: 'username',
@@ -233,7 +234,7 @@ test.group('indicative | bail:false', () => {
     }
 
     try {
-      await compiler(schema, validations, messages)(data, formatter, false)
+      await compile(schema, validations, messages)(data, formatter, {}, false)
     } catch (errors) {
       assert.deepEqual(errors, [{
         field: 'age',
@@ -266,7 +267,7 @@ test.group('indicative | bail:false', () => {
     }
 
     try {
-      await compiler(schema, validations, messages)({ users: [{}, {}] }, formatter, false)
+      await compile(schema, validations, messages)({ users: [{}, {}] }, formatter, {}, false)
     } catch (errors) {
       assert.deepEqual(errors, [
         {
@@ -296,9 +297,9 @@ test.group('indicative | bail:false', () => {
     }
 
     try {
-      await compiler(schema, validations, messages)({
+      await compile(schema, validations, messages)({
         users: [{ profiles: [{}, { profiles: {} }],
-      }] }, formatter, false)
+      }] }, formatter, {}, false)
     } catch (errors) {
       assert.deepEqual(errors, [
         {
@@ -328,7 +329,7 @@ test.group('indicative | bail:false', () => {
     }
 
     try {
-      await compiler(schema, validations, messages)({ users: [{}, {}] }, formatter, false)
+      await compile(schema, validations, messages)({ users: [{}, {}] }, formatter, {}, false)
     } catch (errors) {
       assert.deepEqual(errors, [
         {
@@ -363,7 +364,7 @@ test.group('indicative | async', () => {
       }],
     }
 
-    await compiler(schema, validations, {})(data, formatter)
+    await compile(schema, validations, {})(data, formatter, {})
 
     assert.deepEqual(stack.stack, [
       {
@@ -435,7 +436,7 @@ test.group('indicative | async', () => {
     const data = { username: 'virk' }
 
     try {
-      await compiler(schema, validations, {})(data, formatter)
+      await compile(schema, validations, {})(data, formatter, {})
     } catch (errors) {
       assert.deepEqual(errors, [{
         field: 'username',
@@ -457,7 +458,7 @@ test.group('indicative | async', () => {
     const data = { username: 'virk' }
 
     try {
-      await compiler(schema, validations, {})(data, formatter)
+      await compile(schema, validations, {})(data, formatter, {})
     } catch (errors) {
       assert.deepEqual(errors, [{
         field: 'username',
@@ -479,7 +480,7 @@ test.group('indicative | async', () => {
     const validations = { ...required, ...alpha }
 
     const data = { username: 'virk' }
-    await compiler(schema, validations, {})(data, formatter)
+    await compile(schema, validations, {})(data, formatter, {})
 
     assert.deepEqual(stack.stack, [
       {
@@ -515,7 +516,7 @@ test.group('indicative | async', () => {
     const validations = { ...required, ...alpha }
 
     const data = { users: [{}] }
-    await compiler(schema, validations, {})(data, formatter)
+    await compile(schema, validations, {})(data, formatter, {})
 
     assert.deepEqual(stack.stack, [
       {
@@ -557,7 +558,7 @@ test.group('indicative | corrupt data', () => {
     const validations = getAsyncValidations(['required'], stack.asyncFn.bind(stack))
     const data = { users: 'virk' }
 
-    await compiler(schema, validations, {})(data, formatter)
+    await compile(schema, validations, {})(data, formatter, {})
     assert.deepEqual(stack.stack, [])
   })
 
@@ -571,7 +572,7 @@ test.group('indicative | corrupt data', () => {
     const validations = getAsyncValidations(['required'], stack.asyncFn.bind(stack))
 
     const data = { users: [{}, {}] }
-    await compiler(schema, validations, {})(data, formatter)
+    await compile(schema, validations, {})(data, formatter, {})
     assert.deepEqual(stack.stack, [])
   })
 })

@@ -7,15 +7,14 @@
 * file that was distributed with this source code.
 */
 
+import { dotProp, addError } from '../utils'
 import { ParsedRule, MessageNode } from 'indicative-parser'
 import { ValidationFn, DataRoot, DataNode, IndicativeFormatter } from '../Contracts'
-import { dotProp, addError } from '../utils'
-import { config } from '../config'
 
 /**
  * Executor executes a validation function for a given rule and field
- * at a time. Most of the values are computed on compile time and
- * `exec` or `execAsync` methods are called with runtime values.
+ * at a time. All of the work is done at compile time and `exec` or
+ * `execAsync` methods are called with runtime values.
  *
  * The `exec` and `execAsync` are two different functions, since we don't want
  * to call non-async functions as `async`, since it drops the peformance of
@@ -42,13 +41,17 @@ export class Executor {
    * top level value is an object, otherwise validation is
    * skipped
    */
-  private _exec (data: DataNode, root: DataRoot) {
-    const node = dotProp(data, this._dotPath, this._dotPathLength)
-    if (!node || typeof (node) !== 'object' || node.constructor !== Object) {
+  private _exec (data: DataNode, root: DataRoot, config: unknown) {
+    const dataNode = dotProp(data, this._dotPath, this._dotPathLength)
+
+    /**
+     * Ignore validation when top level data node is not an object.
+     */
+    if (!dataNode || typeof (dataNode) !== 'object' || dataNode.constructor !== Object) {
       return true
     }
 
-    return this._validationFn(node, this._field, this._rule.args, this._type, root, config)
+    return this._validationFn(dataNode, this._field, this._rule.args, this._type, root, config)
   }
 
   /**
@@ -75,12 +78,17 @@ export class Executor {
   /**
    * Executes the validation asynchronously
    */
-  public async execAsync (data: DataNode, formatter: IndicativeFormatter, root: DataRoot): Promise<boolean> {
+  public async execAsync (
+    data: DataNode,
+    formatter: IndicativeFormatter,
+    root: DataRoot,
+    config: unknown,
+  ): Promise<boolean> {
     let passed: boolean = false
     let hardError: string | Error
 
     try {
-      passed = await this._exec(data, root)
+      passed = await this._exec(data, root, config)
     } catch (error) {
       hardError = error
     }
@@ -91,12 +99,17 @@ export class Executor {
   /**
    * Executes the validation synchronously
    */
-  public exec (data: DataNode, formatter: IndicativeFormatter, root: DataRoot): boolean {
+  public exec (
+    data: DataNode,
+    formatter: IndicativeFormatter,
+    root: DataRoot,
+    config: unknown,
+  ): boolean {
     let passed: boolean = false
     let hardError: string | Error
 
     try {
-      passed = this._exec(data, root) as boolean
+      passed = this._exec(data, root, config) as boolean
     } catch (error) {
       hardError = error
     }

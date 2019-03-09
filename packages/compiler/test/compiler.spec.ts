@@ -8,7 +8,7 @@
 */
 
 import * as test from 'japa'
-import { compiler } from '../src/compiler'
+import { compile } from '../src/compiler'
 import { VanillaFormatter } from '../src/Formatters/VanillaFormatter'
 import { Stack, getValidations, validationThatFails } from './helpers'
 
@@ -20,7 +20,7 @@ test.group('compiler', () => {
     const schema = { username: 'required' }
     const validations = getValidations(['required'], stack.fn.bind(stack))
 
-    await compiler(schema, validations, {})({}, formatter)
+    await compile(schema, validations, {})({}, formatter, {})
     assert.deepEqual(stack.stack, [{
       data: {},
       field: 'username',
@@ -38,7 +38,7 @@ test.group('compiler', () => {
     }
     const validations = getValidations(['required'], stack.fn.bind(stack))
 
-    await compiler(schema, validations, {})({ profile: {} }, formatter)
+    await compile(schema, validations, {})({ profile: {} }, formatter, {})
     assert.deepEqual(stack.stack, [{
       data: {},
       field: 'username',
@@ -57,7 +57,7 @@ test.group('compiler', () => {
     }
     const validations = getValidations(['required'], stack.fn.bind(stack))
 
-    await compiler(schema, validations, {})({ profile: { social: {} } }, formatter)
+    await compile(schema, validations, {})({ profile: { social: {} } }, formatter, {})
     assert.deepEqual(stack.stack, [
       {
         data: { social: {} },
@@ -85,7 +85,7 @@ test.group('compiler', () => {
     }
     const validations = getValidations(['required'], stack.fn.bind(stack))
 
-    await compiler(schema, validations, {})({ profile: {} }, formatter)
+    await compile(schema, validations, {})({ profile: {} }, formatter, {})
     assert.deepEqual(stack.stack, [{
       data: {},
       field: 'social',
@@ -104,7 +104,7 @@ test.group('compiler', () => {
     }
 
     const validations = getValidations(['required'], stack.fn.bind(stack))
-    await compiler(schema, validations, {})({}, formatter)
+    await compile(schema, validations, {})({}, formatter, {})
     assert.deepEqual(stack.stack, [])
   })
 
@@ -117,11 +117,11 @@ test.group('compiler', () => {
     }
 
     const validations = getValidations(['required'], stack.fn.bind(stack))
-    await compiler(schema, validations, {})({
+    await compile(schema, validations, {})({
       users: [{
         profile: {},
       }],
-    }, formatter)
+    }, formatter, {})
 
     assert.deepEqual(stack.stack, [
       {
@@ -159,7 +159,7 @@ test.group('compiler', () => {
     }
 
     const validations = getValidations(['required'], stack.fn.bind(stack))
-    await compiler(schema, validations, {})({ users: [{}] }, formatter)
+    await compile(schema, validations, {})({ users: [{}] }, formatter, {})
 
     assert.deepEqual(stack.stack, [{
       data: {},
@@ -189,7 +189,7 @@ test.group('compiler', () => {
       }],
     }
 
-    await compiler(schema, validations, {})(data, formatter)
+    await compile(schema, validations, {})(data, formatter, {})
     assert.deepEqual(stack.stack, [{
       data: {},
       field: 'username',
@@ -218,7 +218,7 @@ test.group('compiler', () => {
       },
     }
 
-    await compiler(schema, validations, {})(data, formatter)
+    await compile(schema, validations, {})(data, formatter, {})
     assert.deepEqual(stack.stack, [{
       data: {},
       field: 'username',
@@ -250,7 +250,7 @@ test.group('compiler', () => {
       }],
     }
 
-    await compiler(schema, validations, {})(data, formatter)
+    await compile(schema, validations, {})(data, formatter, {})
     assert.deepEqual(stack.stack, [{
       data: {},
       field: 'username',
@@ -283,7 +283,7 @@ test.group('compiler', () => {
       }],
     }
 
-    await compiler(schema, validations, {})(data, formatter)
+    await compile(schema, validations, {})(data, formatter, {})
     assert.deepEqual(stack.stack, [
       {
         data: {},
@@ -336,7 +336,7 @@ test.group('compiler', () => {
       users: 'hello',
     }
 
-    await compiler(schema, validations, {})(data, formatter)
+    await compile(schema, validations, {})(data, formatter, {})
     assert.deepEqual(stack.stack, [])
   })
 
@@ -349,10 +349,9 @@ test.group('compiler', () => {
 
     const validations = getValidations(['required'], validationThatFails)
     const messages = { 'users.*.username.required': 'username is required' }
-    const exec = compiler(schema, validations, messages)
 
     try {
-      await exec({ users: [{}] }, formatter)
+      await compile(schema, validations, messages)({ users: [{}] }, formatter, {})
     } catch (error) {
       assert.deepEqual(error, [{
         message: 'username is required',
@@ -372,7 +371,7 @@ test.group('compiler', () => {
 
     const validations = getValidations(['required', 'array'], stack.fn.bind(stack))
     const data = { users: [{}] }
-    await compiler(schema, validations, {})(data, formatter)
+    await compile(schema, validations, {})(data, formatter, {})
 
     assert.deepEqual(stack.stack, [
       {
@@ -424,7 +423,7 @@ test.group('compiler', () => {
       }],
     }
 
-    await compiler(schema, validations, {})(data, formatter)
+    await compile(schema, validations, {})(data, formatter, {})
 
     assert.deepEqual(stack.stack, [
       {
@@ -482,5 +481,54 @@ test.group('compiler', () => {
         },
       },
     ])
+  })
+
+  test('call validation compile method when exists', async (assert) => {
+    assert.plan(1)
+    const formatter = new VanillaFormatter()
+
+    const schema = { username: 'min:18' }
+    const validations = {
+      min: {
+        async: false,
+        compile (args: any[]): any[] {
+          assert.deepEqual(args, ['18'])
+          return args
+        },
+        validate (): boolean {
+          return true
+        },
+      },
+    }
+
+    await compile(schema, validations, {})({}, formatter, {})
+  })
+
+  test('use return output of compile function as args', async (assert) => {
+    const stack: any[] = []
+    const formatter = new VanillaFormatter()
+
+    const schema = { username: 'min:18' }
+    const validations = {
+      min: {
+        async: false,
+        compile (args: any[]): any[] {
+          return [Number(args[0])]
+        },
+        validate (data, field, args, type, root): boolean {
+          stack.push({ data, field, args, type, root })
+          return true
+        },
+      },
+    }
+
+    await compile(schema, validations, {})({}, formatter, {})
+    assert.deepEqual(stack, [{
+      data: {},
+      field: 'username',
+      args: [18],
+      type: 'literal',
+      root: { original: {} },
+    }])
   })
 })

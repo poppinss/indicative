@@ -8,9 +8,9 @@
  */
 
 import { pope } from 'pope'
-import { ParsedMessages, MessagesRulesMap, ParsedRule, MessageNode } from 'indicative-parser'
-import { MessageBucketContract, MessageBuilderContract } from '../contracts'
 import { defaultMessage } from '../utils'
+import { MessageBucketContract, MessageBuilderContract } from '../contracts'
+import { ParsedMessages, MessagesRulesMap, ParsedRule, MessageNode } from 'indicative-parser'
 
 /**
  * Message bucket stores a list of messages for a given field

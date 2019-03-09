@@ -8,8 +8,8 @@
 */
 
 import { Runner } from './Runner'
-import { MessageBuilder } from './MessageBuilder'
 import { Executor } from './Executors/Executor'
+import { MessageBuilder } from './MessageBuilder'
 import { ArrayWrapper } from './Executors/ArrayWrapper'
 
 import {
@@ -30,8 +30,9 @@ import {
   ValidationsNode,
   ExecutorFn,
   SchemaExecutorFn,
-  ValidationFn,
   MessageBuilderContract,
+  CompilerFn,
+  ValidationNode,
 } from './contracts'
 
 /**
@@ -85,14 +86,21 @@ function arrayExecutor (executors: ExecutorFn[], dotPath: string[], index: strin
  *    top level object for being required.
  */
 function getExecutorForRule (
-  validationFn: { async: boolean, fn: ValidationFn },
+  validationFn: ValidationNode,
   rule: ParsedRule,
   field: string,
   dotPath: string[],
   type: 'literal' | 'object' | 'array',
   message: MessageNode,
 ): ExecutorFn {
-  const executorInstance = new Executor(validationFn.fn, message, rule, field, dotPath, type)
+  /**
+   * Compile args when validation has a `compile` method
+   */
+  if (typeof (validationFn.compile) === 'function') {
+    rule.args = validationFn.compile(rule.args)
+  }
+
+  const executorInstance = new Executor(validationFn.validate, message, rule, field, dotPath, type)
 
   if (validationFn.async) {
     return {
@@ -261,7 +269,7 @@ function schemaCompiler (
  * Compiles user defined schema along with messages and validations to an executable
  * function highly optimized for speed.
  */
-export function compiler (schema: Schema, validations: ValidationsNode, messages: Messages) {
+export function compile (schema: Schema, validations: ValidationsNode, messages: Messages): CompilerFn {
   let parsedSchema: ParsedSchema | null = schemaParser(schema)
   let parsedMessages: ParsedMessages | null = messagesParser(messages)
   const builder = new MessageBuilder(parsedMessages)
