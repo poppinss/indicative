@@ -8,8 +8,8 @@
  */
 
 import * as test from 'japa'
-import { compile } from '../src/compiler'
-import { VanillaFormatter } from '../src/Formatters/VanillaFormatter'
+import { compileValidationsSchema as compile } from '../src/compiler'
+import { VanillaFormatter } from './helpers'
 
 import {
   Stack,

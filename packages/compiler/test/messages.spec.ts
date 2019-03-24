@@ -8,9 +8,8 @@
  */
 
 import * as test from 'japa'
-import { compile } from '../src/compiler'
-import { VanillaFormatter } from '../src/Formatters/VanillaFormatter'
-import { getValidations, validationThatFails } from './helpers'
+import { compileValidationsSchema as compile } from '../src/compiler'
+import { getValidations, validationThatFails, VanillaFormatter } from './helpers'
 
 test.group('messages', () => {
   test('define custom messages for literals', async (assert) => {

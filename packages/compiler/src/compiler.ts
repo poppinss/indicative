@@ -7,9 +7,9 @@
 * file that was distributed with this source code.
 */
 
-import { Runner } from './Runner'
+import { ValidationRunner } from './Runner/ValidationRunner'
+import { MessagesStore } from './MessagesStore'
 import { Executor } from './Executors/Executor'
-import { MessageBuilder } from './MessageBuilder'
 import { ArrayWrapper } from './Executors/ArrayWrapper'
 
 import {
@@ -18,7 +18,7 @@ import {
   SchemaNodeArray,
   ParsedSchema,
   ParsedRule,
-  MessageNode,
+  Message,
   Schema,
   Messages,
   ParsedMessages,
@@ -27,13 +27,13 @@ import {
 } from 'indicative-parser'
 
 import {
-  ValidationsNode,
-  ExecutorFn,
-  SchemaExecutorFn,
-  MessageBuilderContract,
-  CompilerFn,
-  ValidationNode,
-} from './contracts'
+  Validations,
+  ExecutorFunction,
+  SchemaNodeConsumer,
+  MessagesStoreContract,
+  ValidationRunnerFunction,
+  Validation,
+} from './Contracts'
 
 /**
  * Since the length of an array is not known at compile time. We need to wrap all executor functions
@@ -52,9 +52,13 @@ import {
  * 3. If index is know, for example: `{ 'users.0.username': 'required|unique' }`. Then, instead
  *    of looping, we just run validations for that index.
  */
-function arrayExecutor (executors: ExecutorFn[], dotPath: string[], index: string): ExecutorFn {
-  const instance = new ArrayWrapper(executors, dotPath, index)
-  const hasAsync = executors.find((e) => e.async)
+function getExecutorForArray (
+  childExecutors: ExecutorFunction[],
+  dotPath: string[],
+  index: string,
+): ExecutorFunction {
+  const instance = new ArrayWrapper(childExecutors, dotPath, index)
+  const hasAsync = childExecutors.find((e) => e.async)
 
   return hasAsync ? {
     async: true,
@@ -85,14 +89,14 @@ function arrayExecutor (executors: ExecutorFn[], dotPath: string[], index: strin
  * 4. To ensure that top level value is an object, we suggest putting validation
  *    top level object for being required.
  */
-function getExecutorForRule (
-  validationFn: ValidationNode,
+function getExecutorForLiteral (
+  validationFn: Validation,
   rule: ParsedRule,
   field: string,
   dotPath: string[],
   type: 'literal' | 'object' | 'array',
-  message: MessageNode,
-): ExecutorFn {
+  message: Message,
+): ExecutorFunction {
   /**
    * Compile args when validation has a `compile` method
    */
@@ -121,16 +125,22 @@ function getExecutorForRule (
  *
  * Dot path is computed on the basis of the schema tree.
  */
-const getLiteralExecutors: SchemaExecutorFn = (
+const literalNodeConsumer: SchemaNodeConsumer = (
   node: SchemaNodeLiteral,
   validations,
-  _builder,
+  store,
   field,
   dotPath,
-  messages,
 ) => {
   return node.rules.map((rule) => {
-    return getExecutorForRule(validations[rule.name], rule, field, dotPath, 'literal', messages.get(rule))
+    return getExecutorForLiteral(
+      validations[rule.name],
+      rule,
+      field,
+      dotPath,
+      'literal',
+      store.getMessageFor(field, rule),
+    )
   })
 }
 
@@ -138,15 +148,14 @@ const getLiteralExecutors: SchemaExecutorFn = (
  * Returns an array of executors for `object` type node. A flat array is created
  * for the actual object and it's children (if any).
  */
-const getObjectExecutors: SchemaExecutorFn = (
+const objectNodeConsumer: SchemaNodeConsumer = (
   node: SchemaNodeObject,
   validations,
-  builder,
+  store,
   field,
   dotPath,
-  messages,
 ) => {
-  let executors: ExecutorFn[] = []
+  let executors: ExecutorFunction[] = []
 
   /**
    * If there are rules on the actual object, then build executors for
@@ -154,21 +163,24 @@ const getObjectExecutors: SchemaExecutorFn = (
    */
   if (node.rules.length) {
     executors = node.rules.map((rule) => {
-      return getExecutorForRule(validations[rule.name], rule, field, dotPath, 'object', messages.get(rule))
+      return getExecutorForLiteral(
+        validations[rule.name],
+        rule,
+        field,
+        dotPath,
+        'object',
+        store.getMessageFor(field, rule),
+      )
     })
   }
 
-  /**
-   * Increment dotPath and push the current object key, so that children
-   * are dependent on sub object and not root object.
-   */
   dotPath = dotPath.concat(field)
 
   /**
    * Compile executors for children inside the object and concat them to the original
    * list of executors.
    */
-  const childExecutors = schemaCompiler(node.children, validations, builder, dotPath)
+  const childExecutors = schemaCompiler(node.children, validations, store.getChildStore([field]), dotPath)
   executors = executors.concat(childExecutors)
   return executors
 }
@@ -177,22 +189,28 @@ const getObjectExecutors: SchemaExecutorFn = (
  * Returns an array of executor functions for validating the top leve array (if rules defined)
  * along with wrapped validators for each node inside the array.
  */
-const getArrayExecutors: SchemaExecutorFn = (
+const arrayNodeConsumer: SchemaNodeConsumer = (
   node: SchemaNodeArray,
   validations,
-  builder,
+  store,
   field,
   dotPath,
-  messages,
 ) => {
-  let executors: ExecutorFn[] = []
+  let executors: ExecutorFunction[] = []
 
   /**
    * Compile executors for the validations on the actual array node.
    */
   if (node.rules.length) {
     executors = node.rules.map((rule) => {
-      return getExecutorForRule(validations[rule.name], rule, field, dotPath, 'array', messages.get(rule))
+      return getExecutorForLiteral(
+        validations[rule.name],
+        rule,
+        field,
+        dotPath,
+        'array',
+        store.getMessageFor(field, rule),
+      )
     })
   }
 
@@ -211,7 +229,7 @@ const getArrayExecutors: SchemaExecutorFn = (
    * inside a waterfall.
    */
   const wrappedExecutors = Object.keys(node.each)
-    .reduce((result: ExecutorFn[], schemaIndex: string) => {
+    .reduce((result: ExecutorFunction[], schemaIndex: string) => {
       /**
        * Since shape of children is known at compile time, we build
        * an array of executors for them and wrap them inside a
@@ -221,11 +239,11 @@ const getArrayExecutors: SchemaExecutorFn = (
       const eachExecutors = schemaCompiler(
         node.each[schemaIndex].children,
         validations,
-        builder.child(dotPath.concat(schemaIndex)),
+        store.getChildStore([field].concat(schemaIndex)),
         [],
       )
 
-      result.push(arrayExecutor(eachExecutors, dotPath, schemaIndex))
+      result.push(getExecutorForArray(eachExecutors, dotPath, schemaIndex))
       return result
     }, [])
 
@@ -239,26 +257,31 @@ const getArrayExecutors: SchemaExecutorFn = (
  */
 function schemaCompiler (
   tree: ParsedSchema,
-  validations: ValidationsNode,
-  builder: MessageBuilderContract,
+  validations: Validations,
+  store: MessagesStoreContract,
   nodePath: string[] = [],
-): ExecutorFn[] {
+): ExecutorFunction[] {
   return Object
     .keys(tree)
-    .reduce((result: ExecutorFn[], field: string) => {
+    .reduce((result: ExecutorFunction[], field: string) => {
       const node = tree[field]
-      const nodeMessage = builder.getBucket(field, nodePath)
 
       if (node.type === 'literal') {
-        result = result.concat(getLiteralExecutors(node, validations, builder, field, nodePath, nodeMessage))
+        result = result.concat(
+          literalNodeConsumer(node, validations, store, field, nodePath),
+        )
       }
 
       if (node.type === 'object') {
-        result = result.concat(getObjectExecutors(node, validations, builder, field, nodePath, nodeMessage))
+        result = result.concat(
+          objectNodeConsumer(node, validations, store, field, nodePath),
+        )
       }
 
       if (node.type === 'array') {
-        result = result.concat(getArrayExecutors(node, validations, builder, field, nodePath, nodeMessage))
+        result = result.concat(
+          arrayNodeConsumer(node, validations, store, field, nodePath),
+        )
       }
 
       return result
@@ -269,13 +292,18 @@ function schemaCompiler (
  * Compiles user defined schema along with messages and validations to an executable
  * function highly optimized for speed.
  */
-export function compile (schema: Schema, validations: ValidationsNode, messages: Messages): CompilerFn {
+export function compileValidationsSchema (
+  schema: Schema,
+  validations: Validations,
+  messages: Messages,
+): ValidationRunnerFunction {
   let parsedSchema: ParsedSchema | null = rulesParser(schema)
   let parsedMessages: ParsedMessages | null = messagesParser(messages)
-  const builder = new MessageBuilder(parsedMessages)
 
-  const executors = schemaCompiler(parsedSchema, validations, builder)
-  const runner = new Runner(executors)
+  const store = new MessagesStore(parsedMessages.fields, parsedMessages.rules)
+
+  const executors = schemaCompiler(parsedSchema, validations, store)
+  const runner = new ValidationRunner(executors)
 
   /**
    * Cleanup memory

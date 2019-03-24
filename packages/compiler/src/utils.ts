@@ -7,8 +7,8 @@
 * file that was distributed with this source code.
 */
 
-import { DataRoot, IndicativeFormatter } from './Contracts'
-import { MessageNode, ParsedRule } from 'indicative-parser'
+import { DataRoot, FormatterContract } from './Contracts'
+import { Message, ParsedRule } from 'indicative-parser'
 
 /**
  * Returns nested value from an object based on nested paths. The `pathsSize`
@@ -42,10 +42,10 @@ export function defaultMessage (field, validation) {
  * values.
  */
 export function addError (
-  formatter: IndicativeFormatter,
+  formatter: FormatterContract,
   field: string,
   rule: ParsedRule,
-  message: MessageNode | Error,
+  message: Message | Error,
   dotPath: string[],
   root: DataRoot,
 ): void {
