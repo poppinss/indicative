@@ -19,4 +19,4 @@ export {
   ValidationFn,
   ValidationNode,
   ValidationsNode,
-} from './src/contracts'
+} from './src/Contracts'
