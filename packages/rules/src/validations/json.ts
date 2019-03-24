@@ -1,6 +1,16 @@
-import { skippable } from '../utils'
-import { json } from '../raw/json'
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
 import { ValidationNode } from 'indicative-compiler'
+import { json } from '../raw/json'
+import { skippable } from '../utils'
+import { RulesConfig } from '../Contracts'
 
 /**
  * Ensures the value of field under validation is safe to be parsed
@@ -22,9 +32,9 @@ import { ValidationNode } from 'indicative-compiler'
  */
 const validation: ValidationNode = {
   async: false,
-  validate: (data, field) => {
+  validate: (data, field, _args, _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
-    return skippable(fieldValue) || json(fieldValue)
+    return skippable(fieldValue, config) || json(fieldValue)
   },
 }
 

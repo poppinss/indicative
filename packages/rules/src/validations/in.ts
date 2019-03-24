@@ -1,7 +1,16 @@
-import { skippable } from '../utils'
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
 
-import { inArray } from '../raw/inArray'
 import { ValidationNode } from 'indicative-compiler'
+import { skippable } from '../utils'
+import { inArray } from '../raw/inArray'
+import { RulesConfig } from '../Contracts'
 
 /**
  * Ensures the value of a given field matches one of expected values.
@@ -29,9 +38,9 @@ const validation: ValidationNode = {
 
     return args
   },
-  validate: (data, field, args) => {
+  validate: (data, field, args, _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
-    return skippable(fieldValue) || inArray(fieldValue, args)
+    return skippable(fieldValue, config) || inArray(fieldValue, args)
   },
 }
 

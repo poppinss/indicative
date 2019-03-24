@@ -7,10 +7,10 @@
 * file that was distributed with this source code.
 */
 
+import { ValidationNode } from 'indicative-compiler'
 import { skippable } from '../utils'
 import { boolean } from '../raw/boolean'
-import { ValidationNode } from 'indicative-compiler'
-import { config } from '../config'
+import { RulesConfig } from '../Contracts'
 
 /**
  * Ensures the value of a field is a boolean. Also it will cast following
@@ -40,9 +40,9 @@ import { config } from '../config'
  */
 const validation: ValidationNode = {
   async: false,
-  validate: (data, field) => {
+  validate: (data, field, _args, _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
-    return skippable(fieldValue) || boolean(fieldValue, !config.castValues)
+    return skippable(fieldValue, config) || boolean(fieldValue, !config.castValues)
   },
 }
 

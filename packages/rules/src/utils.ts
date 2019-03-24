@@ -8,9 +8,8 @@
 */
 
 import { addMonths, addDays, addMilliseconds } from 'date-fns'
-import { config } from './config'
 import { existy } from './raw/existy'
-import { CalcKeys } from '../src/contracts'
+import { CalcKeys, RulesConfig } from '../src/Contracts'
 
 const viaMonths = {
   years: (unit: number) => unit * 12,
@@ -30,7 +29,7 @@ const viaMilliseconds = {
   milliseconds: (unit: number) => unit,
 }
 
-export const skippable = (value: any): boolean => {
+export const skippable = (value: any, config: RulesConfig): boolean => {
   return config.existyStrict ? value === undefined : !existy(value)
 }
 

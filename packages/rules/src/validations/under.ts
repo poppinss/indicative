@@ -1,7 +1,15 @@
-import { skippable } from '../utils'
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
 import { ValidationNode } from 'indicative-compiler'
-import { config } from '../config'
-import { ArgComparison } from '../Contracts'
+import { skippable } from '../utils'
+import { ArgComparison, RulesConfig } from '../Contracts'
 
 /**
  * Ensures the value of a field is under a certain value. All values
@@ -30,9 +38,9 @@ const validation: ValidationNode = {
 
     return [Number(args[0])]
   },
-  validate: (data, field, [maxValue]: ArgComparison) => {
+  validate: (data, field, [maxValue]: ArgComparison, _type, _root, config: RulesConfig) => {
     let fieldValue = data[field]
-    if (skippable(fieldValue)) {
+    if (skippable(fieldValue, config)) {
       return true
     }
 

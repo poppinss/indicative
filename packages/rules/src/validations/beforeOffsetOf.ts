@@ -7,10 +7,10 @@
 * file that was distributed with this source code.
 */
 
+import { ValidationNode } from 'indicative-compiler'
 import { skippable, allowedCalcKeys } from '../utils'
 import { beforeOffsetOf } from '../raw/beforeOffsetOf'
-import { ArgOffset } from '../contracts'
-import { ValidationNode } from 'indicative-compiler'
+import { ArgOffset, RulesConfig } from '../Contracts'
 
 /**
  * Ensures the date is before a given offset of a given
@@ -55,9 +55,9 @@ const validation: ValidationNode = {
 
     return [Number(args[0]), args[1]]
   },
-  validate: (data, field, [diffUnit, key]: ArgOffset) => {
+  validate: (data, field, [diffUnit, key]: ArgOffset, _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
-    return skippable(fieldValue) || beforeOffsetOf(fieldValue, diffUnit, key)
+    return skippable(fieldValue, config) || beforeOffsetOf(fieldValue, diffUnit, key)
   },
 }
 

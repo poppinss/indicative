@@ -1,6 +1,15 @@
-import { skippable } from '../utils'
-import { ArgComparison } from '../contracts'
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
 import { ValidationNode } from 'indicative-compiler'
+import { skippable } from '../utils'
+import { ArgComparison, RulesConfig } from '../Contracts'
 
 /**
  * Ensures the length of a string or array is not greater than
@@ -34,10 +43,10 @@ const validation: ValidationNode = {
 
     return [maxLength]
   },
-  validate: (data, field, [maxLength]: ArgComparison) => {
+  validate: (data, field, [maxLength]: ArgComparison, _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
     const transformedValue = Array.isArray(fieldValue) ? fieldValue : String(fieldValue)
-    return skippable(fieldValue) || transformedValue.length <= maxLength
+    return skippable(fieldValue, config) || transformedValue.length <= maxLength
   },
 }
 

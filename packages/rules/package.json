@@ -43,7 +43,8 @@
     "url": "https://github.com/poppinss/indicative/issues"
   },
   "devDependencies": {
-    "indicative-compiler": "^5.0.8"
+    "indicative-compiler": "^5.0.8",
+    "indicative-parser": "^5.0.8"
   },
   "dependencies": {
     "@slynova/slug": "^1.1.2",

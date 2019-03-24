@@ -7,9 +7,10 @@
 * file that was distributed with this source code.
 */
 
-import { skippable } from '../utils'
-import { same } from '../raw/same'
 import { ValidationNode } from 'indicative-compiler'
+import { same } from '../raw/same'
+import { skippable } from '../utils'
+import { RulesConfig } from '../Contracts'
 
 /**
  * Ensures a field value as confirmed using a `_confirmation` convention. This is
@@ -35,9 +36,9 @@ import { ValidationNode } from 'indicative-compiler'
  */
 const validation: ValidationNode = {
   async: false,
-  validate: (data, field) => {
+  validate: (data, field, _args, _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
-    return skippable(fieldValue) || same(fieldValue, data[`${field}_confirmation`])
+    return skippable(fieldValue, config) || same(fieldValue, data[`${field}_confirmation`])
   },
 }
 

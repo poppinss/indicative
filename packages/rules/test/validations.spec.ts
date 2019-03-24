@@ -10,9 +10,14 @@
 */
 
 import * as test from 'japa'
-import * as validations from '../src/validations'
 import { subYears, addMonths } from 'date-fns'
-import { config } from '../src/config'
+import * as validations from '../src/validations'
+import { RulesConfig } from '../src/Contracts'
+
+const config: RulesConfig = {
+  existyStrict: true,
+  castValues: true,
+}
 
 const root = { original: {} }
 

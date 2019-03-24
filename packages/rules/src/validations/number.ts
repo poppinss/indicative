@@ -1,7 +1,16 @@
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
+import { ValidationNode } from 'indicative-compiler'
 import { skippable } from '../utils'
 import { isNumber } from '../raw/isNumber'
-import { ValidationNode } from 'indicative-compiler'
-import { config } from '../config'
+import { RulesConfig } from '../Contracts'
 
 /**
  * Makes sure that the value of field under validation is a valid
@@ -25,9 +34,9 @@ import { config } from '../config'
  */
 const validation: ValidationNode = {
   async: false,
-  validate: (data, field) => {
+  validate: (data, field, _args, _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
-    return skippable(fieldValue) || isNumber(fieldValue, !config.castValues)
+    return skippable(fieldValue, config) || isNumber(fieldValue, !config.castValues)
   },
 }
 

@@ -1,8 +1,17 @@
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
 
-import { isString } from '../raw/isString'
-import { subset } from '../raw/subset'
-import { skippable } from '../utils'
 import { ValidationNode } from 'indicative-compiler'
+import { skippable } from '../utils'
+import { subset } from '../raw/subset'
+import { isString } from '../raw/isString'
+import { RulesConfig } from '../Contracts'
 
 /**
  * Ensures the value of a given field is a
@@ -31,14 +40,14 @@ const validation: ValidationNode = {
 
     return args
   },
-  validate: (data, field, args) => {
+  validate: (data, field, args, _type, _root, config: RulesConfig) => {
     let fieldValue = data[field]
 
     if (isString(fieldValue)) {
       fieldValue = fieldValue.split(',').map((val: string) => val.trim())
     }
 
-    return skippable(fieldValue) || subset(fieldValue, args)
+    return skippable(fieldValue, config) || subset(fieldValue, args)
   },
 }
 

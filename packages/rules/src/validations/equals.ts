@@ -1,6 +1,15 @@
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
 
-import { skippable } from '../utils'
 import { ValidationNode } from 'indicative-compiler'
+import { skippable } from '../utils'
+import { RulesConfig } from '../Contracts'
 
 /**
  * Ensures 2 values are lossely same. This validation will not check for the same type, but
@@ -31,11 +40,11 @@ const validation: ValidationNode = {
 
     return args
   },
-  validate: (data, field, [comparisonValue]: [string]) => {
+  validate: (data, field, [comparisonValue]: [string], _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
 
     // tslint:disable-next-line:triple-equals
-    return skippable(fieldValue) || comparisonValue == fieldValue
+    return skippable(fieldValue, config) || comparisonValue == fieldValue
   },
 }
 

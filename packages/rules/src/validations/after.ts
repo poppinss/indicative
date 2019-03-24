@@ -10,7 +10,7 @@
 import { ValidationNode } from 'indicative-compiler'
 import { skippable } from '../utils'
 import { after } from '../raw/after'
-import { ArgComparisonDate } from '../contracts'
+import { ArgComparisonDate, RulesConfig } from '../Contracts'
 
 /**
  * Ensures the value of the field is after the expected
@@ -41,9 +41,9 @@ const validation: ValidationNode = {
 
     return args
   },
-  validate: (data, field, [comparisonDate]: ArgComparisonDate) => {
+  validate: (data, field, [comparisonDate]: ArgComparisonDate, _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
-    return skippable(fieldValue) || after(fieldValue, comparisonDate)
+    return skippable(fieldValue, config) || after(fieldValue, comparisonDate)
   },
 }
 

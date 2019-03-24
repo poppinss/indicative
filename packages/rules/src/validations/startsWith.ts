@@ -1,6 +1,15 @@
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
 
-import { skippable } from '../utils'
 import { ValidationNode } from 'indicative-compiler'
+import { skippable } from '../utils'
+import { RulesConfig } from '../Contracts'
 
 /**
  * Ensure the value of field under validation starts with a certain substr. This
@@ -28,9 +37,9 @@ const validation: ValidationNode = {
     }
     return args
   },
-  validate: (data, field, [substring]: [string]) => {
+  validate: (data, field, [substring]: [string], _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
-    return skippable(fieldValue) || String(fieldValue).startsWith(substring)
+    return skippable(fieldValue, config) || String(fieldValue).startsWith(substring)
   },
 }
 

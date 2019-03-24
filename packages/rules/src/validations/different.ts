@@ -7,9 +7,10 @@
 * file that was distributed with this source code.
 */
 
-import { skippable } from '../utils'
 import { ValidationNode } from 'indicative-compiler'
 import { existy } from '../raw'
+import { skippable } from '../utils'
+import { RulesConfig } from '../Contracts'
 
 /**
  * Ensures the value of the field under validation is always different from
@@ -38,10 +39,10 @@ const validation: ValidationNode = {
 
     return args
   },
-  validate: (data, field, [targetField]: [string]) => {
+  validate: (data, field, [targetField]: [string], _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
     const targetFieldValue = data[targetField]
-    return skippable(fieldValue) || !existy(targetFieldValue) || targetFieldValue !== fieldValue
+    return skippable(fieldValue, config) || !existy(targetFieldValue) || targetFieldValue !== fieldValue
   },
 }
 

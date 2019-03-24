@@ -10,6 +10,7 @@
 import { ValidationNode } from 'indicative-compiler'
 import { skippable } from '../utils'
 import { alpha } from '../raw/alpha'
+import { RulesConfig } from '../Contracts'
 
 /**
  * Makes sure the field under validation is alpha only. The regex used is `/^[a-z]+$/i`.
@@ -30,9 +31,9 @@ import { alpha } from '../raw/alpha'
  */
 const validation: ValidationNode = {
   async: false,
-  validate: (data, field) => {
+  validate: (data, field, _args, _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
-    return skippable(fieldValue) || alpha(fieldValue)
+    return skippable(fieldValue, config) || alpha(fieldValue)
   },
 }
 

@@ -7,10 +7,10 @@
 * file that was distributed with this source code.
 */
 
+import { ValidationNode } from 'indicative-compiler'
 import { skippable } from '../utils'
 import { email } from '../raw/email'
-import { ValidationNode } from 'indicative-compiler'
-import { EmailValidationOptions } from '../contracts'
+import { EmailValidationOptions, RulesConfig } from '../Contracts'
 
 /**
  * Ensures the field under validation is a valid email format.
@@ -33,9 +33,9 @@ import { EmailValidationOptions } from '../contracts'
  */
 const validation: ValidationNode = {
   async: false,
-  validate: (data, field, [options]: [Partial<EmailValidationOptions>]) => {
+  validate: (data, field, [options]: [Partial<EmailValidationOptions>], _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
-    return skippable(fieldValue) || email(fieldValue, options)
+    return skippable(fieldValue, config) || email(fieldValue, options)
   },
 }
 
