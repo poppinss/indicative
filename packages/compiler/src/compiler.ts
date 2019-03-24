@@ -22,7 +22,7 @@ import {
   Schema,
   Messages,
   ParsedMessages,
-  schemaParser,
+  rulesParser,
   messagesParser,
 } from 'indicative-parser'
 
@@ -270,7 +270,7 @@ function schemaCompiler (
  * function highly optimized for speed.
  */
 export function compile (schema: Schema, validations: ValidationsNode, messages: Messages): CompilerFn {
-  let parsedSchema: ParsedSchema | null = schemaParser(schema)
+  let parsedSchema: ParsedSchema | null = rulesParser(schema)
   let parsedMessages: ParsedMessages | null = messagesParser(messages)
   const builder = new MessageBuilder(parsedMessages)
 

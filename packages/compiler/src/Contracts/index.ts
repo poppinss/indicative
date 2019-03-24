@@ -138,9 +138,9 @@ export type SchemaExecutorFn = (
 /**
  * The compiler output function
  */
-export type CompilerFn = (<T extends DataNode>(
+export type CompilerFn = (<T extends DataNode, C extends any>(
   data: T,
   formatter: IndicativeFormatter,
-  config: unknown,
+  config: C,
   bail?: boolean,
 ) => Promise<T>)
