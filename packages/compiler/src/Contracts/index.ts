@@ -11,7 +11,7 @@ import {
   SchemaNodeLiteral,
   SchemaNodeObject,
   SchemaNodeArray,
-  MessageNode,
+  Message,
   ParsedRule,
 } from 'indicative-parser'
 
@@ -27,7 +27,7 @@ export type DataNode = {
 /**
  * Shape of root data node passed to validation functions. This is
  * passed so that validation function can reach beyond their own
- * values to validate data
+ * values.
  */
 export type DataRoot = {
   original: DataNode,
@@ -40,7 +40,7 @@ export type DataRoot = {
  * Validation function for defining a validation
  * rule
  */
-export type ValidationFn = ((
+export type ValidationFunction = ((
   data: DataNode,
   field: string,
   args: any[],
@@ -50,31 +50,31 @@ export type ValidationFn = ((
 ) => boolean | Promise<boolean>)
 
 /**
- * Shape of collection of validations. Validation functions have
- * to upfront define if there are async or not
+ * Collection of validations
  */
-export type ValidationsNode = {
-  [field: string]: ValidationNode,
+export type Validations = {
+  [field: string]: Validation,
 }
 
 /**
- * Shape of a single validation function
+ * Shape of a single validation function. Validation function has
+ * to upfront define, if it's async or not.
  */
-export type ValidationNode = {
+export type Validation = {
   async: boolean,
   compile?: (args: any[]) => any[],
-  validate: ValidationFn,
+  validate: ValidationFunction,
 }
 
 /**
- * Executor functions are executed at runtime
- * after the compiling phase
+ * Executor functions are top level pre compiled functions
+ * created out of parsed schema tree.
  */
-export type ExecutorFn = {
+export type ExecutorFunction = {
   async: boolean,
   fn: ((
     data: any,
-    formatter: IndicativeFormatter,
+    formatter: FormatterContract,
     root: DataRoot,
     config: unknown,
     bail: boolean,
@@ -82,65 +82,41 @@ export type ExecutorFn = {
 }
 
 /**
- * Formatter constructor, since instance of formatters
- * are created during validation
- */
-export interface IndicativeFormatterConstructor {
-  new (): IndicativeFormatter,
-}
-
-/**
  * Formatter interface
  */
-export interface IndicativeFormatter {
+export interface FormatterContract {
   errors: unknown[],
-  addError (error: string | Error, field: string, validation: string, args: string[]): void
+  addError (error: string | Error, field: string, rule: string, args: string[]): void,
   toJSON (): unknown,
 }
 
 /**
  * Message builder returns the messages for a tree node
  */
-export interface MessageBuilderContract {
-  getBucket (field: string, dotPath: string[]): MessageBucketContract
-  child (dotPath: string[]): MessageBuilderContract
+export interface MessagesStoreContract {
+  getMessageFor (field: string, rule: ParsedRule): Message,
+  getChildStore (dotPath: string[]): MessagesStoreContract,
 }
 
 /**
- * Messages bucket has all the rules messages for a given tree
- * node
+ * The consumer function that consumes a node
+ * from the parsed tree
  */
-export interface MessageBucketContract {
-  get (rule: ParsedRule): MessageNode
-}
-
-/**
- * Error node for vanilla formatter
- */
-export type VanillaErrorNode = {
-  message: string,
-  field: string,
-  validation: string,
-}
-
-/**
- * Compiler function that returns executor fn
- */
-export type SchemaExecutorFn = (
+export type SchemaNodeConsumer = (
   node: SchemaNodeLiteral | SchemaNodeObject | SchemaNodeArray,
-  validations: ValidationsNode,
-  builder: MessageBuilderContract,
+  validations: Validations,
+  builder: MessagesStoreContract,
   field: string,
   dotPath: string[],
-  message: MessageBucketContract,
-) => ExecutorFn[]
+) => ExecutorFunction[]
 
 /**
- * The compiler output function
+ * Validation runner that executes an array of top level
+ * functions
  */
-export type CompilerFn = (<T extends DataNode, C extends any>(
-  data: T,
-  formatter: IndicativeFormatter,
-  config: C,
+export type ValidationRunnerFunction = (<Data extends DataNode, Config extends any>(
+  data: Data,
+  formatter: FormatterContract,
+  config: Config,
   bail?: boolean,
-) => Promise<T>)
+) => Promise<Data>)

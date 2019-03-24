@@ -7,9 +7,9 @@
 * file that was distributed with this source code.
 */
 
+import { ParsedRule, Message } from 'indicative-parser'
 import { dotProp, addError } from '../utils'
-import { ParsedRule, MessageNode } from 'indicative-parser'
-import { ValidationFn, DataRoot, DataNode, IndicativeFormatter } from '../Contracts'
+import { ValidationFunction, DataRoot, DataNode, FormatterContract } from '../Contracts'
 
 /**
  * Executor executes a validation function for a given rule and field
@@ -28,8 +28,8 @@ export class Executor {
   private _dotPathLength = this._dotPath.length
 
   constructor (
-    private _validationFn: ValidationFn,
-    private _message: MessageNode,
+    private _validationFn: ValidationFunction,
+    private _message: Message,
     private _rule: ParsedRule,
     private _field: string,
     private _dotPath: string[],
@@ -47,7 +47,7 @@ export class Executor {
     /**
      * Ignore validation when top level data node is not an object.
      */
-    if (!dataNode || typeof (dataNode) !== 'object' || dataNode.constructor !== Object) {
+    if (!dataNode || dataNode.constructor !== Object) {
       return true
     }
 
@@ -61,7 +61,7 @@ export class Executor {
    */
   private _handleResult (
     passed: boolean,
-    formatter: IndicativeFormatter,
+    formatter: FormatterContract,
     root: DataRoot,
     hardError?: string | Error,
   ): boolean {
@@ -80,7 +80,7 @@ export class Executor {
    */
   public async execAsync (
     data: DataNode,
-    formatter: IndicativeFormatter,
+    formatter: FormatterContract,
     root: DataRoot,
     config: unknown,
   ): Promise<boolean> {
@@ -99,12 +99,7 @@ export class Executor {
   /**
    * Executes the validation synchronously
    */
-  public exec (
-    data: DataNode,
-    formatter: IndicativeFormatter,
-    root: DataRoot,
-    config: unknown,
-  ): boolean {
+  public exec (data: DataNode, formatter: FormatterContract, root: DataRoot, config: unknown): boolean {
     let passed: boolean = false
     let hardError: string | Error
 

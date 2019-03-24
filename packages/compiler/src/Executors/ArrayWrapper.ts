@@ -8,7 +8,7 @@
 */
 
 import { dotProp } from '../utils'
-import { ExecutorFn, IndicativeFormatter, DataNode, DataRoot } from '../Contracts'
+import { ExecutorFunction, FormatterContract, DataNode, DataRoot } from '../Contracts'
 
 /**
  * The size of arrays is unknown unless we get the real data from the users. This wrapper
@@ -22,7 +22,7 @@ export class ArrayWrapper {
   private _dotPathLength = this._dotPath.length
 
   constructor (
-    private _executors: ExecutorFn[],
+    private _executors: ExecutorFunction[],
     private _dotPath: string[],
     private _index: string,
   ) {}
@@ -112,7 +112,7 @@ export class ArrayWrapper {
    */
   public async execAsync (
     data: DataNode,
-    formatter: IndicativeFormatter,
+    formatter: FormatterContract,
     root: DataRoot,
     config: unknown,
     bail: boolean,
@@ -180,7 +180,7 @@ export class ArrayWrapper {
    */
   public exec (
     data: DataNode,
-    formatter: IndicativeFormatter,
+    formatter: FormatterContract,
     root: DataRoot,
     config: unknown,
     bail: boolean,

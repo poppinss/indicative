@@ -8,15 +8,16 @@
 */
 
 export { compile } from './src/compiler'
-export { VanillaFormatter } from './src/Formatters/VanillaFormatter'
 
 export {
   DataNode,
-  ExecutorFn,
-  VanillaErrorNode,
+  ExecutorFunction,
   IndicativeFormatter,
   DataRoot,
-  ValidationFn,
-  ValidationNode,
-  ValidationsNode,
+  ValidationFunction,
+  Validation,
+  Validations,
+  ValidationRunner,
 } from './src/Contracts'
+
+export { Schema as RulesSchema, Messages as MessagesSchema } from 'indicative-parser'

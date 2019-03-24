@@ -7,20 +7,20 @@
 * file that was distributed with this source code.
 */
 
-import { ExecutorFn, IndicativeFormatter, DataNode } from '../Contracts'
+import { ExecutorFunction, FormatterContract, DataNode } from '../Contracts'
 
 /**
  * Runner takes an array of executor functions along side the formatter
  * instance to run all functions in series.
  */
-export class Runner {
-  constructor (private _stack: ExecutorFn[]) {}
+export class ValidationRunner {
+  constructor (private _stack: ExecutorFunction[]) {}
 
   /**
    * Execute all executor functions by passing it the runtime `data`, along
    * with errors formatter.
    */
-  public async exec (data: DataNode, formatter: IndicativeFormatter, config: unknown, bail: boolean = true) {
+  public async exec (data: DataNode, formatter: FormatterContract, config: unknown, bail: boolean = true) {
     const root = { original: data }
 
     for (let executor of this._stack) {
