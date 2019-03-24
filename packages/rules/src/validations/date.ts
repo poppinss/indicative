@@ -7,10 +7,10 @@
 * file that was distributed with this source code.
 */
 
-import { skippable } from '../utils'
-import { date } from '../raw/date'
 import { ValidationNode } from 'indicative-compiler'
-import { config } from '../config'
+import { date } from '../raw/date'
+import { skippable } from '../utils'
+import { RulesConfig } from '../Contracts'
 
 /**
  * Ensures the field under validation is a valid date. The value can be a
@@ -34,9 +34,9 @@ import { config } from '../config'
  */
 const validation: ValidationNode = {
   async: false,
-  validate: (data, field) => {
+  validate: (data, field, _args, _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
-    return skippable(fieldValue) || date(fieldValue, !config.castValues)
+    return skippable(fieldValue, config) || date(fieldValue, !config.castValues)
   },
 }
 

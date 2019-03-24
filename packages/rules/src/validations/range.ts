@@ -1,9 +1,17 @@
-import { skippable } from '../utils'
-import { between } from '../raw/between'
-import { ArgMinMax } from '../contracts'
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
 import { ValidationNode } from 'indicative-compiler'
-import { config } from '../config'
+import { skippable } from '../utils'
 import { isNull } from '../raw/isNull'
+import { between } from '../raw/between'
+import { RulesConfig, ArgMinMax } from '../Contracts'
 
 /**
  * Ensures the value of field under validation is under a given range. The values will
@@ -39,9 +47,9 @@ const validation: ValidationNode = {
 
     return [min, max]
   },
-  validate: (data, field, [min, max]: ArgMinMax) => {
+  validate: (data, field, [min, max]: ArgMinMax, _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
-    return skippable(fieldValue) || between(fieldValue, min, max, !config.castValues)
+    return skippable(fieldValue, config) || between(fieldValue, min, max, !config.castValues)
   },
 }
 

@@ -8,8 +8,8 @@
 */
 
 import { before } from './before'
-import { CalcKeys } from '../contracts'
 import { calcUnits } from '../utils'
+import { CalcKeys } from '../contracts'
 
 /**
  * Returns a boolean telling if date before the

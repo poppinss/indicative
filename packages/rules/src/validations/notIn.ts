@@ -7,9 +7,19 @@
 * file that was distributed with this source code.
 */
 
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
+import { ValidationNode } from 'indicative-compiler'
 import { skippable } from '../utils'
 import { inArray } from '../raw/inArray'
-import { ValidationNode } from 'indicative-compiler'
+import { RulesConfig } from '../Contracts'
 
 /**
  * Makes sure that the value of field under validation is not
@@ -38,9 +48,9 @@ const validation: ValidationNode = {
 
     return args
   },
-  validate: (data, field, args) => {
+  validate: (data, field, args, _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
-    return skippable(fieldValue) || !inArray(fieldValue, args)
+    return skippable(fieldValue, config) || !inArray(fieldValue, args)
   },
 }
 

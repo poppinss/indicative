@@ -1,6 +1,16 @@
-import { skippable } from '../utils'
-import { url } from '../raw/url'
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
 import { ValidationNode } from 'indicative-compiler'
+import { url } from '../raw/url'
+import { skippable } from '../utils'
+import { RulesConfig } from '../Contracts'
 
 /**
  * Ensures the value is a valid URL format.
@@ -21,9 +31,9 @@ import { ValidationNode } from 'indicative-compiler'
  */
 const validation: ValidationNode = {
   async: false,
-  validate: (data, field) => {
+  validate: (data, field, _args, _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
-    return skippable(fieldValue) || url(fieldValue)
+    return skippable(fieldValue, config) || url(fieldValue)
   },
 }
 

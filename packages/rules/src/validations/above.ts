@@ -9,9 +9,8 @@
 
 import { ValidationNode } from 'indicative-compiler'
 import { skippable } from '../utils'
-import { ArgComparison } from '../Contracts'
 import { above as isAbove } from '../raw/above'
-import { config } from '../config'
+import { ArgComparison, RulesConfig } from '../Contracts'
 
 /**
  * Makes sure the value provided by the end user is above the
@@ -41,9 +40,9 @@ const validation: ValidationNode = {
 
     return [Number(args[0])]
   },
-  validate: (data, field, [minValue]: ArgComparison): boolean => {
+  validate: (data, field, [minValue]: ArgComparison, _type, _root, config: RulesConfig): boolean => {
     const fieldValue = data[field]
-    return skippable(fieldValue) || isAbove(fieldValue, minValue, !config.castValues)
+    return skippable(fieldValue, config) || isAbove(fieldValue, minValue, !config.castValues)
   },
 }
 

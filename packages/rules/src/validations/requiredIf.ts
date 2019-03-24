@@ -1,6 +1,15 @@
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
+import { ValidationNode } from 'indicative-compiler'
 import { empty } from '../raw/empty'
 import { existy } from '../raw/existy'
-import { ValidationNode } from 'indicative-compiler'
 
 /**
  * The field is checked for required validation, when expected field exists.

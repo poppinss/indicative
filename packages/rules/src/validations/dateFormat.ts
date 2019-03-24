@@ -7,9 +7,10 @@
 * file that was distributed with this source code.
 */
 
-import { skippable } from '../utils'
-import { dateFormat } from '../raw/dateFormat'
 import { ValidationNode } from 'indicative-compiler'
+import { skippable } from '../utils'
+import { RulesConfig } from '../Contracts'
+import { dateFormat } from '../raw/dateFormat'
 
 /**
  * Ensures the date or date time is valid as the one of the defined formats.
@@ -51,9 +52,9 @@ const validation: ValidationNode = {
 
     return args
   },
-  validate: (data, field, args: string[]) => {
+  validate: (data, field, args: string[], _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
-    return skippable(fieldValue) || dateFormat(fieldValue, args)
+    return skippable(fieldValue, config) || dateFormat(fieldValue, args)
   },
 }
 

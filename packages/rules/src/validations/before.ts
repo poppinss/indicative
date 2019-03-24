@@ -1,8 +1,16 @@
+/*
+* indicative
+*
+* (c) Harminder Virk <virk@adonisjs.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
 
+import { ValidationNode } from 'indicative-compiler'
 import { skippable } from '../utils'
 import { before } from '../raw/before'
-import { ArgComparisonDate } from '../contracts'
-import { ValidationNode } from 'indicative-compiler'
+import { ArgComparisonDate, RulesConfig } from '../Contracts'
 
 /**
  * Ensures the value of field under validation is before a given
@@ -33,9 +41,9 @@ const validation: ValidationNode = {
 
     return args
   },
-  validate: (data, field, [beforeDate]: ArgComparisonDate) => {
+  validate: (data, field, [beforeDate]: ArgComparisonDate, _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
-    return skippable(fieldValue) || before(fieldValue, beforeDate)
+    return skippable(fieldValue, config) || before(fieldValue, beforeDate)
   },
 }
 

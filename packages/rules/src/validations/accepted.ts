@@ -10,6 +10,7 @@
 import { ValidationNode } from 'indicative-compiler'
 import { skippable } from '../utils'
 import { truthy } from '../raw/truthy'
+import { RulesConfig } from '../Contracts'
 
 /**
  * Ensures that the field under validation is accepted.
@@ -32,9 +33,9 @@ import { truthy } from '../raw/truthy'
  */
 const validation: ValidationNode = {
   async: false,
-  validate: (data, field) => {
+  validate: (data, field, _args, _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
-    return skippable(fieldValue) || truthy(fieldValue)
+    return skippable(fieldValue, config) || truthy(fieldValue)
   },
 }
 

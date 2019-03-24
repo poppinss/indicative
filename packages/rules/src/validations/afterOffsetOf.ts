@@ -9,7 +9,7 @@
 
 import { ValidationNode } from 'indicative-compiler'
 import { skippable, allowedCalcKeys } from '../utils'
-import { ArgOffset } from '../contracts'
+import { ArgOffset, RulesConfig } from '../Contracts'
 import { afterOffsetOf } from '../raw/afterOffsetOf'
 
 /**
@@ -55,9 +55,9 @@ const validation: ValidationNode = {
 
     return [Number(args[0]), args[1]]
   },
-  validate: (data, field, [diffUnit, key]: ArgOffset) => {
+  validate: (data, field, [diffUnit, key]: ArgOffset, _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
-    return skippable(fieldValue) || afterOffsetOf(fieldValue, diffUnit, key)
+    return skippable(fieldValue, config) || afterOffsetOf(fieldValue, diffUnit, key)
   },
 }
 
