@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-export { rule, schemaParser, messagesParser } from './src/main'
+export { rulesParser, messagesParser } from './src/main'
 export {
   Schema,
   ParsedSchema,

@@ -10,7 +10,7 @@
 */
 
 import * as test from 'japa'
-import { schemaParser as parse, messagesParser } from '../src/main'
+import { rulesParser as parse, messagesParser } from '../src/main'
 
 test.group('Parser | schema', () => {
   test('parse simple field rules', (assert) => {
