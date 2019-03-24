@@ -181,7 +181,7 @@ function parseFieldForRules (
  * }
  * ```
  */
-export function schemaParser (schema: Schema): ParsedSchema {
+export function rulesParser (schema: Schema): ParsedSchema {
   return Object
     .keys(schema)
     .reduce((result: ParsedSchema, field: string) => {
