@@ -15,9 +15,9 @@ export {
   SchemaNodeLiteral,
   SchemaNodeArray,
   SchemaNodeObject,
-  ParsedNamedMessages,
+  ParsedFieldsMessages,
   ParsedMessages,
-  MessageNode,
+  Message,
   Messages,
-  MessagesRulesMap,
+  ParsedRulesMessages,
 } from './src/contracts'

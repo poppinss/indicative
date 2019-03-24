@@ -217,12 +217,12 @@ export function rulesParser (schema: Schema): ParsedSchema {
  * // output
  *
  * {
- *   named: {
+ *   fields: {
  *    'users.*.username': {
  *      required: 'Username is required'
  *    }
  *   },
- *   generic: {},
+ *   rules: {},
  * }
  */
 export function messagesParser (schema: Messages): ParsedMessages {
@@ -237,14 +237,14 @@ export function messagesParser (schema: Messages): ParsedMessages {
        * If token length is 1, then it is a plain rule vs `field.rule`
        */
       if (!tokens.length) {
-        result.generic = { [rule]: message }
+        result.rules = { [rule]: message }
         return result
       }
 
       const qualifiedName = tokens.join('.')
-      result.named[qualifiedName] = result.named[qualifiedName] || {}
-      result.named[qualifiedName][rule] = message
+      result.fields[qualifiedName] = result.fields[qualifiedName] || {}
+      result.fields[qualifiedName][rule] = message
 
       return result
-    }, { named: {}, generic: {} })
+    }, { fields: {}, rules: {} })
 }

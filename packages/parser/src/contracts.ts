@@ -74,32 +74,32 @@ export type ParsedSchema = {
 /**
  * Shape of a single validation message. The functions are evaluated at runtime
  */
-export type MessageNode = string | ((field: string, validation: string, args: any[]) => string)
+export type Message = string | ((field: string, validation: string, args: any[]) => string)
 
 /**
  * Shape of user defined messages schema
  */
 export type Messages = {
-  [field: string]: MessageNode,
+  [field: string]: Message,
 }
 
 /**
  * Shape of parsed messages for a given node
  */
-export type MessagesRulesMap = { [rule: string]: MessageNode }
+export type ParsedRulesMessages = { [rule: string]: Message }
 
 /**
  * Parsed messages tree
  */
-export type ParsedNamedMessages = {
-  [field: string]: MessagesRulesMap,
+export type ParsedFieldsMessages = {
+  [field: string]: ParsedRulesMessages,
 }
 
 /**
  * Final tree for messages. The `rules` object has flat list of messages
- * for a given rule. However, `named` has recursive tree
+ * for a given rule. However, `fields` are scoped inside a field name.
  */
 export type ParsedMessages = {
-  named: ParsedNamedMessages,
-  generic: MessagesRulesMap,
+  fields: ParsedFieldsMessages,
+  rules: ParsedRulesMessages,
 }

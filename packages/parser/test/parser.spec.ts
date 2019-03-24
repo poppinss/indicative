@@ -449,8 +449,8 @@ test.group('Parser | messages', () => {
     })
 
     assert.deepEqual(output, {
-      generic: {},
-      named: {
+      rules: {},
+      fields: {
         username: {
           required: 'Username is required',
         },
@@ -464,8 +464,8 @@ test.group('Parser | messages', () => {
     })
 
     assert.deepEqual(output, {
-      generic: {},
-      named: {
+      rules: {},
+      fields: {
         'username.profile': {
           required: 'Profile is required',
         },
@@ -480,8 +480,8 @@ test.group('Parser | messages', () => {
     })
 
     assert.deepEqual(output, {
-      generic: {},
-      named: {
+      rules: {},
+      fields: {
         username: {
           required: 'Username is required',
         },
@@ -498,8 +498,8 @@ test.group('Parser | messages', () => {
     })
 
     assert.deepEqual(output, {
-      generic: {},
-      named: {
+      rules: {},
+      fields: {
         'users.*.username': {
           required: 'Username is required',
         },
@@ -513,10 +513,10 @@ test.group('Parser | messages', () => {
     })
 
     assert.deepEqual(output, {
-      generic: {
+      rules: {
         required: 'The field is required',
       },
-      named: {},
+      fields: {},
     })
   })
 })
