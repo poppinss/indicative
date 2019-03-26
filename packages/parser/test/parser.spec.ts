@@ -415,6 +415,29 @@ test.group('Parser | schema', () => {
     })
   })
 
+  test('parse array expression without childs on wildcard index', (assert) => {
+    const output = parse({
+      'users.*': 'required',
+    })
+
+    assert.deepEqual(output, {
+      users: {
+        type: 'array',
+        rules: [],
+        each: {
+          '*': {
+            rules: [{
+              name: 'required',
+              args: [],
+            }],
+            children: {
+            },
+          },
+        },
+      },
+    })
+  })
+
   test('raise error when object is reshaped as an array', (assert) => {
     const output = () => parse({
       'user.username': 'required',
