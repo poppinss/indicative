@@ -577,8 +577,8 @@ test.group('compiler', () => {
 
     assert.deepEqual(stack.stack, [
       {
-        data: { '0': 22 },
-        field: '0',
+        data: { 'arr:literal': 22 },
+        field: 'arr:literal',
         args: [],
         type: 'literal',
         root: {
@@ -590,8 +590,8 @@ test.group('compiler', () => {
         },
       },
       {
-        data: { '1': 24 },
-        field: '1',
+        data: { 'arr:literal': 24 },
+        field: 'arr:literal',
         args: [],
         type: 'literal',
         root: {
@@ -621,8 +621,8 @@ test.group('compiler', () => {
 
     assert.deepEqual(stack.stack, [
       {
-        data: { '0': 22 },
-        field: '0',
+        data: { 'arr:literal': 22 },
+        field: 'arr:literal',
         args: [],
         type: 'literal',
         root: {
