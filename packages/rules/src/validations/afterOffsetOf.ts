@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-import { ValidationNode } from 'indicative-compiler'
+import { Validation } from 'indicative-compiler'
 import { skippable, allowedCalcKeys } from '../utils'
 import { ArgOffset, RulesConfig } from '../Contracts'
 import { afterOffsetOf } from '../raw/afterOffsetOf'
@@ -42,7 +42,7 @@ import { afterOffsetOf } from '../raw/afterOffsetOf'
  * }
  * ----
  */
-const validation: ValidationNode = {
+const validation: Validation = {
   async: false,
   compile (args: any[]): any[] {
     if (!args || args.length < 2) {

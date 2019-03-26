@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-import { ValidationNode } from 'indicative-compiler'
+import { Validation } from 'indicative-compiler'
 import { skippable } from '../utils'
 import { email } from '../raw/email'
 import { EmailValidationOptions, RulesConfig } from '../Contracts'
@@ -31,7 +31,7 @@ import { EmailValidationOptions, RulesConfig } from '../Contracts'
  * }
  * ----
  */
-const validation: ValidationNode = {
+const validation: Validation = {
   async: false,
   validate: (data, field, [options]: [Partial<EmailValidationOptions>], _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]

@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-import { ValidationNode } from 'indicative-compiler'
+import { Validation } from 'indicative-compiler'
 import { empty } from '../raw/empty'
 
 /**
@@ -33,7 +33,7 @@ import { empty } from '../raw/empty'
  * }
  * ----
  */
-const validation: ValidationNode = {
+const validation: Validation = {
   async: false,
   validate: (data, field) => {
     return !empty(data[field])

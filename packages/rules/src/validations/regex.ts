@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-import { ValidationNode } from 'indicative-compiler'
+import { Validation } from 'indicative-compiler'
 import { skippable } from '../utils'
 import { ArgRegex, RulesConfig } from '../Contracts'
 
@@ -33,7 +33,7 @@ import { ArgRegex, RulesConfig } from '../Contracts'
  * }
  * ----
  */
-const validation: ValidationNode = {
+const validation: Validation = {
   async: false,
   compile (args): ArgRegex {
     if (!args || !args.length) {
