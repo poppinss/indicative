@@ -7,14 +7,14 @@
 * file that was distributed with this source code.
 */
 
-import { ExecutorFunction, FormatterContract, DataNode } from '../Contracts'
+import { ValidationExecutor, FormatterContract, DataNode } from '../Contracts/ValidationCompiler'
 
 /**
  * Runner takes an array of executor functions along side the formatter
  * instance to run all functions in series.
  */
-export class ValidationRunner {
-  constructor (private _stack: ExecutorFunction[]) {}
+export class FinalRunner {
+  constructor (private _stack: ValidationExecutor[]) {}
 
   /**
    * Execute all executor functions by passing it the runtime `data`, along

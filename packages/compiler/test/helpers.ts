@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import { DataNode, DataRoot, FormatterContract } from '../src/Contracts'
+import { DataNode, DataRoot, FormatterContract } from '../src/Contracts/ValidationCompiler'
 
 type VanillaError = {
   message: string,
