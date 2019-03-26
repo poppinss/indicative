@@ -15,7 +15,7 @@ import { FinalRunner } from './FinalRunner'
 import { ArrayRunner } from './ArrayRunner'
 import { ValidationRunner } from './ValidationRunner'
 import { NodeConsumer, ArrayChildWrapper } from '../Contracts/AstWalker'
-import { Validations, ValidationExecutor, NodeConsumerArgs } from '../Contracts/ValidationCompiler'
+import { Validations, ValidationExecutor, NodeConsumerArgs, TopLevelRunner } from '../Contracts/ValidationCompiler'
 
 /**
  * Consumes the tree node and returns a top level object to perform
@@ -73,7 +73,11 @@ const arrayWrapper: ArrayChildWrapper<ValidationExecutor> = (
 /**
  * Compiles user schema, validations and messages to a top level function.
  */
-export function validationCompiler (schema: Schema, validations: Validations, messages: Messages) {
+export function validationCompiler (
+  schema: Schema,
+  validations: Validations,
+  messages: Messages,
+): TopLevelRunner {
   const parsedRules = rulesParser(schema)
   const parsedMessages = messagesParser(messages)
 

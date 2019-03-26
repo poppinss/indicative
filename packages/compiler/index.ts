@@ -7,17 +7,15 @@
 * file that was distributed with this source code.
 */
 
-export { compileValidationsSchema } from './src/compiler'
+export { Schema, Messages } from 'indicative-parser'
+export { validationCompiler } from './src/ValidationCompiler/index'
 
 export {
   DataNode,
-  ExecutorFunction,
+  ValidationExecutor,
   FormatterContract,
   DataRoot,
-  ValidationFunction,
   Validation,
   Validations,
-  ValidationRunnerFunction,
-} from './src/Contracts'
-
-export { Schema, Messages } from 'indicative-parser'
+  TopLevelRunner,
+} from './src/Contracts/ValidationCompiler'

@@ -83,3 +83,10 @@ export type Validation = {
 export type Validations = {
   [field: string]: Validation,
 }
+
+export type TopLevelRunner = (<Data extends DataNode>(
+  data: Data,
+  formatter: FormatterContract,
+  config: unknown,
+  bail?: boolean,
+) => Promise<Data>)
