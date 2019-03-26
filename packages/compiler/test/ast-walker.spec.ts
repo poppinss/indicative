@@ -24,7 +24,7 @@ const consumer: NodeConsumer<any[], any> = (
   const initialPaths = resetPaths.concat(dotPath)
 
   if (initialPaths.length) {
-    messageField = field === '*' ? initialPaths.join('.') : `${initialPaths.join('.')}.${field}`
+    messageField = field === 'arr:literal' ? initialPaths.join('.') : `${initialPaths.join('.')}.${field}`
   }
 
   return { rule, field, dotPath, type, message: args[0][messageField][rule.name] }
@@ -364,7 +364,7 @@ test.group('Ast walker', () => {
         {
           child: {
             rule: { name: 'number', args: [] },
-            field: '*',
+            field: 'arr:literal',
             dotPath: [],
             type: 'literal',
             message: 'each item inside code must be number',

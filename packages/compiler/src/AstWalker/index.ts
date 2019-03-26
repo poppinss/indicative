@@ -97,7 +97,7 @@ function arrayNodeConsumer<Output extends any, NodeArgs extends any[]> (
        */
       if (node.each[index].rules.length) {
         rulesExecutor = astWalker(
-          { ['*']: { type: 'literal', rules: node.each[index].rules } },
+          { 'arr:literal': { type: 'literal', rules: node.each[index].rules } },
           nodeArgs,
           nodeConsumer,
           arrayChildWrapper,

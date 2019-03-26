@@ -39,18 +39,16 @@ export class ValidationRunner {
    */
   private _runValidation (data: any, root: DataRoot, config: unknown) {
     let tip = dotProp(data, this._dotPath, this._dotPathLength)
-    let runtimeField = this._field
 
-    if (runtimeField === '*' && root.currentIndex !== undefined) {
-      runtimeField = String(root.currentIndex)
-      tip = { [runtimeField]: tip }
+    if (this._field === 'arr:literal') {
+      tip = { [this._field]: tip }
     }
 
     if (!isObject(tip)) {
       return true
     }
 
-    return this._validation.validate(tip, runtimeField, this._rule.args, this._type, root, config)
+    return this._validation.validate(tip, this._field, this._rule.args, this._type, root, config)
   }
 
   /**
