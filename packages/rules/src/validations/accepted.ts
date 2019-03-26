@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-import { ValidationNode } from 'indicative-compiler'
+import { Validation } from 'indicative-compiler'
 import { skippable } from '../utils'
 import { truthy } from '../raw/truthy'
 import { RulesConfig } from '../Contracts'
@@ -31,7 +31,7 @@ import { RulesConfig } from '../Contracts'
  * }
  * ----
  */
-const validation: ValidationNode = {
+const validation: Validation = {
   async: false,
   validate: (data, field, _args, _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]

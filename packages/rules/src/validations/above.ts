@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-import { ValidationNode } from 'indicative-compiler'
+import { Validation } from 'indicative-compiler'
 import { skippable } from '../utils'
 import { above as isAbove } from '../raw/above'
 import { ArgComparison, RulesConfig } from '../Contracts'
@@ -31,7 +31,7 @@ import { ArgComparison, RulesConfig } from '../Contracts'
  * }
  * ----
  */
-const validation: ValidationNode = {
+const validation: Validation = {
   async: false,
   compile (args: any[]): number[] {
     if (!args[0]) {
