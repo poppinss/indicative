@@ -66,42 +66,6 @@ test.group('Validations | min', () => {
     assert.isFalse(validations.min.validate(data, 'is_admin', args, 'literal', root, config))
   })
 
-  test('skip validation when field is undefined', async (assert) => {
-    const data = {}
-    const field = 'password'
-    const args = [6]
-
-    const result = validations.min.validate(data, field, args, 'literal', root, config)
-    assert.isTrue(result)
-  })
-
-  test('skip validation when field value is explicit undefined', async (assert) => {
-    const data = { password: undefined }
-    const field = 'password'
-    const args = [6]
-
-    const result = validations.min.validate(data, field, args, 'literal', root, config)
-    assert.isTrue(result)
-  })
-
-  test('skip validation when field value is null is strict is false', async (assert) => {
-    const data = { password: null }
-    const field = 'password'
-    const args = [6]
-
-    const result = validations.min.validate(data, field, args, 'literal', root, { existyStrict: false })
-    assert.isTrue(result)
-  })
-
-  test('return false when field value is null is strict is true', async (assert) => {
-    const data = { password: null }
-    const field = 'password'
-    const args = [6]
-
-    const result = validations.min.validate(data, field, args, 'literal', root, { existyStrict: true })
-    assert.isFalse(result)
-  })
-
   test('work fine when length of value of field is greater than defined length', async (assert) => {
     const data = { password: 'foobarbaz' }
     const field = 'password'

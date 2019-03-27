@@ -72,40 +72,4 @@ test.group('Validations | after', () => {
     assert.isFalse(validations.after.validate(data, 'field4', args, 'literal', root, config))
     assert.isFalse(validations.after.validate(data, 'field5', args, 'literal', root, config))
   })
-
-  test('skip validation when dob is not defined', async (assert) => {
-    const data = {}
-    const field = 'dob'
-
-    const args = ['2010-11-20']
-    const result = validations.after.validate(data, field, args, 'literal', root, config)
-    assert.isTrue(result)
-  })
-
-  test('skip validation when dob is explicit undefined', async (assert) => {
-    const data = { dob: undefined }
-    const field = 'dob'
-
-    const args = ['2010-11-20']
-    const result = validations.after.validate(data, field, args, 'literal', root, config)
-    assert.isTrue(result)
-  })
-
-  test('skip validation when dob is null and existy strict is false', async (assert) => {
-    const data = { dob: null }
-    const field = 'dob'
-
-    const args = ['2010-11-20']
-    const result = validations.after.validate(data, field, args, 'literal', root, { existyStrict: false })
-    assert.isTrue(result)
-  })
-
-  test('return false when dob is null and existy strict is true', async (assert) => {
-    const data = { dob: null }
-    const field = 'dob'
-
-    const args = ['2010-11-20']
-    const result = validations.after.validate(data, field, args, 'literal', root, config)
-    assert.isFalse(result)
-  })
 })

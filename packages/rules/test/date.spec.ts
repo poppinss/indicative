@@ -88,40 +88,4 @@ test.group('Validations | date', () => {
     assert.equal((data.dob as Date).getMonth(), 9)
     assert.equal((data.dob as Date).getFullYear(), 2015)
   })
-
-  test('skip validation when field value is undefined', async (assert) => {
-    const data = {}
-    const field = 'dob'
-
-    const args: any[] = []
-    const result = validations.date.validate(data, field, args, 'literal', root, config)
-    assert.isTrue(result)
-  })
-
-  test('skip validation when field value is explicitly undefined', async (assert) => {
-    const data = { dob: undefined }
-    const field = 'dob'
-
-    const args: any[] = []
-    const result = validations.date.validate(data, field, args, 'literal', root, config)
-    assert.isTrue(result)
-  })
-
-  test('skip validation when field value is null and existyStrict is false', async (assert) => {
-    const data = { dob: null }
-    const field = 'dob'
-
-    const args: any[] = []
-    const result = validations.date.validate(data, field, args, 'literal', root, { existyStrict: false })
-    assert.isTrue(result)
-  })
-
-  test('return false when field value is null and existyStrict is true', async (assert) => {
-    const data = { dob: null }
-    const field = 'dob'
-
-    const args: any[] = []
-    const result = validations.date.validate(data, field, args, 'literal', root, config)
-    assert.isFalse(result)
-  })
 })
