@@ -7,10 +7,6 @@
 * file that was distributed with this source code.
 */
 
-export const isNumber = (input: any, strict = false) => {
-  if (strict) {
-    return typeof (input) === 'number' && !isNaN(input)
-  }
-
-  return ['string', 'number'].indexOf(typeof (input)) > -1 && !isNaN(input)
+export const isNumber = (input: number): boolean => {
+  return typeof (input) === 'number' && !isNaN(input)
 }

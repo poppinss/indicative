@@ -7,12 +7,9 @@
 * file that was distributed with this source code.
 */
 
-import { above } from './above'
-
 export const under = (
-  input: number | string,
-  comparsionInput: number | string,
-  strict: boolean = false,
+  input: number,
+  comparsionInput: number,
 ): boolean => {
-  return !above(input, comparsionInput, strict)
+  return input < comparsionInput
 }

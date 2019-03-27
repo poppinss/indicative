@@ -32,14 +32,6 @@ test.group('Validations | above', () => {
     assert.deepEqual(validations.above.compile!(args), [22])
   })
 
-  test('fail when values are in strings and user value is under expected value', async (assert) => {
-    const data = { age: 16 }
-    const field = 'age'
-    const args = ['17']
-
-    assert.isFalse(validations.above.validate(data, field, args, 'literal', root, config))
-  })
-
   test('return false when value of field is less than defined value', async (assert) => {
     const data = { age: 16 }
     const field = 'age'
@@ -54,15 +46,6 @@ test.group('Validations | above', () => {
     const args = [17]
 
     assert.isFalse(validations.above.validate(data, field, args, 'literal', root, config))
-  })
-
-  test('skip validation when field does not exists', async (assert) => {
-    const data = {}
-    const field = 'age'
-    const args = [17]
-
-    const result = validations.above.validate(data, field, args, 'literal', root, config)
-    assert.isTrue(result)
   })
 
   test('work fine when value of field is greater than defined value', async (assert) => {

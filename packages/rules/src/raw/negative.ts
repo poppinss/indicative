@@ -8,6 +8,6 @@
 */
 
 import { positive } from './positive'
-export const negative = (input: string | number, strict: boolean = false) => {
-  return !positive(input, strict)
+export const negative = (input: number): boolean => {
+  return !positive(input)
 }

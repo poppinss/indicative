@@ -116,7 +116,7 @@ test.group('Raw | Types', () => {
   })
 
   test('return true when input is null', (assert) => {
-    assert.isTrue(Is.json(null))
+    assert.isFalse(Is.json(null))
   })
 
   test('return true when input is a string', (assert) => {

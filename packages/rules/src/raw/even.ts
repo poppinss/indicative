@@ -7,10 +7,6 @@
 * file that was distributed with this source code.
 */
 
-export const even = (input: string | number, strict: boolean = false): boolean => {
-  if (strict && typeof (input) !== 'number') {
-    return false
-  }
-
-  return Number(input) % 2 === 0
+export const even = (input: number): boolean => {
+  return input % 2 === 0
 }

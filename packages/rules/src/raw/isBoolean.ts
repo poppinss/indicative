@@ -7,18 +7,11 @@
 * file that was distributed with this source code.
 */
 
-const bools = [true, false, 0, 1]
-const boolsString = ['true', 'false', '0', '1']
-
 /**
  * Returns a boolean telling if value is boolean like
  * string or not. If input is a string, it will be
  * casted to their counterpart booleans.
  */
-export const boolean = (input: any, strict: boolean = false) => {
-  if (strict) {
-    return bools.indexOf(input) > -1
-  }
-
-  return boolsString.indexOf(String(input)) > -1
+export const isBoolean = (input: boolean): boolean => {
+  return typeof (input) === 'boolean'
 }
