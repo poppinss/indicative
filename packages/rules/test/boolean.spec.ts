@@ -39,50 +39,6 @@ test.group('Validations | boolean', () => {
     assert.deepEqual(data, { is_admin: '20' })
   })
 
-  test('skip validation when field does not exists', async (assert) => {
-    const data = {}
-    const field = 'is_admin'
-
-    const args: any[] = []
-    const result = validations.boolean.validate(data, field, args, 'literal', root, config)
-
-    assert.isTrue(result)
-    assert.deepEqual(data, {})
-  })
-
-  test('skip validation when field value is explicit undefined', async (assert) => {
-    const data = { is_admin: undefined }
-    const field = 'is_admin'
-
-    const args: any[] = []
-    const result = validations.boolean.validate(data, field, args, 'literal', root, config)
-
-    assert.isTrue(result)
-    assert.deepEqual(data, { is_admin: undefined })
-  })
-
-  test('skip validation when field value is null and existyStrict is false', async (assert) => {
-    const data = { is_admin: null }
-    const field = 'is_admin'
-
-    const args: any[] = []
-    const result = validations.boolean.validate(data, field, args, 'literal', root, { existyStrict: false })
-
-    assert.isTrue(result)
-    assert.deepEqual(data, { is_admin: null })
-  })
-
-  test('return false when field value is null and existyStrict is true', async (assert) => {
-    const data = { is_admin: null }
-    const field = 'is_admin'
-
-    const args: any[] = []
-    const result = validations.boolean.validate(data, field, args, 'literal', root, config)
-
-    assert.isFalse(result)
-    assert.deepEqual(data, { is_admin: null })
-  })
-
   test('work fine when value is a valid positive boolean', async (assert) => {
     const data = { is_admin: true }
     const field = 'is_admin'
