@@ -25,7 +25,7 @@ const MISSING_VALUES = 'requiredWhen:make sure to define target field and it\'s 
  * // or
  * const rules = {
  *   state: [
- *     rule('required_when', ['country', 'US'])
+ *     rules.requiredWhen(['country', 'US'])
  *   ]
  * }
  * ----

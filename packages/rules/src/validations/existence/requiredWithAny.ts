@@ -17,7 +17,6 @@ const MISSING_VALUES = 'requiredWithAny:make sure to define one or more target f
 /**
  * Ensures the field is required when any of the other fields have non-empty values.
  *
- * [source, js]
  * ----
  * const rules = {
  *   password: 'required_with_any:username,email'
@@ -26,7 +25,7 @@ const MISSING_VALUES = 'requiredWithAny:make sure to define one or more target f
  * // or
  * const rules = {
  *   password: [
- *     rule('required_with_any', ['username', 'email'])
+ *     rules.requiredWithAny(['username', 'email'])
  *   ]
  * }
  * ----
