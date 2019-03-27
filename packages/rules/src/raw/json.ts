@@ -8,6 +8,10 @@
 */
 
 export const json = (input: any): boolean => {
+  if (typeof (input) !== 'string') {
+    return false
+  }
+
   try {
     const output = JSON.parse(input) || {}
     return !!output
