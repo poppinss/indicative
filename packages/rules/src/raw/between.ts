@@ -12,16 +12,9 @@
  * or not. Values will be casted to `Number`.
  */
 export const between = (
-  input: string | number,
-  min: string | number,
-  max: string | number,
-  strict: boolean = false,
+  input: number,
+  min: number,
+  max: number,
 ): boolean => {
-  if (!strict) {
-    input = Number(input)
-    min = Number(min)
-    max = Number(max)
-  }
-
   return (input > min) && (input < max)
 }

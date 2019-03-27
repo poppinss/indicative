@@ -7,10 +7,6 @@
 * file that was distributed with this source code.
 */
 
-export const positive = (input: string | number, strict: boolean = false) => {
-  if (!strict) {
-    input = Number(input)
-  }
-
+export const positive = (input: number): boolean => {
   return input >= 0
 }

@@ -21,7 +21,7 @@ export type CalcKeys =
 export type ArgComparison = [number]
 export type ArgComparisonDate = [Date | string | number]
 export type ArgOffset = [number, CalcKeys]
-export type ArgMinMax = [string | number, string | number]
+export type ArgMinMax = [number, number]
 export type ArgRegex = [RegExp]
 
 export type EmailValidationOptions = {

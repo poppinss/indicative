@@ -9,6 +9,6 @@
 
 import { even } from './even'
 
-export const odd = (input: string | number, strict: boolean = false) => {
-  return !even(input, strict)
+export const odd = (input: number): boolean => {
+  return !even(input)
 }

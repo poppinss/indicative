@@ -8,14 +8,8 @@
 */
 
 /**
- * Tells if `input` is greator than `comparsionInput`. If strings are
- * passed, they will be converted to number.
+ * Tells if `input` is greator than `comparsionInput`.
  */
-export const above = (input: string | number, comparsionInput: string | number, strict = false): boolean => {
-  if (!strict) {
-    input = Number(input)
-    comparsionInput = Number(comparsionInput)
-  }
-
+export const above = (input: number, comparsionInput: number): boolean => {
   return input > comparsionInput
 }

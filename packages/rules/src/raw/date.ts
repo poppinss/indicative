@@ -7,14 +7,6 @@
 * file that was distributed with this source code.
 */
 
-export const date = (input: Date | string, strict = true) => {
-  if (input instanceof Date === true) {
-    return true
-  }
-
-  if (strict) {
-    return false
-  }
-
-  return new Date(input).toString() !== 'Invalid Date'
+export const date = (input: Date): boolean => {
+  return input instanceof Date === true
 }
