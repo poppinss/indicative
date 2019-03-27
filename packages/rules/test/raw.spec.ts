@@ -46,43 +46,17 @@ test.group('Raw | Types', () => {
     assert.isTrue(Is.boolean(false))
   })
 
-  test('return true when input is a numeric true/false state', (assert) => {
-    assert.isTrue(Is.boolean(1))
-    assert.isTrue(Is.boolean(0))
-  })
-
-  test('return false when input is a string and strict is true', (assert) => {
-    assert.isFalse(Is.boolean('true', true))
-    assert.isFalse(Is.boolean('false', true))
-    assert.isFalse(Is.boolean('0', true))
-    assert.isFalse(Is.boolean('1', true))
-  })
-
-  test('return false when input is a string and strict is false', (assert) => {
-    assert.isTrue(Is.boolean('true', false))
-    assert.isTrue(Is.boolean('false', false))
-    assert.isTrue(Is.boolean('0', false))
-    assert.isTrue(Is.boolean('1', false))
-  })
-
-  test('return false when input is a string and not a valid boolean string', (assert) => {
-    assert.isFalse(Is.boolean('virk', false))
+  test('return false when input is a numeric true/false state', (assert) => {
+    assert.isFalse((Is.boolean as any)(1))
+    assert.isFalse((Is.boolean as any)(0))
   })
 
   test('return true when input is a date', (assert) => {
     assert.isTrue(Is.date(new Date()))
   })
 
-  test('return true when input is string representation of date @nonstrict', (assert) => {
-    assert.isTrue(Is.date('2015-11-30', false))
-  })
-
-  test('return false when input is invalid string representation of date', (assert) => {
-    assert.isFalse(Is.date('2015-11-40'))
-  })
-
-  test('should not convert date string to instance when strict is enabled', (assert) => {
-    assert.isFalse(Is.date('2015-11-30', true))
+  test('return false when input is a date like string', (assert) => {
+    assert.isFalse((Is.date as any)('2015-11-30'))
   })
 
   test('return true when input is a function', (assert) => {
@@ -110,34 +84,19 @@ test.group('Raw | Types', () => {
   })
 
   test('return true when input is a number', (assert) => {
-    assert.isTrue(Is.isNumber(10, true))
+    assert.isTrue(Is.isNumber(10))
   })
 
   test('return false when input is NaN', (assert) => {
-    assert.isFalse(Is.isNumber(NaN, true))
+    assert.isFalse(Is.isNumber(NaN))
   })
 
   test('return true when input is constructed using Number method', (assert) => {
-    assert.isTrue(Is.isNumber(Number('10'), true))
+    assert.isTrue(Is.isNumber(Number('10')))
   })
 
-  test('return false when input is a string and strict is enabled', (assert) => {
-    assert.isFalse(Is.isNumber('10', true))
-  })
-
-  test('return true when input is a string representation of a number', (assert) => {
-    assert.isTrue(Is.isNumber('10', false))
-  })
-
-  test('return false when input is not a string representation of a number', (assert) => {
-    assert.isFalse(Is.isNumber('virk', false))
-  })
-
-  test('return false when input is not a string or number', (assert) => {
-    assert.isFalse(Is.isNumber(true))
-    assert.isFalse(Is.isNumber(false))
-    assert.isFalse(Is.isNumber([]))
-    assert.isFalse(Is.isNumber({}))
+  test('return false when input is a string', (assert) => {
+    assert.isFalse((Is.isNumber as any)('10'))
   })
 
   test('return true when input is an object', (assert) => {
@@ -446,15 +405,11 @@ test.group('Raw | Arthmetic', () => {
   })
 
   test('return false when input is not a number', (assert) => {
-    assert.isFalse(Is.even('hello'))
+    assert.isFalse((Is.even as any)('hello'))
   })
 
-  test('return true when is a number like string and strict is false', (assert) => {
-    assert.isTrue(Is.even('10'))
-  })
-
-  test('return false when is a number like string and strict is true', (assert) => {
-    assert.isFalse(Is.even('10', true))
+  test('return true when is a number like string', (assert) => {
+    assert.isTrue((Is.even as any)('10'))
   })
 
   test('return false when input is not a odd number', (assert) => {
