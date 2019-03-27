@@ -7,8 +7,8 @@
 * file that was distributed with this source code.
 */
 
+import { skippable } from 'indicative-utils'
 import { Validation } from 'indicative-compiler'
-import { skippable } from '../../utils'
 import { RulesConfig } from '../../Contracts'
 
 /**
@@ -31,7 +31,7 @@ const validation: Validation = {
   async: false,
   validate: (data, field, _args, _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
-    return skippable(fieldValue, config) || Array.isArray(fieldValue)
+    return skippable(fieldValue, field, config) || Array.isArray(fieldValue)
   },
 }
 
