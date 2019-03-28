@@ -1,7 +1,7 @@
 {
   "name": "indicative-utils",
   "version": "5.0.8",
-  "description": "Utilities for indicative",
+  "description": "Utilities used by other Indicative packages",
   "main": "build/index.js",
   "files": [
     "build/src",
@@ -18,7 +18,7 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "keywords": [
-    "parser",
+    "utils",
     "indicative"
   ],
   "author": "virk",
@@ -37,7 +37,8 @@
     ]
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "tag": "latest",
   },
   "bugs": {
     "url": "https://github.com/poppinss/indicative/issues"
