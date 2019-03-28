@@ -1,7 +1,7 @@
 {
   "name": "indicative-compiler",
   "version": "5.0.8",
-  "description": "Fluent data validator",
+  "description": "Compiles parser tree into array of top level functions",
   "main": "build/index.js",
   "files": [
     "build/src",
@@ -25,7 +25,7 @@
   "homepage": "https://indicative.adonisjs.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/poppinss/indicative/tree/master/packages/indicative.git"
+    "url": "git+https://github.com/poppinss/indicative/tree/master/packages/compiler.git"
   },
   "license": "MIT",
   "nyc": {
@@ -37,15 +37,14 @@
     ]
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "tag": "latest"
   },
   "bugs": {
     "url": "https://github.com/poppinss/indicative/issues"
   },
   "devDependencies": {
-    "indicative-parser": "^5.0.8"
-  },
-  "dependencies": {
+    "indicative-parser": "^5.0.8",
     "pope": "^2.0.2"
   }
 }
