@@ -1,0 +1,51 @@
+{
+  "name": "indicative-formatters",
+  "version": "5.0.8",
+  "description": "Error formatters for Indicative",
+  "main": "build/index.js",
+  "files": [
+    "build/src",
+    "build/index.js",
+    "build/index.d.ts"
+  ],
+  "scripts": {
+    "pretest": "npm run lint",
+    "test": "nyc node japaFile.js",
+    "lint": "tslint --project tsconfig.json",
+    "clean": "del build",
+    "compile": "npm run lint && npm run clean && webpack",
+    "build": "npm run compile",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
+  },
+  "keywords": [
+    "parser",
+    "indicative"
+  ],
+  "author": "virk",
+  "homepage": "https://indicative.adonisjs.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/poppinss/indicative/tree/master/packages/indicative-formatters.git"
+  },
+  "license": "MIT",
+  "nyc": {
+    "exclude": [
+      "test"
+    ],
+    "extension": [
+      ".ts"
+    ]
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/poppinss/indicative/issues"
+  },
+  "peerDependencies": {
+    "indicative-compiler": "^5.x.x"
+  },
+  "devDependencies": {
+    "indicative-compiler": "^5.0.8"
+  }
+}
