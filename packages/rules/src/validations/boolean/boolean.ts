@@ -8,7 +8,7 @@
 */
 
 import { Validation } from 'indicative-compiler'
-import { casts, skippable } from 'indicative-utils'
+import { casts, skippable, patchValue } from 'indicative-utils'
 
 import { RulesConfig } from '../../Contracts'
 
@@ -64,7 +64,7 @@ import { RulesConfig } from '../../Contracts'
 const validation: Validation = {
   async: false,
 
-  validate: (data, field, _args, _type, _root, config: RulesConfig) => {
+  validate: (data, field, _args, _type, root, config: RulesConfig) => {
     const fieldValue = data[field]
     if (skippable(fieldValue, field, config)) {
       return true
@@ -75,7 +75,7 @@ const validation: Validation = {
       return false
     }
 
-    data[field] = castedValue
+    patchValue(data, field, castedValue, root)
     return true
   },
 }

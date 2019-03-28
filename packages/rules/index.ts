@@ -9,7 +9,6 @@
 
 import * as validations from './src/validations'
 import * as is from './src/raw'
-import * as sanitizations from './src/sanitizations'
-
 export { RulesConfig } from './src/Contracts'
-export { validations, is, sanitizations }
+
+export { validations, is }
