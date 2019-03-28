@@ -35,7 +35,8 @@
   },
   "dependencies": {
     "indicative-compiler": "^5.0.8",
-    "indicative-rules": "^5.0.8"
+    "indicative-rules": "^5.0.8",
+    "indicative-formatters": "^5.0.8"
   },
   "devDependencies": {
     "benchmark": "^2.1.4"
