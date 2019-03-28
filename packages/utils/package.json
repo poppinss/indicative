@@ -38,7 +38,7 @@
   },
   "publishConfig": {
     "access": "public",
-    "tag": "latest",
+    "tag": "latest"
   },
   "bugs": {
     "url": "https://github.com/poppinss/indicative/issues"
