@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-import { skippable, args as argsValidator } from 'indicative-utils'
+import { skippable, ensureLength, cast } from 'indicative-utils'
 import { Validation } from 'indicative-compiler'
 
 import { after } from '../../raw/after'
@@ -39,9 +39,9 @@ const validation: Validation = {
   async: false,
 
   compile (args: any[]): any[] {
-    argsValidator.ensureLength(args, MISSING_VALUE, 1)
+    ensureLength(args, MISSING_VALUE, 1)
 
-    const afterDate = argsValidator.changeType(args[0], 'date', INVALID_TYPE)
+    const afterDate = cast(args[0], 'date', INVALID_TYPE)
     return [afterDate]
   },
 

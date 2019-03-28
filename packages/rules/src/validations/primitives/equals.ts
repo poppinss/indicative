@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-import { args as argsValidator, skippable } from 'indicative-utils'
+import { ensureLength, skippable } from 'indicative-utils'
 import { Validation } from 'indicative-compiler'
 
 import { RulesConfig } from '../../Contracts'
@@ -37,7 +37,7 @@ const validation: Validation = {
   async: false,
 
   compile (args): any[] {
-    argsValidator.ensureLength(args, MISSING_VALUE, 1)
+    ensureLength(args, MISSING_VALUE, 1)
     return [args[0]]
   },
 

@@ -8,7 +8,7 @@
 */
 
 import { Validation } from 'indicative-compiler'
-import { casts, skippable, patchValue } from 'indicative-utils'
+import { cast, skippable, patchValue } from 'indicative-utils'
 
 import { RulesConfig } from '../../Contracts'
 
@@ -70,7 +70,7 @@ const validation: Validation = {
       return true
     }
 
-    const castedValue = casts.toBoolean(fieldValue)
+    const castedValue = cast(fieldValue, 'boolean')
     if (castedValue === null) {
       return false
     }

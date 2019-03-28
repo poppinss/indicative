@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-import { args as argsValidator } from 'indicative-utils'
+import { ensureLength } from 'indicative-utils'
 import { Validation } from 'indicative-compiler'
 
 import { empty } from '../../raw/empty'
@@ -35,7 +35,7 @@ const validation: Validation = {
   async: false,
 
   compile (args): any[] {
-    argsValidator.ensureLength(args, MISSING_VALUES, 1)
+    ensureLength(args, MISSING_VALUES, 1)
     return args.map((arg) => String(arg))
   },
 
