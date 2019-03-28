@@ -44,6 +44,7 @@
     "url": "https://github.com/poppinss/indicative/issues"
   },
   "devDependencies": {
+    "benchmark": "^2.1.4",
     "indicative-parser": "^5.0.8",
     "pope": "^2.0.2"
   }
