@@ -7,8 +7,11 @@
 * file that was distributed with this source code.
 */
 
-export function ensureLength (args: any[], message: string, expectedLength = 1): void {
-  if (args.length < expectedLength) {
+/**
+ * Raises exception if length of args array is less than the expected length
+ */
+export function ensureLength (args: any[], message: string, minLength = 1): void {
+  if (args.length < minLength) {
     throw new Error(message)
   }
 }

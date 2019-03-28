@@ -7,7 +7,15 @@
 * file that was distributed with this source code.
 */
 
-export const skippable = (value: any, fieldName: string, config: { existyStrict: boolean }): boolean => {
+/**
+ * Returns a boolean telling whether the value must be skipped
+ * from validations or not based upon the `existyStrict` config
+ */
+export const skippable = (
+  value: any,
+  fieldName: string,
+  config: { existyStrict: boolean },
+): boolean => {
   /**
    * Literal values inside arrays are never skippable
    */
