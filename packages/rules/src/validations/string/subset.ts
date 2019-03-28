@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-import { skippable, args as argsValidator, casts } from 'indicative-utils'
+import { skippable, args as argsValidator, casts, patchValue } from 'indicative-utils'
 import { Validation } from 'indicative-compiler'
 
 import { subset } from '../../raw/subset'
@@ -54,7 +54,7 @@ const validation: Validation = {
     return args.map((arg) => casts.toString(arg))
   },
 
-  validate: (data, field, args, _type, _root, config: RulesConfig) => {
+  validate: (data, field, args, _type, root, config: RulesConfig) => {
     let fieldValue = data[field]
     if (skippable(fieldValue, field, config)) {
       return true
@@ -78,7 +78,7 @@ const validation: Validation = {
     /**
      * Mutate data field
      */
-    data[field] = fieldValue
+    patchValue(data, field, fieldValue, root)
     return true
   },
 }

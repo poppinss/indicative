@@ -86,6 +86,7 @@ test.group('Validations | subset', () => {
     assert.isFalse(validations.subset.validate(data, 'field1', args, 'literal', root, config))
     assert.isFalse(validations.subset.validate(data, 'field2', args, 'literal', root, config))
     assert.isFalse(validations.subset.validate(data, 'field3', args, 'literal', root, config))
+
     assert.deepEqual(data, {
       field1: true,
       field2: new Date(),
