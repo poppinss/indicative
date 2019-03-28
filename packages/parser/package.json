@@ -1,7 +1,7 @@
 {
   "name": "indicative-parser",
   "version": "5.0.8",
-  "description": "Parser for indicative rules and messages schema",
+  "description": "Rules and messages schema parser for Indicative",
   "main": "build/index.js",
   "files": [
     "build/src",
@@ -25,7 +25,7 @@
   "homepage": "https://indicative.adonisjs.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/poppinss/indicative/tree/master/packages/indicative-parser.git"
+    "url": "git+https://github.com/poppinss/indicative/tree/master/packages/parser.git"
   },
   "license": "MIT",
   "nyc": {
@@ -37,7 +37,8 @@
     ]
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "tag": "latest"
   },
   "bugs": {
     "url": "https://github.com/poppinss/indicative/issues"
