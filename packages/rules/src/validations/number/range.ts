@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-import { args as argsValidator, skippable } from 'indicative-utils'
+import { ensureLength, skippable, cast } from 'indicative-utils'
 import { Validation } from 'indicative-compiler'
 
 import { between } from '../../raw/between'
@@ -36,10 +36,10 @@ const validation: Validation = {
   async: false,
 
   compile (args): any[] {
-    argsValidator.ensureLength(args, MISSING_VALUES, 2)
+    ensureLength(args, MISSING_VALUES, 2)
 
-    const min = argsValidator.changeType(args[0], 'number', INVALID_TYPE)
-    const max = argsValidator.changeType(args[1], 'number', INVALID_TYPE)
+    const min = cast(args[0], 'number', INVALID_TYPE)
+    const max = cast(args[1], 'number', INVALID_TYPE)
 
     return [min, max]
   },

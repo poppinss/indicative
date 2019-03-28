@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-import { skippable, casts } from 'indicative-utils'
+import { skippable, cast } from 'indicative-utils'
 import { Validation } from 'indicative-compiler'
 
 import { same } from '../../raw/same'
@@ -15,11 +15,11 @@ import { RulesConfig } from '../../Contracts'
 
 function castType (input: any, type: string): any {
   if (type === 'string') {
-    return String(input)
+    return cast(input, 'string')
   }
 
   if (type === 'number') {
-    return casts.toNumber(input)
+    return cast(input, 'number')
   }
 
   return input
@@ -60,7 +60,7 @@ const validation: Validation = {
 
     /**
      * Cast type of comparison value when types are different. This is important
-     * since the end-user is no way to cast type of confirmed field. For example:
+     * since the end-user has no way to cast type of confirmed field. For example:
      *
      * 1. Add `number` rule to the `pincode` field, which will cast the pincode to `number`.
      * 2. Also add `confirmed` rule to `pincode`, now you cannot cast it's value, so we

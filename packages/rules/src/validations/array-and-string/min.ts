@@ -8,7 +8,7 @@
 */
 
 import { Validation } from 'indicative-compiler'
-import { skippable, args as argsValidator } from 'indicative-utils'
+import { skippable, cast, ensureLength } from 'indicative-utils'
 
 import { ArgComparison, RulesConfig } from '../../Contracts'
 
@@ -38,8 +38,9 @@ const validation: Validation = {
   async: false,
 
   compile (args): any[] {
-    argsValidator.ensureLength(args, MISSING_VALUE, 1)
-    const minLength = argsValidator.changeType(args[0], 'number', INVALID_TYPE)
+    ensureLength(args, MISSING_VALUE, 1)
+
+    const minLength = cast(args[0], 'number', INVALID_TYPE)
     return [minLength]
   },
 

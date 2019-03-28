@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-import { args as argsValidator, skippable } from 'indicative-utils'
+import { ensureLength, cast, skippable } from 'indicative-utils'
 import { Validation } from 'indicative-compiler'
 import { allowedCalcKeys } from '../../utils'
 import { ArgOffset, RulesConfig } from '../../Contracts'
@@ -49,10 +49,10 @@ const validation: Validation = {
   async: false,
 
   compile (args: any[]): any[] {
-    argsValidator.ensureLength(args, MISSING_VALUES, 2)
-    const diffUnit = argsValidator.changeType(args[0], 'number', INVALID_AFTER_UNIT)
-    const key = args[1]
+    ensureLength(args, MISSING_VALUES, 2)
+    const diffUnit = cast(args[0], 'number', INVALID_AFTER_UNIT)
 
+    const key = args[1]
     if (!allowedCalcKeys.includes(key)) {
       throw new Error(INVALID_AFTER_KEY)
     }

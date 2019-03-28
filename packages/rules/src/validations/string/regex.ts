@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-import { skippable, args as argsValidator } from 'indicative-utils'
+import { skippable, ensureLength } from 'indicative-utils'
 import { Validation } from 'indicative-compiler'
 
 import { ArgRegex, RulesConfig } from '../../Contracts'
@@ -40,7 +40,8 @@ const validation: Validation = {
   async: false,
 
   compile (args): ArgRegex {
-    argsValidator.ensureLength(args, MISSING_VALUE, 1)
+    ensureLength(args, MISSING_VALUE, 1)
+
     const expression = args[0] instanceof RegExp ? args[0] : new RegExp(args[0], args[1])
     return [expression]
   },

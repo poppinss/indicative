@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-import { args as argsValidator, skippable } from 'indicative-utils'
+import { ensureLength, cast, skippable } from 'indicative-utils'
 import { Validation } from 'indicative-compiler'
 
 import { above as isAbove } from '../../raw/above'
@@ -41,8 +41,8 @@ const validation: Validation = {
   async: false,
 
   compile (args: any[]): number[] {
-    argsValidator.ensureLength(args, MISSING_VALUE, 1)
-    const minValue = argsValidator.changeType(args[0], 'number', INVALID_TYPE)
+    ensureLength(args, MISSING_VALUE, 1)
+    const minValue = cast(args[0], 'number', INVALID_TYPE) as number
     return [minValue]
   },
 

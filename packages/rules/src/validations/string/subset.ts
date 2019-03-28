@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-import { skippable, args as argsValidator, casts, patchValue } from 'indicative-utils'
+import { skippable, ensureLength, cast, patchValue } from 'indicative-utils'
 import { Validation } from 'indicative-compiler'
 
 import { subset } from '../../raw/subset'
@@ -50,8 +50,8 @@ const validation: Validation = {
   async: false,
 
   compile (args): any[] {
-    argsValidator.ensureLength(args, MISSING_VALUE, 1)
-    return args.map((arg) => casts.toString(arg))
+    ensureLength(args, MISSING_VALUE, 1)
+    return args.map((arg) => cast(arg, 'string'))
   },
 
   validate: (data, field, args, _type, root, config: RulesConfig) => {
@@ -66,7 +66,7 @@ const validation: Validation = {
     if (isString(fieldValue)) {
       fieldValue = fieldValue.split(',').map((val: string) => val.trim())
     } else if (Array.isArray(fieldValue)) {
-      fieldValue = fieldValue.map((value) => casts.toString(value))
+      fieldValue = fieldValue.map((value) => cast(value, 'string'))
     } else {
       return false
     }

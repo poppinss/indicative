@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-import { casts, skippable, patchValue } from 'indicative-utils'
+import { cast, skippable, patchValue } from 'indicative-utils'
 import { Validation } from 'indicative-compiler'
 import { RulesConfig } from '../../Contracts'
 
@@ -46,7 +46,7 @@ const validation: Validation = {
     /**
      * Ensure value is castable to number
      */
-    const castedValue = casts.toNumber(fieldValue)
+    const castedValue = cast(fieldValue, 'number')
     if (castedValue === null) {
       return false
     }
