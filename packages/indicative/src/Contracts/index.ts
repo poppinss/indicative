@@ -9,9 +9,7 @@
 
 import { RulesConfig } from 'indicative-rules'
 
-export type Config = RulesConfig & {
-}
-
+export type Config = RulesConfig
 export type ValidationOptions = Config & {
   cacheKey: string,
 }
