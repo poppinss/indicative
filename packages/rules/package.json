@@ -1,6 +1,6 @@
 {
   "name": "indicative-rules",
-  "version": "5.0.8",
+  "version": "6.0.0",
   "description": "Collection of validation and raw rules for Indicative",
   "main": "build/index.js",
   "files": [
@@ -45,9 +45,9 @@
     "url": "https://github.com/poppinss/indicative/issues"
   },
   "devDependencies": {
-    "indicative-compiler": "^5.0.8",
-    "indicative-parser": "^5.0.8",
-    "indicative-utils": "^5.0.8"
+    "indicative-compiler": "^6.0.0",
+    "indicative-parser": "^6.0.0",
+    "indicative-utils": "^6.0.0"
   },
   "dependencies": {
     "date-fns": "^1.30.1",

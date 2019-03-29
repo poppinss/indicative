@@ -1,6 +1,6 @@
 {
   "name": "indicative-parser",
-  "version": "5.0.8",
+  "version": "6.0.0",
   "description": "Rules and messages schema parser for Indicative",
   "main": "build/index.js",
   "files": [
