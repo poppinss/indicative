@@ -44,7 +44,7 @@
     "url": "https://github.com/poppinss/indicative/issues"
   },
   "peerDependencies": {
-    "indicative-compiler": "^5.x.x"
+    "indicative-compiler": "6.x.x"
   },
   "devDependencies": {
     "indicative-compiler": "^6.0.0"
