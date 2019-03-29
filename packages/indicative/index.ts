@@ -13,6 +13,9 @@ import { DataNode, Schema, Messages } from 'indicative-compiler'
 
 const validator = new Validator()
 
+/**
+ * Validate user data and stop on first validation failure.
+ */
 export function validate<Data extends DataNode> (
   data: Data,
   rules: Schema,
@@ -22,6 +25,10 @@ export function validate<Data extends DataNode> (
   return validator.validate(data, rules, messages || {}, options || {})
 }
 
+/**
+ * Validate user data and continue even when validation
+ * fails
+ */
 export function validateAll<Data extends DataNode> (
   data: Data,
   rules: Schema,
@@ -30,3 +37,5 @@ export function validateAll<Data extends DataNode> (
 ) {
   return validator.validateAll(data, rules, messages || {}, options || {})
 }
+
+export { is, rules } from 'indicative-rules'
