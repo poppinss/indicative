@@ -9,8 +9,8 @@
 <br />
 
 <div align="center">
-  <a href="https://travis-ci.org/poppinss/indicative">
-    <img src="https://img.shields.io/travis/poppinss/indicative.svg?style=for-the-badge" alt="Travis" />
+  <a href="https://circleci.com/gh/poppinss/indicative">
+    <img src="https://img.shields.io/circleci/project/github/poppinss/indicative.svg?style=flat-square" alt="Travis" />
   </a>
   <a href="https://www.npmjs.com/package/indicative">
     <img src="https://img.shields.io/npm/dt/indicative.svg?style=for-the-badge" alt="Downloads" />
@@ -18,10 +18,6 @@
 </div>
 
 <br />
-
-<div align="center">
-  <img src="https://saucelabs.com/browser-matrix/indicative.svg" alt="">
-</div>
 
 <div align="center">
   <h3>
