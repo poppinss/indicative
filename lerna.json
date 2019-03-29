@@ -2,12 +2,15 @@
   "packages": [
     "packages/*"
   ],
-  "version": "5.0.8",
+  "version": "6.0.0",
   "command": {
     "publish": {
       "conventionalCommits": true,
       "message": "chore(release): publish",
-      "ignoreChanges": ["CHANGELOG.md", "package-lock.json"]
+      "ignoreChanges": [
+        "CHANGELOG.md",
+        "package-lock.json"
+      ]
     }
   }
 }

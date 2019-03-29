@@ -1,6 +1,6 @@
 {
   "name": "indicative-compiler",
-  "version": "5.0.8",
+  "version": "6.0.0",
   "description": "Compiles parser tree into array of top level functions",
   "main": "build/index.js",
   "files": [
@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "benchmark": "^2.1.4",
-    "indicative-parser": "^5.0.8",
+    "indicative-parser": "^6.0.0",
     "pope": "^2.0.2"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "indicative-formatters",
-  "version": "5.0.8",
+  "version": "6.0.0",
   "description": "Error formatters for Indicative",
   "main": "build/index.js",
   "files": [
@@ -47,6 +47,6 @@
     "indicative-compiler": "^5.x.x"
   },
   "devDependencies": {
-    "indicative-compiler": "^5.0.8"
+    "indicative-compiler": "^6.0.0"
   }
 }

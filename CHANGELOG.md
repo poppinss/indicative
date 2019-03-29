@@ -1,3 +1,60 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# [6.0.0](https://github.com/poppinss/indicative/compare/v5.0.8...v6.0.0) (2019-03-29)
+
+
+### Bug Fixes
+
+* fix exports from main module ([9970e95](https://github.com/poppinss/indicative/commit/9970e95))
+* **indicative:** broken package.json file ([a887131](https://github.com/poppinss/indicative/commit/a887131))
+* **parser:** ensure rules string is defined and not empty ([a5e34d8](https://github.com/poppinss/indicative/commit/a5e34d8))
+* **parser:** handle object schema nodes properly ([cfad4ae](https://github.com/poppinss/indicative/commit/cfad4ae))
+* **webpack:** define globalObject ([ab242c4](https://github.com/poppinss/indicative/commit/ab242c4))
+
+
+### Code Refactoring
+
+* **parser:** rename schemaParser to rulesParser ([987dc8d](https://github.com/poppinss/indicative/commit/987dc8d))
+* **utils:** move cast functions to a single method `cast` ([758e5da](https://github.com/poppinss/indicative/commit/758e5da))
+
+
+### Features
+
+* **compiler:** add support for validation compile method ([f074c24](https://github.com/poppinss/indicative/commit/f074c24))
+* **compiler:** expose compiler config ([2812125](https://github.com/poppinss/indicative/commit/2812125))
+* **compiler:** implement compiler ([bd4e532](https://github.com/poppinss/indicative/commit/bd4e532))
+* **formatters:** add vanilla formatter ([433000d](https://github.com/poppinss/indicative/commit/433000d))
+* **indicative:** export global validator ([ee7802c](https://github.com/poppinss/indicative/commit/ee7802c))
+* **indicative:** initiate validator ([80a6712](https://github.com/poppinss/indicative/commit/80a6712))
+* **parser:** add messages parser ([e3e185a](https://github.com/poppinss/indicative/commit/e3e185a))
+* **parser:** add support for indexed arrays ([7aa1224](https://github.com/poppinss/indicative/commit/7aa1224))
+* **rules:** add raw validation rules ([23da296](https://github.com/poppinss/indicative/commit/23da296))
+* move parser to it's own package ([3552632](https://github.com/poppinss/indicative/commit/3552632))
+* use typescript & drop support for browsers ([9f07821](https://github.com/poppinss/indicative/commit/9f07821))
+* validate subset arrays ([b1cd13a](https://github.com/poppinss/indicative/commit/b1cd13a))
+* **rules:** add sanitizations ([57b6553](https://github.com/poppinss/indicative/commit/57b6553))
+* **rules:** add validations ([6ae7b0b](https://github.com/poppinss/indicative/commit/6ae7b0b))
+* **sanitizations:** add lowerCase and upperCase method ([#211](https://github.com/poppinss/indicative/issues/211)) ([7329a2e](https://github.com/poppinss/indicative/commit/7329a2e))
+* **utils:** add patchValue method to mutate data values ([84a0f56](https://github.com/poppinss/indicative/commit/84a0f56))
+
+
+### BREAKING CHANGES
+
+* **utils:** Remove individual cast functions in favor of
+`cast` method
+* **parser:** schema is a generic name for any schema and rules
+is a more appropriate name for the parser that parser rules
+* **parser:** messages tree is similar to schema tree and hence
+we need to rename `rules` property to `rhs` for a generic name
+* Removed support for browsers
+
+
+
+
+
 <a name="5.0.8"></a>
 ## [5.0.8](https://github.com/poppinss/indicative/compare/v5.0.7...v5.0.8) (2018-08-15)
 
@@ -324,6 +381,3 @@ array of errors
 * **package:** added commitizen ([c8c319d](https://github.com/poppinss/indicative/commit/c8c319d))
 * **sanitizaor:** Added extend method to add sanitization filters ([dc11f5a](https://github.com/poppinss/indicative/commit/dc11f5a))
 * **sanitizations:** Added support for sanitizations ([ee33244](https://github.com/poppinss/indicative/commit/ee33244))
-
-
-
