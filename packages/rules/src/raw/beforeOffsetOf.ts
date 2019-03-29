@@ -9,7 +9,7 @@
 
 import { before } from './before'
 import { calcUnits } from '../utils'
-import { CalcKeys } from '../contracts'
+import { CalcKeys } from '../Contracts'
 
 /**
  * Returns a boolean telling if input date is before the given
