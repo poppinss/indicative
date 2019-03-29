@@ -1,26 +1,5 @@
 version: 2
 jobs:
-  build:
-    working_directory: ~/indicative
-
-    docker:
-      - image: circleci/node:10.0.0
-
-    steps:
-      - checkout
-      - run:
-        name: Trigger tests
-        command: |
-          function trigger_job() {
-            job_name=$1
-            curl -u ${CIRCLE_API_TOKEN}: \
-              -d build_parameters[CIRCLE_JOB]=${job_name} \
-              -d revision=$CIRCLE_SHA1 \
-              https://circleci.com/api/v1.1/project/github/poppinss/indicative/tree/$CIRCLE_BRANCH
-          }
-          trigger_job: build-node-latest
-          trigger_job: build-node-10
-
   build-node-10:
     docker:
      - image: circleci/node:10.0.0
@@ -52,3 +31,10 @@ jobs:
         - node_modules
       key: v1-dependencies-{{ checksum "package.json" }}
     - run: npm test
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build-node-latest
+      - build-node-10
