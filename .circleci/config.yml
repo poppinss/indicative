@@ -1,33 +1,54 @@
 version: 2
 jobs:
   build:
+    working_directory: ~/indicative
+
     docker:
-      # specify the version you desire here
       - image: circleci/node:10.0.0
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/repo
 
     steps:
       - checkout
+      - run:
+          name: Trigger tests
+          command: |
+            function trigger_job() {
+              job_name=$1
+              curl -u ${CIRCLE_API_TOKEN}: \
+                -d build_parameters[CIRCLE_JOB]=${job_name} \
+                -d revision=$CIRCLE_SHA1 \
+                https://circleci.com/api/v1.1/project/github/poppinss/indicative/tree/$CIRCLE_BRANCH
+            }
+          trigger_job: build-node-latest
+          trigger_job: build-node-10
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+  build-node-10:
+    docker:
+     - image: circleci/node:10.0.0
+    working_directory: ~/indicative
+    steps:
+    - restore_cache:
+      keys:
+        - v1-dependencies-{{ checksum "package.json" }}
+        - v1-dependencies-
+    - run: npm install
+    - save_cache:
+      paths:
+        - node_modules
+      key: v1-dependencies-{{ checksum "package.json" }}
+    - run: npm test
 
-      - run: npm install
-
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-
-      # run tests!
-      - run: npm test
+  build-node-latest:
+    docker:
+     - image: circleci/node:latest
+    working_directory: ~/indicative
+    steps:
+    - restore_cache:
+      keys:
+        - v1-dependencies-{{ checksum "package.json" }}
+        - v1-dependencies-
+    - run: npm install
+    - save_cache:
+      paths:
+        - node_modules
+      key: v1-dependencies-{{ checksum "package.json" }}
+    - run: npm test
