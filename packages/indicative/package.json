@@ -1,6 +1,6 @@
 {
   "name": "indicative",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "Simple yet powerful data validation library for Nodejs",
   "main": "build/index.js",
   "files": [
@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "indicative-compiler": "^6.0.0",
-    "indicative-formatters": "^6.0.0",
+    "indicative-formatters": "^6.0.1",
     "indicative-rules": "^6.0.0"
   },
   "devDependencies": {
