@@ -42,7 +42,15 @@ const validation: Validation = {
 
   validate: (data, field, [substring]: [string], _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
-    return skippable(fieldValue, field, config) || fieldValue.endsWith(substring)
+    if (skippable(fieldValue, field, config)) {
+      return true
+    }
+
+    if (typeof (fieldValue) !== 'string') {
+      return false
+    }
+
+    return fieldValue.endsWith(substring)
   },
 }
 

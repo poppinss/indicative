@@ -8,8 +8,7 @@
 */
 
 import { addMonths, addDays, addMilliseconds } from 'date-fns'
-import { existy } from './raw/existy'
-import { CalcKeys, RulesConfig } from '../src/Contracts'
+import { CalcKeys } from '../src/Contracts'
 
 const viaMonths = {
   years: (unit: number) => unit * 12,
@@ -29,17 +28,11 @@ const viaMilliseconds = {
   milliseconds: (unit: number) => unit,
 }
 
-export const skippable = (value: any, config: RulesConfig): boolean => {
-  return config.existyStrict ? value === undefined : !existy(value)
-}
-
 /**
  * The job of this method is to ensure that we pull less dependencies from
  * date-fns.
  */
-export const calcUnits = (diffUnit: number | string, key: CalcKeys, operator: string) => {
-  diffUnit = Number(diffUnit)
-
+export const calcUnits = (diffUnit: number, key: CalcKeys, operator: string) => {
   if (viaMonths[key]) {
     return addMonths(new Date(), operator === '-' ? -viaMonths[key](diffUnit) : viaMonths[key](diffUnit))
   }

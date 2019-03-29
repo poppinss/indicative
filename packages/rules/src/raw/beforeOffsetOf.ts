@@ -1,5 +1,5 @@
 /*
-* indicative
+* indicative-rules
 *
 * (c) Harminder Virk <virk@adonisjs.com>
 *
@@ -12,12 +12,33 @@ import { calcUnits } from '../utils'
 import { CalcKeys } from '../contracts'
 
 /**
- * Returns a boolean telling if date before the
- * given offset
+ * Returns a boolean telling if input date is before the given
+ * offset or not.
+ *
+ * The `key` has to be one of the following values.
+ *
+ * - years
+ * - quarters
+ * - months
+ * - weeks
+ * - days
+ * - hours
+ * - minutes
+ * - seconds
+ * - milliseconds
+ *
+ * @example
+ * ```js
+ * const { is } = require('indicative')
+ * const inputDate = new Date().setDate(new Date().getDate() - 11)
+ *
+ * if (is.beforeOffsetOf(inputDate, 10, 'days')) {
+ * }
+ * ```
  */
 export const beforeOffsetOf = (
   input: Date | string | number,
-  diffUnit: string | number,
+  diffUnit: number,
   key: CalcKeys,
 ): boolean => {
   const expectedDate = calcUnits(diffUnit, key, '-')

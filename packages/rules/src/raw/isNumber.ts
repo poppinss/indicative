@@ -7,6 +7,6 @@
 * file that was distributed with this source code.
 */
 
-export const isNumber = (input: number): boolean => {
+export const isNumber = (input: any): boolean => {
   return typeof (input) === 'number' && !isNaN(input)
 }

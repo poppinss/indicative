@@ -1,5 +1,5 @@
 /*
-* indicative
+* indicative-rules
 *
 * (c) Harminder Virk <virk@adonisjs.com>
 *

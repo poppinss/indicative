@@ -7,4 +7,6 @@
 * file that was distributed with this source code.
 */
 
-export const sameType = (input: any, comparsionInput: any) => input === comparsionInput
+export const sameType = (input: any, comparsionInput: any) => {
+  return typeof (input) === typeof (comparsionInput)
+}
