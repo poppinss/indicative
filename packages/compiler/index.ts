@@ -8,7 +8,7 @@
 */
 
 export { Schema, Messages } from 'indicative-parser'
-export { validationCompiler } from './src/ValidationCompiler/index'
+export { validationCompiler } from './src/ValidationCompiler'
 
 export {
   DataNode,
