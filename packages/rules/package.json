@@ -1,7 +1,7 @@
 {
   "name": "indicative-rules",
   "version": "5.0.8",
-  "description": "Fluent data validator",
+  "description": "Collection of validation and raw rules for Indicative",
   "main": "build/index.js",
   "files": [
     "build/src",
@@ -18,14 +18,15 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "keywords": [
-    "parser",
+    "rules",
+    "validations",
     "indicative"
   ],
   "author": "virk",
   "homepage": "https://indicative.adonisjs.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/poppinss/indicative/tree/master/packages/indicative.git"
+    "url": "git+https://github.com/poppinss/indicative/tree/master/packages/rules.git"
   },
   "license": "MIT",
   "nyc": {
@@ -37,7 +38,8 @@
     ]
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "tag": "latest"
   },
   "bugs": {
     "url": "https://github.com/poppinss/indicative/issues"
