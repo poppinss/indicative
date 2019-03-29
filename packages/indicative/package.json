@@ -1,38 +1,48 @@
 {
   "name": "indicative",
   "version": "5.0.8",
-  "description": "> TODO: description",
-  "keywords": [
-    "indicative",
-    "validator"
-  ],
-  "author": "thetutlage <virk.officials@gmail.com>",
-  "homepage": "https://github.com/poppinss/indicative#readme",
-  "license": "MIT",
-  "main": "lib/indicative.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
+  "description": "Simple yet powerful data validation library for Nodejs",
+  "main": "build/index.js",
   "files": [
-    "lib"
+    "build/src",
+    "build/index.js",
+    "build/index.d.ts"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/poppinss/indicative.git"
-  },
   "scripts": {
     "pretest": "npm run lint",
     "test": "nyc node japaFile.js",
     "lint": "tslint --project tsconfig.json",
     "clean": "del build",
-    "compile": "npm run lint && npm run clean && tsc",
+    "compile": "npm run lint && npm run clean && webpack",
     "build": "npm run compile",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
+  "keywords": [
+    "utils",
+    "indicative"
+  ],
+  "author": "virk",
+  "homepage": "https://indicative.adonisjs.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/poppinss/indicative/tree/master/packages/indicative.git"
+  },
+  "license": "MIT",
+  "nyc": {
+    "exclude": [
+      "test"
+    ],
+    "extension": [
+      ".ts"
+    ]
+  },
+  "publishConfig": {
+    "access": "public",
+    "tag": "next"
+  },
   "bugs": {
     "url": "https://github.com/poppinss/indicative/issues"
-  },
+  }
   "dependencies": {
     "indicative-compiler": "^5.0.8",
     "indicative-rules": "^5.0.8",
