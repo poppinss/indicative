@@ -42,7 +42,7 @@
   },
   "bugs": {
     "url": "https://github.com/poppinss/indicative/issues"
-  }
+  },
   "dependencies": {
     "indicative-compiler": "^5.0.8",
     "indicative-rules": "^5.0.8",
