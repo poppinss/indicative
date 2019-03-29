@@ -8,8 +8,11 @@
  */
 
 import { ParsedRule } from 'indicative-parser'
-import { ArgComparison, EmailValidationOptions, ArgMinMax, ArgComparisonDate, ArgOffset } from './Contracts'
+import { ArgComparison, ArgMinMax, ArgComparisonDate, ArgOffset } from './Contracts'
 
+/**
+ * Shortcut to precompiled rules
+ */
 export const rules = {
   above ([minValue]: ArgComparison): ParsedRule {
     return { name: 'above', args: [minValue] }
@@ -35,13 +38,13 @@ export const rules = {
   different ([targetField]: [string]): ParsedRule {
     return { name: 'different', args: [targetField] }
   },
-  email ([options]: [Partial<EmailValidationOptions>]): ParsedRule {
-    return { name: 'email', args: [options] }
+  email (): ParsedRule {
+    return { name: 'email', args: [] }
   },
   endsWith ([substring]: [string]): ParsedRule {
     return { name: 'endsWith', args: [substring] }
   },
-  equals ([comparisonValue]: [string]): ParsedRule {
+  equals ([comparisonValue]: [any]): ParsedRule {
     return { name: 'equals', args: [comparisonValue] }
   },
   in (args: any[]): ParsedRule {
@@ -110,8 +113,8 @@ export const rules = {
   requiredWithoutAny (args: string[]): ParsedRule {
     return { name: 'requiredWithoutAny', args }
   },
-  same ([comparisonField]: [string]): ParsedRule {
-    return { name: 'same', args: [comparisonField] }
+  same ([targetField]: [string]): ParsedRule {
+    return { name: 'same', args: [targetField] }
   },
   startsWith ([substring]: [string]): ParsedRule {
     return { name: 'startsWith', args: [substring] }

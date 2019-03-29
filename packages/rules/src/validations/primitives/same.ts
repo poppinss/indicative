@@ -40,13 +40,13 @@ const validation: Validation = {
     return [String(args[0])]
   },
 
-  validate: (data, field, [comparisonField]: [string], _type, _root, config: RulesConfig) => {
+  validate: (data, field, [targetField]: [string], _type, _root, config: RulesConfig) => {
     const fieldValue = data[field]
     if (skippable(fieldValue, field, config)) {
       return true
     }
 
-    const targetedFieldValue = data[comparisonField]
+    const targetedFieldValue = data[targetField]
     return !existy(targetedFieldValue) || targetedFieldValue === fieldValue
   },
 }

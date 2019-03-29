@@ -24,16 +24,6 @@ export type ArgOffset = [number, CalcKeys]
 export type ArgMinMax = [number, number]
 export type ArgRegex = [RegExp]
 
-export type EmailValidationOptions = {
-  allow_display_name: boolean,
-  require_display_name: boolean,
-  allow_utf8_local_part: boolean,
-  require_tld: boolean,
-  allow_ip_domain: boolean,
-  domain_specific_validation: boolean,
-}
-
 export type RulesConfig = {
   existyStrict: boolean,
-  castValues: boolean,
 }

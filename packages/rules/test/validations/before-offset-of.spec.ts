@@ -16,7 +16,6 @@ import { RulesConfig } from '../../src/Contracts'
 
 const config: RulesConfig = {
   existyStrict: true,
-  castValues: true,
 }
 
 const root = { original: {} }

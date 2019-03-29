@@ -10,18 +10,18 @@
 import { addMonths, addDays, addMilliseconds } from 'date-fns'
 import { CalcKeys } from '../src/Contracts'
 
-const viaMonths = {
+const months = {
   years: (unit: number) => unit * 12,
   quarters: (unit: number) => unit * 3,
   months: (unit: number) => unit,
 }
 
-const viaDays = {
+const days = {
   weeks: (unit: number) => unit * 7,
   days: (unit: number) => unit,
 }
 
-const viaMilliseconds = {
+const milliseconds = {
   hours: (unit: number) => unit * 3600000,
   minutes: (unit: number) => unit * 60000,
   seconds: (unit: number) => unit * 1000,
@@ -33,18 +33,18 @@ const viaMilliseconds = {
  * date-fns.
  */
 export const calcUnits = (diffUnit: number, key: CalcKeys, operator: string) => {
-  if (viaMonths[key]) {
-    return addMonths(new Date(), operator === '-' ? -viaMonths[key](diffUnit) : viaMonths[key](diffUnit))
+  if (months[key]) {
+    return addMonths(new Date(), operator === '-' ? -months[key](diffUnit) : months[key](diffUnit))
   }
 
-  if (viaDays[key]) {
-    return addDays(new Date(), operator === '-' ? -viaDays[key](diffUnit) : viaDays[key](diffUnit))
+  if (days[key]) {
+    return addDays(new Date(), operator === '-' ? -days[key](diffUnit) : days[key](diffUnit))
   }
 
-  if (viaMilliseconds[key]) {
+  if (milliseconds[key]) {
     return addMilliseconds(
       new Date(),
-      operator === '-' ? -viaMilliseconds[key](diffUnit) : viaMilliseconds[key](diffUnit),
+      operator === '-' ? -milliseconds[key](diffUnit) : milliseconds[key](diffUnit),
     )
   }
 }
