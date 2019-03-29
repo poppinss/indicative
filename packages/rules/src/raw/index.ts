@@ -9,6 +9,7 @@
 
 export { above } from './above'
 export { affirmative } from './affirmative'
+export { after } from './after'
 export { alpha } from './alpha'
 export { alphaNumeric } from './alphaNumeric'
 export { array } from './array'
@@ -53,4 +54,5 @@ export { future } from './future'
 export { inDateRange } from './inDateRange'
 export { afterOffsetOf } from './afterOffsetOf'
 export { beforeOffsetOf } from './beforeOffsetOf'
+export { before } from './before'
 export { dateFormat } from './dateFormat'

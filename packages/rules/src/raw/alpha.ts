@@ -1,5 +1,5 @@
 /*
-* indicative
+* indicative-rules
 *
 * (c) Harminder Virk <virk@adonisjs.com>
 *
@@ -10,7 +10,16 @@
 const alphaRegex = /^[a-z]+$/i
 
 /**
- * Returns a boolean telling if value has just
- * alphabets or not.
+ * Returns a boolean telling if value pass the alpha test or not.
+ *
+ * @example
+ * ```js
+ * const { is } = require('indicative')
+ *
+ * if (is.alpha('hello')) {
+ * }
+ * ```
  */
-export const alpha = (input: string): boolean => alphaRegex.test(input)
+export const alpha = (input: any): boolean => {
+  return typeof(input) === 'string' && alphaRegex.test(input)
+}

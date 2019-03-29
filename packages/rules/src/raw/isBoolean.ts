@@ -12,6 +12,6 @@
  * string or not. If input is a string, it will be
  * casted to their counterpart booleans.
  */
-export const isBoolean = (input: boolean): boolean => {
+export const isBoolean = (input: any): boolean => {
   return typeof (input) === 'boolean'
 }

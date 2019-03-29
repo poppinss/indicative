@@ -1,5 +1,5 @@
 /*
-* indicative
+* indicative-rules
 *
 * (c) Harminder Virk <virk@adonisjs.com>
 *
@@ -10,7 +10,16 @@
 const alphaNumericRegex = /^[a-z0-9]+$/i
 
 /**
- * Returns a boolean telling if value passes test
- * of alpha numeric characters set.
+ * Returns a boolean telling if value pass the alpha numeric test or not.
+ *
+ * @example
+ * ```js
+ * const { is } = require('indicative')
+ *
+ * if (is.alphaNumeric('secret123')) {
+ * }
+ * ```
  */
-export const alphaNumeric = (input: string): boolean => alphaNumericRegex.test(input)
+export const alphaNumeric = (input: any): boolean => {
+  return typeof(input) === 'string' && alphaNumericRegex.test(input)
+}

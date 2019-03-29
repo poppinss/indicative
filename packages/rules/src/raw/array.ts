@@ -1,5 +1,5 @@
 /*
-* indicative
+* indicative-rules
 *
 * (c) Harminder Virk <virk@adonisjs.com>
 *
@@ -8,7 +8,14 @@
 */
 
 /**
- * Returns a boolean telling, if value is an array. It
- * simply uses `Array.isArray` behind the scenes.
+ * Returns a boolean telling, if value is an array or not.
+ *
+ * @example
+ * ```
+ * const { is } = require('indicative')
+ *
+ * if (is.array([])) {
+ * }
+ * ```
  */
 export const array = (value: any): boolean => Array.isArray(value)

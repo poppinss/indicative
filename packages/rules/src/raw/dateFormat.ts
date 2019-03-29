@@ -1,5 +1,5 @@
 /*
-* indicative
+* indicative-rules
 *
 * (c) Harminder Virk <virk@adonisjs.com>
 *
@@ -9,6 +9,22 @@
 
 import { format } from 'date-fns'
 
+/**
+ * Returns a boolean telling if value is valid as per the given date format
+ * or not.
+ *
+ * @example
+ * ```js
+ * const { is } = require('indicative')
+ *
+ * if (is.dateFormat('2010-11-20', ['YYYY-MM-DD'])) {
+ * }
+ *
+ * // You can also check against multiple format to see if it matches any one or not
+ * if (is.dateFormat('2010-11-20', ['YYYY-MM-DD', 'YYYY/MM/DD'])) {
+ * }
+ * ```
+ */
 export const dateFormat = (input: string, formats: string | string[]): boolean => {
   return (Array.isArray(formats) ? formats : [formats]).some(pattern => {
     let sanitizedInput = input

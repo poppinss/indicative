@@ -13,8 +13,7 @@ export const json = (input: any): boolean => {
   }
 
   try {
-    const output = JSON.parse(input) || {}
-    return !!output
+    return !!JSON.parse(input)
   } catch (e) {
     return false
   }
