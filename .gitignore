@@ -3,8 +3,6 @@ node_modules
 .DS_Store
 npm-debug.log
 .idea
-out
+build
 .nyc_output
 test/tmp
-static/_site
-build
