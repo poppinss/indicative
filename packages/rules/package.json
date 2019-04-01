@@ -1,6 +1,6 @@
 {
   "name": "indicative-rules",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "description": "Collection of validation and raw rules for Indicative",
   "main": "build/index.js",
   "files": [
@@ -49,9 +49,9 @@
     "indicative-parser": "^6.x.x"
   },
   "devDependencies": {
-    "indicative-compiler": "^6.0.0",
-    "indicative-parser": "^6.0.0",
-    "indicative-utils": "^6.0.0"
+    "indicative-compiler": "^7.0.0",
+    "indicative-parser": "^7.0.0",
+    "indicative-utils": "^7.0.0"
   },
   "dependencies": {
     "date-fns": "^1.30.1",

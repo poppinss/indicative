@@ -1,6 +1,6 @@
 {
   "name": "indicative",
-  "version": "6.0.1",
+  "version": "7.0.0",
   "description": "Simple yet powerful data validation library for Nodejs",
   "main": "build/index.js",
   "files": [
@@ -44,9 +44,9 @@
     "url": "https://github.com/poppinss/indicative/issues"
   },
   "dependencies": {
-    "indicative-compiler": "^6.0.0",
-    "indicative-formatters": "^6.0.1",
-    "indicative-rules": "^6.0.0"
+    "indicative-compiler": "^7.0.0",
+    "indicative-formatters": "^7.0.0",
+    "indicative-rules": "^7.0.0"
   },
   "devDependencies": {
     "benchmark": "^2.1.4"

@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](http://github.com/poppinss/indicative/tree/master/packages/indicative/compare/v5.0.8...v7.0.0) (2019-04-01)
+
+
+### Bug Fixes
+
+* **indicative:** broken package.json file ([7e7095a](http://github.com/poppinss/indicative/tree/master/packages/indicative/commit/7e7095a))
+
+
+### Features
+
+* use typescript & drop support for browsers ([f4a8fa9](http://github.com/poppinss/indicative/tree/master/packages/indicative/commit/f4a8fa9))
+* **indicative:** export global validator ([d0aa5aa](http://github.com/poppinss/indicative/tree/master/packages/indicative/commit/d0aa5aa))
+* **indicative:** initiate validator ([79a47fc](http://github.com/poppinss/indicative/tree/master/packages/indicative/commit/79a47fc))
+
+
+### BREAKING CHANGES
+
+* Removed support for browsers
+
+
+
+
+
 ## [6.0.1](http://github.com/poppinss/indicative/tree/master/packages/indicative/compare/v6.0.0...v6.0.1) (2019-03-29)
 
 **Note:** Version bump only for package indicative
