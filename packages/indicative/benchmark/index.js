@@ -4,7 +4,7 @@ const suite = new Benchmark.Suite()
 
 const schema = {
   username: 'required',
-  age: 'required|integer'
+  age: 'required'
 }
 
 const data = {
