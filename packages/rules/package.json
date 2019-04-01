@@ -46,7 +46,7 @@
   },
   "peerDependencies": {
     "indicative-compiler": "^6.x.x",
-    "indicative-parser": "^6.x.x",
+    "indicative-parser": "^6.x.x"
   },
   "devDependencies": {
     "indicative-compiler": "^6.0.0",
