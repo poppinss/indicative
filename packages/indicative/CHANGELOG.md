@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.1.0](http://github.com/poppinss/indicative/tree/master/packages/indicative/compare/v7.0.0...v7.1.0) (2019-04-01)
+
+
+### Features
+
+* **indicative:** add support for config and extending validations ([876417f](http://github.com/poppinss/indicative/tree/master/packages/indicative/commit/876417f))
+
+
+
+
+
 # [7.0.0](http://github.com/poppinss/indicative/tree/master/packages/indicative/compare/v5.0.8...v7.0.0) (2019-04-01)
 
 

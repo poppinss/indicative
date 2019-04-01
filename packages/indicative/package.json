@@ -1,6 +1,6 @@
 {
   "name": "indicative",
-  "version": "7.0.0",
+  "version": "7.1.0",
   "description": "Simple yet powerful data validation library for Nodejs",
   "main": "build/index.js",
   "files": [
