@@ -45,7 +45,9 @@
   },
   "devDependencies": {
     "benchmark": "^2.1.4",
-    "indicative-parser": "^6.0.0",
     "pope": "^2.0.2"
+  },
+  "dependencies": {
+    "indicative-parser": "^6.0.0"
   }
 }
