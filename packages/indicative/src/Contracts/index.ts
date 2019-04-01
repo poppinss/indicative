@@ -8,8 +8,16 @@
 */
 
 import { RulesConfig } from 'indicative-rules'
+import { FormatterContract } from 'indicative-compiler'
 
-export type Config = RulesConfig
+export type FormatterConstructorContract = {
+  new (): FormatterContract,
+}
+
+export type Config = RulesConfig & {
+  formatter: FormatterConstructorContract,
+}
+
 export type ValidationOptions = Config & {
   cacheKey: string,
 }

@@ -7,10 +7,15 @@
  * file that was distributed with this source code.
  */
 
+import { validations, is, rules } from 'indicative-rules'
+import { DataNode, Schema, Messages, Validation, FormatterContract } from 'indicative-compiler'
+import { configure } from './src/config'
 import { Validator } from './src/Validator'
-import { ValidationOptions } from './src/Contracts'
-import { DataNode, Schema, Messages } from 'indicative-compiler'
+import { ValidationOptions, FormatterConstructorContract } from './src/Contracts'
 
+/**
+ * Global validator
+ */
 const validator = new Validator()
 
 /**
@@ -38,4 +43,12 @@ export function validateAll<Data extends DataNode> (
   return validator.validateAll(data, rules, messages || {}, options || {})
 }
 
-export { is, rules } from 'indicative-rules'
+/**
+ * Extend validator by adding a new validation it. The global `validations`
+ * object is extended.
+ */
+export function extend (ruleName: string, validation: Validation): void {
+  validations[ruleName] = validation
+}
+
+export { is, rules, FormatterContract, FormatterConstructorContract, configure }

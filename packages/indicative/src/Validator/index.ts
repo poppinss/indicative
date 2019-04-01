@@ -8,11 +8,11 @@
  */
 
 import { validations } from 'indicative-rules'
-import { VanillaFormatter } from 'indicative-formatters'
 import { DataNode, Schema, Messages, validationCompiler, TopLevelRunner } from 'indicative-compiler'
 
-import { ValidationOptions } from '../Contracts'
 import { CacheManager } from '../CacheManager'
+import { ValidationOptions } from '../Contracts'
+import { config } from '../config'
 
 /**
  * Validator instance exposes the API to run validations using indicative schema,
@@ -29,18 +29,18 @@ export class Validator {
   private _getRunner (
     rules: Schema,
     messages: Messages,
-    options: Partial<ValidationOptions>,
+    cacheKey?: string,
   ): TopLevelRunner {
-    if (!options.cacheKey) {
+    if (!cacheKey) {
       return validationCompiler(rules, validations, messages)
     }
 
-    let runner = this._cacheManager.get(options.cacheKey)
+    let runner = this._cacheManager.get(cacheKey)
     if (!runner) {
       runner = validationCompiler(rules, validations, messages)
     }
 
-    this._cacheManager.set(options.cacheKey, runner)
+    this._cacheManager.set(cacheKey, runner)
     return runner
   }
 
@@ -53,9 +53,10 @@ export class Validator {
     messages: Messages,
     options?: Partial<ValidationOptions>,
   ): Promise<Data> {
-    options = Object.assign({}, options)
-    const runner = this._getRunner(rules, messages, options)
-    return runner(data, new VanillaFormatter(), options, true)
+    options = Object.assign({}, config, options)
+
+    const runner = this._getRunner(rules, messages, options.cacheKey)
+    return runner(data, new options.formatter!(), options, true)
   }
 
   /**
@@ -68,8 +69,9 @@ export class Validator {
     messages: Messages,
     options?: Partial<ValidationOptions>,
   ): Promise<Data> {
-    options = Object.assign({}, options)
-    const runner = this._getRunner(rules, messages, options)
-    return runner(data, new VanillaFormatter(), options, false)
+    options = Object.assign({}, config, options)
+
+    const runner = this._getRunner(rules, messages, options.cacheKey)
+    return runner(data, new options.formatter!(), options, false)
   }
 }
