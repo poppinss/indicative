@@ -1,6 +1,6 @@
 {
   "name": "indicative-rules",
-  "version": "7.0.0",
+  "version": "7.1.1",
   "description": "Collection of validation and raw rules for Indicative",
   "main": "build/index.js",
   "files": [

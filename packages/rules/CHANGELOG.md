@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.1](http://github.com/poppinss/indicative/tree/master/packages/rules/compare/v7.1.0...v7.1.1) (2019-04-02)
+
+**Note:** Version bump only for package indicative-rules
+
+
+
+
+
 # [7.0.0](http://github.com/poppinss/indicative/tree/master/packages/rules/compare/v5.0.8...v7.0.0) (2019-04-01)
 
 
