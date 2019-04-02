@@ -12,6 +12,7 @@ import { DataNode, Schema, Messages, Validation, FormatterContract } from 'indic
 import { configure } from './src/config'
 import { Validator } from './src/Validator'
 import { ValidationOptions, FormatterConstructorContract } from './src/Contracts'
+import * as utils from 'indicative-utils'
 
 /**
  * Global validator
@@ -51,4 +52,4 @@ export function extend (ruleName: string, validation: Validation): void {
   validations[ruleName] = validation
 }
 
-export { is, rules, FormatterContract, FormatterConstructorContract, configure }
+export { is, rules, FormatterContract, FormatterConstructorContract, configure, utils }
