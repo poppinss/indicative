@@ -43,10 +43,10 @@
   "bugs": {
     "url": "https://github.com/poppinss/indicative/issues"
   },
-  "peerDependencies": {
-    "indicative-compiler": "6.x.x"
-  },
   "devDependencies": {
     "indicative-compiler": "^7.0.0"
+  },
+  "peerDependencies": {
+    "indicative-compiler": "^7.x.x"
   }
 }
