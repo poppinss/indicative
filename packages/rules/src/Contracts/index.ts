@@ -45,6 +45,7 @@ export interface RulesContract {
   in (args: any[]): ParsedRule,
   includes ([substring]: [string]): ParsedRule,
   integer (): ParsedRule,
+  float (): ParsedRule,
   ip (): ParsedRule,
   ipv4 (): ParsedRule,
   ipv6 (): ParsedRule,

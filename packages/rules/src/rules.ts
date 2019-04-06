@@ -56,6 +56,9 @@ export const rules: RulesContract = {
   integer (): ParsedRule {
     return { name: 'integer', args: [] }
   },
+  float (): ParsedRule {
+    return { name: 'float', args: [] }
+  },
   ip (): ParsedRule {
     return { name: 'ip', args: [] }
   },
