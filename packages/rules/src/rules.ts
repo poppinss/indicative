@@ -8,12 +8,12 @@
  */
 
 import { ParsedRule } from 'indicative-parser'
-import { ArgComparison, ArgMinMax, ArgComparisonDate, ArgOffset } from './Contracts'
+import { ArgComparison, ArgMinMax, ArgComparisonDate, ArgOffset, RulesContract } from './Contracts'
 
 /**
  * Shortcut to precompiled rules
  */
-export const rules = {
+export const rules: RulesContract = {
   above ([minValue]: ArgComparison): ParsedRule {
     return { name: 'above', args: [minValue] }
   },
