@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import { validations, is, rules } from 'indicative-rules'
+import { validations, is, rules, RulesContract, RulesConfig } from 'indicative-rules'
 import { DataNode, Schema, Messages, Validation, FormatterContract } from 'indicative-compiler'
 import { configure } from './src/config'
 import { Validator } from './src/Validator'
@@ -52,4 +52,13 @@ export function extend (ruleName: string, validation: Validation): void {
   validations[ruleName] = validation
 }
 
-export { is, rules, FormatterContract, FormatterConstructorContract, configure, utils }
+export {
+  is,
+  rules,
+  FormatterContract,
+  FormatterConstructorContract,
+  configure,
+  utils,
+  RulesContract,
+  RulesConfig,
+}
