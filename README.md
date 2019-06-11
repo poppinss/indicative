@@ -15,6 +15,49 @@
 [![npm-image]][npm-url]
 ![](https://img.shields.io/badge/Typescript-294E80.svg?style=for-the-badge&logo=typescript)
 
+
+```ts
+import { sanitizations, extend, sanitize } from 'indicative/sanitizor'
+import { validations, extend, configure, validate, validateAll } from 'indicative/validator'
+
+extend('')
+sanitize('')
+configure('')
+```
+
+```ts
+const schema = {
+  username: [
+    validations.required(),
+    validations.unique(),
+  ]
+}
+
+class User {
+  @validations.required()
+  @sanitizations.trim()
+  @sanitizations.escape()
+  public username
+}
+
+const user = request.validate(User)
+```
+
+{
+  required: () => {},
+}
+
+{
+  required: () => {
+    return function () {
+    }
+  }
+}
+
+{
+  trim: () => {},
+}
+
 ## Change log
 
 The change log can be found in the [CHANGELOG.md](CHANGELOG.md) file.

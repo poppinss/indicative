@@ -40,6 +40,7 @@
     "japa": "^2.0.10",
     "mrm": "^1.2.2",
     "np": "^5.0.3",
+    "reflect-metadata": "^0.1.13",
     "ts-node": "^8.2.0",
     "tslint": "^5.17.0",
     "tslint-eslint-rules": "^5.4.0",
@@ -75,5 +76,11 @@
   "np": {
     "contents": ".",
     "anyBranch": false
+  },
+  "dependencies": {
+    "indicative-compiler": "^1.0.2",
+    "indicative-formatters": "^1.0.0",
+    "indicative-parser": "^1.0.0",
+    "indicative-rules": "^1.0.0"
   }
 }
