@@ -1,82 +1,26 @@
+# Indicative
+[![circleci-image]][circleci-url] [![npm-image]][npm-url] ![][typescript-image] [![license-image]][license-url]
+
+> Data validation library for Node.js
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 ## Table of contents
 
-- [indicative](#indicative)
-  - [Change log](#change-log)
-  - [Contributing](#contributing)
-  - [Authors & License](#authors--license)
+- [Maintainers](#maintainers)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# indicative
-
-[![circleci-image]][circleci-url]
-[![npm-image]][npm-url]
-![](https://img.shields.io/badge/Typescript-294E80.svg?style=for-the-badge&logo=typescript)
-
-
-```ts
-import { sanitizations, extend, sanitize } from 'indicative/sanitizor'
-import { validations, extend, configure, validate, validateAll } from 'indicative/validator'
-
-extend('')
-sanitize('')
-configure('')
-```
-
-```ts
-const schema = {
-  username: [
-    validations.required(),
-    validations.unique(),
-  ]
-}
-
-class User {
-  @validations.required()
-  @sanitizations.trim()
-  @sanitizations.escape()
-  public username
-}
-
-const user = request.validate(User)
-```
-
-{
-  required: () => {},
-}
-
-{
-  required: () => {
-    return function () {
-    }
-  }
-}
-
-{
-  trim: () => {},
-}
-
-## Change log
-
-The change log can be found in the [CHANGELOG.md](CHANGELOG.md) file.
-
-## Contributing
-
-Everyone is welcome to contribute. Please go through the following guides, before getting started.
-
-1. [Contributing](https://adonisjs.com/contributing)
-2. [Code of conduct](https://adonisjs.com/code-of-conduct)
-
-
-## Authors & License
-[Harminder virk](https://github.com/Harminder virk) and [contributors](https://github.com/poppinss/indicative/graphs/contributors).
-
-MIT License, see the included [MIT](LICENSE.md) file.
+## Maintainers
+[Harminder virk](https://github.com/thetutlage)
 
 [circleci-image]: https://img.shields.io/circleci/project/github/poppinss/indicative/master.svg?style=for-the-badge&logo=circleci
 [circleci-url]: https://circleci.com/gh/poppinss/indicative "circleci"
 
 [npm-image]: https://img.shields.io/npm/v/indicative.svg?style=for-the-badge&logo=npm
 [npm-url]: https://npmjs.org/package/indicative "npm"
+
+[typescript-image]: https://img.shields.io/badge/Typescript-294E80.svg?style=for-the-badge&logo=typescript
+
+[license-url]: LICENSE.md
+[license-image]: https://img.shields.io/aur/license/pac.svg?style=for-the-badge
