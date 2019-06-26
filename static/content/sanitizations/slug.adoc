@@ -6,27 +6,27 @@ category: sanitizations
 
 Converts a string to URL friendly slug. If value is not a string, it will be
 returned as it is.
- 
+
 Also it will handle ascii charmaps and converts to their utf-8 counter parts.
- 
+
 [source, text]
 ----
 I am > than you
 ----
- 
+
 will become
- 
+
 [source, text]
 ----
 i-am-greater-than-you
 ----
- 
+
 [source, js]
 ----
 const sanitizationRules = {
   slug: 'slug'
 }
- 
+
 // or
 const sanitizationRules = {
   slug: [
@@ -37,5 +37,5 @@ const sanitizationRules = {
 For customized build, you can import this rule as follows.
 [source, js]
 ----
-import { slug } from 'indicative/builds/validations'
+import { slug } from 'indicative/builds/sanitizations'
 ----

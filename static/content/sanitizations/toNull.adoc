@@ -6,13 +6,13 @@ category: sanitizations
 
 Converts empty strings and `undefined` to `null`. It is
 handy to keep data normalized at database level.
- 
+
 [source, js]
 ----
 const sanitizationRules = {
   bio: 'to_null'
 }
- 
+
 // or
 const sanitizationRules = {
   bio: [
@@ -23,5 +23,5 @@ const sanitizationRules = {
 For customized build, you can import this rule as follows.
 [source, js]
 ----
-import { toNull } from 'indicative/builds/validations'
+import { toNull } from 'indicative/builds/sanitizations'
 ----

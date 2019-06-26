@@ -5,13 +5,13 @@ category: sanitizations
 ---
 
 Converts value to an integer using `parseInt`.
- 
+
 [source, js]
 ----
 const sanitizationRules = {
   age: 'to_int'
 }
- 
+
 // or
 const sanitizationRules = {
   age: [
@@ -22,5 +22,5 @@ const sanitizationRules = {
 For customized build, you can import this rule as follows.
 [source, js]
 ----
-import { toInt } from 'indicative/builds/validations'
+import { toInt } from 'indicative/builds/sanitizations'
 ----

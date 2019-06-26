@@ -5,16 +5,16 @@ category: sanitizations
 ---
 
 Escapes HTML entities. Useful when you want to avoid XSS attacks.
- 
+
 This method will only remove `&`, `"`, `'`, `<` and `>` characters. For advance escaping
 make use of a 3rd party library like link:https://github.com/mathiasbynens/he[he].
- 
+
 [source, js]
 ----
 const sanitizationRules = {
   message: 'escape'
 }
- 
+
 // or
 const sanitizationRules = {
   message: [
@@ -25,5 +25,5 @@ const sanitizationRules = {
 For customized build, you can import this rule as follows.
 [source, js]
 ----
-import { escape } from 'indicative/builds/validations'
+import { escape } from 'indicative/builds/sanitizations'
 ----

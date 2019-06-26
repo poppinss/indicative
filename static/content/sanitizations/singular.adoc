@@ -6,13 +6,13 @@ category: sanitizations
 
 Converts a value to it's singular version. If value is not a string
 then it will return as it is.
- 
+
 [source, js]
 ----
 const sanitizationRules = {
   modelName: 'singular'
 }
- 
+
 // or
 const sanitizationRules = {
   modelName: [
@@ -23,5 +23,5 @@ const sanitizationRules = {
 For customized build, you can import this rule as follows.
 [source, js]
 ----
-import { singular } from 'indicative/builds/validations'
+import { singular } from 'indicative/builds/sanitizations'
 ----

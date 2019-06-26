@@ -6,16 +6,16 @@ category: sanitizations
 
 Converts value to a date. If value is already an instance of `Date`, then it
 is returned as it is.
- 
+
 Otherwise, the value will be wrapped under `new Date()` and instance of it is
 returned. In case `wrapped date` is invalid, `null` will be returned.
- 
+
 [source, js]
 ----
 const sanitizationRules = {
   created_at: 'date'
 }
- 
+
 // or
 const sanitizationRules = {
   created_at: [
@@ -26,5 +26,5 @@ const sanitizationRules = {
 For customized build, you can import this rule as follows.
 [source, js]
 ----
-import { toDate } from 'indicative/builds/validations'
+import { toDate } from 'indicative/builds/sanitizations'
 ----

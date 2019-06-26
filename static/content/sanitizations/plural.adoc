@@ -6,13 +6,13 @@ category: sanitizations
 
 Converts a value to it's plural version. If value is not a string
 then it will return as it is.
- 
+
 [source, js]
 ----
 const sanitizationRules = {
   controllerName: 'plural'
 }
- 
+
 // or
 const sanitizationRules = {
   controllerName: [
@@ -23,5 +23,5 @@ const sanitizationRules = {
 For customized build, you can import this rule as follows.
 [source, js]
 ----
-import { plural } from 'indicative/builds/validations'
+import { plural } from 'indicative/builds/sanitizations'
 ----
