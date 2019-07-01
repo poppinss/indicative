@@ -36,7 +36,7 @@
     "fs-extra": "^7.0.0",
     "got": "^9.0.0",
     "haye": "^2.0.2",
-    "japa": "^1.0.6",
+    "japa": "^2.0.10",
     "japa-cli": "^1.0.1",
     "karma": "^3.0.0",
     "karma-chrome-launcher": "^2.2.0",
