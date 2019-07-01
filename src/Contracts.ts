@@ -47,5 +47,5 @@ export type ValidateFn = (
 export type SanitizeFn = (
   data: any,
   schema: Schema,
-  config?: Partial<ValidatorConfig>,
+  config?: Partial<SanitizerConfig>,
 ) => any

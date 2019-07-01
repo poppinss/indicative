@@ -51,7 +51,7 @@ function getExecutor (schema: Schema, config: SanitizerConfig) {
  * It is recommended to define the `config` cacheKey to avoid
  * re-compiling the same schema again and again.
  */
-export const sanitize: SanitizeFn = (data, schema, config?) => {
+export const sanitize: SanitizeFn = (data, schema, config) => {
   config = config || {}
-  return getExecutor(schema, config as SanitizerConfig).exec(data, config)
+  return getExecutor(schema, config).exec(data, config)
 }
