@@ -58,6 +58,20 @@ test.group('Parser', () => {
     })
   })
 
+  test('parse rule with single boolean arg using rule method', (assert) => {
+    const output = parse({
+      flag: [rule('equals', false)]
+    })
+    assert.deepEqual(output, {
+      flag: [
+        {
+          name: 'equals',
+          args: [false]
+        }
+      ]
+    })
+  })
+
   test('throw exception when rules is not an array and neither a string', (assert) => {
     const output = () => parse({
       username: rule('required')

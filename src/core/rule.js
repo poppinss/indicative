@@ -31,7 +31,7 @@
  * }
  */
 function rule (name, args) {
-  return { name, args: !args ? [] : (Array.isArray(args) ? args : [args]) }
+  return { name, args: args === undefined ? [] : (Array.isArray(args) ? args : [args]) }
 }
 
 export default rule
