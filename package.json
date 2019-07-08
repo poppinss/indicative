@@ -81,6 +81,6 @@
     "indicative-compiler": "^1.0.4",
     "indicative-formatters": "^1.0.1",
     "indicative-parser": "^1.0.1",
-    "indicative-rules": "^1.0.2"
+    "indicative-rules": "^7.2.0"
   }
 }
