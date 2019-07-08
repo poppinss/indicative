@@ -18,7 +18,7 @@ test.group('validate', () => {
       await validate({}, { username: 'required', age: 'required' })
     } catch (errors) {
       assert.deepEqual(errors, [{
-        error: 'required validation failed on username',
+        message: 'required validation failed on username',
         validation: 'required',
         field: 'username',
       }])
@@ -40,12 +40,12 @@ test.group('validateAll', () => {
     } catch (errors) {
       assert.deepEqual(errors, [
         {
-          error: 'required validation failed on username',
+          message: 'required validation failed on username',
           validation: 'required',
           field: 'username',
         },
         {
-          error: 'required validation failed on age',
+          message: 'required validation failed on age',
           validation: 'required',
           field: 'age',
         },

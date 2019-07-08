@@ -54,8 +54,8 @@ export const validations: ValidationRulesContract = {
   in (args: any[]) {
     return { name: 'in', args }
   },
-  substring (args) {
-    return { name: 'substring', args }
+  includes (args) {
+    return { name: 'includes', args }
   },
   integer () {
     return { name: 'integer', args: [] }
