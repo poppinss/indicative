@@ -40,22 +40,22 @@ export const validations: ValidationRulesContract = {
     return { name: 'confirmed', args: [] }
   },
   different (args) {
-    return { name: 'different', args }
+    return { name: 'different', args: args || [] }
   },
   email () {
     return { name: 'email', args: [] }
   },
   endsWith (args) {
-    return { name: 'endsWith', args }
+    return { name: 'endsWith', args: args || [] }
   },
   equals (args) {
-    return { name: 'equals', args }
+    return { name: 'equals', args: args || [] }
   },
   in (args: any[]) {
-    return { name: 'in', args }
+    return { name: 'in', args: args || [] }
   },
   includes (args) {
-    return { name: 'includes', args }
+    return { name: 'includes', args: args || [] }
   },
   integer () {
     return { name: 'integer', args: [] }
@@ -76,16 +76,16 @@ export const validations: ValidationRulesContract = {
     return { name: 'json', args: [] }
   },
   max (args) {
-    return { name: 'max', args }
+    return { name: 'max', args: args || [] }
   },
   min (args) {
-    return { name: 'min', args }
+    return { name: 'min', args: args || [] }
   },
   notEquals (args) {
-    return { name: 'notEquals', args }
+    return { name: 'notEquals', args: args || [] }
   },
   notIn (args) {
-    return { name: 'notIn', args }
+    return { name: 'notIn', args: args || [] }
   },
   number () {
     return { name: 'number', args: [] }
@@ -94,66 +94,66 @@ export const validations: ValidationRulesContract = {
     return { name: 'object', args: [] }
   },
   range (args) {
-    return { name: 'range', args }
+    return { name: 'range', args: args || [] }
   },
   regex (args) {
-    return { name: 'regex', args }
+    return { name: 'regex', args: args || [] }
   },
   required () {
     return { name: 'required', args: [] }
   },
   requiredIf (args) {
-    return { name: 'requiredIf', args }
+    return { name: 'requiredIf', args: args || [] }
   },
   requiredWhen (args) {
-    return { name: 'requiredWhen', args }
+    return { name: 'requiredWhen', args: args || [] }
   },
   requiredWithAll (args) {
-    return { name: 'requiredWithAll', args }
+    return { name: 'requiredWithAll', args: args || [] }
   },
   requiredWithAny (args) {
-    return { name: 'requiredWithAny', args }
+    return { name: 'requiredWithAny', args: args || [] }
   },
   requiredWithoutAll (args) {
-    return { name: 'requiredWithoutAll', args }
+    return { name: 'requiredWithoutAll', args: args || [] }
   },
   requiredWithoutAny (args) {
-    return { name: 'requiredWithoutAny', args }
+    return { name: 'requiredWithoutAny', args: args || [] }
   },
   same (args) {
-    return { name: 'same', args }
+    return { name: 'same', args: args || [] }
   },
   startsWith (args) {
-    return { name: 'startsWith', args }
+    return { name: 'startsWith', args: args || [] }
   },
   string () {
     return { name: 'string', args: [] }
   },
   subset (args) {
-    return { name: 'subset', args }
+    return { name: 'subset', args: args || [] }
   },
   under (args) {
-    return { name: 'under', args }
+    return { name: 'under', args: args || [] }
   },
   url () {
     return { name: 'url', args: [] }
   },
   after (args) {
-    return { name: 'after', args }
+    return { name: 'after', args: args || [] }
   },
   before (args) {
-    return { name: 'before', args }
+    return { name: 'before', args: args || [] }
   },
   date () {
     return { name: 'date', args: [] }
   },
   dateFormat (args) {
-    return { name: 'dateFormat', args }
+    return { name: 'dateFormat', args: args || [] }
   },
   beforeOffsetOf (args) {
-    return { name: 'beforeOffsetOf', args }
+    return { name: 'beforeOffsetOf', args: args || [] }
   },
   afterOffsetOf (args) {
-    return { name: 'afterOffsetOf', args }
+    return { name: 'afterOffsetOf', args: args || [] }
   },
 }
