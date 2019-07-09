@@ -9,7 +9,7 @@
     "lint": "tslint --project tsconfig.json",
     "clean": "del build",
     "compile": "npm run lint && npm run clean && tsc",
-    "build": "npm run compile && typedoc --excludePrivate && git add docs",
+    "build": "npm run compile",
     "commit": "git-cz",
     "release": "np",
     "version": "npm run build"
