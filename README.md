@@ -1,23 +1,3 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-## Table of contents
-
-- [
-    
-      Website
-    
-     | 
-    
-      Api Reference
-    
-     | 
-    
-      Contributing
-    
-  ](#website%0A----%0A------%0A----%0A------api-reference%0A----%0A------%0A----%0A------contributing)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 <div align="center">
   <img src="https://res.cloudinary.com/adonisjs/image/upload/q_100/v1562577951/Group_2_2x_ohgvej.png" width="600px">
 </div>
