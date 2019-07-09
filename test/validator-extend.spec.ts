@@ -10,6 +10,7 @@
 import * as test from 'japa'
 import { extend } from '../src/Validator/extend'
 import { validate } from '../src/Validator'
+import { validations } from '../src/Validator/validations'
 
 test.group('Extend validator', () => {
   test('add new validation rules', async (assert) => {
@@ -23,6 +24,6 @@ test.group('Extend validator', () => {
       },
     })
 
-    await validate({ username: 'virk' }, { username: 'unique' })
+    await validate({ username: 'virk' }, { username: [validations['unique']()] })
   })
 })
