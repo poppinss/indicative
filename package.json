@@ -1,7 +1,17 @@
 {
   "name": "indicative",
   "version": "7.1.1",
-  "description": "",
+  "description": "Concise data validation library for Node.js and browsers",
+  "main": "index.js",
+  "files": [
+    "src",
+    "index.d.ts",
+    "index.js",
+    "sanitizer.d.ts",
+    "sanitizer.js",
+    "validator.d.ts",
+    "validator.js"
+  ],
   "scripts": {
     "mrm": "mrm --preset=@adonisjs/mrm-preset",
     "pretest": "npm run lint",
@@ -11,7 +21,8 @@
     "compile": "npm run lint && npm run clean && tsc",
     "build": "npm run compile",
     "commit": "git-cz",
-    "release": "np",
+    "release": "np && cp package.json build && cd build && npm publish",
+    "postpublish": "git clean -fd",
     "version": "npm run build"
   },
   "repository": {
@@ -54,12 +65,6 @@
       ".ts"
     ]
   },
-  "main": "build/index.js",
-  "files": [
-    "build/src",
-    "build/index.d.ts",
-    "build/index.js"
-  ],
   "husky": {
     "hooks": {
       "commit-msg": "node ./node_modules/@adonisjs/mrm-preset/validateCommit/conventional/validate.js"
@@ -72,7 +77,8 @@
   },
   "np": {
     "contents": ".",
-    "anyBranch": false
+    "anyBranch": false,
+    "publish": false
   },
   "dependencies": {
     "indicative-compiler": "^7.0.1",
