@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-import * as test from 'japa'
+import test from 'japa'
 import { configure } from '../src/Validator/configure'
 import { validate } from '../src/Validator'
 import { ErrorFormatterContract } from 'indicative-compiler'

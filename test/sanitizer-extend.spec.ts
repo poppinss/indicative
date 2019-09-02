@@ -7,7 +7,7 @@
 * file that was distributed with this source code.
 */
 
-import * as test from 'japa'
+import test from 'japa'
 import { extend } from '../src/Sanitizer/extend'
 import { sanitize } from '../src/Sanitizer'
 import { sanitizations } from '../src/Sanitizer/sanitizations'
