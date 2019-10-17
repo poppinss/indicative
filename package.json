@@ -81,7 +81,7 @@
     "publish": false
   },
   "dependencies": {
-    "indicative-compiler": "^7.0.3",
+    "indicative-compiler": "^7.0.4",
     "indicative-formatters": "^7.2.1",
     "indicative-parser": "^7.0.2",
     "indicative-rules": "^7.2.1"
