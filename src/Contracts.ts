@@ -11,8 +11,9 @@
 * file that was distributed with this source code.
 */
 
-import { ErrorFormatterContract } from 'indicative-compiler'
 import { Schema, Messages } from 'indicative-parser'
+import { ErrorFormatterContract } from 'indicative-compiler'
+import { ErrorCollectorFn } from 'indicative-compiler/build/src/contracts'
 
 /**
  * Shape of validator config
@@ -21,6 +22,7 @@ export type ValidatorConfig = {
   cacheKey?: string,
   existyStrict: boolean,
   removeAdditional: boolean,
+  customErrorCollector?: ErrorCollectorFn,
   formatter: { new (): ErrorFormatterContract },
 }
 

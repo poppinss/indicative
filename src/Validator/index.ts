@@ -16,15 +16,19 @@ import { Schema, Messages } from 'indicative-parser'
 import { ValidatorCompiler, ValidatorExecutor } from 'indicative-compiler'
 
 import { CacheManager } from '../CacheManager'
-import { ValidateFn, ValidatorConfig } from '../Contracts'
 import { config as validatorConfig } from './config'
+import { ValidateFn, ValidatorConfig } from '../Contracts'
 
 const cacheManager = new CacheManager<ReturnType<ValidatorCompiler['compile']>>()
 
 /**
  * Returns executor by pre-compiling and optionally caching schema.
  */
-function getExecutor (schema: Schema, messages: Messages, config: ValidatorConfig) {
+function getExecutor (
+  schema: Schema,
+  messages: Messages,
+  config: ValidatorConfig,
+): ValidatorExecutor {
   /**
    * Always compile schema, when there is no cacheKey
    */
@@ -63,6 +67,7 @@ export const validate: ValidateFn = (data, schema, messages, config?) => {
     config,
     true,
     config.removeAdditional!,
+    config.customErrorCollector,
   )
 }
 
@@ -83,5 +88,6 @@ export const validateAll: ValidateFn = (data, schema, messages, config?) => {
     config,
     false,
     config.removeAdditional!,
+    config.customErrorCollector,
   )
 }

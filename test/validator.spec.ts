@@ -29,6 +29,24 @@ test.group('validate', () => {
     await validate({}, {}, {}, { cacheKey: 'foo' })
     await validate({}, { username: 'required' }, {}, { cacheKey: 'foo' })
   })
+
+  test('define custom error collector', async (assert) => {
+    assert.plan(1)
+
+    try {
+      await validate({}, { username: 'required', age: 'required' }, {}, {
+        customErrorCollector: (formatter, _m, field, rule, args) => {
+          formatter.addError('Validation failed', field, rule, args)
+        },
+      })
+    } catch (errors) {
+      assert.deepEqual(errors, [{
+        message: 'Validation failed',
+        validation: 'required',
+        field: 'username',
+      }])
+    }
+  })
 })
 
 test.group('validateAll', () => {
@@ -56,5 +74,30 @@ test.group('validateAll', () => {
   test('cache schema when cache key is defined', async () => {
     await validateAll({}, {}, {}, { cacheKey: 'foo' })
     await validateAll({}, { username: 'required' }, {}, { cacheKey: 'foo' })
+  })
+
+  test('define custom error collector', async (assert) => {
+    assert.plan(1)
+
+    try {
+      await validateAll({}, { username: 'required', age: 'required' }, {}, {
+        customErrorCollector: (formatter, _m, field, rule, args) => {
+          formatter.addError('Validation failed', field, rule, args)
+        },
+      })
+    } catch (errors) {
+      assert.deepEqual(errors, [
+        {
+          message: 'Validation failed',
+          validation: 'required',
+          field: 'username',
+        },
+        {
+          message: 'Validation failed',
+          validation: 'required',
+          field: 'age',
+        },
+      ])
+    }
   })
 })
