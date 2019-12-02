@@ -16,7 +16,7 @@
     "mrm": "mrm --preset=@adonisjs/mrm-preset",
     "pretest": "npm run lint",
     "test": "node japaFile.js",
-    "lint": "eslint .",
+    "lint": "eslint **/*.ts",
     "clean": "del build",
     "compile": "npm run lint && npm run clean && tsc",
     "build": "npm run compile",

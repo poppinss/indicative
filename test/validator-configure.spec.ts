@@ -18,11 +18,11 @@ test.group('Configure validator', () => {
 
     class MyFormatter implements ErrorFormatterContract {
       public errors: { message: string }[] = []
-      public addError () {
+      public addError (): void {
         this.errors.push({ message: 'custom error message' })
       }
 
-      public toJSON () {
+      public toJSON (): any[] {
         return this.errors
       }
     }
