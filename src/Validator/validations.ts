@@ -78,6 +78,9 @@ export const validations: ValidationRulesContract = {
   max (args) {
     return { name: 'max', args: args || [] }
   },
+  size (args) {
+    return { name: 'size', args: args || [] }
+  },
   min (args) {
     return { name: 'min', args: args || [] }
   },
