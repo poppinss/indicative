@@ -16,7 +16,7 @@
     "mrm": "mrm --preset=@adonisjs/mrm-preset",
     "pretest": "npm run lint",
     "test": "node japaFile.js",
-    "lint": "eslint **/*.ts",
+    "lint": "eslint . --ext=.ts",
     "clean": "del build",
     "compile": "npm run lint && npm run clean && tsc",
     "build": "npm run compile",
@@ -48,14 +48,14 @@
     "del-cli": "^3.0.0",
     "doctoc": "^1.4.0",
     "eslint": "^6.7.2",
-    "eslint-plugin-adonis": "^1.0.1",
+    "eslint-plugin-adonis": "^1.0.2",
     "husky": "^3.1.0",
     "japa": "^3.0.1",
     "mrm": "^2.0.0",
     "np": "^5.2.1",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^8.5.4",
-    "typescript": "^3.7.2"
+    "typescript": "^3.7.3"
   },
   "nyc": {
     "exclude": [
@@ -81,9 +81,9 @@
     "publish": false
   },
   "dependencies": {
-    "indicative-compiler": "^7.1.0",
+    "indicative-compiler": "^7.2.0",
     "indicative-formatters": "^7.2.2",
-    "indicative-parser": "^7.0.3",
+    "indicative-parser": "^7.1.1",
     "indicative-rules": "^7.2.2"
   }
 }

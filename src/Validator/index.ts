@@ -12,8 +12,8 @@
 */
 
 import { validations } from 'indicative-rules'
-import { Schema, Messages } from 'indicative-parser'
 import { ValidatorCompiler, ValidatorExecutor } from 'indicative-compiler'
+import { Schema, Messages, ParsedTypedSchema, TypedSchema } from 'indicative-parser'
 
 import { CacheManager } from '../CacheManager'
 import { config as validatorConfig } from './config'
@@ -25,7 +25,7 @@ const cacheManager = new CacheManager<ReturnType<ValidatorCompiler['compile']>>(
  * Returns executor by pre-compiling and optionally caching schema.
  */
 function getExecutor (
-  schema: Schema,
+  schema: Schema | ParsedTypedSchema<TypedSchema>,
   messages: Messages,
   config: ValidatorConfig,
 ): ValidatorExecutor {
@@ -68,7 +68,7 @@ export const validate: ValidateFn = (data, schema, messages, config?) => {
     true,
     config.removeAdditional!,
     config.customErrorCollector,
-  )
+  ) as any
 }
 
 /**
@@ -89,5 +89,5 @@ export const validateAll: ValidateFn = (data, schema, messages, config?) => {
     false,
     config.removeAdditional!,
     config.customErrorCollector,
-  )
+  ) as any
 }

@@ -13,7 +13,7 @@ import { config as validatorConfig } from './config'
 /**
  * Configure global validation options
  */
-export function configure (config: Partial<ValidatorConfig>) {
+export function configure (config: Partial<ValidatorConfig>): void {
   Object.assign(validatorConfig, config)
 }
 

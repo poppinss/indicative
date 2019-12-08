@@ -23,7 +23,7 @@ const cacheManager = new CacheManager<ReturnType<SanitizerCompiler['compile']>>(
 /**
  * Returns executor by pre-compiling and optionally caching schema.
  */
-function getExecutor (schema: Schema, config: SanitizerConfig) {
+function getExecutor (schema: Schema, config: SanitizerConfig): SanitizerExecutor {
   /**
    * Always compile schema, when there is no cacheKey
    */

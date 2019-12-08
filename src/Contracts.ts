@@ -11,9 +11,9 @@
 * file that was distributed with this source code.
 */
 
-import { Schema, Messages } from 'indicative-parser'
 import { ErrorFormatterContract } from 'indicative-compiler'
 import { ErrorCollectorFn } from 'indicative-compiler/build/src/contracts'
+import { Schema, Messages, TypedSchema, ParsedTypedSchema } from 'indicative-parser'
 
 /**
  * Shape of validator config
@@ -36,12 +36,12 @@ export type SanitizerConfig = {
 /**
  * Shape of `validate` and `validateAll` function.
  */
-export type ValidateFn = (
+export type ValidateFn = <T extends ParsedTypedSchema<TypedSchema> | Schema>(
   data: any,
-  schema: Schema,
+  schema: T,
   messages?: Messages,
   config?: Partial<ValidatorConfig>,
-) => Promise<any>
+) => T extends Schema ? Promise<any> : Promise<T['props']>
 
 /**
  * Shape of `sanitize` function.

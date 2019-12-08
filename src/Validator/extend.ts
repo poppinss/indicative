@@ -12,20 +12,21 @@
 */
 
 import { validations } from 'indicative-rules'
+import { ParsedRule } from 'indicative-parser'
 import { ValidationDefination } from 'indicative-compiler'
 import { validations as validationsList } from './validations'
 
 /**
  * Extend validator by adding new rules
  */
-export function extend (name: string, definition: ValidationDefination) {
+export function extend (name: string, definition: ValidationDefination): void {
   validations[name] = definition
 
   /**
    * Also adding it to the validations list used to define
    * schema rules
    */
-  validationsList[name] = function rule (args) {
+  validationsList[name] = function rule (args): ParsedRule {
     return { name, args: args || [] }
   }
 }

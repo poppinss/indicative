@@ -8,6 +8,7 @@
 */
 
 import test from 'japa'
+import { t } from 'indicative-parser'
 import { validate, validateAll } from '../src/Validator'
 
 test.group('validate', () => {
@@ -42,6 +43,22 @@ test.group('validate', () => {
     } catch (errors) {
       assert.deepEqual(errors, [{
         message: 'Validation failed',
+        validation: 'required',
+        field: 'username',
+      }])
+    }
+  })
+
+  test('run validations on pre-parsed schema', async (assert) => {
+    assert.plan(1)
+
+    try {
+      await validate({}, t.schema({
+        username: t.string(),
+      }))
+    } catch (errors) {
+      assert.deepEqual(errors, [{
+        message: 'required validation failed on username',
         validation: 'required',
         field: 'username',
       }])
@@ -98,6 +115,22 @@ test.group('validateAll', () => {
           field: 'age',
         },
       ])
+    }
+  })
+
+  test('run validations on pre-parsed schema', async (assert) => {
+    assert.plan(1)
+
+    try {
+      await validateAll({}, t.schema({
+        username: t.string(),
+      }))
+    } catch (errors) {
+      assert.deepEqual(errors, [{
+        message: 'required validation failed on username',
+        validation: 'required',
+        field: 'username',
+      }])
     }
   })
 })
