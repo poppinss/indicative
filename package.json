@@ -81,9 +81,9 @@
     "publish": false
   },
   "dependencies": {
-    "indicative-compiler": "^7.2.0",
-    "indicative-formatters": "^7.2.2",
-    "indicative-parser": "^7.1.1",
-    "indicative-rules": "^7.2.3"
+    "indicative-compiler": "^7.2.1",
+    "indicative-formatters": "^7.2.3",
+    "indicative-parser": "^7.1.2",
+    "indicative-rules": "^7.3.0"
   }
 }
