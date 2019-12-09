@@ -11,9 +11,8 @@
 * file that was distributed with this source code.
 */
 
-import { ErrorFormatterContract } from 'indicative-compiler'
-import { ErrorCollectorFn } from 'indicative-compiler/build/src/contracts'
 import { Schema, Messages, TypedSchema, ParsedTypedSchema } from 'indicative-parser'
+import { ErrorFormatterContract, ErrorCollectorFn } from 'indicative-compiler'
 
 /**
  * Shape of validator config

@@ -11,8 +11,8 @@
 * file that was distributed with this source code.
 */
 
-import { sanitizations } from 'indicative-rules'
 import { ParsedRule } from 'indicative-parser'
+import { sanitizations } from 'indicative-rules'
 import { SanitizationDefination } from 'indicative-compiler'
 import { sanitizations as sanitizationsList } from './sanitizations'
 
