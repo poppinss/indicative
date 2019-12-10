@@ -42,7 +42,7 @@
   "homepage": "https://github.com/poppinss/indicative#readme",
   "devDependencies": {
     "@adonisjs/mrm-preset": "^2.2.2",
-    "@types/node": "^12.12.14",
+    "@types/node": "^12.12.16",
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "^3.0.2",
     "del-cli": "^3.0.0",
