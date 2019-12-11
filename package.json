@@ -43,6 +43,7 @@
   "devDependencies": {
     "@adonisjs/mrm-preset": "^2.2.2",
     "@types/node": "^12.12.16",
+    "benchmark": "^2.1.4",
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "^3.0.2",
     "del-cli": "^3.0.0",
