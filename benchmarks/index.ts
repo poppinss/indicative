@@ -1,4 +1,4 @@
-import { validate, t } from '../validator'
+import { validate, schema } from '../validator'
 import { Suite } from 'benchmark'
 const suite = new Suite()
 
@@ -6,7 +6,7 @@ suite
   .add('Validate | cache', {
     defer: true,
     fn (deferred) {
-      validate({ username: 'virk' }, t.schema({ username: t.string() }), {}, {
+      validate({ username: 'virk' }, schema.new({ username: schema.string() }), {}, {
         cacheKey: 'foo',
       })
         .then(() => {
@@ -17,7 +17,7 @@ suite
   .add('Validate | no cache', {
     defer: true,
     fn (deferred) {
-      validate({ username: 'virk' }, t.schema({ username: t.string() }))
+      validate({ username: 'virk' }, schema.new({ username: schema.string() }))
         .then(() => {
           deferred.resolve()
         })
