@@ -11,7 +11,7 @@
 * file that was distributed with this source code.
 */
 
-export { t } from 'indicative-parser'
+export { t as schema } from 'indicative-parser'
 export { extend } from './src/Validator/extend'
 export { configure } from './src/Validator/configure'
 export { validate, validateAll } from './src/Validator'
