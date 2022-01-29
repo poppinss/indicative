@@ -84,7 +84,7 @@
   "dependencies": {
     "indicative-compiler": "^7.2.4",
     "indicative-formatters": "^7.2.4",
-    "indicative-parser": "^7.1.4",
+    "indicative-parser": "^8.0.0",
     "indicative-rules": "^7.3.1"
   }
 }
